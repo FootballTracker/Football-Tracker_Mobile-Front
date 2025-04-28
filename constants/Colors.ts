@@ -7,22 +7,22 @@ const tintColorLight = '#0a7ea4';
 const tintColorDark = '#fff';
 
 export const Colors = {
-  light: {
-    DarkBackground: '#191A1C',
-    LightBackground: '#22252B',
-    LighterBackground: '#31353F',
-    DarkerWhite: '#B3B4B6',
-    White: '#F1F1F1',
-    Red: '#933038',
-    Green: '#6DA152',
-  },
-  dark: {
-    DarkBackground: '#191A1C',
-    LightBackground: '#22252B',
-    LighterBackground: '#31353F',
-    DarkerWhite: '#B3B4B6',
-    White: '#F1F1F1',
-    Red: '#933038',
-    Green: '#6DA152',
-  },
+    light: {
+        DarkBackground: '#A1A1A1',
+        LightBackground: '#D1D1D1',
+        LighterBackground: '#E1E1E1',
+        DarkerText: '#292A2C',
+        Text: '#191A1C',
+        Red: '#933038',
+        Green: '#5D9142',
+    },
+    dark: {
+        DarkBackground: '#191A1C',
+        LightBackground: '#22252B',
+        LighterBackground: '#31353F',
+        DarkerText: '#B3B4B6',
+        Text: '#F1F1F1',
+        Red: '#933038',
+        Green: '#6DA152',
+    },
 };
