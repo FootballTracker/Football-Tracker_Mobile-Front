@@ -1,18 +1,23 @@
+import { StyleSheet, Dimensions, View, TouchableOpacity } from 'react-native';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
+import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
+import { useState } from "react";
+
 import { ThemedText } from "./DefaultComponents/ThemedText";
 import { ThemedView } from "./DefaultComponents/ThemedView";
-import { StyleSheet, Dimensions, View, TouchableOpacity } from 'react-native';
 import { Colors } from "@/constants/Colors"
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
-import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
-import { useState } from "react";
 
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
 
-export default function BottomMenu() {
+interface Props {
+    setText: React.Dispatch<React.SetStateAction<string>>
+}
 
-    const [selected, SetSelected] = useState(1);
+export default function BottomMenu({setText}: Props) {
+
+    const [selected, setSelected] = useState(1);
 
     const getColor = (index: number) => {
         return index === selected ? Colors.dark.Red : Colors.dark.DarkerWhite
@@ -22,10 +27,15 @@ export default function BottomMenu() {
         return index === selected ? Colors.dark.DarkBackground : Colors.dark.DarkerWhite
     }
 
+    const changeInfo = (index: number, text: string) => {
+        setSelected(index);
+        setText(text);
+    }
+
     return (
         <ThemedView style={styles.menu} darkColor={Colors.dark.DarkBackground} lightColor={Colors.light.DarkBackground}>
 
-            <TouchableOpacity onPress={() => SetSelected(0)}>
+            <TouchableOpacity onPress={() => (changeInfo(0, "Times"))}>
                 <View style={styles.item}>
                 <View style={[styles.selectedBackground, {backgroundColor: Colors.dark.Red}, selected == 0 ? {opacity: 1} : {opacity: 0}]} />
                     <MaterialCommunityIcons name="shield-outline" size={30} color={getIconColor(0)} />
@@ -33,7 +43,7 @@ export default function BottomMenu() {
                 </View>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => SetSelected(1)}>
+            <TouchableOpacity onPress={() => changeInfo(1, "Ligas")}>
                 <View style={styles.item}>
                 <View style={[styles.selectedBackground, {backgroundColor: Colors.dark.Red}, selected == 1 ? {opacity: 1} : {opacity: 0}]} />
                     <SimpleLineIcons name="trophy" size={30} color={getIconColor(1)} />
@@ -41,7 +51,7 @@ export default function BottomMenu() {
                 </View>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => SetSelected(2)}>
+            <TouchableOpacity onPress={() => changeInfo(2, "Jogadores")}>
                 <View style={styles.item}>
                     <View style={[styles.selectedBackground, {backgroundColor: Colors.dark.Red}, selected == 2 ? {opacity: 1} : {opacity: 0}]} />
                     <FontAwesome6 name="person-running" size={30} color={getIconColor(2)} />
@@ -74,7 +84,10 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         alignItems: "center",
         fontFamily: "Kokoro",
-        gap: 8
+        gap: 8,
+        minWidth: 20,
+        maxWidth: 90,
+        width: windowWidth * 0.25
     },
     selectedBackground: {
         position: "absolute",

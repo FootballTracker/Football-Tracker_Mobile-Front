@@ -1,4 +1,4 @@
-import { StyleSheet, Image, Dimensions, View } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 
 import { ThemedText } from "./DefaultComponents/ThemedText";
 import { ThemedView } from "./DefaultComponents/ThemedView";
@@ -7,27 +7,12 @@ import { Colors } from "@/constants/Colors";
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
 
-interface MenuParams {
-    type: "back" | "image"
-    text: string
-}
-
-export default function TopMenu({type, text}: MenuParams) {
+export default function Ligas() {
     return (
             <ThemedView style={styles.menu} darkColor={Colors.dark.DarkBackground} lightColor={Colors.light.DarkBackground}>
                 
-                <View style={styles.leftInfo}>
-                    {type == 'image' && <Image source={require("@/assets/images/RedLogo.png")} style={styles.logo} resizeMode="contain"/>}
-                    <ThemedText style={styles.pageText} darkColor={Colors.dark.White} lightColor={Colors.light.White}>
-                        {text}
-                    </ThemedText>
-                </View>
-
-                <View style={styles.rightInfo}>
-                    <Image source={require("@/assets/images/UserIcon.png")} style={styles.userImage} resizeMode="contain"/>
-                </View>
+                <ThemedText>Ligas</ThemedText>
                 
-
             </ThemedView>
             
     );
