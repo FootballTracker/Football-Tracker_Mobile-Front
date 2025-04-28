@@ -20,7 +20,7 @@
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/Prancheta 6 cópia 6@2.png"
+      "favicon": "./assets/images/RedLogo.png"
     },
     "plugins": [
       "expo-router",
@@ -33,12 +33,7 @@
           "backgroundColor": "#ffffff"
         }
       ],
-      [
-        "expo-font",
-        {
-          "fonts": ["./assets/fonts/Karla.ttf", "./assets/fonts/Kdam.ttf", "./assets/fonts/Kokoro.ttf", "./assets/fonts/Koulen.ttf"]
-        }
-      ]
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true
