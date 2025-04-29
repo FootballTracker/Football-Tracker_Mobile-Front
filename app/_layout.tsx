@@ -10,6 +10,7 @@ import { Dimensions, Platform, StatusBar as Status, View } from 'react-native';
 import { usePathname } from 'expo-router';
 
 import { Colors } from '@/constants/Colors';
+import { themedColor } from '@/hooks/useThemeColor';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -47,11 +48,6 @@ export default function RootLayout() {
         return null;
     }
 
-    const getStatusBarColor = () => {
-        if(pathname === "/Login") return Colors.dark.Red
-        return Colors[colorScheme].DarkBackground;
-    }
-
     return (
 
         <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
@@ -65,7 +61,7 @@ export default function RootLayout() {
                     <Stack.Screen name="Login" />
                 </Stack>
 
-                <StatusBar style='auto' backgroundColor={getStatusBarColor()}/>
+                <StatusBar style='auto' backgroundColor={pathname === '/Login' ? Colors[colorScheme].LightBackground : Colors[colorScheme].DarkBackground}/>
 
             </View>
         </ThemeProvider>

@@ -1,7 +1,6 @@
 //Default Imports
 import { Image, ImageProps } from 'react-native';
 import { useColorScheme } from '@/hooks/useColorScheme';
-
 //Type
 type ThemedImageProps = {
     source: { light: ImageProps; dark: ImageProps },
