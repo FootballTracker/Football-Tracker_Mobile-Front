@@ -1,4 +1,5 @@
 //Default Imports
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { StyleSheet, View, Dimensions } from "react-native";
 import Feather from '@expo/vector-icons/Feather';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -34,27 +35,29 @@ export default function Login() {
     }
 
     return (
-        <ThemedView style={styles.mainBlock}>
-            <LoginLogo />
+        <KeyboardAwareScrollView extraScrollHeight={0} enableOnAndroid={true} keyboardShouldPersistTaps="handled">
+            <ThemedView style={styles.mainBlock}>
+                <LoginLogo />
 
-            <View style={styles.form}>
-                <ThemedText style={{fontSize: 20}}>Login</ThemedText>
-                <ThemedText style={styles.infoText}><ThemedIcon IconComponent={Feather} name="info" size={15} /> Faça login para personalizar sua experiência com jogadores, ligas e times favoritos.</ThemedText>
+                <View style={styles.form}>
+                    <ThemedText style={{fontSize: 20}}>Login</ThemedText>
+                    <ThemedText style={styles.infoText}><ThemedIcon IconComponent={Feather} name="info" size={15} /> Faça login para personalizar sua experiência com jogadores, ligas e times favoritos.</ThemedText>
 
-                <Controller control={control} name="user" render={({ field: { onChange, onBlur, value } }) => (
-                    <ThemedInput placeholder="Usuário ou Email" value={value} onChangeText={onChange} onBlur={onBlur} />
-                )} />
-                {errors.user && <ThemedText>{errors.user.message}</ThemedText>}
+                    <Controller control={control} name="user" render={({ field: { onChange, onBlur, value } }) => (
+                        <ThemedInput placeholder="Usuário ou Email" value={value} onChangeText={onChange} onBlur={onBlur} />
+                    )} />
+                    {errors.user && <ThemedText>{errors.user.message}</ThemedText>}
 
-                <Controller control={control} name="password" render={({ field: { onChange, onBlur, value } }) => (
-                    <ThemedInput placeholder="Senha" isPassword={true} value={value} onChangeText={onChange} onBlur={onBlur} />
-                )} />
-                {errors.password && <ThemedText>{errors.password.message}</ThemedText>}
+                    <Controller control={control} name="password" render={({ field: { onChange, onBlur, value } }) => (
+                        <ThemedInput placeholder="Senha" isPassword={true} value={value} onChangeText={onChange} onBlur={onBlur} />
+                    )} />
+                    {errors.password && <ThemedText>{errors.password.message}</ThemedText>}
 
-                {/* <ThemedButton IconComponent={{Icon: Ionicons, name: 'enter-outline'}} backgroundColor="Green" textColor="LightBackground" title="Entrar" handleClick={() => {handleSubmit(handleForm)}} /> */}
-                <ThemedButton backgroundColor="Green" textColor="LightBackground" title="Entrar" handleClick={() => {handleSubmit(handleForm)}} />
-            </View>
-        </ThemedView>
+                    {/* <ThemedButton IconComponent={{Icon: Ionicons, name: 'enter-outline'}} backgroundColor="Green" textColor="LightBackground" title="Entrar" handleClick={() => {handleSubmit(handleForm)}} /> */}
+                    <ThemedButton backgroundColor="Green" textColor="LightBackground" title="Entrar" handleClick={() => {handleSubmit(handleForm)}} />
+                </View>
+            </ThemedView>
+        </KeyboardAwareScrollView>
     )
 }
 

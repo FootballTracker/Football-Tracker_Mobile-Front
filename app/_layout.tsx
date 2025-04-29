@@ -75,7 +75,7 @@ export default function RootLayout() {
                     <Tabs.Screen name="Login" options={{ headerShown: false }}/>
                 </Tabs>
 
-                <StatusBar style='auto' backgroundColor={pathname === "/Login" ? themedColor('LightBackground') : themedColor('DarkBackground')}/>
+                <StatusBar style='auto' backgroundColor={pathname === '/Login' ? Colors[colorScheme].LightBackground : Colors[colorScheme].DarkBackground}/>
 
             {showBottomMenu() && <BottomMenu setText={setPage}/> }
 
