@@ -1,16 +1,14 @@
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import { Tabs } from 'expo-router';
+import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
 import 'react-native-reanimated';
 import { useColorScheme } from '@/hooks/useColorScheme';
-import { StyleSheet, Dimensions, Platform, StatusBar as Status, View } from 'react-native';
+import { Dimensions, Platform, StatusBar as Status, View } from 'react-native';
 import { usePathname } from 'expo-router';
 
-import BottomMenu from '@/components/BottomMenu';
-import TopMenu from '@/components/TopMenu';
 import { Colors } from '@/constants/Colors';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -20,7 +18,6 @@ const windowHeight = Dimensions.get('window').height;
 
 export default function RootLayout() {
     const [statusBarHeight, setStatusBarHeight] = useState(0);
-    const [page, setPage] = useState("Ligas");
     const pathname = usePathname();
 
     const colorScheme = useColorScheme() ?? 'light';
@@ -50,10 +47,6 @@ export default function RootLayout() {
         return null;
     }
 
-    const showBottomMenu = () => {
-        return (pathname === "/" || pathname === "/Jogadores" || pathname === "/Times")
-    }
-
     const getStatusBarColor = () => {
         if(pathname === "/Login") return Colors.dark.Red
         return Colors[colorScheme].DarkBackground;
@@ -64,33 +57,18 @@ export default function RootLayout() {
         <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
             <View 
                 style={{
-                minHeight: windowHeight,
-                top: statusBarHeight
+                    minHeight: windowHeight,
+                    top: statusBarHeight
                 }}
             >
-                {pathname !== "/Login" && <TopMenu text={page} image={true}/> }
-
-                <Tabs screenOptions={{
-                    tabBarStyle: { display: 'none' },
-                }}>
-                    <Tabs.Screen name="index" options={{ headerShown: false }}/>
-                    <Tabs.Screen name="Times" options={{ headerShown: false }}/>
-                    <Tabs.Screen name="Jogadores" options={{ headerShown: false }}/>
-                    <Tabs.Screen name="Login" options={{ headerShown: false }}/>
-                </Tabs>
+                <Stack screenOptions={{ headerShown: false }} >
+                    <Stack.Screen name="Login" />
+                    <Stack.Screen name="Cadastro" />
+                </Stack>
 
                 <StatusBar style='auto' backgroundColor={getStatusBarColor()}/>
-
-            {showBottomMenu() && <BottomMenu setText={setPage}/> }
 
             </View>
         </ThemeProvider>
     );
 }
-
-const styles = StyleSheet.create({
-    background: {
-      position: "fixed",
-      minHeight: windowHeight
-    }
-});

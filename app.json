@@ -4,33 +4,37 @@
     "slug": "mobile-front",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/RedLogo.png",
+    "icon": "./assets/images/RedWhiteLogo.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true
     },
+    "splash": {
+        "image": "./assets/images/RedWhiteLogo.png",
+        "backgroundColor": "#191A1C",
+        "resizeMode": "contain"
+    },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/images/RedLogo.png",
-        "backgroundColor": "#22252B"
+      "splash": {
+        "backgroundColor": "#191A1C"
       }
     },
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/RedLogo.png"
+      "favicon": "./assets/images/RedWhiteLogo.png"
     },
     "plugins": [
       "expo-router",
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
+          "image": "./assets/images/RedWhiteLogo.png",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#22252B"
+          "backgroundColor": "#191A1C"
         }
       ],
       "expo-font"

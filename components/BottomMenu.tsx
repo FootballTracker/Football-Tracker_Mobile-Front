@@ -11,11 +11,7 @@ import { Colors } from "@/constants/Colors"
 
 const windowWidth = Dimensions.get('window').width;
 
-interface Props {
-    setText: React.Dispatch<React.SetStateAction<string>>
-}
-
-export default function BottomMenu({ setText }: Props) {
+export default function BottomMenu() {
 
     const [selected, setSelected] = useState(1);
 
@@ -27,16 +23,15 @@ export default function BottomMenu({ setText }: Props) {
         return index === selected ? Colors.dark.DarkBackground : Colors.dark.DarkerText
     }
 
-    const changePage = (index: number, text: string, route: any) => {
+    const changePage = (index: number, route: any) => {
         setSelected(index);
-        setText(text);
-        router.navigate(route);
+        router.replace(route);
     }
 
     return (
         <ThemedView style={styles.menu} darkColor={Colors.dark.DarkBackground} lightColor={Colors.light.DarkBackground}>
 
-            <TouchableOpacity onPress={() => (changePage(0, "Times", "/Times"))}>
+            <TouchableOpacity onPress={() => (changePage(0, "/Times"))}>
                 <View style={styles.item} >
                     <View style={[styles.selectedBackground, selected == 0 ? {opacity: 1} : {opacity: 0}]} />
                     <MaterialCommunityIcons name="shield-outline" size={30} color={getIconColor(0)} />
@@ -44,7 +39,7 @@ export default function BottomMenu({ setText }: Props) {
                 </View>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => changePage(1, "Ligas", "/")}>
+            <TouchableOpacity onPress={() => changePage(1, "/")}>
                 <View style={styles.item} >
                     <View style={[styles.selectedBackground, selected == 1 ? {opacity: 1} : {opacity: 0}]} />
                     <SimpleLineIcons name="trophy" size={30} color={getIconColor(1)} />
@@ -52,7 +47,7 @@ export default function BottomMenu({ setText }: Props) {
                 </View>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => changePage(2, "Jogadores", "/Jogadores")}>
+            <TouchableOpacity onPress={() => changePage(2, "/Jogadores")}>
                 <View style={styles.item} >
                     <View style={[styles.selectedBackground, selected == 2 ? {opacity: 1} : {opacity: 0}]} />
                     <FontAwesome6 name="person-running" size={30} color={getIconColor(2)} />

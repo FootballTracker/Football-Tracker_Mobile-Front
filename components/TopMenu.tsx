@@ -1,31 +1,47 @@
 import { StyleSheet, Dimensions, View, TouchableOpacity } from 'react-native';
 import { router } from 'expo-router';
+import { usePathname } from 'expo-router';
 
 import { ThemedText } from "./DefaultComponents/ThemedText";
 import { ThemedView } from "./DefaultComponents/ThemedView";
 import { ThemedImage } from './DefaultComponents/ThemedImage';
 import { Colors } from "@/constants/Colors";
+import { useEffect, useState } from 'react';
 
 const windowWidth = Dimensions.get('window').width;
 
-interface MenuParams {
-    image: boolean
+interface MenuProps {
     text: string
 }
 
-export default function TopMenu({ image, text }: MenuParams) {
+export default function TopMenu({ text }: MenuProps) {
+
+    const pathname = usePathname();
+    const [showBackButton, setShowBackButton] = useState(false);
+
+    useEffect(() => {
+        if(pathname === "/" || pathname === "/Times" || pathname === "/Jogadores") setShowBackButton(false);
+        else setShowBackButton(true);
+    }, [pathname])
+
+
     return (
         <ThemedView darkColor={Colors.dark.LightBackground} lightColor={Colors.light.LightBackground}>
             <ThemedView style={styles.menu} darkColor={Colors.dark.DarkBackground} lightColor={Colors.light.DarkBackground}>
                 
                 <View style={styles.leftInfo}>
-                    {image && <ThemedImage 
-                        source={{
-                                light: require("@/assets/images/RedBlackLogo.png"),
-                                dark: require("@/assets/images/RedWhiteLogo.png")
-                            }}
-                            style={styles.logo}
-                        />
+                    {showBackButton ?
+                        <TouchableOpacity onPress={() => router.back()}>
+                            <ThemedText style={{padding: 20}}>back button</ThemedText>
+                        </TouchableOpacity>
+                    : 
+                        <ThemedImage 
+                            source={{
+                                    light: require("@/assets/images/RedBlackLogo.png"),
+                                    dark: require("@/assets/images/RedWhiteLogo.png")
+                                }}
+                                style={styles.logo}
+                            />
                     }
                     <ThemedText style={styles.pageText} darkColor={Colors.dark.Text} lightColor={Colors.light.Text}>
                         {text}
@@ -33,7 +49,7 @@ export default function TopMenu({ image, text }: MenuParams) {
                 </View>
                 
                 
-                <TouchableOpacity onPress={() => router.navigate("/Login")}>
+                <TouchableOpacity onPress={() => router.navigate('/Login')}>
                     <ThemedImage 
                         source={{
                             light: require("@/assets/images/DarkUserIcon.png"),

@@ -1,10 +1,9 @@
 //Default Imports
-import { StyleSheet, View, Dimensions, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Dimensions } from "react-native";
 import Feather from '@expo/vector-icons/Feather';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { router } from 'expo-router';
 
 //Components
 import LoginLogo from "@/components/LoginLogo"
@@ -39,7 +38,7 @@ export default function Login() {
             <LoginLogo />
 
             <View style={styles.form}>
-                <ThemedText style={{fontSize: 20}}>Login</ThemedText>
+                <ThemedText style={{fontSize: 20}}>Cadastro</ThemedText>
                 <ThemedText style={styles.infoText}><ThemedIcon IconComponent={Feather} name="info" size={15} /> Faça login para personalizar sua experiência com jogadores, ligas e times favoritos.</ThemedText>
 
                 <Controller control={control} name="user" render={({ field: { onChange, onBlur, value } }) => (
@@ -55,9 +54,7 @@ export default function Login() {
                 {/* <ThemedButton IconComponent={{Icon: Ionicons, name: 'enter-outline'}} backgroundColor="Green" textColor="LightBackground" title="Entrar" handleClick={() => {handleSubmit(handleForm)}} /> */}
                 <ThemedButton backgroundColor="Green" textColor="LightBackground" title="Entrar" handleClick={() => {handleSubmit(handleForm)}} />
 
-                <TouchableOpacity onPress={() => router.push('/Cadastro')}>
-                    <ThemedText>Ir para cadastro</ThemedText>
-                </TouchableOpacity>
+                
             </View>
         </ThemedView>
     )
