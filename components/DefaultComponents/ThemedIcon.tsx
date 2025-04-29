@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleProp, ViewStyle } from 'react-native';
+import { StyleProp } from 'react-native';
 import { useThemeColor } from '@/hooks/useThemeColor';
 
 type ThemedIconProps = {

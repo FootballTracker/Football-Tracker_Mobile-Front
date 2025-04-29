@@ -12,6 +12,7 @@ import { usePathname } from 'expo-router';
 import BottomMenu from '@/components/BottomMenu';
 import TopMenu from '@/components/TopMenu';
 import { Colors } from '@/constants/Colors';
+import { themedColor } from '@/hooks/useThemeColor';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -54,11 +55,6 @@ export default function RootLayout() {
         return (pathname === "/" || pathname === "/Jogadores" || pathname === "/Times")
     }
 
-    const getStatusBarColor = () => {
-        if(pathname === "/Login") return Colors.dark.Red
-        return Colors[colorScheme].DarkBackground;
-    }
-
     return (
 
         <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
@@ -79,7 +75,7 @@ export default function RootLayout() {
                     <Tabs.Screen name="Login" options={{ headerShown: false }}/>
                 </Tabs>
 
-                <StatusBar style='auto' backgroundColor={getStatusBarColor()}/>
+                <StatusBar style='auto' backgroundColor={pathname === "/Login" ? themedColor('LightBackground') : themedColor('DarkBackground')}/>
 
             {showBottomMenu() && <BottomMenu setText={setPage}/> }
 
