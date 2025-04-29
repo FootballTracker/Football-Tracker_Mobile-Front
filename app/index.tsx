@@ -1,5 +1,4 @@
 import { StyleSheet, Dimensions, TextInput, View } from 'react-native';
-import { Text } from 'react-native';
 
 import { ThemedView } from '@/components/DefaultComponents/ThemedView';
 import { Colors } from '@/constants/Colors';
@@ -11,10 +10,10 @@ const windowWidth = Dimensions.get('window').width;
 export default function Main() {
 
     return (
-        <ThemedView lightColor={Colors.light.LightBackground} darkColor={Colors.light.LightBackground} style={styles.background}>
+        <ThemedView lightColor={Colors.light.LightBackground} darkColor={Colors.dark.LightBackground} style={styles.background}>
             <View style={styles.searchBar}>
-            <EvilIcons name="search" size={24} color={Colors.dark.White}/>
-            <TextInput style={styles.input} numberOfLines={1}/>
+                <EvilIcons name="search" size={24} color={Colors.dark.Text}/>
+                <TextInput style={styles.input} numberOfLines={1}/>
             </View>
         </ThemedView>
     )
@@ -27,7 +26,7 @@ const styles = StyleSheet.create({
     },
     searchBar: {
         width: windowWidth * 0.9,
-        height: 50,
+        height: 42,
         marginLeft: "auto",
         marginRight: "auto",
         display: "flex",
@@ -42,7 +41,7 @@ const styles = StyleSheet.create({
         paddingRight: 10
     },
     input: {
-        color: Colors.dark.White,
+        color: Colors.dark.Text,
         flex: 1,
         height: "80%",
         paddingLeft: 5,

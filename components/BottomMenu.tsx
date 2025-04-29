@@ -3,7 +3,7 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 import { useState } from "react";
-import { RelativePathString, router } from 'expo-router';
+import { router } from 'expo-router';
 
 import { ThemedText } from "./DefaultComponents/ThemedText";
 import { ThemedView } from "./DefaultComponents/ThemedView";
@@ -20,11 +20,11 @@ export default function BottomMenu({ setText }: Props) {
     const [selected, setSelected] = useState(1);
 
     const getColor = (index: number) => {
-        return index === selected ? Colors.dark.Red : Colors.dark.DarkerWhite
+        return index === selected ? Colors.dark.Red : Colors.dark.DarkerText
     }
 
     const getIconColor = (index: number) => {
-        return index === selected ? Colors.dark.DarkBackground : Colors.dark.DarkerWhite
+        return index === selected ? Colors.dark.DarkBackground : Colors.dark.DarkerText
     }
 
     const changePage = (index: number, text: string, route: any) => {

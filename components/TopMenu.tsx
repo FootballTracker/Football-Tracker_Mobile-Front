@@ -1,7 +1,9 @@
-import { StyleSheet, Image, Dimensions, View, DimensionValue } from 'react-native';
+import { StyleSheet, Dimensions, View, TouchableOpacity } from 'react-native';
+import { router } from 'expo-router';
 
 import { ThemedText } from "./DefaultComponents/ThemedText";
 import { ThemedView } from "./DefaultComponents/ThemedView";
+import { ThemedImage } from './DefaultComponents/ThemedImage';
 import { Colors } from "@/constants/Colors";
 
 const windowWidth = Dimensions.get('window').width;
@@ -17,15 +19,30 @@ export default function TopMenu({ image, text }: MenuParams) {
             <ThemedView style={styles.menu} darkColor={Colors.dark.DarkBackground} lightColor={Colors.light.DarkBackground}>
                 
                 <View style={styles.leftInfo}>
-                    {image && <Image source={require("@/assets/images/RedLogo.png")} style={styles.logo} resizeMode="contain"/>}
-                    <ThemedText style={styles.pageText} darkColor={Colors.dark.White} lightColor={Colors.light.White}>
+                    {image && <ThemedImage 
+                        source={{
+                                light: require("@/assets/images/RedBlackLogo.png"),
+                                dark: require("@/assets/images/RedWhiteLogo.png")
+                            }}
+                            style={styles.logo}
+                        />
+                    }
+                    <ThemedText style={styles.pageText} darkColor={Colors.dark.Text} lightColor={Colors.light.Text}>
                         {text}
                     </ThemedText>
                 </View>
-
-                <View style={styles.rightInfo}>
-                    <Image source={require("@/assets/images/UserIcon.png")} style={styles.userImage} resizeMode="contain"/>
-                </View>
+                
+                
+                <TouchableOpacity onPress={() => router.navigate("/Login")}>
+                    <ThemedImage 
+                        source={{
+                            light: require("@/assets/images/DarkUserIcon.png"),
+                            dark: require("@/assets/images/LightUserIcon.png")
+                        }}
+                        style={styles.userImage}
+                    />
+                </TouchableOpacity>
+                
                 
 
             </ThemedView>
@@ -65,11 +82,9 @@ const styles = StyleSheet.create({
         width: 60,
         height: 40,
     },
-    rightInfo: {
-        marginRight: 5
-    },
     userImage: {
         width: 60,
         height: 35,
+        marginRight: 5
     }
 });

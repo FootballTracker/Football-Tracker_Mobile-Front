@@ -23,7 +23,7 @@ export default function RootLayout() {
     const [page, setPage] = useState("Ligas");
     const pathname = usePathname();
 
-    const colorScheme = useColorScheme();
+    const colorScheme = useColorScheme() ?? 'light';
     const [loaded] = useFonts({
         Karla: require('../assets/fonts/Karla.ttf'),
         Kdam: require('../assets/fonts/Kdam Thmor Pro.ttf'),
@@ -54,6 +54,11 @@ export default function RootLayout() {
         return (pathname === "/" || pathname === "/Jogadores" || pathname === "/Times")
     }
 
+    const getStatusBarColor = () => {
+        if(pathname === "/Login") return Colors.dark.Red
+        return Colors[colorScheme].DarkBackground;
+    }
+
     return (
 
         <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
@@ -63,7 +68,7 @@ export default function RootLayout() {
                 top: statusBarHeight
                 }}
             >
-            <TopMenu text={page} image={true}/>
+                {pathname !== "/Login" && <TopMenu text={page} image={true}/> }
 
                 <Tabs screenOptions={{
                     tabBarStyle: { display: 'none' },
@@ -71,11 +76,12 @@ export default function RootLayout() {
                     <Tabs.Screen name="index" options={{ headerShown: false }}/>
                     <Tabs.Screen name="Times" options={{ headerShown: false }}/>
                     <Tabs.Screen name="Jogadores" options={{ headerShown: false }}/>
+                    <Tabs.Screen name="Login" options={{ headerShown: false }}/>
                 </Tabs>
 
-                <StatusBar style='auto' backgroundColor={colorScheme === 'dark' ? Colors.dark.DarkBackground : Colors.light.DarkBackground}/>
+                <StatusBar style='auto' backgroundColor={getStatusBarColor()}/>
 
-            {showBottomMenu() && <BottomMenu setText={setPage}/>}
+            {showBottomMenu() && <BottomMenu setText={setPage}/> }
 
             </View>
         </ThemeProvider>

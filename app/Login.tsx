@@ -1,6 +1,5 @@
 //Default Imports
-import { StyleSheet, View, Dimensions, TextInput, Button } from "react-native";
-import Ionicons from '@expo/vector-icons/Ionicons';
+import { StyleSheet, View, Dimensions } from "react-native";
 import Feather from '@expo/vector-icons/Feather';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
