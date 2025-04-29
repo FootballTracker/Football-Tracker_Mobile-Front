@@ -11,7 +11,7 @@ export default function Times() {
     return (
         <ThemedView lightColor={Colors.light.LightBackground} darkColor={Colors.dark.LightBackground} style={styles.background}>
             <ThemedText>Times</ThemedText>
-            <TouchableOpacity onPress={() => router.navigate("/Time")}>
+            <TouchableOpacity onPress={() => router.navigate("/(pages)/Time")}>
                 <ThemedText>Ir para Time</ThemedText>
             </TouchableOpacity>
         </ThemedView>

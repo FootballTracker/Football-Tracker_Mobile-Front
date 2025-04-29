@@ -29,39 +29,41 @@ export default function BottomMenu() {
     }
 
     return (
-        <ThemedView style={styles.menu} darkColor={Colors.dark.DarkBackground} lightColor={Colors.light.DarkBackground}>
+        <ThemedView darkColor={Colors.dark.LightBackground} lightColor={Colors.light.LightBackground}>
+            <ThemedView style={styles.menu} darkColor={Colors.dark.DarkBackground} lightColor={Colors.light.DarkBackground}>
 
-            <TouchableOpacity onPress={() => (changePage(0, "/Times"))}>
-                <View style={styles.item} >
-                    <View style={[styles.selectedBackground, selected == 0 ? {opacity: 1} : {opacity: 0}]} />
-                    <MaterialCommunityIcons name="shield-outline" size={30} color={getIconColor(0)} />
-                    <ThemedText darkColor={getColor(0)}>Times</ThemedText>
-                </View>
-            </TouchableOpacity>
+                <TouchableOpacity onPress={() => (changePage(0, "/Times"))}>
+                    <View style={styles.item} >
+                        <View style={[styles.selectedBackground, selected == 0 ? {opacity: 1} : {opacity: 0}]} />
+                        <MaterialCommunityIcons name="shield-outline" size={30} color={getIconColor(0)} />
+                        <ThemedText darkColor={getColor(0)}>Times</ThemedText>
+                    </View>
+                </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => changePage(1, "/")}>
-                <View style={styles.item} >
-                    <View style={[styles.selectedBackground, selected == 1 ? {opacity: 1} : {opacity: 0}]} />
-                    <SimpleLineIcons name="trophy" size={30} color={getIconColor(1)} />
-                    <ThemedText darkColor={getColor(1)}>Ligas</ThemedText>
-                </View>
-            </TouchableOpacity>
+                <TouchableOpacity onPress={() => changePage(1, "/")}>
+                    <View style={styles.item} >
+                        <View style={[styles.selectedBackground, selected == 1 ? {opacity: 1} : {opacity: 0}]} />
+                        <SimpleLineIcons name="trophy" size={30} color={getIconColor(1)} />
+                        <ThemedText darkColor={getColor(1)}>Ligas</ThemedText>
+                    </View>
+                </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => changePage(2, "/Jogadores")}>
-                <View style={styles.item} >
-                    <View style={[styles.selectedBackground, selected == 2 ? {opacity: 1} : {opacity: 0}]} />
-                    <FontAwesome6 name="person-running" size={30} color={getIconColor(2)} />
-                    <ThemedText darkColor={getColor(2)}>Jogadores</ThemedText>
-                </View>
-            </TouchableOpacity>
+                <TouchableOpacity onPress={() => changePage(2, "/Jogadores")}>
+                    <View style={styles.item} >
+                        <View style={[styles.selectedBackground, selected == 2 ? {opacity: 1} : {opacity: 0}]} />
+                        <FontAwesome6 name="person-running" size={30} color={getIconColor(2)} />
+                        <ThemedText darkColor={getColor(2)}>Jogadores</ThemedText>
+                    </View>
+                </TouchableOpacity>
 
+            </ThemedView>
         </ThemedView>
     );
 }
 
 const styles = StyleSheet.create({
     menu: {
-        position: "absolute",
+        position: "fixed",
         display: "flex",
         flexDirection: "row",
         justifyContent: "space-around",

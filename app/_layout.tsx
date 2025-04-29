@@ -23,7 +23,7 @@ export default function RootLayout() {
     const colorScheme = useColorScheme() ?? 'light';
     const [loaded] = useFonts({
         Karla: require('../assets/fonts/Karla.ttf'),
-        Kdam: require('../assets/fonts/Kdam Thmor Pro.ttf'),
+        Kdam: require('../assets/fonts/Kdam Thmor.ttf'),
         Kokoro: require('../assets/fonts/Kokoro.ttf'),
         Koulen: require('../assets/fonts/Koulen.ttf'),
     });
@@ -63,7 +63,6 @@ export default function RootLayout() {
             >
                 <Stack screenOptions={{ headerShown: false }} >
                     <Stack.Screen name="Login" />
-                    <Stack.Screen name="Cadastro" />
                 </Stack>
 
                 <StatusBar style='auto' backgroundColor={getStatusBarColor()}/>

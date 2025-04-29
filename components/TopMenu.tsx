@@ -1,12 +1,14 @@
 import { StyleSheet, Dimensions, View, TouchableOpacity } from 'react-native';
 import { router } from 'expo-router';
 import { usePathname } from 'expo-router';
+import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 
 import { ThemedText } from "./DefaultComponents/ThemedText";
 import { ThemedView } from "./DefaultComponents/ThemedView";
 import { ThemedImage } from './DefaultComponents/ThemedImage';
 import { Colors } from "@/constants/Colors";
 import { useEffect, useState } from 'react';
+import { ThemedIcon } from './DefaultComponents/ThemedIcon';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -24,7 +26,6 @@ export default function TopMenu({ text }: MenuProps) {
         else setShowBackButton(true);
     }, [pathname])
 
-
     return (
         <ThemedView darkColor={Colors.dark.LightBackground} lightColor={Colors.light.LightBackground}>
             <ThemedView style={styles.menu} darkColor={Colors.dark.DarkBackground} lightColor={Colors.light.DarkBackground}>
@@ -32,7 +33,13 @@ export default function TopMenu({ text }: MenuProps) {
                 <View style={styles.leftInfo}>
                     {showBackButton ?
                         <TouchableOpacity onPress={() => router.back()}>
-                            <ThemedText style={{padding: 20}}>back button</ThemedText>
+                            <ThemedIcon
+                                IconComponent={FontAwesome6}
+                                name="arrow-left" size={22}
+                                darkColor={Colors.dark.Text}
+                                lightColor={Colors.light.Text}
+                                style={styles.backIcon}
+                            />
                         </TouchableOpacity>
                     : 
                         <ThemedImage 
@@ -49,7 +56,7 @@ export default function TopMenu({ text }: MenuProps) {
                 </View>
                 
                 
-                <TouchableOpacity onPress={() => router.navigate('/Login')}>
+                <TouchableOpacity onPress={() => router.navigate("/(auth)/Login")}>
                     <ThemedImage 
                         source={{
                             light: require("@/assets/images/DarkUserIcon.png"),
@@ -97,6 +104,14 @@ const styles = StyleSheet.create({
     logo: {
         width: 60,
         height: 40,
+    },
+    backIcon: {
+        marginLeft: 9,
+        paddingLeft: 12,
+        paddingRight: 12,
+        paddingTop: 5,
+        paddingBottom: 5,
+        marginRight: 8
     },
     userImage: {
         width: 60,
