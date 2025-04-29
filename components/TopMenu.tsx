@@ -1,23 +1,23 @@
-import { StyleSheet, Image, Dimensions, View } from 'react-native';
+import { StyleSheet, Image, Dimensions, View, DimensionValue } from 'react-native';
 
 import { ThemedText } from "./DefaultComponents/ThemedText";
 import { ThemedView } from "./DefaultComponents/ThemedView";
 import { Colors } from "@/constants/Colors";
 
-const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
 
 interface MenuParams {
-    type: "back" | "image"
+    image: boolean
     text: string
 }
 
-export default function TopMenu({type, text}: MenuParams) {
+export default function TopMenu({ image, text }: MenuParams) {
     return (
+        <ThemedView darkColor={Colors.dark.LightBackground} lightColor={Colors.light.LightBackground}>
             <ThemedView style={styles.menu} darkColor={Colors.dark.DarkBackground} lightColor={Colors.light.DarkBackground}>
                 
                 <View style={styles.leftInfo}>
-                    {type == 'image' && <Image source={require("@/assets/images/RedLogo.png")} style={styles.logo} resizeMode="contain"/>}
+                    {image && <Image source={require("@/assets/images/RedLogo.png")} style={styles.logo} resizeMode="contain"/>}
                     <ThemedText style={styles.pageText} darkColor={Colors.dark.White} lightColor={Colors.light.White}>
                         {text}
                     </ThemedText>
@@ -29,25 +29,27 @@ export default function TopMenu({type, text}: MenuParams) {
                 
 
             </ThemedView>
+        </ThemedView>
             
     );
 }
 
 const styles = StyleSheet.create({
     menu: {
+        position: "relative",
         display: "flex",
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
         width: windowWidth+2,
-        height: 120,
-        paddingTop: 40,
+        height: 70,
         left: -1,
-        top: -1,
         borderBottomLeftRadius: 12,
         borderBottomRightRadius: 12,
         borderWidth: 0.5,
-        borderColor: Colors.dark.Red
+        borderColor: Colors.dark.Red,
+        borderTopWidth: 0,
+        zIndex: 10
     },
     leftInfo: {
         display: "flex",
