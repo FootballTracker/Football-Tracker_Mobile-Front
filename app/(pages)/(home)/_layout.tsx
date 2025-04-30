@@ -11,9 +11,9 @@ export default function RootLayout() {
                 tabBarStyle: { display: 'none' },
                 headerShown: false,
             }}>
-                <Tabs.Screen name="index" />
-                <Tabs.Screen name="Times" />
-                <Tabs.Screen name="Jogadores" />
+                    <Tabs.Screen name="index" />
+                    <Tabs.Screen name="Times" />
+                    <Tabs.Screen name="Jogadores" />
             </Tabs>
 
             <BottomMenu />

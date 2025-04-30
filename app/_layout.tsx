@@ -54,7 +54,7 @@ export default function RootLayout() {
         <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
             <ThemedView  style={{ minHeight: windowHeight, top: statusBarHeight, }} >
                 <Stack screenOptions={{ headerShown: false }} >
-                    <Stack.Screen name="Login" />
+                    <Stack.Screen name="(auth)" />
                 </Stack>
 
                 <StatusBar style='auto' backgroundColor={pathname === '/Login' ? Colors[colorScheme].LightBackground : Colors[colorScheme].DarkBackground}/>

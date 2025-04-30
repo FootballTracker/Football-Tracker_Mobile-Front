@@ -5,7 +5,6 @@ import { ThemedView } from "../../components/DefaultComponents/ThemedView";
 import { Colors } from "@/constants/Colors";
 
 const windowHeight = Dimensions.get('window').height;
-const windowWidth = Dimensions.get('window').width;
 
 export default function Times() {
     return (

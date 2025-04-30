@@ -63,7 +63,6 @@ export default function BottomMenu() {
 
 const styles = StyleSheet.create({
     menu: {
-        position: "fixed",
         display: "flex",
         flexDirection: "row",
         justifyContent: "space-around",
