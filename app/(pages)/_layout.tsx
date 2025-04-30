@@ -1,6 +1,7 @@
 import { Stack, Tabs } from 'expo-router';
 import { useEffect, useState } from 'react';
 import 'react-native-reanimated';
+import { View, Dimensions } from 'react-native';
 import { usePathname } from 'expo-router';
 
 import TopMenu from '@/components/TopMenu';
@@ -34,9 +35,7 @@ export default function RootLayout() {
         <>
             <TopMenu text={page}/>
 
-            <Stack screenOptions={{
-                headerShown: false,
-            }}>
+            <Stack screenOptions={{ headerShown: false, }}>
                 <Stack.Screen name='Time'/>
             </Stack>
         </>

@@ -9,6 +9,7 @@ import { ThemedImage } from './DefaultComponents/ThemedImage';
 import { Colors } from "@/constants/Colors";
 import { useEffect, useState } from 'react';
 import { ThemedIcon } from './DefaultComponents/ThemedIcon';
+import { ReturnArrow } from './ReturnArrow';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -32,15 +33,7 @@ export default function TopMenu({ text }: MenuProps) {
                 
                 <View style={styles.leftInfo}>
                     {showBackButton ?
-                        <TouchableOpacity onPress={() => router.back()}>
-                            <ThemedIcon
-                                IconComponent={FontAwesome6}
-                                name="arrow-left" size={22}
-                                darkColor={Colors.dark.Text}
-                                lightColor={Colors.light.Text}
-                                style={styles.backIcon}
-                            />
-                        </TouchableOpacity>
+                        <ReturnArrow />
                     : 
                         <ThemedImage 
                             source={{
@@ -104,14 +97,6 @@ const styles = StyleSheet.create({
     logo: {
         width: 60,
         height: 40,
-    },
-    backIcon: {
-        marginLeft: 9,
-        paddingLeft: 12,
-        paddingRight: 12,
-        paddingTop: 5,
-        paddingBottom: 5,
-        marginRight: 8
     },
     userImage: {
         width: 60,

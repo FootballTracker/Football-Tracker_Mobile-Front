@@ -11,11 +11,12 @@ import { usePathname } from 'expo-router';
 
 import { Colors } from '@/constants/Colors';
 import { themedColor } from '@/hooks/useThemeColor';
+import { ThemedView } from '@/components/DefaultComponents/ThemedView';
+
+const windowHeight = Dimensions.get('window').height;
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
-
-const windowHeight = Dimensions.get('window').height;
 
 export default function RootLayout() {
     const [statusBarHeight, setStatusBarHeight] = useState(0);
@@ -51,19 +52,14 @@ export default function RootLayout() {
     return (
 
         <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-            <View 
-                style={{
-                    minHeight: windowHeight,
-                    top: statusBarHeight
-                }}
-            >
+            <ThemedView  style={{ minHeight: windowHeight, top: statusBarHeight, }} >
                 <Stack screenOptions={{ headerShown: false }} >
                     <Stack.Screen name="Login" />
                 </Stack>
 
                 <StatusBar style='auto' backgroundColor={pathname === '/Login' ? Colors[colorScheme].LightBackground : Colors[colorScheme].DarkBackground}/>
 
-            </View>
+            </ThemedView>
         </ThemeProvider>
     );
 }

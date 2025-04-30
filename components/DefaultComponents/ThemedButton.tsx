@@ -15,29 +15,40 @@ type ThemedButtonProps = {
 export function ThemedButton({ IconComponent, title = 'Continuar', handleClick, backgroundColor, textColor, ...rest }: ThemedButtonProps) {
     const theme = useColorScheme() ?? 'light';
     const windowWidth = Dimensions.get('window').width;
+    const size = IconComponent ? (IconComponent.size ? IconComponent.size : 30) : 0;
 
     const styles = StyleSheet.create({
         input: {
             backgroundColor: Colors[theme][backgroundColor],
-            width: windowWidth * 0.8,
+            width: '80%',
+            paddingVertical: 3,
             borderRadius: 10,
+            display: 'flex',
+            flexDirection: 'row',
+            // justifyContent: 'center',
+            // alignItems: 'center',
         },
         text: {
             color: Colors[theme][textColor],
             fontSize: 17,
+            fontFamily: 'Kokoro',
             padding: 10,
             textAlign: 'center',
+            width: '100%',
+            textAlignVertical: 'center',
+            right: size,
         },
         icon: {
             color: Colors[theme][textColor],
-            position: 'absolute',
-            left: 5,
+            left: 7,
+            marginTop: 'auto',
+            marginBottom: 'auto',
         }
     })
 
     return (
         <TouchableOpacity onPress={() => {handleClick()}} style={styles.input} {...rest}>
-            {IconComponent && (<IconComponent.Icon name={IconComponent.name} size={IconComponent.size ? IconComponent.size : 30} style={styles.icon} />) }
+            {IconComponent && (<IconComponent.Icon name={IconComponent.name} size={size} style={styles.icon} />) }
             <Text style={styles.text}>{title}</Text>
         </TouchableOpacity>
     );

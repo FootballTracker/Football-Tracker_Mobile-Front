@@ -5,6 +5,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { router } from 'expo-router';
+import { Ionicons } from "@expo/vector-icons";
+import { Colors } from "@/constants/Colors";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 //Components
 import LoginLogo from "@/components/LoginLogo"
@@ -13,7 +16,7 @@ import { ThemedView } from "@/components/DefaultComponents/ThemedView"
 import { ThemedIcon } from "@/components/DefaultComponents/ThemedIcon";
 import { ThemedInput } from "@/components/DefaultComponents/ThemedInput";
 import { ThemedButton } from "@/components/DefaultComponents/ThemedButton";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { ReturnArrow } from "@/components/ReturnArrow";
 
 //Consts
 const windowHeight = Dimensions.get('window').height;
@@ -36,12 +39,16 @@ export default function Login() {
     }
 
     return (
+        <KeyboardAwareScrollView extraScrollHeight={20} keyboardShouldPersistTaps="handled">
             <ThemedView style={styles.mainBlock}>
+                <View style={{display: 'flex', flexDirection: "row", marginLeft: 5, position: 'absolute', top: 20}}>
+                    <ReturnArrow />
+                </View>
+                
                 <LoginLogo />
 
-
                 <View style={styles.form}>
-                    <ThemedText style={{fontSize: 20}}>Login</ThemedText>
+                    <ThemedText style={styles.titleText}>Login</ThemedText>
                     <ThemedText style={styles.infoText}><ThemedIcon IconComponent={Feather} name="info" size={15} /> Faça login para personalizar sua experiência com jogadores, ligas e times favoritos.</ThemedText>
 
                     <Controller control={control} name="user" render={({ field: { onChange, onBlur, value } }) => (
@@ -54,14 +61,24 @@ export default function Login() {
                     )} />
                     {errors.password && <ThemedText>{errors.password.message}</ThemedText>}
 
-                    {/* <ThemedButton IconComponent={{Icon: Ionicons, name: 'enter-outline'}} backgroundColor="Green" textColor="LightBackground" title="Entrar" handleClick={() => {handleSubmit(handleForm)}} /> */}
-                    <ThemedButton backgroundColor="Green" textColor="LightBackground" title="Entrar" handleClick={() => {handleSubmit(handleForm)}} />
+                    <ThemedButton IconComponent={{Icon: Ionicons, name: 'enter-outline'}} backgroundColor="Green" textColor="LightBackground" title="Entrar" handleClick={() => {handleSubmit(handleForm)}} />
+                    {/* <ThemedButton bakckgroundColor="Green" textColor="LightBackground" title="Entrar" handleClick={() => {handleSubmit(handleForm)}} /> */}
 
-                    <TouchableOpacity onPress={() => router.push('/Cadastro')}>
-                        <ThemedText>Ir para cadastro</ThemedText>
-                    </TouchableOpacity>
+                    <ThemedText style={styles.registerText}>
+                        Ainda não tem uma conta?
+                        {'  '}
+                        <ThemedText
+                            style={styles.registerText}
+                            onPress={() => router.push('/Cadastro')}
+                            darkColor={Colors.dark.Green}
+                            lightColor={Colors.light.Green}
+                        >
+                            Cadastre-se
+                        </ThemedText>
+                    </ThemedText>
                 </View>
             </ThemedView>
+        </KeyboardAwareScrollView>
     )
 }
 
@@ -69,9 +86,16 @@ const styles = StyleSheet.create({
     mainBlock: {
         display: 'flex',
         justifyContent: 'space-evenly',
-        height: windowHeight,
+        minHeight: windowHeight,
+        paddingBottom: 20,
+        paddingTop: 20,
+    },
+    titleText: {
+        fontFamily: 'Koulen',
+        fontSize: 23,
     },
     infoText: {
+        fontFamily: 'Kokoro,',
         fontSize: 12,
         marginHorizontal: 20,
         justifyContent: 'center',
@@ -81,5 +105,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         display: 'flex',
         gap: 20,
+    },
+    registerText: {
+        fontFamily: 'Kokoro',
+        fontSize: 13,
+        lineHeight: 13,
     }
 });

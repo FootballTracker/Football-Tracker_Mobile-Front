@@ -1,5 +1,5 @@
 //Default Imports
-import { StyleSheet, TextInput, Dimensions, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, TextInput, Dimensions, View, TouchableOpacity, TextInputProps } from 'react-native';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import Feather from '@expo/vector-icons/Feather';
 import { Colors } from '@/constants/Colors';
@@ -33,8 +33,9 @@ export function ThemedInput({ placeholder, value, onChangeText, onBlur, isPasswo
         input: {
             flex: 1,
             color: Colors[theme].Text,
+            fontFamily: 'Kdam',
             fontSize: 15,
-            paddingVertical: 10,
+            paddingVertical: 7,
         },
     })
 

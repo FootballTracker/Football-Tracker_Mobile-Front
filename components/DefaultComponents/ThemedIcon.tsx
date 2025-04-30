@@ -11,7 +11,7 @@ type ThemedIconProps = {
     style?: StyleProp<any>;
 };
 
-export function ThemedIcon({ IconComponent, name, size = 24, lightColor, darkColor, style, }: ThemedIconProps) {
+export function ThemedIcon({ IconComponent, name, size = 24, lightColor, darkColor, style }: ThemedIconProps) {
     const color = useThemeColor({ light: lightColor, dark: darkColor }, 'Text');
 
     return (

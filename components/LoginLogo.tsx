@@ -1,6 +1,5 @@
 //Default Imports
-import { View } from "react-native";
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet, Dimensions, View } from "react-native";
 
 //Components
 import { ThemedText } from "./DefaultComponents/ThemedText";
@@ -11,10 +10,10 @@ const windowWidth = Dimensions.get('window').width;
 
 export default function LoginLogo() {
     return (
-        <View style={{alignItems: 'center'}}>
-            <ThemedText style={{fontSize: 40}}>FOOTBALL</ThemedText>
+        <View style={{alignItems: 'center', top: -9}}>
+            <ThemedText style={[{fontSize: 45, top: 9}, styles.text]}>FOOTBALL</ThemedText>
             <ThemedImage source={{light: require("@/assets/images/GreenBlackLogo.png"), dark: require("@/assets/images/GreenWhiteLogo.png")}} style={styles.logo} />
-            <ThemedText style={{fontSize: 25}}>TRACKER</ThemedText>
+            <ThemedText style={[{fontSize: 25}, styles.text]}>TRACKER</ThemedText>
         </View>
     )
 }
@@ -27,6 +26,6 @@ const styles = StyleSheet.create({
         minHeight: 100,
     },
     text: {
-        fontSize: 60,
+        fontFamily: 'Koulen',
     },
 });
