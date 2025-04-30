@@ -2,6 +2,7 @@
 import { StyleSheet, TouchableOpacity, Dimensions, Text } from 'react-native';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { Colors } from '@/constants/Colors';
+import { StyleProps } from 'react-native-reanimated';
 
 //Type
 type ThemedButtonProps = {
@@ -10,9 +11,10 @@ type ThemedButtonProps = {
     handleClick: () => void;
     backgroundColor: keyof typeof Colors.light & keyof typeof Colors.dark
     textColor: keyof typeof Colors.light & keyof typeof Colors.dark
+    style?: StyleProps
 };
 
-export function ThemedButton({ IconComponent, title = 'Continuar', handleClick, backgroundColor, textColor, ...rest }: ThemedButtonProps) {
+export function ThemedButton({ IconComponent, title = 'Continuar', handleClick, backgroundColor, textColor, style, ...rest }: ThemedButtonProps) {
     const theme = useColorScheme() ?? 'light';
     const windowWidth = Dimensions.get('window').width;
     const size = IconComponent ? (IconComponent.size ? IconComponent.size : 30) : 0;
@@ -47,7 +49,7 @@ export function ThemedButton({ IconComponent, title = 'Continuar', handleClick, 
     })
 
     return (
-        <TouchableOpacity onPress={() => {handleClick()}} style={styles.input} {...rest}>
+        <TouchableOpacity onPress={handleClick} style={[styles.input, style]} {...rest}>
             {IconComponent && (<IconComponent.Icon name={IconComponent.name} size={size} style={styles.icon} />) }
             <Text style={styles.text}>{title}</Text>
         </TouchableOpacity>

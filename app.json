@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "mobile-front",
+    "name": "FootBall Tracker",
     "slug": "mobile-front",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -20,8 +20,7 @@
     "android": {
       "splash": {
         "backgroundColor": "#191A1C"
-      },
-      "softwareKeyboardLayoutMode": "pan"
+      }
     },
     "web": {
       "bundler": "metro",

@@ -4,17 +4,19 @@ import { useColorScheme } from '@/hooks/useColorScheme';
 import Feather from '@expo/vector-icons/Feather';
 import { Colors } from '@/constants/Colors';
 import { useState } from 'react';
+import { StyleProps } from 'react-native-reanimated';
 
 //Type
 type ThemedInputProps = {
     placeholder?: string;
-    value: string;
-    onChangeText: (text: string) => void;
-    onBlur: () => void;
+    value?: string;
+    onChangeText?: (text: string) => void;
+    onBlur?: () => void;
     isPassword?: boolean;
-};
+    style?: StyleProps
+} & TextInputProps;
 
-export function ThemedInput({ placeholder, value, onChangeText, onBlur, isPassword = false }: ThemedInputProps) {
+export function ThemedInput({ placeholder, value, onChangeText, onBlur, isPassword = false, style, ...rest }: ThemedInputProps) {
     const theme = useColorScheme() ?? 'light';
     const windowWidth = Dimensions.get('window').width;
     const [showPassword, setShowPassword] = useState(false);
@@ -36,12 +38,13 @@ export function ThemedInput({ placeholder, value, onChangeText, onBlur, isPasswo
             fontFamily: 'Kdam',
             fontSize: 15,
             paddingVertical: 7,
+            height: 45,
         },
     })
 
     return (
-        <View style={styles.container}>
-            <TextInput style={styles.input} placeholder={placeholder} placeholderTextColor={Colors[theme].DarkerText} value={value} onChangeText={onChangeText} onBlur={onBlur} secureTextEntry={isPassword && !showPassword} />
+        <View style={[styles.container, style]}>
+            <TextInput style={styles.input} placeholder={placeholder} placeholderTextColor={Colors[theme].DarkerText} value={value} onChangeText={onChangeText} onBlur={onBlur} secureTextEntry={isPassword && !showPassword} {...rest} />
             {isPassword && value && (
                 <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
                     <Feather name={showPassword ? 'eye-off' : 'eye'} size={20} color={Colors[theme].DarkerText} style={{marginLeft: 10}} />
