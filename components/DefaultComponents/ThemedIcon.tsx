@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
 import { useThemeColor } from '@/hooks/useThemeColor';
 
-type ThemedIconProps = {
+export type ThemedIconProps = {
     IconComponent: React.ComponentType<any>; // Ex: Ionicons, MaterialIcons...
     name: string;
     size?: number;

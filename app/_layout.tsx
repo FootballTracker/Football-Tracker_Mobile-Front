@@ -62,7 +62,7 @@ export default function RootLayout() {
                 }}
             >
                 <Stack screenOptions={{ headerShown: false }} >
-                    <Stack.Screen name="Login" />
+                    <Stack.Screen name="(auth)" />
                 </Stack>
 
                 <StatusBar style='auto' backgroundColor={getStatusBarColor()}/>
