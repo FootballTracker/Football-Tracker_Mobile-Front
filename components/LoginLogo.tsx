@@ -2,7 +2,7 @@
 import { StyleSheet, Dimensions, View } from "react-native";
 
 //Components
-import { ThemedText } from "./DefaultComponents/ThemedText";
+import { ThemedText } from "@/components/DefaultComponents/ThemedText";
 import { ThemedImage } from "./DefaultComponents/ThemedImage";
 
 //Consts

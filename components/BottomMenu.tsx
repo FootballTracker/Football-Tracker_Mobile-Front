@@ -5,7 +5,7 @@ import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 import { useState } from "react";
 import { router } from 'expo-router';
 
-import { ThemedText } from "./DefaultComponents/ThemedText";
+import { ThemedText } from "@/components/DefaultComponents/ThemedText";
 import { ThemedView } from "./DefaultComponents/ThemedView";
 import { Colors } from "@/constants/Colors"
 

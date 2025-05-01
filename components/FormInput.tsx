@@ -5,7 +5,7 @@ import { StyleSheet, View } from "react-native"
 
 //Components
 import { ThemedInput } from "./DefaultComponents/ThemedInput"
-import { ThemedText } from "./DefaultComponents/ThemedText"
+import { ThemedText } from "@/components/DefaultComponents/ThemedText"
 
 //Types
 type FormInputProps = {

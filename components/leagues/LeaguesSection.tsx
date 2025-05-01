@@ -2,7 +2,7 @@ import { StyleSheet, View } from 'react-native'
 
 import { ThemedView } from '../DefaultComponents/ThemedView'
 import { ThemedIcon, ThemedIconProps } from '../DefaultComponents/ThemedIcon'
-import { ThemedText } from '../DefaultComponents/ThemedText'
+import { ThemedText } from '@/components/DefaultComponents/ThemedText'
 import { Colors } from '@/constants/Colors'
 import LeagueCard, { LeagueCardI} from './LeagueCard'
 

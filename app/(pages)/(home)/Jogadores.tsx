@@ -1,6 +1,6 @@
 import { StyleSheet, Dimensions } from 'react-native';
 
-import { ThemedText } from "../../../components/DefaultComponents/ThemedText";
+import { ThemedText } from "@/components/DefaultComponents/ThemedText";
 import { ThemedView } from "../../../components/DefaultComponents/ThemedView";
 import { Colors } from "@/constants/Colors";
 
