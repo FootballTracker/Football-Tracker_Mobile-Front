@@ -2,8 +2,8 @@
 import { TouchableOpacity, StyleSheet } from "react-native"
 import { ThemedIcon } from "./DefaultComponents/ThemedIcon"
 import { FontAwesome6 } from "@expo/vector-icons"
-import { Colors } from "react-native/Libraries/NewAppScreen"
 import { router } from "expo-router"
+import { Colors } from "@/constants/Colors"
 
 type ReturnArrowProps = {
     path?: any;
