@@ -23,6 +23,9 @@ export default function RootLayout() {
             case "/Jogadores":
                 setPage("Jogadores");
                 break;
+            
+            case "/Perfil":
+                setPage("Perfil");
         
             default:
                 break;
@@ -35,9 +38,8 @@ export default function RootLayout() {
         <>
             <TopMenu text={page}/>
 
-            <Stack screenOptions={{
-                headerShown: false,
-            }}>
+            <Stack screenOptions={{ headerShown: false }}>
+                <Stack.Screen name="Perfil" />
             </Stack>
         </>
     );

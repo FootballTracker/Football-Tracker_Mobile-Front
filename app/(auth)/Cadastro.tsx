@@ -8,6 +8,7 @@ import { Colors } from "@/constants/Colors";
 import { useContext, useEffect, useState } from "react";
 import api from "@/lib/Axios"
 import { z } from 'zod';
+import { UserContext, useUserContext } from "@/context/UserContext";
 
 //Components
 import LoginLogo from "@/components/LoginLogo"
@@ -16,7 +17,6 @@ import { ThemedView } from "@/components/DefaultComponents/ThemedView"
 import { ThemedButton } from "@/components/DefaultComponents/ThemedButton";
 import { ReturnArrow } from "@/components/ReturnArrow";
 import { FormInput } from "@/components/FormInput";
-import { useUserContext } from "@/context/UserContext";
 
 //Consts
 const windowHeight = Dimensions.get('window').height;
@@ -32,12 +32,14 @@ type userData = z.infer<typeof userData>
 
 export default function Cadastro() {
     const { user, login } = useUserContext();
-
-    const [responseText, setResponseText] = useState('textin');
     
     const { control, handleSubmit, formState: {errors} } = useForm<userData>({
         resolver: zodResolver(userData)
     });
+
+    useEffect(() => {
+        console.log(user);
+    }, []);
 
     const handleForm = async ({user, email, password, confirmPassword}:userData) => {
         await api.post('auth/signup', {
@@ -45,13 +47,11 @@ export default function Cadastro() {
             email: email,
             password: password
         }).then((response: any) => {
-            // alert('foi');
-            // console.log(response);
             login(response.data);
             router.replace('/');
-        }).catch((response: any) => {
-            alert('n foi');
-            console.log(response);
+        }).catch((e: any) => {
+            if(e.response.data.detail) alert(e.response.data.detail);
+            else alert('Ocorreu algum erro.');
         })
     }
 
@@ -75,7 +75,6 @@ export default function Cadastro() {
                             <FormInput placeHolder="Confirmar Senha" name="confirmPassword" control={control} errors={errors} isPassword={true} />
                             <ThemedButton style={{width: '100%'}} IconComponent={{Icon: Feather, name: 'plus', size: 25}} backgroundColor="Green" textColor="LightBackground" title="Cadastrar" handleClick={handleSubmit(handleForm)} />
                         </View>
-                        {/* <ThemedText>{responseText}</ThemedText> */}
 
                         <ThemedText style={styles.loginText}>
                             Já tem uma conta?

@@ -1,6 +1,5 @@
 import React, { createContext, useState, ReactNode, useContext, useEffect } from 'react';
-import * as SecureStore from 'expo-secure-store';
-import { Platform } from 'react-native';
+import { deleteItem, getItem, saveItem } from './StorageFunctions';
 
 // Tipo do usuário (pode ser expandido)
 interface User {
@@ -30,23 +29,23 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     const [user, setUser] = useState<User | null>(null);
 
     useEffect(() => {
-        const storedUser: string | null = SecureStore.getItem('user');
-
         //Chamar rota do back que verifica se usuário é válido
-        if(storedUser) {
-            const user : User = JSON.parse(storedUser);
-            setUser(user);
-        }
+        getItem('user').then((storedUser) => {
+            if(storedUser) {
+                const user : User = JSON.parse(storedUser);
+                setUser(user);
+            }
+        })
     }, [])
 
     const login = (userData: User): void => {
         setUser(userData);
-        SecureStore.setItemAsync('user', JSON.stringify(userData));
+        saveItem('user', JSON.stringify(userData));
     }
     
     const logout = (): void => {
         setUser(null);
-        SecureStore.deleteItemAsync('user');
+        deleteItem('user');
     }
 
     return (
