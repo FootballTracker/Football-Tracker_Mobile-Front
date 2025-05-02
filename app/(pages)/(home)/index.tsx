@@ -11,11 +11,10 @@ import { ThemedScrollView } from '@/components/DefaultComponents/ThemedScrollVie
 const windowWidth = Dimensions.get('window').width;
 
 export default function Main() {
-
     return (
         <ThemedScrollView style={styles.background}>
                 <View style={styles.searchBar}>
-                    <EvilIcons name="search" size={24} color={Colors.dark.Text}/>
+                    <EvilIcons name="search" size={24} color={Colors.dark.Text} />
                     <TextInput style={styles.input} numberOfLines={1}/>
                 </View>
 

@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { router } from "expo-router";
 import { Colors } from "@/constants/Colors";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import api from "@/lib/Axios"
 import { z } from 'zod';
 
@@ -16,10 +16,11 @@ import { ThemedView } from "@/components/DefaultComponents/ThemedView"
 import { ThemedButton } from "@/components/DefaultComponents/ThemedButton";
 import { ReturnArrow } from "@/components/ReturnArrow";
 import { FormInput } from "@/components/FormInput";
+import { useUserContext } from "@/context/UserContext";
 
 //Consts
 const windowHeight = Dimensions.get('window').height;
-const user = z.object({
+const userData = z.object({
     user: z.string({message: 'Obrigatório'}).min(1, 'Obrigatório'),
     email: z.string({message: 'Obrigatório'}).email('Insira um email válido'),
     password: z.string({message: 'Obrigatório'}).min(8, 'Mínimo 8 caracteres').regex(new RegExp('(?=.*[a-z])'), 'Deve conter uma letra minúscula').regex(new RegExp('(?=.*[A-Z])'), 'Deve conter uma letra maiúscula').regex(new RegExp('(?=.*[0-9])'), 'Deve conter um número').regex(new RegExp('(?=.*[!@#$%^&*()~`´])'), 'Deve conter um caractere especial'),
@@ -27,23 +28,27 @@ const user = z.object({
 }).refine(({password, confirmPassword}) => {return password === confirmPassword}, {message: 'As senhas não são iguais', path: ['confirmPassword']})
 
 //Types
-type user = z.infer<typeof user>
+type userData = z.infer<typeof userData>
 
 export default function Cadastro() {
+    const { user, login } = useUserContext();
+
     const [responseText, setResponseText] = useState('textin');
     
-    const { control, handleSubmit, formState: {errors} } = useForm<user>({
-        resolver: zodResolver(user)
+    const { control, handleSubmit, formState: {errors} } = useForm<userData>({
+        resolver: zodResolver(userData)
     });
 
-    const handleForm = async ({user, email, password, confirmPassword}:user) => {
+    const handleForm = async ({user, email, password, confirmPassword}:userData) => {
         await api.post('auth/signup', {
             username: user,
             email: email,
             password: password
         }).then((response: any) => {
-            alert('foi');
-            console.log(response);
+            // alert('foi');
+            // console.log(response);
+            login(response.data);
+            router.replace('/');
         }).catch((response: any) => {
             alert('n foi');
             console.log(response);
