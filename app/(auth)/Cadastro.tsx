@@ -1,18 +1,17 @@
 //Default Imports
-import { StyleSheet, View, Dimensions, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
+import { StyleSheet, View, Dimensions, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
 import Feather from '@expo/vector-icons/Feather';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { router } from 'expo-router';
+import { router } from "expo-router";
 import { Colors } from "@/constants/Colors";
 import { useState } from "react";
 import api from "@/lib/Axios"
-import Axios from "axios";
+import { z } from 'zod';
 
 //Components
 import LoginLogo from "@/components/LoginLogo"
-import { ThemedText } from "@/components/DefaultComponents/ThemedText"
+import { ThemedText } from "@/components/DefaultComponents/ThemedText";
 import { ThemedView } from "@/components/DefaultComponents/ThemedView"
 import { ThemedButton } from "@/components/DefaultComponents/ThemedButton";
 import { ReturnArrow } from "@/components/ReturnArrow";
@@ -56,7 +55,7 @@ export default function Cadastro() {
             <ScrollView>
                 <ThemedView style={styles.mainBlock}>
                     <View style={{display: 'flex', flexDirection: "row", marginLeft: 5, position: 'absolute', top: 20}}>
-                        <ReturnArrow />
+                        <ReturnArrow double={true} />
                     </View>
 
                     <LoginLogo />
@@ -73,17 +72,17 @@ export default function Cadastro() {
                         </View>
                         {/* <ThemedText>{responseText}</ThemedText> */}
 
-                        {/* <ThemedText style={styles.loginText}>
+                        <ThemedText style={styles.loginText}>
                             Já tem uma conta?
                             {'  '}
                             <ThemedText
                                 style={styles.loginText}
-                                onPress={() => router.push('/Login')}
+                                onPress={() => router.replace('/Login')}
                                 darkColor={Colors.dark.Green}
                                 lightColor={Colors.light.Green}>
                                 Faça login
                             </ThemedText>
-                        </ThemedText> */}
+                        </ThemedText>
                     </View>
                 </ThemedView>
             </ScrollView>

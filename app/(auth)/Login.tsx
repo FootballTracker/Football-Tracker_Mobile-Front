@@ -110,6 +110,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Kokoro',
         fontSize: 13,
         lineHeight: 13,
+        paddingVertical: 2
     },
     errorText: {
 

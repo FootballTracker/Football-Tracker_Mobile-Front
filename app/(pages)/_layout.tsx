@@ -35,8 +35,9 @@ export default function RootLayout() {
         <>
             <TopMenu text={page}/>
 
-            <Stack screenOptions={{ headerShown: false, }}>
-                <Stack.Screen name='Time'/>
+            <Stack screenOptions={{
+                headerShown: false,
+            }}>
             </Stack>
         </>
     );

@@ -22,7 +22,7 @@ export function ThemedButton({ IconComponent, title = 'Continuar', handleClick, 
     const styles = StyleSheet.create({
         input: {
             backgroundColor: Colors[theme][backgroundColor],
-            width: '80%',
+            // width: '80%',
             paddingVertical: 3,
             borderRadius: 10,
             display: 'flex',

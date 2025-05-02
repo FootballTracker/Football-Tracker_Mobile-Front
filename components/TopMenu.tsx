@@ -3,7 +3,7 @@ import { router } from 'expo-router';
 import { usePathname } from 'expo-router';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 
-import { ThemedText } from "./DefaultComponents/ThemedText";
+import { ThemedText } from "@/components/DefaultComponents/ThemedText";
 import { ThemedView } from "./DefaultComponents/ThemedView";
 import { ThemedImage } from './DefaultComponents/ThemedImage';
 import { Colors } from "@/constants/Colors";

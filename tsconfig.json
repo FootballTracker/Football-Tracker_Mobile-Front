@@ -14,5 +14,5 @@
     "lib/Axios.js",
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
-  ]
+, "components/DefaultComponents/ThemedText.tsx"  ]
 }

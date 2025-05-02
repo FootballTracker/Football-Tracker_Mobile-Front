@@ -3,9 +3,10 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import Entypo from '@expo/vector-icons/Entypo';
 
 import { ThemedIcon } from '../DefaultComponents/ThemedIcon';
-import { ThemedText } from '../DefaultComponents/ThemedText';
+import { ThemedText } from '@/components/DefaultComponents/ThemedText';
 import { Colors } from '@/constants/Colors';
 import { useEffect, useState } from 'react';
+import { router } from 'expo-router';
 
 export interface LeagueCardI {
     id: string
@@ -20,7 +21,7 @@ export default function LeagueCard({ id, image, name, favoritie }: LeagueCardI) 
     const [favoritieState, setFavoritieState] = useState(favoritie);
 
     const accessLeague = () => {
-        alert("acessar liga");
+        router.push(`/(pages)/league/${id}` as any);
     }
 
     const changeFavoritie = () => {
@@ -96,6 +97,6 @@ const styles = StyleSheet.create({
     star: {
         marginTop: -2,
         paddingLeft: 7,
-        paddingRight: 10
+        paddingRight: 7
     }
-})
+});

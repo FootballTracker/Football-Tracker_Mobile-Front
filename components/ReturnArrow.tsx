@@ -2,16 +2,17 @@
 import { TouchableOpacity, StyleSheet } from "react-native"
 import { ThemedIcon } from "./DefaultComponents/ThemedIcon"
 import { FontAwesome6 } from "@expo/vector-icons"
-import { router } from "expo-router"
 import { Colors } from "@/constants/Colors"
+import { router } from "expo-router"
 
 type ReturnArrowProps = {
-    path?: any;
+    double?: boolean;
 }
 
-export function ReturnArrow({path} : ReturnArrowProps) {
+export function ReturnArrow({ double } : ReturnArrowProps) {
     const returnRoute = () => {
-        path ? router.replace(path) : router.back();
+        router.back();
+        double && router.back();
     }
 
     return (
