@@ -1,22 +1,46 @@
-import { Image, StyleSheet, View, TouchableOpacity } from 'react-native';
+import { Image, StyleSheet, View, TouchableOpacity, Dimensions } from 'react-native';
 import Entypo from '@expo/vector-icons/Entypo';
 import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
-import {Picker} from '@react-native-picker/picker';
+import { Colors } from '@/constants/Colors';
+import { TabView, SceneMap } from 'react-native-tab-view';
 
 import { ThemedText } from "@/components/DefaultComponents/ThemedText";
-import { ThemedScrollView } from "../../../components/DefaultComponents/ThemedScrollView";
 import { ThemedIcon } from '@/components/DefaultComponents/ThemedIcon';
-import { Colors } from '@/constants/Colors';
 import { Select } from '@/components/Select';
+import { CustomTabBar } from '@/components/CustomTabBar';
+import { ThemedView } from '@/components/DefaultComponents/ThemedView';
+
+
+//scenes to render
+import LigaPartidas from '../../../components/leagues/pagesComponents/LigaPartidas';
+import LigaClassificacao from '../../../components/leagues/pagesComponents/LigaClassificacao';
+import LigaRankings from '../../../components/leagues/pagesComponents/LigaRankings';
+
+const renderScene = SceneMap({
+    partidas: LigaPartidas,
+    classificacao: LigaClassificacao,
+    rankings: LigaRankings,
+});
 
 export default function League() {
     const { leagueId } = useLocalSearchParams();
+    
     const [contentLoaded, setContentLoaded] = useState(false);
+    
     const [favoritieState, setFavoritieState] = useState(false);
     const [starIcon, setStarIcon] = useState("star-outlined");
-
+    
     const [selectedSeason, setSelectedSeason] = useState<number>();
+    
+    const [index, setIndex] = useState(0);
+    
+    //routes to render
+    const [routes] = useState([
+        { key: 'partidas', title: 'Partidas' },
+        { key: 'classificacao', title: 'Classificação' },
+        { key: 'rankings', title: 'Rankings' },
+    ]);
 
     useEffect(() => {
         //fazer requisição para o back
@@ -42,35 +66,13 @@ export default function League() {
     return (
 
         contentLoaded ? (
-            <ThemedScrollView style={styles.background}>
+            <ThemedView style={styles.background}>
                 <View style={styles.header}>
                     <Image source={{uri: "https://media.api-sports.io/football/leagues/71.png"}} style={styles.leagueImage} resizeMode='contain'/>
                     <ThemedText style={{fontSize: 19, fontFamily: "Kdam"}}>
                         Brasileirão
                     </ThemedText>
-                        {/* <ThemedText style={{fontSize: 12, fontFamily: "Kdam"}}>
-                            {selectedSeason}
-                        </ThemedText>
-                        <Picker
-                            selectedValue={selectedSeason}
-                            onValueChange={(season) =>
-                                selectSeason(season)
-                            }
-                            style={{
-                                width: 35
-                            }}
-                            dropdownIconColor={Colors.dark.DarkerText}
-                            prompt='Selecione uma temporada:'
-                            mode='dialog'
-                            itemStyle={{
-                                textAlign: "center",
-                                backgroundColor: Colors.dark.LightBackground
-                            }}
-                        >
-                            <Picker.Item label="22" value="22" />
-                            <Picker.Item label="23" value="23" />
-                        </Picker> */}
-                        <Select selected={selectedSeason} setSelected={setSelectedSeason} values={[
+                        <Select selected={selectedSeason} setSelected={selectSeason} values={[
                             {
                                 name: '22',
                                 value: '22'
@@ -86,6 +88,7 @@ export default function League() {
                             ]}
                             style={{
                                 marginLeft: 6,
+                                marginTop: 2
                             }}
                             selectFontSize={13}
                             iconSize={19}
@@ -101,7 +104,27 @@ export default function League() {
                         />
                     </TouchableOpacity>
                 </View>
-            </ThemedScrollView>
+                
+                <TabView
+                    navigationState={{ index, routes }}
+                    renderScene={renderScene}
+                    onIndexChange={setIndex}
+                    initialLayout={{ width: Dimensions.get('window').width }}
+                    renderTabBar={props => (
+                        <CustomTabBar {...props} />
+                    )}
+                    style={{
+                        top: 25
+                    }}
+                    lazy={({route}) => route.title !== 'Partidas'}
+                    renderLazyPlaceholder={() => (
+                        <View>
+                            <ThemedText>Loading</ThemedText>
+                        </View>
+                        )
+                    }
+                />
+            </ThemedView>
         ) : (
             <View>
                 <ThemedText>Loading</ThemedText>
@@ -113,7 +136,8 @@ export default function League() {
 
 const styles = StyleSheet.create({
     background: {
-        paddingTop: 25
+        paddingTop: 25,
+        flex: 1
     },
     header: {
         display: "flex",

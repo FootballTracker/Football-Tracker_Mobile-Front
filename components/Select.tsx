@@ -68,7 +68,7 @@ export function Select({ values, selected, setSelected, selectFontSize, iconSize
 
             <TouchableOpacity onPress={() => setModalOpened(!modalOpened)} {...otherProps}>
                 <View style={styles.select}>
-                    <ThemedText lightColor={Colors.light.DarkerText} darkColor={Colors.dark.DarkerText} style={{fontSize: selectFontSize && selectFontSize}}>
+                    <ThemedText lightColor={Colors.light.DarkerText} darkColor={Colors.dark.DarkerText} style={{fontSize: selectFontSize && selectFontSize, fontFamily: "Kdam"}}>
                         {selected}
                     </ThemedText>
                     <ThemedIcon
