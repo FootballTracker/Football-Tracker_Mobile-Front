@@ -2,10 +2,12 @@
 import { Control, Controller, FieldErrors } from "react-hook-form"
 import { Colors } from "@/constants/Colors"
 import { StyleSheet, View } from "react-native"
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 //Components
 import { ThemedInput } from "./DefaultComponents/ThemedInput"
-import { ThemedText } from "@/components/DefaultComponents/ThemedText"
+import { ThemedText } from "./DefaultComponents/ThemedText"
+import { ThemedIcon } from "./DefaultComponents/ThemedIcon";
 
 //Types
 type FormInputProps = {
@@ -13,24 +15,43 @@ type FormInputProps = {
     errors: any;
     name: string;
     placeHolder: string;
+    isPassword?: boolean;
 }
 
-export function FormInput({ control, errors, name, placeHolder } : FormInputProps ) {
+export function FormInput({ control, errors, name, placeHolder, isPassword = false } : FormInputProps ) {
     return (
         <>
             <Controller control={control} name={name} render={({ field: { onChange, onBlur, value } }) => (
-                <ThemedInput style={{width: '100%'}} placeholder={placeHolder} onChangeText={onChange} onBlur={onBlur} value={value} />
+                <ThemedInput style={{width: '100%'}} placeholder={placeHolder} onChangeText={onChange} onBlur={onBlur} value={value} isPassword={isPassword} />
             )} />
-            {/* {errors[name] && <ThemedText lightColor={Colors.light.Red} darkColor={Colors.dark.Red} style={styles.errorText}>{errors[name] ? errors[name].message : null}</ThemedText>} */}
-            {<ThemedText lightColor={Colors.light.Red} darkColor={Colors.dark.Red} style={styles.errorText}>{errors[name] ? errors[name].message : ''}</ThemedText>}
+
+            {errors[name] ? (
+                <View style={styles.view}>
+                    <ThemedIcon IconComponent={Ionicons} name="alert-circle-outline" lightColor={Colors.light.Red} darkColor={Colors.dark.Red} size={16} style={styles.icon} />
+                    <ThemedText lightColor={Colors.light.Red} darkColor={Colors.dark.Red} style={styles.errorText} >{errors[name].message}</ThemedText>
+                </View>
+            ) : (
+                // <ThemedText style={styles.errorText}> </ThemedText>
+                <ThemedText style={{height: 10}}> </ThemedText>
+            )}
         </>
     )
 }   
 
 const styles = StyleSheet.create({
     errorText: {
-        marginLeft: 5,
         fontSize: 13,
         fontFamily: 'Kdam'
+    },
+    view: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 2
+    },
+    icon: {
+        marginLeft: 4,
+        marginRight: 1,
+        marginBottom: 1,
     }
 })

@@ -5,6 +5,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { router } from "expo-router";
 import { Colors } from "@/constants/Colors";
+import { useState } from "react";
+import api from "@/lib/Axios"
 import { z } from 'zod';
 
 //Components
@@ -28,13 +30,24 @@ const user = z.object({
 type user = z.infer<typeof user>
 
 export default function Cadastro() {
+    const [responseText, setResponseText] = useState('textin');
+    
     const { control, handleSubmit, formState: {errors} } = useForm<user>({
         resolver: zodResolver(user)
     });
 
-    const handleForm = ({user, email, password, confirmPassword}:user) => {
-        alert('user');
-        alert('password');
+    const handleForm = async ({user, email, password, confirmPassword}:user) => {
+        await api.post('auth/signup', {
+            username: user,
+            email: email,
+            password: password
+        }).then((response: any) => {
+            alert('foi');
+            console.log(response);
+        }).catch((response: any) => {
+            alert('n foi');
+            console.log(response);
+        })
     }
 
     return (
@@ -51,12 +64,13 @@ export default function Cadastro() {
                         <ThemedText style={styles.titleText}>Cadastrar</ThemedText>
 
                         <View style={{width: '80%'}}>
-                            <FormInput placeHolder="Nome de usuário" name="user" control={control} errors={errors}  />
-                            <FormInput placeHolder="Email" name="email" control={control} errors={errors}  />
-                            <FormInput placeHolder="Senha" name="password" control={control} errors={errors}  />
-                            <FormInput placeHolder="Confirmar Senha" name="confirmPassword" control={control} errors={errors}  />
+                            <FormInput placeHolder="Nome de usuário" name="user" control={control} errors={errors} />
+                            <FormInput placeHolder="Email" name="email" control={control} errors={errors} />
+                            <FormInput placeHolder="Senha" name="password" control={control} errors={errors} isPassword={true} />
+                            <FormInput placeHolder="Confirmar Senha" name="confirmPassword" control={control} errors={errors} isPassword={true} />
                             <ThemedButton style={{width: '100%'}} IconComponent={{Icon: Feather, name: 'plus', size: 25}} backgroundColor="Green" textColor="LightBackground" title="Cadastrar" handleClick={handleSubmit(handleForm)} />
                         </View>
+                        {/* <ThemedText>{responseText}</ThemedText> */}
 
                         <ThemedText style={styles.loginText}>
                             Já tem uma conta?
