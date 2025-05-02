@@ -7,7 +7,7 @@ import { z } from 'zod';
 import { router } from 'expo-router';
 import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
-import React, { useRef } from 'react';
+import api from "@/lib/Axios";
 
 //Components
 import LoginLogo from "@/components/LoginLogo"
@@ -33,15 +33,18 @@ export default function Login() {
         resolver: zodResolver(user)
     });
 
-    const handleForm = ({user, password}:user) => {
-        alert(user);
-        alert(password);
+    const handleForm = async ({user, password}:user) => {
+        await api.post('auth/signin', {
+            username: user,
+            password: password
+        }).then((response: any) => {
+            alert('foi');
+            console.log(response);
+        }).catch((response: any) => {
+            alert('n foi');
+            console.log(response);
+        })
     }
-
-    const inputRefs = {
-        user: useRef(null),
-        password: useRef(null),
-    };
 
     return (
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} keyboardVerticalOffset={0} >

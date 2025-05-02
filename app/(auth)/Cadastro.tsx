@@ -8,7 +8,6 @@ import { router } from 'expo-router';
 import { Colors } from "@/constants/Colors";
 import { useState } from "react";
 import api from "@/lib/Axios"
-import Axios from "axios";
 
 //Components
 import LoginLogo from "@/components/LoginLogo"
