@@ -50,8 +50,9 @@ const styles = StyleSheet.create({
       tabText: {
         color: Colors.dark.DarkerText,
         fontFamily: "Kokoro",
-        fontSize: 14,
-        lineHeight: 14
+        fontSize: 16,
+        lineHeight: 16,
+        top: 3
       },
       activeText: {
         color: Colors.dark.Red,

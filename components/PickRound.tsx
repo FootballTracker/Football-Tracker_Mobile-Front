@@ -1,14 +1,17 @@
-import { TouchableOpacity, StyleSheet, Modal, View, Pressable, ViewProps, ScrollView, Dimensions } from "react-native"
+import { TouchableOpacity, StyleSheet, Modal, View, Pressable, ViewProps, Dimensions, ScrollView } from "react-native"
 import { useState } from "react"
 import { MaterialIcons } from "@expo/vector-icons"
 import { Colors } from "@/constants/Colors"
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 import { ThemedText } from "./DefaultComponents/ThemedText"
 import { ThemedIcon } from "./DefaultComponents/ThemedIcon"
 import { ThemedView } from "./DefaultComponents/ThemedView"
 import { ThemedButton } from "./DefaultComponents/ThemedButton"
 
-interface SelectProps extends ViewProps {
+const windowWidth = Dimensions.get('window').width;
+
+interface PickRoundProps extends ViewProps {
     values: {
         name: string
         value: string
@@ -19,7 +22,7 @@ interface SelectProps extends ViewProps {
     iconSize?: number
 }
 
-export function Select({ values, selected, setSelected, selectFontSize, iconSize, ...otherProps } : SelectProps) {
+export function PickRound({ values, selected, setSelected, iconSize, ...otherProps } : PickRoundProps) {
 
     const [modalOpened, setModalOpened] = useState(false);
 
@@ -27,7 +30,7 @@ export function Select({ values, selected, setSelected, selectFontSize, iconSize
         <>
             {modalOpened && (
                 <Modal
-                    animationType="slide"
+                    animationType="fade"
                     transparent={true}
                     visible={modalOpened}
                     onRequestClose={() => {
@@ -35,15 +38,15 @@ export function Select({ values, selected, setSelected, selectFontSize, iconSize
                     }}
                 >
                 <View style={styles.modalOverlay} />
-                <ThemedView style={styles.centeredView} darkColor="black" lightColor="black">
+                <View style={styles.centeredView}>
                   <ThemedView style={styles.modalView}>
-                    <ThemedText style={styles.modalText}>Selecione uma temporada da liga:</ThemedText>
+                    <ThemedText style={styles.modalText}>Selecione uma rodada:</ThemedText>
                     <View style={styles.values}>
                         <ScrollView>
                             {values.map((option, index) => (
                                 <Pressable
                                     onPress={() => {
-                                        setSelected(option.value);
+                                        setSelected(Number(option.value));
                                         setModalOpened(!modalOpened);
                                     }}
                                     key={index}
@@ -64,25 +67,50 @@ export function Select({ values, selected, setSelected, selectFontSize, iconSize
                     >
                     </ThemedButton>
                   </ThemedView>
-                </ThemedView>
+                </View>
               </Modal>
             )}
 
 
-            <TouchableOpacity onPress={() => setModalOpened(!modalOpened)} {...otherProps}>
-                <View style={styles.select}>
-                    <ThemedText lightColor={Colors.light.DarkerText} darkColor={Colors.dark.DarkerText} style={{fontSize: selectFontSize && selectFontSize, fontFamily: "Kdam"}}>
-                        {selected}
-                    </ThemedText>
+            <View style={styles.round}>
+                <TouchableOpacity onPress={() => (
+                    selected > 1 && setSelected((value: number) => value - 1)
+                )}>
                     <ThemedIcon
                         IconComponent={MaterialIcons}
-                        name='keyboard-arrow-down'
-                        darkColor={Colors.dark.DarkerText}
-                        lightColor={Colors.light.DarkerText}
-                        size={iconSize ? iconSize : 22}
+                        name='keyboard-arrow-left'
+                        darkColor={Colors.dark.Text}
+                        lightColor={Colors.light.Text}
+                        size={21}
+                        style={selected === 1 && {opacity: 0.3}}
                     />
-                </View>
-            </TouchableOpacity>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => setModalOpened(!modalOpened)} {...otherProps}>
+                    <View style={styles.currentRound}>
+                        <ThemedText style={{fontFamily: "Kdam"}}>Rodada {selected}</ThemedText>
+                        <ThemedIcon
+                            IconComponent={Ionicons}
+                            name='ellipsis-horizontal-circle-outline'
+                            darkColor={Colors.dark.Text}
+                            lightColor={Colors.light.Text}
+                            size={21}
+                            style={styles.pickRoundIcon}
+                        />
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => (
+                        selected < 38 && setSelected((value: number) => value + 1)
+                    )}>
+                    <ThemedIcon
+                        IconComponent={MaterialIcons}
+                        name='keyboard-arrow-right'
+                        darkColor={Colors.dark.Text}
+                        lightColor={Colors.light.Text}
+                        size={21}
+                        style={selected === 38 && {opacity: 0.3}}
+                    />
+                </TouchableOpacity>
+            </View>
         </>
     )
 }
@@ -99,18 +127,12 @@ const styles = StyleSheet.create({
         left: 0,
         zIndex: 0,
     },
-    select: {
-        display: "flex",
-        justifyContent: "center",
-        flexDirection: "row",
-        alignItems: "center"
-    },
     centeredView: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        opacity: 0.7
-      },
+        zIndex: 1,
+    },
     modalView: {
         margin: 20,
         borderRadius: 20,
@@ -118,7 +140,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: "90%",
         maxWidth: 400,
-        opacity: 1
+        opacity: 1.5
     },
     modalText: {
         marginBottom: 10,
@@ -128,10 +150,9 @@ const styles = StyleSheet.create({
     },
     values: {
         width: "100%",
-        alignItems: "stretch",
         borderBottomWidth: 0.5,
         borderTopWidth: 0.5,
-        maxHeight: 500
+        maxHeight: 300
     },
     option: {
         width: "100%",
@@ -144,4 +165,23 @@ const styles = StyleSheet.create({
         height: 45,
         width: 100,
     },
+    round: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        width: windowWidth*0.8,
+        maxWidth: 300,
+        marginLeft: "auto",
+        marginRight: "auto"
+    },
+    currentRound: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: 5
+    },
+    pickRoundIcon: {
+        marginTop: -2,
+        paddingHorizontal: 5
+    }
 });

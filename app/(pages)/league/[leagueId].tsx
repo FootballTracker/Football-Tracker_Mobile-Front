@@ -17,12 +17,6 @@ import LigaPartidas from '../../../components/leagues/pagesComponents/LigaPartid
 import LigaClassificacao from '../../../components/leagues/pagesComponents/LigaClassificacao';
 import LigaRankings from '../../../components/leagues/pagesComponents/LigaRankings';
 
-const renderScene = SceneMap({
-    partidas: LigaPartidas,
-    classificacao: LigaClassificacao,
-    rankings: LigaRankings,
-});
-
 export default function League() {
     const { leagueId } = useLocalSearchParams();
     
@@ -41,6 +35,12 @@ export default function League() {
         { key: 'classificacao', title: 'Classificação' },
         { key: 'rankings', title: 'Rankings' },
     ]);
+
+    const renderScene = SceneMap({
+        partidas: LigaPartidas,
+        classificacao: LigaClassificacao,
+        rankings: LigaRankings,
+    });
 
     useEffect(() => {
         //fazer requisição para o back
