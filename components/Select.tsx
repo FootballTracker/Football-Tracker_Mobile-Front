@@ -1,12 +1,11 @@
-import { TouchableOpacity, StyleSheet, Modal, View, Pressable, ViewProps, ScrollView, Dimensions } from "react-native"
+import { TouchableOpacity, StyleSheet, Modal, View, Pressable, ViewProps, ScrollView } from "react-native"
 import { useState } from "react"
 import { MaterialIcons } from "@expo/vector-icons"
 import { Colors } from "@/constants/Colors"
 
 import { ThemedText } from "./DefaultComponents/ThemedText"
 import { ThemedIcon } from "./DefaultComponents/ThemedIcon"
-import { ThemedView } from "./DefaultComponents/ThemedView"
-import { ThemedButton } from "./DefaultComponents/ThemedButton"
+import { ModalComponent } from "./ModalComponent"
 
 interface SelectProps extends ViewProps {
     values: {
@@ -25,48 +24,26 @@ export function Select({ values, selected, setSelected, selectFontSize, iconSize
 
     return (
         <>
-            {modalOpened && (
-                <Modal
-                    animationType="slide"
-                    transparent={true}
-                    visible={modalOpened}
-                    onRequestClose={() => {
-                        setModalOpened(!modalOpened);
-                    }}
-                >
-                <View style={styles.modalOverlay} />
-                <ThemedView style={styles.centeredView} darkColor="black" lightColor="black">
-                  <ThemedView style={styles.modalView}>
-                    <ThemedText style={styles.modalText}>Selecione uma temporada da liga:</ThemedText>
-                    <View style={styles.values}>
-                        <ScrollView>
-                            {values.map((option, index) => (
-                                <Pressable
-                                    onPress={() => {
-                                        setSelected(option.value);
-                                        setModalOpened(!modalOpened);
-                                    }}
-                                    key={index}
-                                >
-                                    <View style={styles.option}>
-                                        <ThemedText style={{textAlign: "center"}}>{option.name}</ThemedText>
-                                    </View>
-                                </Pressable>
-                            ))}
-                        </ScrollView>
-                    </View>
-                    <ThemedButton
-                        title="Fechar"
-                        backgroundColor='Red'
-                        handleClick={() => setModalOpened(!modalOpened)}
-                        textColor="Text"
-                        style={styles.button}
-                    >
-                    </ThemedButton>
-                  </ThemedView>
-                </ThemedView>
-              </Modal>
-            )}
+            <ModalComponent modalOpened={modalOpened} setModalOpened={setModalOpened}>
+                <ThemedText style={styles.modalText}>Selecione uma temporada da liga:</ThemedText>
+                <View style={styles.values}>
+                    <ScrollView>
+                        {values.map((option, index) => (
+                            <Pressable
+                                onPress={() => {
+                                    setSelected(option.value);
+                                    setModalOpened(!modalOpened);
+                                }}
+                                key={index}
+                            >
+                                <View style={styles.option}>
+                                    <ThemedText style={{textAlign: "center"}}>{option.name}</ThemedText>
+                                </View>
+                            </Pressable>
+                        ))}
+                    </ScrollView>
+                </View>
+            </ModalComponent>
 
 
             <TouchableOpacity onPress={() => setModalOpened(!modalOpened)} {...otherProps}>
@@ -88,37 +65,11 @@ export function Select({ values, selected, setSelected, selectFontSize, iconSize
 }
 
 const styles = StyleSheet.create({
-    modalOverlay: {
-        flex: 1,
-        backgroundColor: 'black',
-        opacity: 0.7,
-        position: 'absolute',
-        width: '100%',
-        height: '100%',
-        top: 0,
-        left: 0,
-        zIndex: 0,
-    },
     select: {
         display: "flex",
         justifyContent: "center",
         flexDirection: "row",
         alignItems: "center"
-    },
-    centeredView: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        opacity: 0.7
-      },
-    modalView: {
-        margin: 20,
-        borderRadius: 20,
-        padding: 20,
-        alignItems: 'center',
-        width: "90%",
-        maxWidth: 400,
-        opacity: 1
     },
     modalText: {
         marginBottom: 10,

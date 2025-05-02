@@ -116,7 +116,7 @@ export default function League() {
                     style={{
                         top: 25
                     }}
-                    lazy={({route}) => route.title !== 'Partidas'}
+                    lazy
                     renderLazyPlaceholder={() => (
                         <View>
                             <ThemedText>Loading</ThemedText>

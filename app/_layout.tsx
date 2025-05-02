@@ -10,8 +10,9 @@ import { Dimensions, Platform, StatusBar as Status, View } from 'react-native';
 import { usePathname } from 'expo-router';
 
 import { Colors } from '@/constants/Colors';
-import { themedColor } from '@/hooks/useThemeColor';
 import { ThemedView } from '@/components/DefaultComponents/ThemedView';
+
+import { Host } from "react-native-portalize"
 
 const windowHeight = Dimensions.get('window').height;
 
@@ -51,7 +52,9 @@ export default function RootLayout() {
 
     return (
         <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+            <Host>
             <ThemedView  style={{ minHeight: windowHeight, top: statusBarHeight, }} >
+
                 <Stack screenOptions={{ headerShown: false }} >
                     <Stack.Screen name="(auth)" />
                 </Stack>
@@ -59,6 +62,7 @@ export default function RootLayout() {
                 <StatusBar style='auto' backgroundColor={(pathname === '/Login' || pathname === '/Cadastro') ? Colors[colorScheme].LightBackground : Colors[colorScheme].DarkBackground}/>
 
             </ThemedView>
+            </Host>
         </ThemeProvider>
     );
 }

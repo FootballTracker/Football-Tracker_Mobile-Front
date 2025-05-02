@@ -5,7 +5,7 @@ import { Colors } from '@/constants/Colors';
 import { StyleProps } from 'react-native-reanimated';
 
 //Type
-type ThemedButtonProps = {
+export type ThemedButtonProps = {
     IconComponent?: {Icon: React.ComponentType<any>, name: string, size?: number};
     title?: string;
     handleClick: () => void;

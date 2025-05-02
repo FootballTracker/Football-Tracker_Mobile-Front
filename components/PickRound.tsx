@@ -8,6 +8,7 @@ import { ThemedText } from "./DefaultComponents/ThemedText"
 import { ThemedIcon } from "./DefaultComponents/ThemedIcon"
 import { ThemedView } from "./DefaultComponents/ThemedView"
 import { ThemedButton } from "./DefaultComponents/ThemedButton"
+import { ModalComponent } from "./ModalComponent";
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -28,49 +29,27 @@ export function PickRound({ values, selected, setSelected, iconSize, ...otherPro
 
     return (
         <>
-            {modalOpened && (
-                <Modal
-                    animationType="fade"
-                    transparent={true}
-                    visible={modalOpened}
-                    onRequestClose={() => {
-                        setModalOpened(!modalOpened);
-                    }}
-                >
-                <View style={styles.modalOverlay} />
-                <View style={styles.centeredView}>
-                  <ThemedView style={styles.modalView}>
-                    <ThemedText style={styles.modalText}>Selecione uma rodada:</ThemedText>
-                    <View style={styles.values}>
-                        <ScrollView>
-                            {values.map((option, index) => (
-                                <Pressable
-                                    onPress={() => {
-                                        setSelected(Number(option.value));
-                                        setModalOpened(!modalOpened);
-                                    }}
-                                    key={index}
-                                >
-                                    <View style={styles.option}>
-                                        <ThemedText style={{textAlign: "center"}}>{option.name}</ThemedText>
-                                    </View>
-                                </Pressable>
-                            ))}
-                        </ScrollView>
-                    </View>
-                    <ThemedButton
-                        title="Fechar"
-                        backgroundColor='Red'
-                        handleClick={() => setModalOpened(!modalOpened)}
-                        textColor="Text"
-                        style={styles.button}
-                    >
-                    </ThemedButton>
-                  </ThemedView>
+            
+            <ModalComponent modalOpened={modalOpened} setModalOpened={setModalOpened}>
+                <ThemedText style={styles.modalText}>Selecione uma rodada:</ThemedText>
+                <View style={styles.values}>
+                    <ScrollView>
+                        {values.map((option, index) => (
+                            <Pressable
+                                onPress={() => {
+                                    setSelected(Number(option.value));
+                                    setModalOpened(!modalOpened);
+                                }}
+                                key={index}
+                            >
+                                <View style={styles.option}>
+                                    <ThemedText style={{textAlign: "center"}}>{option.name}</ThemedText>
+                                </View>
+                            </Pressable>
+                        ))}
+                    </ScrollView>
                 </View>
-              </Modal>
-            )}
-
+            </ModalComponent>
 
             <View style={styles.round}>
                 <TouchableOpacity onPress={() => (
