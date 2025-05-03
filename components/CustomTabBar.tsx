@@ -1,4 +1,4 @@
-import { StyleSheet, View, TouchableOpacity, Animated, useWindowDimensions, LayoutChangeEvent } from 'react-native';
+import { StyleSheet, View, Animated, useWindowDimensions, LayoutChangeEvent, Pressable } from 'react-native';
 import type { TabBarProps } from 'react-native-tab-view';
 import { Colors } from '@/constants/Colors';
 import { useState, useEffect, useRef } from 'react';
@@ -48,7 +48,7 @@ export const CustomTabBar: React.FC<TabBarProps<any>> = ({ navigationState, jump
                 const isLast = index === navigationState.routes.length - 1;
         
                 return (
-                    <TouchableOpacity
+                    <Pressable
                         key={route.key}
                         style={[styles.tabItem, isFocused && styles.activeTab, isLast && styles.lastTabItem]}
                         onPress={() => jumpTo(route.key)}
@@ -56,7 +56,7 @@ export const CustomTabBar: React.FC<TabBarProps<any>> = ({ navigationState, jump
                         <ThemedText style={[styles.tabText, isFocused && styles.activeText]} onLayout={(e) => handleLayout(e, index)}>
                             {route.title}
                         </ThemedText>
-                    </TouchableOpacity>
+                    </Pressable>
                 );
                 })}
             </View>

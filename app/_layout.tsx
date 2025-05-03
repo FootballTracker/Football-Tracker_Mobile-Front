@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import 'react-native-reanimated';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { Dimensions, Platform, StatusBar as Status, View } from 'react-native';
+import { Host } from 'react-native-portalize';
 import { usePathname } from 'expo-router';
 
 import { Colors } from '@/constants/Colors';
@@ -53,14 +54,16 @@ export default function RootLayout() {
     return (
         <UserProvider>
             <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-                <ThemedView  style={{ minHeight: windowHeight, top: statusBarHeight, }} >
-                    <Stack screenOptions={{ headerShown: false }} >
-                        <Stack.Screen name="(auth)" />
-                    </Stack>
+                <Host>
+                    <ThemedView  style={{ minHeight: windowHeight, top: statusBarHeight, }} >
+                        <Stack screenOptions={{ headerShown: false }} >
+                            <Stack.Screen name="(auth)" />
+                        </Stack>
 
-                    <StatusBar style='auto' backgroundColor={(pathname === '/Login' || pathname === '/Cadastro') ? Colors[colorScheme].LightBackground : Colors[colorScheme].DarkBackground}/>
+                        <StatusBar style='auto' backgroundColor={(pathname === '/Login' || pathname === '/Cadastro') ? Colors[colorScheme].LightBackground : Colors[colorScheme].DarkBackground}/>
 
-                </ThemedView>
+                    </ThemedView>
+                </Host>
             </ThemeProvider>
         </UserProvider>
     );

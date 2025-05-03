@@ -11,13 +11,13 @@ interface LeaguesSectionProps {
     text: string
     leagues?: LeagueCardI[]
     icon: ThemedIconProps
-}
+};
 
-export default function LeaguesSection({ text, leagues, icon }: LeaguesSectionProps) {
+export default function LeaguesSection({ text, leagues, icon, ...rest }: LeaguesSectionProps) {
     return (
         <View style={styles.section}>
             <View style={styles.titleSection}>
-                <ThemedIcon IconComponent={icon.IconComponent} name={icon.name} size={icon.size} style={icon.style} darkColor={icon.darkColor} lightColor={icon.lightColor}/>
+                <ThemedIcon {...icon}/>
                 <ThemedText lightColor={Colors.light.Text} darkColor={Colors.dark.Text} style={styles.sectionTitle}>
                     {text}
                 </ThemedText>

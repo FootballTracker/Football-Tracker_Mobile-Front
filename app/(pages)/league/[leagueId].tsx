@@ -4,6 +4,10 @@ import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Colors } from '@/constants/Colors';
 import { TabView, SceneMap } from 'react-native-tab-view';
+import FilledStar from '@/assets/Icons/FilledStar.svg'
+import UnfilledStar from '@/assets/Icons/UnfilledStar.svg'
+import { SvgProps } from 'react-native-svg';
+import { FC } from 'react';
 
 import { ThemedText } from "@/components/DefaultComponents/ThemedText";
 import { ThemedIcon } from '@/components/DefaultComponents/ThemedIcon';
@@ -23,7 +27,6 @@ export default function League() {
     const [contentLoaded, setContentLoaded] = useState(false);
     
     const [favoritieState, setFavoritieState] = useState(false);
-    const [starIcon, setStarIcon] = useState("star-outlined");
     
     const [selectedSeason, setSelectedSeason] = useState<number>();
     
@@ -59,10 +62,6 @@ export default function League() {
         setSelectedSeason(season);
     }
 
-    useEffect(() => {
-        favoritieState ? setStarIcon("star") : setStarIcon("star-outlined");
-    }, [favoritieState]);
-
     return (
 
         contentLoaded ? (
@@ -96,11 +95,12 @@ export default function League() {
                         />
                     <TouchableOpacity onPress={changeFavoritie}>
                         <ThemedIcon
-                            IconComponent={Entypo}
-                            name={starIcon}
+                            IconComponent={favoritieState ? FilledStar : UnfilledStar}
                             darkColor={Colors.dark.Red}
                             lightColor={Colors.light.Red}
                             style={styles.star}
+                            height={24}
+                            width={24}
                         />
                     </TouchableOpacity>
                 </View>

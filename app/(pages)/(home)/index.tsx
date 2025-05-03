@@ -2,6 +2,7 @@ import { StyleSheet, Dimensions, TextInput, View  } from 'react-native';
 import Entypo from '@expo/vector-icons/Entypo';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import EvilIcons from '@expo/vector-icons/EvilIcons';
+import FilledStar from '@/assets/Icons/FilledStar.svg'
 
 import { Colors } from '@/constants/Colors';
 import LeaguesSection from '@/components/leagues/LeaguesSection';
@@ -43,9 +44,9 @@ export default function Main() {
                             }
                         ]}
                         icon={{
-                            IconComponent: Entypo,
-                            name: 'star',
-                            size: 30,
+                            IconComponent: FilledStar,
+                            width: 30,
+                            height: 30,
                             style: styles.starIcon,
                             darkColor: Colors.dark.Red,
                             lightColor: Colors.light.Red
@@ -61,7 +62,7 @@ export default function Main() {
                         icon={{
                             IconComponent: FontAwesome5,
                             name: 'crown',
-                            size: 24,
+                            size: 23,
                             style: styles.crownIcon,
                             darkColor: Colors.dark.Red,
                             lightColor: Colors.light.Red
@@ -128,11 +129,11 @@ const styles = StyleSheet.create({
         paddingBottom: 100
     },
     starIcon: {
-        marginTop: 0,
-        paddingRight: 12
+        marginTop: 2,
+        marginRight: 5
     },
     crownIcon: {
-        marginTop: 4.5,
-        paddingRight: 12
+        marginTop: 5,
+        marginRight: 8
     }
 });

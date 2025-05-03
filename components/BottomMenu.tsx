@@ -71,7 +71,7 @@ export default function BottomMenu() {
                 <TouchableOpacity onPress={() => (changePage(0, "/Times"))}>
                     <View style={styles.item} >
                         <View style={[styles.selectedBackground, {backgroundColor: getBackgroundColor(0)}]}>
-                            <Shield fill={getIconColor(0)} width={60} height={30} />
+                            <Shield stroke={getIconColor(0)} strokeWidth={5} width={60} height={30} />
                         </View>
                         <ThemedText darkColor={getColor(0)}>Times</ThemedText>
                     </View>

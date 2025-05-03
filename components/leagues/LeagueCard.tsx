@@ -1,12 +1,14 @@
-import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Image, Pressable, StyleSheet, TouchableOpacity, View } from 'react-native';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import Entypo from '@expo/vector-icons/Entypo';
+import FilledStar from '@/assets/Icons/FilledStar.svg'
+import UnfilledStar from '@/assets/Icons/UnfilledStar.svg'
 
 import { ThemedIcon } from '../DefaultComponents/ThemedIcon';
 import { ThemedText } from '@/components/DefaultComponents/ThemedText';
 import { Colors } from '@/constants/Colors';
-import { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { router } from 'expo-router';
+import { SvgProps } from 'react-native-svg';
 
 export interface LeagueCardI {
     id: string
@@ -16,8 +18,6 @@ export interface LeagueCardI {
 }
 
 export default function LeagueCard({ id, image, name, favoritie }: LeagueCardI) {
-
-    const [starIcon, setStarIcon] = useState(favoritie ? "star" : "star-outlined");
     const [favoritieState, setFavoritieState] = useState(favoritie);
 
     const accessLeague = () => {
@@ -29,13 +29,8 @@ export default function LeagueCard({ id, image, name, favoritie }: LeagueCardI) 
         setFavoritieState(!favoritieState);
     }
 
-    useEffect(() => {
-        favoritieState ? setStarIcon("star") : setStarIcon("star-outlined");
-    }, [favoritieState]);
-
-
     return (
-        <TouchableOpacity onPress={accessLeague}>
+        <Pressable onPress={accessLeague}>
             <View style={styles.card}>
                 <View style={[styles.sideInfo, styles.leftInfo]}>
                     <Image source={{uri: image}} resizeMode="contain" style={styles.image}/>
@@ -44,11 +39,13 @@ export default function LeagueCard({ id, image, name, favoritie }: LeagueCardI) 
                 <View style={[styles.sideInfo, styles.rightInfo]}>
                     <TouchableOpacity onPress={changeFavoritie}>
                         <ThemedIcon
-                            IconComponent={Entypo}
-                            name={starIcon}
+                            IconComponent={favoritieState ? FilledStar : UnfilledStar}
                             darkColor={Colors.dark.Red}
                             lightColor={Colors.light.Red}
                             style={styles.star}
+                            key={id}
+                            width={24}
+                            height={24}
                         />
                     </TouchableOpacity>
                         <ThemedIcon
@@ -60,7 +57,7 @@ export default function LeagueCard({ id, image, name, favoritie }: LeagueCardI) 
                         />
                 </View>
             </View>
-        </TouchableOpacity>
+        </Pressable>
     );
 }
 
