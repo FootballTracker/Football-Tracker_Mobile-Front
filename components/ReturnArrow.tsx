@@ -31,9 +31,8 @@ export function ReturnArrow({ double } : ReturnArrowProps) {
 const styles = StyleSheet.create({
     backIcon: {
         marginLeft: 9,
-        paddingLeft: 12,
+        paddingHorizontal: 10.2,
         marginRight: 8,
-        paddingRight: 12,
         paddingTop: 5,
         paddingBottom: 5,
     },
