@@ -6,9 +6,8 @@ import UnfilledStar from '@/assets/Icons/UnfilledStar.svg'
 import { ThemedIcon } from '../DefaultComponents/ThemedIcon';
 import { ThemedText } from '@/components/DefaultComponents/ThemedText';
 import { Colors } from '@/constants/Colors';
-import { FC, useEffect, useState } from 'react';
+import { useState } from 'react';
 import { router } from 'expo-router';
-import { SvgProps } from 'react-native-svg';
 
 export interface LeagueCardI {
     id: string
@@ -21,7 +20,7 @@ export default function LeagueCard({ id, image, name, favoritie }: LeagueCardI) 
     const [favoritieState, setFavoritieState] = useState(favoritie);
 
     const accessLeague = () => {
-        router.push(`/(pages)/league/${id}` as any);
+        router.push(`/(pages)/${id}` as any);
     }
 
     const changeFavoritie = () => {
@@ -43,7 +42,6 @@ export default function LeagueCard({ id, image, name, favoritie }: LeagueCardI) 
                             darkColor={Colors.dark.Red}
                             lightColor={Colors.light.Red}
                             style={styles.star}
-                            key={id}
                             width={30}
                             height={22}
                         />

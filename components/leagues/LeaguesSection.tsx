@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
     titleSection: {
         display: "flex",
         flexDirection: "row",
+        paddingBottom: 1
     },
     sectionTitle: {
         fontFamily: "Kdam",
@@ -53,6 +54,7 @@ const styles = StyleSheet.create({
     },
     divisor: {
         height: .4,
+        // bottom: 3
     },
     favoritesInfoText: {
         textAlign: "center",

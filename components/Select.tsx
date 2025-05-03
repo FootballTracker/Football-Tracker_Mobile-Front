@@ -1,4 +1,4 @@
-import { TouchableOpacity, StyleSheet, Modal, View, Pressable, ViewProps, ScrollView } from "react-native"
+import { TouchableOpacity, StyleSheet, View, Pressable, ViewProps, ScrollView } from "react-native"
 import { useState } from "react"
 import { MaterialIcons } from "@expo/vector-icons"
 import { Colors } from "@/constants/Colors"

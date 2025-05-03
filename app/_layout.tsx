@@ -6,12 +6,11 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
 import 'react-native-reanimated';
 import { useColorScheme } from '@/hooks/useColorScheme';
-import { Dimensions, Platform, StatusBar as Status, View } from 'react-native';
+import { Dimensions, Platform, StatusBar as Status } from 'react-native';
 import { Host } from 'react-native-portalize';
 import { usePathname } from 'expo-router';
 
 import { Colors } from '@/constants/Colors';
-import { themedColor } from '@/hooks/useThemeColor';
 import { ThemedView } from '@/components/DefaultComponents/ThemedView';
 import { UserProvider } from '@/context/UserContext';
 
@@ -58,6 +57,7 @@ export default function RootLayout() {
                     <ThemedView  style={{ minHeight: windowHeight, top: statusBarHeight, }} >
                         <Stack screenOptions={{ headerShown: false }} >
                             <Stack.Screen name="(auth)" />
+                            <Stack.Screen name="(pages)" />
                         </Stack>
 
                         <StatusBar style='auto' backgroundColor={(pathname === '/Login' || pathname === '/Cadastro') ? Colors[colorScheme].LightBackground : Colors[colorScheme].DarkBackground}/>

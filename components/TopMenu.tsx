@@ -1,27 +1,23 @@
 import { StyleSheet, Dimensions, View, TouchableOpacity } from 'react-native';
 import { router } from 'expo-router';
 import { usePathname } from 'expo-router';
-import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
+import { usePage } from '@/context/PageContext';
+import { Colors } from "@/constants/Colors";
+import { useUserContext } from '@/context/UserContext';
 
 import { ThemedText } from "@/components/DefaultComponents/ThemedText";
 import { ThemedView } from "./DefaultComponents/ThemedView";
 import { ThemedImage } from './DefaultComponents/ThemedImage';
-import { Colors } from "@/constants/Colors";
 import { useEffect, useState } from 'react';
-import { ThemedIcon } from './DefaultComponents/ThemedIcon';
 import { ReturnArrow } from './ReturnArrow';
-import { useUserContext } from '@/context/UserContext';
 
 const windowWidth = Dimensions.get('window').width;
 
-interface MenuProps {
-    text: string
-}
-
-export default function TopMenu({ text }: MenuProps) {
+export default function TopMenu() {
     const pathname = usePathname();
     const [showBackButton, setShowBackButton] = useState(false);
     const { user } = useUserContext();
+    const { page } = usePage()
 
     const handleProfileClick = () => {
         if(user) router.navigate("/(pages)/Perfil");
@@ -29,7 +25,7 @@ export default function TopMenu({ text }: MenuProps) {
     }
 
     useEffect(() => {
-        if(pathname === "/" || pathname === "/Times" || pathname === "/Jogadores") setShowBackButton(false);
+        if(pathname === "/") setShowBackButton(false);
         else setShowBackButton(true);
     }, [pathname])
 
@@ -50,7 +46,7 @@ export default function TopMenu({ text }: MenuProps) {
                             />
                     }
                     <ThemedText style={styles.pageText} darkColor={Colors.dark.Text} lightColor={Colors.light.Text}>
-                        {text}
+                        {page}
                     </ThemedText>
                 </View>
                 

@@ -1,4 +1,4 @@
-import { StyleSheet, Modal, View, ViewProps, Animated, Dimensions } from "react-native"
+import { StyleSheet, Modal, View, ViewProps, Animated } from "react-native"
 import { useEffect, useRef } from "react"
 
 import { ThemedView, ThemedViewProps } from "./DefaultComponents/ThemedView"
