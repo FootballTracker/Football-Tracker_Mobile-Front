@@ -17,32 +17,35 @@ import { ThemedIcon } from "@/components/DefaultComponents/ThemedIcon";
 import { ThemedButton } from "@/components/DefaultComponents/ThemedButton";
 import { ReturnArrow } from "@/components/ReturnArrow";
 import { FormInput } from "@/components/FormInput";
+import { useUserContext } from "@/context/UserContext";
 
 //Consts
 const windowHeight = Dimensions.get('window').height;
-const user = z.object({
+const userData = z.object({
     user: z.string({message: 'Obrigatório'}).min(1, 'Obrigatório'),
     password: z.string({message: 'Obrigatório'}).min(8, 'Mínimo 8 caracteres').regex(new RegExp('(?=.*[a-z])'), 'Deve conter uma letra minúscula').regex(new RegExp('(?=.*[A-Z])'), 'Deve conter uma letra maiúscula').regex(new RegExp('(?=.*[0-9])'), 'Deve conter um número').regex(new RegExp('(?=.*[!@#$%^&*()~`´])'), 'Deve conter um caractere especial'),
 })
 
 //Types
-type user = z.infer<typeof user>
+type userData = z.infer<typeof userData>
 
 export default function Login() {
-    const { control, handleSubmit, formState: {errors} } = useForm<user>({
-        resolver: zodResolver(user)
+    const { user, login } = useUserContext();
+
+    const { control, handleSubmit, formState: {errors} } = useForm<userData>({
+        resolver: zodResolver(userData)
     });
 
-    const handleForm = async ({user, password}:user) => {
+    const handleForm = async ({user, password}:userData) => {
         await api.post('auth/signin', {
             username: user,
             password: password
         }).then((response: any) => {
-            alert('foi');
-            console.log(response);
-        }).catch((response: any) => {
-            alert('n foi');
-            console.log(response);
+            login(response.data);
+            router.replace('/');
+        }).catch((e: any) => {
+            if(e.response.data.detail) alert(e.response.data.detail);
+            else alert('Ocorreu algum erro.');
         })
     }
 

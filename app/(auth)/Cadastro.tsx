@@ -5,9 +5,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { router } from "expo-router";
 import { Colors } from "@/constants/Colors";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import api from "@/lib/Axios"
 import { z } from 'zod';
+import { UserContext, useUserContext } from "@/context/UserContext";
 
 //Components
 import LoginLogo from "@/components/LoginLogo"
@@ -19,7 +20,7 @@ import { FormInput } from "@/components/FormInput";
 
 //Consts
 const windowHeight = Dimensions.get('window').height;
-const user = z.object({
+const userData = z.object({
     user: z.string({message: 'Obrigatório'}).min(1, 'Obrigatório'),
     email: z.string({message: 'Obrigatório'}).email('Insira um email válido'),
     password: z.string({message: 'Obrigatório'}).min(8, 'Mínimo 8 caracteres').regex(new RegExp('(?=.*[a-z])'), 'Deve conter uma letra minúscula').regex(new RegExp('(?=.*[A-Z])'), 'Deve conter uma letra maiúscula').regex(new RegExp('(?=.*[0-9])'), 'Deve conter um número').regex(new RegExp('(?=.*[!@#$%^&*()~`´])'), 'Deve conter um caractere especial'),
@@ -27,26 +28,30 @@ const user = z.object({
 }).refine(({password, confirmPassword}) => {return password === confirmPassword}, {message: 'As senhas não são iguais', path: ['confirmPassword']})
 
 //Types
-type user = z.infer<typeof user>
+type userData = z.infer<typeof userData>
 
 export default function Cadastro() {
-    const [responseText, setResponseText] = useState('textin');
+    const { user, login } = useUserContext();
     
-    const { control, handleSubmit, formState: {errors} } = useForm<user>({
-        resolver: zodResolver(user)
+    const { control, handleSubmit, formState: {errors} } = useForm<userData>({
+        resolver: zodResolver(userData)
     });
 
-    const handleForm = async ({user, email, password, confirmPassword}:user) => {
+    useEffect(() => {
+        console.log(user);
+    }, []);
+
+    const handleForm = async ({user, email, password, confirmPassword}:userData) => {
         await api.post('auth/signup', {
             username: user,
             email: email,
             password: password
         }).then((response: any) => {
-            alert('foi');
-            console.log(response);
-        }).catch((response: any) => {
-            alert('n foi');
-            console.log(response);
+            login(response.data);
+            router.replace('/');
+        }).catch((e: any) => {
+            if(e.response.data.detail) alert(e.response.data.detail);
+            else alert('Ocorreu algum erro.');
         })
     }
 
@@ -70,7 +75,6 @@ export default function Cadastro() {
                             <FormInput placeHolder="Confirmar Senha" name="confirmPassword" control={control} errors={errors} isPassword={true} />
                             <ThemedButton style={{width: '100%'}} IconComponent={{Icon: Feather, name: 'plus', size: 25}} backgroundColor="Green" textColor="LightBackground" title="Cadastrar" handleClick={handleSubmit(handleForm)} />
                         </View>
-                        {/* <ThemedText>{responseText}</ThemedText> */}
 
                         <ThemedText style={styles.loginText}>
                             Já tem uma conta?

@@ -10,6 +10,7 @@ import { Colors } from "@/constants/Colors";
 import { useEffect, useState } from 'react';
 import { ThemedIcon } from './DefaultComponents/ThemedIcon';
 import { ReturnArrow } from './ReturnArrow';
+import { useUserContext } from '@/context/UserContext';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -18,9 +19,14 @@ interface MenuProps {
 }
 
 export default function TopMenu({ text }: MenuProps) {
-
     const pathname = usePathname();
     const [showBackButton, setShowBackButton] = useState(false);
+    const { user } = useUserContext();
+
+    const handleProfileClick = () => {
+        if(user) router.navigate("/(pages)/Perfil");
+        else router.navigate("/(auth)/Login")
+    }
 
     useEffect(() => {
         if(pathname === "/" || pathname === "/Times" || pathname === "/Jogadores") setShowBackButton(false);
@@ -49,7 +55,7 @@ export default function TopMenu({ text }: MenuProps) {
                 </View>
                 
                 
-                <TouchableOpacity onPress={() => router.navigate("/(auth)/Login")}>
+                <TouchableOpacity onPress={handleProfileClick}>
                     <ThemedImage 
                         source={{
                             light: require("@/assets/images/DarkUserIcon.png"),

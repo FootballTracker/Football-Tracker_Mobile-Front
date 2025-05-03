@@ -10,9 +10,9 @@ import { Dimensions, Platform, StatusBar as Status, View } from 'react-native';
 import { usePathname } from 'expo-router';
 
 import { Colors } from '@/constants/Colors';
+import { themedColor } from '@/hooks/useThemeColor';
 import { ThemedView } from '@/components/DefaultComponents/ThemedView';
-
-import { Host } from "react-native-portalize"
+import { UserProvider } from '@/context/UserContext';
 
 const windowHeight = Dimensions.get('window').height;
 
@@ -41,9 +41,9 @@ export default function RootLayout() {
     }, []);
 
     useEffect(() => {
-    if (loaded) {
-        SplashScreen.hideAsync();
-    }
+        if (loaded) {
+            SplashScreen.hideAsync();
+        }
     }, [loaded]);
 
     if (!loaded) {
@@ -51,18 +51,17 @@ export default function RootLayout() {
     }
 
     return (
-        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-            <Host>
-            <ThemedView  style={{ minHeight: windowHeight, top: statusBarHeight, }} >
+        <UserProvider>
+            <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+                <ThemedView  style={{ minHeight: windowHeight, top: statusBarHeight, }} >
+                    <Stack screenOptions={{ headerShown: false }} >
+                        <Stack.Screen name="(auth)" />
+                    </Stack>
 
-                <Stack screenOptions={{ headerShown: false }} >
-                    <Stack.Screen name="(auth)" />
-                </Stack>
+                    <StatusBar style='auto' backgroundColor={(pathname === '/Login' || pathname === '/Cadastro') ? Colors[colorScheme].LightBackground : Colors[colorScheme].DarkBackground}/>
 
-                <StatusBar style='auto' backgroundColor={(pathname === '/Login' || pathname === '/Cadastro') ? Colors[colorScheme].LightBackground : Colors[colorScheme].DarkBackground}/>
-
-            </ThemedView>
-            </Host>
-        </ThemeProvider>
+                </ThemedView>
+            </ThemeProvider>
+        </UserProvider>
     );
 }

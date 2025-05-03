@@ -13,9 +13,9 @@
       "supportsTablet": true
     },
     "splash": {
-        "image": "./assets/images/RedWhiteLogo.png",
-        "backgroundColor": "#191A1C",
-        "resizeMode": "contain"
+      "image": "./assets/images/RedWhiteLogo.png",
+      "backgroundColor": "#191A1C",
+      "resizeMode": "contain"
     },
     "android": {
       "splash": {
@@ -38,7 +38,8 @@
           "backgroundColor": "#191A1C"
         }
       ],
-      "expo-font"
+      "expo-font",
+      "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true
