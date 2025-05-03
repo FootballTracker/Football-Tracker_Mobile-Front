@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         alignItems: "center",
         width: windowWidth+2,
-        height: 70,
+        height: 65,
         left: -1,
         borderBottomLeftRadius: 12,
         borderBottomRightRadius: 12,
@@ -97,12 +97,12 @@ const styles = StyleSheet.create({
         marginLeft: 5
     },
     pageText: {
-        fontSize: 24,
+        fontSize: 22,
         fontFamily: "Kdam",
     },
     logo: {
-        width: 60,
-        height: 40,
+        width: 57,
+        height: 37,
     },
     userImage: {
         width: 60,

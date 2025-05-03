@@ -54,7 +54,7 @@ export default function League() {
 
 
     const changeFavoritie = () => {
-        alert("trocar favorito");
+        // alert("trocar favorito");
         setFavoritieState(!favoritieState);
     }
 

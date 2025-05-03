@@ -39,7 +39,7 @@ export default function BottomMenu() {
             justifyContent: "space-around",
             alignItems: "center",
             width: windowWidth+2,
-            height: 100,
+            height: 95,
             left: -1,
             bottom: -1,
             borderTopLeftRadius: 12,

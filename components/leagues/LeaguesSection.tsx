@@ -1,10 +1,11 @@
 import { StyleSheet, View } from 'react-native'
+import { Colors } from '@/constants/Colors'
 
 import { ThemedView } from '../DefaultComponents/ThemedView'
 import { ThemedIcon, ThemedIconProps } from '../DefaultComponents/ThemedIcon'
 import { ThemedText } from '@/components/DefaultComponents/ThemedText'
-import { Colors } from '@/constants/Colors'
 import LeagueCard, { LeagueCardI} from './LeagueCard'
+import { Feather } from '@expo/vector-icons'
 
 
 interface LeaguesSectionProps {
@@ -23,10 +24,16 @@ export default function LeaguesSection({ text, leagues, icon, ...rest }: Leagues
                 </ThemedText>
             </View>
             <ThemedView darkColor={Colors.dark.Red} lightColor={Colors.light.Red} style={styles.divisor}/>
-            {leagues && (
+            {leagues?.length ? (
                 leagues.map((league, index) => (
                     <LeagueCard id={league.id} image={league.image} name={league.name} favoritie={league.favoritie} key={index}/>
                 ))
+            ) : (
+                <ThemedText style={styles.favoritesInfoText} darkColor={Colors.dark.DarkerText} lightColor={Colors.light.DarkerText}>
+                    <ThemedIcon IconComponent={Feather} name="info" size={15} darkColor={Colors.dark.DarkerText} lightColor={Colors.light.DarkerText} />
+                    {' '}
+                    Favorite uma liga para que ela apareça aqui.
+                </ThemedText>
             )}
         </View>
     );
@@ -42,9 +49,14 @@ const styles = StyleSheet.create({
     },
     sectionTitle: {
         fontFamily: "Kdam",
-        fontSize: 21,
+        fontSize: 18,
     },
     divisor: {
-        height: 1,
-    }
+        height: .4,
+    },
+    favoritesInfoText: {
+        textAlign: "center",
+        marginTop: 20,
+        fontSize: 14,
+    },
 });

@@ -1,96 +1,159 @@
-import { StyleSheet, Dimensions, TextInput, View  } from 'react-native';
-import Entypo from '@expo/vector-icons/Entypo';
+import { StyleSheet, Dimensions, View  } from 'react-native';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
-import EvilIcons from '@expo/vector-icons/EvilIcons';
 import FilledStar from '@/assets/Icons/FilledStar.svg'
-
 import { Colors } from '@/constants/Colors';
+
 import LeaguesSection from '@/components/leagues/LeaguesSection';
-import { ThemedText } from '@/components/DefaultComponents/ThemedText';
 import { ThemedScrollView } from '@/components/DefaultComponents/ThemedScrollView';
+import { ThemedInput } from '@/components/DefaultComponents/ThemedInput';
 
 const windowWidth = Dimensions.get('window').width;
 
 export default function Main() {
     return (
         <ThemedScrollView style={styles.background}>
-                <View style={styles.searchBar}>
-                    <EvilIcons name="search" size={24} color={Colors.dark.Text} />
-                    <TextInput style={styles.input} numberOfLines={1}/>
-                </View>
+            <ThemedInput isSearch={true} numberOfLines={1} style={styles.searchBar} />
 
-                <View style={styles.content}>
+            <View style={styles.content}>
 
-                    <LeaguesSection 
-                        text='Favoritas'
-                        leagues={[
-                            {
-                                id: '71',
-                                image: "https://media.api-sports.io/football/leagues/71.png",
-                                name: "Serie A",
-                                favoritie: true
-                            },
-                            {
-                                id: '140',
-                                image: "https://media.api-sports.io/football/leagues/140.png",
-                                name: "La Liga",
-                                favoritie: true
-                            },
-                            {
-                                id: '39',
-                                image: "https://media.api-sports.io/football/leagues/39.png",
-                                name: "Premier League",
-                                favoritie: true
-                            }
-                        ]}
-                        icon={{
-                            IconComponent: FilledStar,
-                            width: 30,
-                            height: 30,
-                            style: styles.starIcon,
-                            darkColor: Colors.dark.Red,
-                            lightColor: Colors.light.Red
-                        }}
-                    />
+                <LeaguesSection 
+                    text='Favoritas'
+                    leagues={[
+                        {
+                            id: '71',
+                            image: "https://media.api-sports.io/football/leagues/71.png",
+                            name: "Serie A",
+                            favoritie: true
+                        },
+                        {
+                            id: '140',
+                            image: "https://media.api-sports.io/football/leagues/140.png",
+                            name: "La Liga",
+                            favoritie: true
+                        },
+                        {
+                            id: '39',
+                            image: "https://media.api-sports.io/football/leagues/39.png",
+                            name: "Premier League",
+                            favoritie: true
+                        }
+                    ]}
+                    icon={{
+                        IconComponent: FilledStar,
+                        width: 27,
+                        height: 27,
+                        style: styles.starIcon,
+                        darkColor: Colors.dark.Red,
+                        lightColor: Colors.light.Red
+                    }}
+                />
 
-                    <ThemedText style={{textAlign: "center", marginBottom: 30}}>
-                        Favorite uma liga para que ela apareça aqui.
-                    </ThemedText>
-
-                    <LeaguesSection 
-                        text='Principais'
-                        icon={{
-                            IconComponent: FontAwesome5,
-                            name: 'crown',
-                            size: 23,
-                            style: styles.crownIcon,
-                            darkColor: Colors.dark.Red,
-                            lightColor: Colors.light.Red
-                        }}
-                        leagues={[
-                            {
-                                id: '71',
-                                image: "https://media.api-sports.io/football/leagues/71.png",
-                                name: "Serie A",
-                                favoritie: false
-                            },
-                            {
-                                id: '140',
-                                image: "https://media.api-sports.io/football/leagues/140.png",
-                                name: "La Liga",
-                                favoritie: false
-                            },
-                            {
-                                id: '39',
-                                image: "https://media.api-sports.io/football/leagues/39.png",
-                                name: "Premier League",
-                                favoritie: false
-                            }
-                        ]}
-                    />
-                </View>
+                <LeaguesSection 
+                    text='Principais'
+                    icon={{
+                        IconComponent: FontAwesome5,
+                        name: 'crown',
+                        size: 20,
+                        style: styles.crownIcon,
+                        darkColor: Colors.dark.Red,
+                        lightColor: Colors.light.Red
+                    }}
+                    leagues={[
+                        {
+                            id: '71',
+                            image: "https://media.api-sports.io/football/leagues/71.png",
+                            name: "Serie A",
+                            favoritie: false
+                        },
+                        {
+                            id: '140',
+                            image: "https://media.api-sports.io/football/leagues/140.png",
+                            name: "La Liga",
+                            favoritie: false
+                        },
+                        {
+                            id: '39',
+                            image: "https://media.api-sports.io/football/leagues/39.png",
+                            name: "Premier League",
+                            favoritie: false
+                        },
+                        {
+                            id: '71',
+                            image: "https://media.api-sports.io/football/leagues/71.png",
+                            name: "Serie A",
+                            favoritie: false
+                        },
+                        {
+                            id: '140',
+                            image: "https://media.api-sports.io/football/leagues/140.png",
+                            name: "La Liga",
+                            favoritie: false
+                        },
+                        {
+                            id: '39',
+                            image: "https://media.api-sports.io/football/leagues/39.png",
+                            name: "Premier League",
+                            favoritie: false
+                        },
+                        {
+                            id: '71',
+                            image: "https://media.api-sports.io/football/leagues/71.png",
+                            name: "Serie A",
+                            favoritie: false
+                        },
+                        {
+                            id: '140',
+                            image: "https://media.api-sports.io/football/leagues/140.png",
+                            name: "La Liga",
+                            favoritie: false
+                        },
+                        {
+                            id: '39',
+                            image: "https://media.api-sports.io/football/leagues/39.png",
+                            name: "Premier League",
+                            favoritie: false
+                        },
+                        {
+                            id: '71',
+                            image: "https://media.api-sports.io/football/leagues/71.png",
+                            name: "Serie A",
+                            favoritie: false
+                        },
+                        {
+                            id: '140',
+                            image: "https://media.api-sports.io/football/leagues/140.png",
+                            name: "La Liga",
+                            favoritie: false
+                        },
+                        {
+                            id: '39',
+                            image: "https://media.api-sports.io/football/leagues/39.png",
+                            name: "Premier League",
+                            favoritie: false
+                        },
+                        {
+                            id: '71',
+                            image: "https://media.api-sports.io/football/leagues/71.png",
+                            name: "Serie A",
+                            favoritie: false
+                        },
+                        {
+                            id: '140',
+                            image: "https://media.api-sports.io/football/leagues/140.png",
+                            name: "La Liga",
+                            favoritie: false
+                        },
+                        {
+                            id: '39',
+                            image: "https://media.api-sports.io/football/leagues/39.png",
+                            name: "Premier League",
+                            favoritie: false
+                        },
+                        
+                    ]}
+                />
+            </View>
         </ThemedScrollView>
-        
     )
 }
 
@@ -99,34 +162,16 @@ const styles = StyleSheet.create({
         paddingTop: 25,
     },
     searchBar: {
-        width: windowWidth * 0.9,
-        height: 42,
-        marginLeft: "auto",
-        marginRight: "auto",
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "flex-start",
-        alignItems: "center",
-        backgroundColor: Colors.dark.LighterBackground,
-        borderColor: "#000000",
-        borderWidth: 0.7,
-        borderRadius: 14,
-        paddingLeft: 10,
-        paddingRight: 10
-    },
-    input: {
-        color: Colors.dark.Text,
-        flex: 1,
-        height: "80%",
-        paddingLeft: 5,
-        paddingRight: 5,
+        width: windowWidth*0.9,
+        marginHorizontal: 'auto',
+        height: 40,
     },
     content: {
-        top: 30,
-        width: windowWidth*0.86,
+        top: 20,
+        width: windowWidth*0.9,
         marginLeft: "auto",
         marginRight: "auto",
-        paddingBottom: 100
+        paddingBottom: 30
     },
     starIcon: {
         marginTop: 2,

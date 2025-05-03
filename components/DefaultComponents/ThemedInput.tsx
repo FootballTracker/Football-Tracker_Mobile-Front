@@ -2,6 +2,7 @@
 import { StyleSheet, TextInput, Dimensions, View, TouchableOpacity, TextInputProps } from 'react-native';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import Feather from '@expo/vector-icons/Feather';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Colors } from '@/constants/Colors';
 import { useState } from 'react';
 import { StyleProps } from 'react-native-reanimated';
@@ -13,10 +14,11 @@ type ThemedInputProps = {
     onChangeText?: (text: string) => void;
     onBlur?: () => void;
     isPassword?: boolean;
+    isSearch?: boolean;
     style?: StyleProps
 } & TextInputProps;
 
-export function ThemedInput({ placeholder, value, onChangeText, onBlur, isPassword = false, style, ...rest }: ThemedInputProps) {
+export function ThemedInput({ placeholder, value, onChangeText, onBlur, isPassword = false, isSearch = false, style, ...rest }: ThemedInputProps) {
     const theme = useColorScheme() ?? 'light';
     const windowWidth = Dimensions.get('window').width;
     const [showPassword, setShowPassword] = useState(false);
@@ -44,6 +46,9 @@ export function ThemedInput({ placeholder, value, onChangeText, onBlur, isPasswo
 
     return (
         <View style={[styles.container, style]}>
+            {isSearch && (
+                <MaterialIcons name='search' size={20} color={Colors[theme].DarkerText} style={{marginRight: 5}} />
+            )}
             <TextInput style={styles.input} placeholder={placeholder} placeholderTextColor={Colors[theme].DarkerText} value={value} onChangeText={onChangeText} onBlur={onBlur} secureTextEntry={isPassword && !showPassword} {...rest} />
             {isPassword && value && (
                 <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>

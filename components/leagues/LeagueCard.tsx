@@ -25,7 +25,7 @@ export default function LeagueCard({ id, image, name, favoritie }: LeagueCardI) 
     }
 
     const changeFavoritie = () => {
-        alert("trocar favorito");
+        // alert("trocar favorito");
         setFavoritieState(!favoritieState);
     }
 
@@ -44,8 +44,8 @@ export default function LeagueCard({ id, image, name, favoritie }: LeagueCardI) 
                             lightColor={Colors.light.Red}
                             style={styles.star}
                             key={id}
-                            width={24}
-                            height={24}
+                            width={30}
+                            height={22}
                         />
                     </TouchableOpacity>
                         <ThemedIcon
@@ -53,7 +53,7 @@ export default function LeagueCard({ id, image, name, favoritie }: LeagueCardI) 
                             name='keyboard-arrow-right'
                             darkColor={Colors.dark.Red}
                             lightColor={Colors.light.Red}
-                            size={28}
+                            size={25}
                         />
                 </View>
             </View>
@@ -68,8 +68,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "space-between",
         marginTop: 18,
-        marginLeft: 5,
-        marginRight: 5,
+        marginHorizontal: 5,
     },
     sideInfo: {
         display: "flex",
@@ -77,8 +76,8 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     image: {
-        width: 40,
-        height: 40,
+        width: 37,
+        height: 37,
         marginRight: 15
     },
     leftInfo: {
@@ -89,6 +88,8 @@ const styles = StyleSheet.create({
         marginTop: 0
     },
     text: {
+        fontFamily: 'Kdam',
+        fontSize: 15,
         flex: 1
     },
     star: {
