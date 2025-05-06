@@ -2,12 +2,12 @@ import { Image, Pressable, StyleSheet, TouchableOpacity, View } from 'react-nati
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import FilledStar from '@/assets/Icons/FilledStar.svg'
 import UnfilledStar from '@/assets/Icons/UnfilledStar.svg'
+import { useState } from 'react';
+import { router } from 'expo-router';
+import { Colors } from '@/constants/Colors';
 
 import { ThemedIcon } from '../DefaultComponents/ThemedIcon';
 import { ThemedText } from '@/components/DefaultComponents/ThemedText';
-import { Colors } from '@/constants/Colors';
-import { useState } from 'react';
-import { router } from 'expo-router';
 
 export interface LeagueCardI {
     id: string
@@ -20,7 +20,7 @@ export default function LeagueCard({ id, image, name, favoritie }: LeagueCardI) 
     const [favoritieState, setFavoritieState] = useState(favoritie);
 
     const accessLeague = () => {
-        router.push(`/(pages)/${id}` as any);
+        router.push(`/(pages)/league/${id}` as any);
     }
 
     const changeFavoritie = () => {

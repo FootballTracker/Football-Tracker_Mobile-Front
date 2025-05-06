@@ -13,9 +13,9 @@ import { CustomTabBar } from '@/components/CustomTabBar';
 import { ThemedView } from '@/components/DefaultComponents/ThemedView';
 
 //scenes to render
-import LigaPartidas from '../../components/leagues/pagesComponents/LigaPartidas';
-import LigaClassificacao from '../../components/leagues/pagesComponents/LigaClassificacao';
-import LigaRankings from '../../components/leagues/pagesComponents/LigaRankings';
+import LigaPartidas from '../../../components/leagues/pagesComponents/LigaPartidas';
+import LigaClassificacao from '../../../components/leagues/pagesComponents/LigaClassificacao';
+import LigaRankings from '../../../components/leagues/pagesComponents/LigaRankings';
 
 export default function League() {
     const { leagueId } = useLocalSearchParams();
