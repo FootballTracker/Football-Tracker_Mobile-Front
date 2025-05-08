@@ -69,7 +69,7 @@ export const Menu: React.FC<TabBarProps<any>> = ({ navigationState, jumpTo }) =>
         },
         indicator: {
             position: 'absolute',
-            top: 16.5,
+            top: 17,
         },
         indicatorChildren: {
             height: 35,

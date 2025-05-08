@@ -50,51 +50,51 @@ export default function Login() {
     }
 
     return (
-        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} keyboardVerticalOffset={0} >
-            <ScrollView>
-                <ThemedView style={styles.mainBlock}>
-                    <View style={{display: 'flex', flexDirection: "row", marginLeft: 5, position: 'absolute', top: 20}}>
-                        <ReturnArrow />
-                    </View>
-                    
-                    <LoginLogo />
-
-                    <View style={styles.form}>
-                        <ThemedText style={styles.titleText}>Login</ThemedText>
-                        <ThemedText style={styles.infoText}><ThemedIcon IconComponent={Feather} name="info" size={15} /> Faça login para personalizar sua experiência com jogadores, ligas e times favoritos.</ThemedText>
-        
-                        <View style={{width: '80%'}}>
-                            <FormInput placeHolder="Usuário ou Email" name="user" control={control} errors={errors}  />
-                            <FormInput placeHolder="Senha" name="password" isPassword control={control} errors={errors}  />
-                            <ThemedButton style={{width: '100%'}} IconComponent={{Icon: Ionicons, name: 'enter-outline'}} backgroundColor="Green" textColor="LightBackground" title="Entrar" handleClick={handleSubmit(handleForm)} />
+            <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} keyboardVerticalOffset={0}>
+                <ScrollView>
+                    <ThemedView style={[styles.background]}>
+                        <View style={{display: 'flex', flexDirection: "row", marginLeft: 5, position: 'absolute', top: 20}}>
+                            <ReturnArrow />
                         </View>
                         
-                        <ThemedText style={styles.registerText}>
-                            Ainda não tem uma conta?
-                            {'  '}
-                            <ThemedText
-                                style={styles.registerText}
-                                onPress={() => router.push('/Cadastro')}
-                                darkColor={Colors.dark.Green}
-                                lightColor={Colors.light.Green}
-                            >
-                                Cadastre-se
+                        <LoginLogo />
+
+                        <View style={styles.form}>
+                            <ThemedText style={styles.titleText}>Login</ThemedText>
+                            <ThemedText style={styles.infoText}><ThemedIcon IconComponent={Feather} name="info" size={15} /> Faça login para personalizar sua experiência com jogadores, ligas e times favoritos.</ThemedText>
+            
+                            <View style={{width: '80%'}}>
+                                <FormInput placeHolder="Usuário ou Email" name="user" control={control} errors={errors}  />
+                                <FormInput placeHolder="Senha" name="password" isPassword control={control} errors={errors}  />
+                                <ThemedButton style={{width: '100%'}} IconComponent={{Icon: Ionicons, name: 'enter-outline'}} backgroundColor="Green" textColor="LightBackground" title="Entrar" handleClick={handleSubmit(handleForm)} />
+                            </View>
+                            
+                            <ThemedText style={styles.registerText}>
+                                Ainda não tem uma conta?
+                                {'  '}
+                                <ThemedText
+                                    style={styles.registerText}
+                                    onPress={() => router.push('/Cadastro')}
+                                    darkColor={Colors.dark.Green}
+                                    lightColor={Colors.light.Green}
+                                >
+                                    Cadastre-se
+                                </ThemedText>
                             </ThemedText>
-                        </ThemedText>
-                    </View>
-                </ThemedView>
-            </ScrollView>
-        </KeyboardAvoidingView>
+                        </View>
+                    </ThemedView>
+                </ScrollView>
+            </KeyboardAvoidingView>
     )
 }
 
 const styles = StyleSheet.create({
-    mainBlock: {
+    background: {
         display: 'flex',
         justifyContent: 'space-evenly',
         minHeight: windowHeight,
         paddingBottom: 20,
-        paddingTop: 20,
+        paddingTop: 25,
     },
     titleText: {
         fontFamily: 'Koulen',

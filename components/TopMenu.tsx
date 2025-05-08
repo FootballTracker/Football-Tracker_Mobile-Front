@@ -17,11 +17,15 @@ export default function TopMenu() {
     const pathname = usePathname();
     const [showBackButton, setShowBackButton] = useState(false);
     const { user } = useUserContext();
-    const { page } = usePage()
+    const { page, setPage } = usePage()
+    const [previousPage, setPreviousPage] = useState<string | null>("2");
 
     const handleProfileClick = () => {
-        if(user) router.navigate("/(pages)/Perfil");
-        else router.navigate("/(auth)/Login")
+        if(user) {
+            setPreviousPage(page);
+            router.navigate("/(pages)/Perfil");
+            setPage("Perfil");
+        } else router.navigate("/(auth)/Login")
     }
 
     useEffect(() => {
@@ -35,7 +39,7 @@ export default function TopMenu() {
                 
                 <View style={styles.leftInfo}>
                     {showBackButton ?
-                        <ReturnArrow />
+                        <ReturnArrow changePage={{pageName: previousPage, setPageName: setPreviousPage, setPage: setPage}} />
                     : 
                         <ThemedImage 
                             source={{
@@ -51,17 +55,17 @@ export default function TopMenu() {
                 </View>
                 
                 
-                <TouchableOpacity onPress={handleProfileClick}>
-                    <ThemedImage 
-                        source={{
-                            light: require("@/assets/images/DarkUserIcon.png"),
-                            dark: require("@/assets/images/LightUserIcon.png")
-                        }}
-                        style={styles.userImage}
-                    />
-                </TouchableOpacity>
-                
-                
+                {
+                    <TouchableOpacity onPress={handleProfileClick}>
+                        <ThemedImage 
+                            source={{
+                                light: require("@/assets/images/DarkUserIcon.png"),
+                                dark: require("@/assets/images/LightUserIcon.png")
+                            }}
+                            style={styles.userImage}
+                        />
+                    </TouchableOpacity>
+                }
 
             </ThemedView>
         </ThemedView>
