@@ -1,16 +1,19 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
+import { router } from 'expo-router';
 
 import { ThemedText } from "@/components/DefaultComponents/ThemedText";
-import { ThemedView } from "../../../components/DefaultComponents/ThemedView";
+import { ThemedView } from '../DefaultComponents/ThemedView'; 
 import { Colors } from "@/constants/Colors";
 
 const windowHeight = Dimensions.get('window').height;
-const windowWidth = Dimensions.get('window').width;
 
-export default function Jogadores() {
+export default function TimesTeste() {
     return (
         <ThemedView lightColor={Colors.light.LightBackground} darkColor={Colors.dark.LightBackground} style={styles.background}>
-            <ThemedText>Jogadores</ThemedText>
+            <ThemedText>Times</ThemedText>
+            <TouchableOpacity onPress={() => router.navigate("/(pages)/Time")}>
+                <ThemedText>Ir para Time</ThemedText>
+            </TouchableOpacity>
         </ThemedView>
     );
 }

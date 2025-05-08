@@ -4,17 +4,16 @@ import { Colors } from '@/constants/Colors'
 import { ThemedView } from '../DefaultComponents/ThemedView'
 import { ThemedIcon, ThemedIconProps } from '../DefaultComponents/ThemedIcon'
 import { ThemedText } from '@/components/DefaultComponents/ThemedText'
-import LeagueCard, { LeagueCardI} from './LeagueCard'
-import { Feather } from '@expo/vector-icons'
+import MatchCard, { MatchCardI } from './MatchCard'
 
 
 interface LeaguesSectionProps {
     text: string
-    leagues?: LeagueCardI[]
+    matches: MatchCardI[]
     icon: ThemedIconProps
 };
 
-export default function LeaguesSection({ text, leagues, icon, ...rest }: LeaguesSectionProps) {
+export default function MatchSection({ text, matches, icon, ...rest }: LeaguesSectionProps) {
     return (
         <View style={styles.section}>
             <View style={styles.titleSection}>
@@ -24,17 +23,9 @@ export default function LeaguesSection({ text, leagues, icon, ...rest }: Leagues
                 </ThemedText>
             </View>
             <ThemedView darkColor={Colors.dark.Red} lightColor={Colors.light.Red} style={styles.divisor}/>
-            {leagues?.length ? (
-                leagues.map((league, index) => (
-                    <LeagueCard id={league.id} image={league.image} name={league.name} favoritie={league.favoritie} key={index}/>
-                ))
-            ) : (
-                <ThemedText style={styles.favoritesInfoText} darkColor={Colors.dark.DarkerText} lightColor={Colors.light.DarkerText}>
-                    <ThemedIcon IconComponent={Feather} name="info" size={15} darkColor={Colors.dark.DarkerText} lightColor={Colors.light.DarkerText} />
-                    {' '}
-                    Favorite uma liga para que ela apareça aqui.
-                </ThemedText>
-            )}
+            {matches.map((matche, index) => (
+                    <MatchCard {...matche} key={index}/>
+            ))}
         </View>
     );
 }
@@ -54,11 +45,6 @@ const styles = StyleSheet.create({
     },
     divisor: {
         height: .4,
-        // bottom: 3
-    },
-    favoritesInfoText: {
-        textAlign: "center",
-        marginTop: 20,
-        fontSize: 14,
+        bottom: 3
     },
 });

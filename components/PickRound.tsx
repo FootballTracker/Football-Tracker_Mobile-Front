@@ -1,4 +1,4 @@
-import { TouchableOpacity, StyleSheet, Modal, View, Pressable, ViewProps, Dimensions, ScrollView } from "react-native"
+import { TouchableOpacity, StyleSheet, View, Pressable, ViewProps, Dimensions, ScrollView } from "react-native"
 import { useState } from "react"
 import { MaterialIcons } from "@expo/vector-icons"
 import { Colors } from "@/constants/Colors"
@@ -6,8 +6,6 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 
 import { ThemedText } from "./DefaultComponents/ThemedText"
 import { ThemedIcon } from "./DefaultComponents/ThemedIcon"
-import { ThemedView } from "./DefaultComponents/ThemedView"
-import { ThemedButton } from "./DefaultComponents/ThemedButton"
 import { ModalComponent } from "./ModalComponent";
 
 const windowWidth = Dimensions.get('window').width;

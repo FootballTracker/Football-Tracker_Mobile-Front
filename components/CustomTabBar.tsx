@@ -76,6 +76,7 @@ export const CustomTabBar: React.FC<TabBarProps<any>> = ({ navigationState, jump
 const styles = StyleSheet.create({
     wrapper: {
         position: 'relative',
+        paddingBottom: 2
     },
     tabBar: {
         flexDirection: 'row',
@@ -85,7 +86,6 @@ const styles = StyleSheet.create({
     tabItem: {
         flex: 1,
         paddingTop: 1,
-        paddingBottom: 1,
         alignItems: 'center',
         borderRightWidth: 0.3,
         borderColor: Colors.dark.DarkerText,

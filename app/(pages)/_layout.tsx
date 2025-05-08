@@ -1,46 +1,24 @@
-import { Stack, Tabs } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { Stack } from 'expo-router';
 import 'react-native-reanimated';
-import { View, Dimensions } from 'react-native';
-import { usePathname } from 'expo-router';
+import { PageProvider } from '@/context/PageContext';
 
 import TopMenu from '@/components/TopMenu';
+import { ThemedView } from '@/components/DefaultComponents/ThemedView';
 
 export default function RootLayout() {
-    const [page, setPage] = useState("Ligas");
-    const pathname = usePathname();
-
-    useEffect(() => {
-        switch (pathname) {
-            case "/":
-                setPage("Ligas");
-                break;
-
-            case "/Times":
-                setPage("Times");
-                break;
-
-            case "/Jogadores":
-                setPage("Jogadores");
-                break;
-            
-            case "/Perfil":
-                setPage("Perfil");
-        
-            default:
-                break;
-        }
-
-    }, [pathname])
-
-
     return (
-        <>
-            <TopMenu text={page}/>
+        <ThemedView style={{flex: 1}}>
+            <PageProvider>
+                <TopMenu/>
 
-            <Stack screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="Perfil" />
-            </Stack>
-        </>
+                <Stack screenOptions={{ headerShown: false }}>
+                    <Stack.Screen name="index" />
+                    <Stack.Screen name="league/[leagueId]" />
+                    <Stack.Screen name="match/[matchId]" />
+                    <Stack.Screen name="Time" />
+                    <Stack.Screen name="Perfil" />
+                </Stack>
+            </PageProvider>
+        </ThemedView>
     );
 }

@@ -9,7 +9,7 @@ import { ThemedInput } from '@/components/DefaultComponents/ThemedInput';
 
 const windowWidth = Dimensions.get('window').width;
 
-export default function Main() {
+export default function LigasTeste() {
     return (
         <ThemedScrollView style={styles.background}>
             <ThemedInput isSearch={true} numberOfLines={1} style={styles.searchBar} />
@@ -44,7 +44,7 @@ export default function Main() {
                         height: 27,
                         style: styles.starIcon,
                         darkColor: Colors.dark.Red,
-                        lightColor: Colors.light.Red
+                        lightColor: Colors.light.Red,
                     }}
                 />
 

@@ -1,10 +1,13 @@
 import { StyleSheet, Dimensions, View } from 'react-native';
 import { Colors } from '@/constants/Colors';
+import FilledStar from '@/assets/Icons/FilledStar.svg'
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 import { ThemedText } from "@/components/DefaultComponents/ThemedText";
 import { ThemedScrollView } from '@/components/DefaultComponents/ThemedScrollView';
 import { useState } from 'react';
 import { PickRound } from '@/components/PickRound';
+import MatchSection from '@/components/matches/MatchSection';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -58,9 +61,31 @@ export default function LigaPartidas() {
                 selected={round}
                 setSelected={setRound}    
             />
+
             <View style={styles.content}>
-                <ThemedText>Partidas</ThemedText>
+                <MatchSection
+                    icon={{
+                        IconComponent: MaterialCommunityIcons,
+                        name: "calendar-text",
+                        style: styles.calendarIcon,
+                        darkColor: Colors.dark.Red,
+                        lightColor: Colors.light.Red,
+                        size: 28
+                    }}
+                    matches={[{
+                        id: '1',
+                        scoreHome: '0',
+                        scoreOut: '1',
+                        teamHomeImage: 'https://media.api-sports.io/football/teams/1062.png',
+                        teamHomeName: 'Atlético MG',
+                        teamOutImage: 'https://media.api-sports.io/football/teams/151.png',
+                        teamOutName: 'Goiás',
+                        time: "17:30"
+                    }]}
+                    text='20/08/2022'
+                />
             </View>
+
         </ThemedScrollView>
     )
 }
@@ -70,6 +95,11 @@ const styles = StyleSheet.create({
     content: {
         width: windowWidth*0.86,
         marginLeft: "auto",
-        marginRight: "auto"
+        marginRight: "auto",
+        marginTop: 25
+    },
+    calendarIcon: {
+        marginTop: 1,
+        marginHorizontal: 5
     },
 });
