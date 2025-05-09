@@ -38,16 +38,20 @@ export default function MatchCard({ id, time, teamHomeName, teamHomeImage, teamO
             marginTop: 18,
             marginHorizontal: "auto",
             borderColor: Colors[theme].Red,
-            borderWidth: .6,
+            borderWidth: .5,
             borderRadius: 8,
-            paddingVertical: 10,
+            paddingTop: 10,
+            paddingBottom: 8,
             paddingHorizontal: 10,
         },
         timeText: {
             fontFamily: "Kdam",
             fontSize: 11,
-            width: 30,
-            marginLeft: 12,
+            width: 50,
+            textAlign: "right",
+            marginLeft: 3,
+            marginRight: -12
+            // marginLeft: 12,
         },
         info: {
             flex: 1,
@@ -66,13 +70,13 @@ export default function MatchCard({ id, time, teamHomeName, teamHomeImage, teamO
             opacity: 0.6
         },
         image: {
-            width: 32,
-            height: 32
+            width: 30,
+            height: 30
         },
         teamName: {
             fontFamily: "Kdam",
-            fontSize: 13,
-            top: 3
+            fontSize: 12,
+            top: 1,
         },
         resultInfo: {
             flexDirection: "row",
@@ -80,7 +84,7 @@ export default function MatchCard({ id, time, teamHomeName, teamHomeImage, teamO
         },
         result: {
             fontFamily: "Kdam",
-            fontSize: 15
+            fontSize: 14
         },
         arrow: {
             width: 30,

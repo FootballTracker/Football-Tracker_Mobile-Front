@@ -9,7 +9,7 @@ import { ThemedInput } from '@/components/DefaultComponents/ThemedInput';
 
 const windowWidth = Dimensions.get('window').width;
 
-export default function LigasTeste() {
+export default function Ligas() {
     return (
         <ThemedScrollView style={styles.background}>
             <ThemedInput isSearch={true} numberOfLines={1} style={styles.searchBar} />
