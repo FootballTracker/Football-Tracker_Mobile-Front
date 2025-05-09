@@ -14,6 +14,7 @@ export default function RootLayout() {
                 <Stack screenOptions={{ headerShown: false }}>
                     <Stack.Screen name="index" />
                     <Stack.Screen name="league/[leagueId]" />
+                    <Stack.Screen name="team/[teamId]" />
                     <Stack.Screen name="match/[matchId]" />
                     <Stack.Screen name="Time" />
                     <Stack.Screen name="Perfil" />
