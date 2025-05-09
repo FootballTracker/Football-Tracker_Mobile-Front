@@ -76,7 +76,7 @@ export const CustomTabBar: React.FC<TabBarProps<any>> = ({ navigationState, jump
 const styles = StyleSheet.create({
     wrapper: {
         position: 'relative',
-        paddingBottom: 2
+        paddingBottom: 5
     },
     tabBar: {
         flexDirection: 'row',
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     },
     indicator: {
         position: 'absolute',
-        bottom: 0,
+        bottom: 2.5,
         height: 3,
     },
     indicatorChildren: {
