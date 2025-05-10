@@ -20,7 +20,8 @@
     "android": {
       "splash": {
         "backgroundColor": "#191A1C"
-      }
+      },
+      "package": "com.forasteirosd.mobilefront"
     },
     "web": {
       "bundler": "metro",
@@ -43,6 +44,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "94589409-69e2-45a5-aec7-f8ecbec57f03"
+      }
     }
   }
 }

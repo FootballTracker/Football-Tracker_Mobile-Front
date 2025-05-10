@@ -37,7 +37,7 @@ export function ThemedInput({ placeholder, value, onChangeText, onBlur, isPasswo
         input: {
             flex: 1,
             color: Colors[theme].Text,
-            fontFamily: 'Kdam',
+            // fontFamily: 'Kdam',
             fontSize: 15,
             paddingVertical: 7,
             height: 45,

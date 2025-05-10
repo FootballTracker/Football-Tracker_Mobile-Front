@@ -7,7 +7,7 @@ import { router } from "expo-router"
 
 type ReturnArrowProps = {
     double?: boolean;
-    changePage?: {pageName: string | null, setPageName: (page: string | null) => void, setPage: (page: string) => void};
+    changePage?: {pageName: string | null, setPageName?: (page: string | null) => void, setPage: (page: string) => void};
 }
 
 export function ReturnArrow({ double, changePage } : ReturnArrowProps) {
@@ -17,7 +17,7 @@ export function ReturnArrow({ double, changePage } : ReturnArrowProps) {
 
         if(changePage && changePage.pageName) {
             changePage.setPage(changePage.pageName);
-            changePage.setPageName(null);
+            changePage.setPageName && changePage.setPageName(null);
         }
     }
 
