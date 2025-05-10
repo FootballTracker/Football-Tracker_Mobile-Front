@@ -6,7 +6,7 @@ import { Colors } from "@/constants/Colors";
 
 const windowHeight = Dimensions.get('window').height;
 
-export default function JogadoresTeste() {
+export default function Jogadores() {
     return (
         <ThemedView lightColor={Colors.light.LightBackground} darkColor={Colors.dark.LightBackground} style={styles.background}>
             <ThemedText>Jogadores</ThemedText>

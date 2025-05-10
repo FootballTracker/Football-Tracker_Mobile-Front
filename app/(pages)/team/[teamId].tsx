@@ -16,6 +16,7 @@ import { ThemedView } from '@/components/DefaultComponents/ThemedView';
 import TimeInfo from '@/components/teams/pagesComponents/TimeInfo';
 import TimeEquipe from '@/components/teams/pagesComponents/TimeEquipe';
 import TimeClassificacao from '@/components/teams/pagesComponents/TimeClassif';
+import LoadingIcon from '@/components/LoadingIcon';
 
 export default function Team() {
     const { teamId } = useLocalSearchParams();
@@ -56,7 +57,7 @@ export default function Team() {
         contentLoaded ? (
             <ThemedView style={styles.background}>
                 <View style={styles.header}>
-                    <Image source={{uri: "https://media.api-sports.io/football/teams/119.png"}} style={styles.leagueImage} resizeMode='contain'/>
+                    <Image source={{uri: "https://media.api-sports.io/football/teams/119.png"}} style={styles.teamImage} resizeMode='contain'/>
                     <ThemedText style={{fontSize: 19, fontFamily: "Kdam", marginRight: 6}}>
                         Internacional
                     </ThemedText>
@@ -85,15 +86,12 @@ export default function Team() {
                     }}
                     lazy
                     renderLazyPlaceholder={() => (
-                        <View>
-                            <ThemedText>Loading</ThemedText>
-                        </View>
-                        )
-                    }
+                        <LoadingIcon />
+                    )}
                 />
             </ThemedView>
         ) : (
-            <View>
+            <View >
                 <ThemedText>Loading</ThemedText>
             </View>
         )
@@ -114,7 +112,7 @@ const styles = StyleSheet.create({
         marginRight: "auto",
         position: "relative"
     },
-    leagueImage: {
+    teamImage: {
         width: 55,
         height: 45,
         marginRight: 5
@@ -123,5 +121,5 @@ const styles = StyleSheet.create({
         marginTop: -2,
         paddingLeft: 3,
         paddingRight: 3
-    },
+    }
 });

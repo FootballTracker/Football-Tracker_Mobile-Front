@@ -16,6 +16,7 @@ import { ThemedView } from '@/components/DefaultComponents/ThemedView';
 import LigaPartidas from '../../../components/leagues/pagesComponents/LigaPartidas';
 import LigaClassificacao from '../../../components/leagues/pagesComponents/LigaClassificacao';
 import LigaRankings from '../../../components/leagues/pagesComponents/LigaRankings';
+import LoadingIcon from '@/components/LoadingIcon';
 
 export default function League() {
     const { leagueId } = useLocalSearchParams();
@@ -115,7 +116,7 @@ export default function League() {
                     lazy
                     renderLazyPlaceholder={() => (
                         <View>
-                            <ThemedText>Loading</ThemedText>
+                            <LoadingIcon />
                         </View>
                         )
                     }

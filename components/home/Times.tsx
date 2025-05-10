@@ -142,7 +142,368 @@ export default function Times() {
                             image: "https://media.api-sports.io/football/teams/42.png",
                             name: "Arsenal",
                             favoritie: false
+                        },
+                        {
+                            id: '505',
+                            image: "https://media.api-sports.io/football/teams/505.png",
+                            name: "Inter",
+                            favoritie: false
                         }, 
+                        {
+                            id: '529',
+                            image: "https://media.api-sports.io/football/teams/529.png",
+                            name: "Barcelona",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '42',
+                            image: "https://media.api-sports.io/football/teams/42.png",
+                            name: "Arsenal",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '505',
+                            image: "https://media.api-sports.io/football/teams/505.png",
+                            name: "Inter",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '529',
+                            image: "https://media.api-sports.io/football/teams/529.png",
+                            name: "Barcelona",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '42',
+                            image: "https://media.api-sports.io/football/teams/42.png",
+                            name: "Arsenal",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '505',
+                            image: "https://media.api-sports.io/football/teams/505.png",
+                            name: "Inter",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '529',
+                            image: "https://media.api-sports.io/football/teams/529.png",
+                            name: "Barcelona",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '42',
+                            image: "https://media.api-sports.io/football/teams/42.png",
+                            name: "Arsenal",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '505',
+                            image: "https://media.api-sports.io/football/teams/505.png",
+                            name: "Inter",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '529',
+                            image: "https://media.api-sports.io/football/teams/529.png",
+                            name: "Barcelona",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '42',
+                            image: "https://media.api-sports.io/football/teams/42.png",
+                            name: "Arsenal",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '505',
+                            image: "https://media.api-sports.io/football/teams/505.png",
+                            name: "Inter",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '529',
+                            image: "https://media.api-sports.io/football/teams/529.png",
+                            name: "Barcelona",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '42',
+                            image: "https://media.api-sports.io/football/teams/42.png",
+                            name: "Arsenal",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '505',
+                            image: "https://media.api-sports.io/football/teams/505.png",
+                            name: "Inter",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '529',
+                            image: "https://media.api-sports.io/football/teams/529.png",
+                            name: "Barcelona",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '42',
+                            image: "https://media.api-sports.io/football/teams/42.png",
+                            name: "Arsenal",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '505',
+                            image: "https://media.api-sports.io/football/teams/505.png",
+                            name: "Inter",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '529',
+                            image: "https://media.api-sports.io/football/teams/529.png",
+                            name: "Barcelona",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '42',
+                            image: "https://media.api-sports.io/football/teams/42.png",
+                            name: "Arsenal",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '505',
+                            image: "https://media.api-sports.io/football/teams/505.png",
+                            name: "Inter",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '529',
+                            image: "https://media.api-sports.io/football/teams/529.png",
+                            name: "Barcelona",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '42',
+                            image: "https://media.api-sports.io/football/teams/42.png",
+                            name: "Arsenal",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '505',
+                            image: "https://media.api-sports.io/football/teams/505.png",
+                            name: "Inter",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '529',
+                            image: "https://media.api-sports.io/football/teams/529.png",
+                            name: "Barcelona",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '42',
+                            image: "https://media.api-sports.io/football/teams/42.png",
+                            name: "Arsenal",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '505',
+                            image: "https://media.api-sports.io/football/teams/505.png",
+                            name: "Inter",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '529',
+                            image: "https://media.api-sports.io/football/teams/529.png",
+                            name: "Barcelona",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '42',
+                            image: "https://media.api-sports.io/football/teams/42.png",
+                            name: "Arsenal",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '505',
+                            image: "https://media.api-sports.io/football/teams/505.png",
+                            name: "Inter",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '529',
+                            image: "https://media.api-sports.io/football/teams/529.png",
+                            name: "Barcelona",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '42',
+                            image: "https://media.api-sports.io/football/teams/42.png",
+                            name: "Arsenal",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '505',
+                            image: "https://media.api-sports.io/football/teams/505.png",
+                            name: "Inter",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '529',
+                            image: "https://media.api-sports.io/football/teams/529.png",
+                            name: "Barcelona",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '42',
+                            image: "https://media.api-sports.io/football/teams/42.png",
+                            name: "Arsenal",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '505',
+                            image: "https://media.api-sports.io/football/teams/505.png",
+                            name: "Inter",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '529',
+                            image: "https://media.api-sports.io/football/teams/529.png",
+                            name: "Barcelona",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '42',
+                            image: "https://media.api-sports.io/football/teams/42.png",
+                            name: "Arsenal",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '505',
+                            image: "https://media.api-sports.io/football/teams/505.png",
+                            name: "Inter",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '529',
+                            image: "https://media.api-sports.io/football/teams/529.png",
+                            name: "Barcelona",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '42',
+                            image: "https://media.api-sports.io/football/teams/42.png",
+                            name: "Arsenal",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '505',
+                            image: "https://media.api-sports.io/football/teams/505.png",
+                            name: "Inter",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '529',
+                            image: "https://media.api-sports.io/football/teams/529.png",
+                            name: "Barcelona",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '42',
+                            image: "https://media.api-sports.io/football/teams/42.png",
+                            name: "Arsenal",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '505',
+                            image: "https://media.api-sports.io/football/teams/505.png",
+                            name: "Inter",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '529',
+                            image: "https://media.api-sports.io/football/teams/529.png",
+                            name: "Barcelona",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '42',
+                            image: "https://media.api-sports.io/football/teams/42.png",
+                            name: "Arsenal",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '505',
+                            image: "https://media.api-sports.io/football/teams/505.png",
+                            name: "Inter",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '529',
+                            image: "https://media.api-sports.io/football/teams/529.png",
+                            name: "Barcelona",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '42',
+                            image: "https://media.api-sports.io/football/teams/42.png",
+                            name: "Arsenal",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '505',
+                            image: "https://media.api-sports.io/football/teams/505.png",
+                            name: "Inter",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '529',
+                            image: "https://media.api-sports.io/football/teams/529.png",
+                            name: "Barcelona",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '42',
+                            image: "https://media.api-sports.io/football/teams/42.png",
+                            name: "Arsenal",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '505',
+                            image: "https://media.api-sports.io/football/teams/505.png",
+                            name: "Inter",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '529',
+                            image: "https://media.api-sports.io/football/teams/529.png",
+                            name: "Barcelona",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '42',
+                            image: "https://media.api-sports.io/football/teams/42.png",
+                            name: "Arsenal",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '505',
+                            image: "https://media.api-sports.io/football/teams/505.png",
+                            name: "Inter",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '529',
+                            image: "https://media.api-sports.io/football/teams/529.png",
+                            name: "Barcelona",
+                            favoritie: false
+                        }, 
+                        {
+                            id: '42',
+                            image: "https://media.api-sports.io/football/teams/42.png",
+                            name: "Arsenal",
+                            favoritie: false
+                        }, 
+                        
                     ]}
                 />
             </View>

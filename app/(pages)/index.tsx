@@ -3,16 +3,14 @@ import { useState } from 'react';
 import { TabView, SceneMap } from 'react-native-tab-view';
 import { usePage } from '@/context/PageContext';
 
-import { ThemedText } from "@/components/DefaultComponents/ThemedText";
 import { ThemedView } from '@/components/DefaultComponents/ThemedView';
 import { Menu } from '@/components/home/Menu';
+import LoadingIcon from '@/components/LoadingIcon';
 
 //scenes to render
-import LigasTeste from '@/components/home/Ligas';
-import TimesTeste from '@/components/home/Times';
-import JogadoresTeste from '@/components/home/Jogadores';
-import Perfil from '@/app/(pages)/Perfil';
-
+import Ligas from '@/components/home/Ligas';
+import Times from '@/components/home/Times';
+import Jogadores from '@/components/home/Jogadores';
 
 export default function Main() {
     
@@ -27,9 +25,9 @@ export default function Main() {
     ]);
 
     const renderScene = SceneMap({
-        times: TimesTeste,
-        ligas: LigasTeste,
-        jogadores: JogadoresTeste,
+        times: Times,
+        ligas: Ligas,
+        jogadores: Jogadores,
     });
 
     const handleIndexChange = (i: number) => {
@@ -50,9 +48,7 @@ export default function Main() {
                 )}
                 lazy
                 renderLazyPlaceholder={() => (
-                    <ThemedView style={{flex: 1, height: Dimensions.get('window').height}}>
-                        <ThemedText>Loading...</ThemedText>
-                    </ThemedView>
+                    <LoadingIcon />
                 )}
             />
         </ThemedView>
