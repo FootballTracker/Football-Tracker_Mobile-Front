@@ -16,13 +16,21 @@ import { ThemedIcon } from "@/components/DefaultComponents/ThemedIcon";
 import LeaguesSection from "@/components/leagues/LeaguesSection";
 import { Colors } from "@/constants/Colors";
 import { ThemedButton } from "@/components/DefaultComponents/ThemedButton";
+import { usePage } from "@/context/PageContext";
 
 //Consts
-const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
 
 export default function Perfil() {
     const { user, logout } = useUserContext();
+    const { setPage, setPreviousPage } = usePage();
+
+    const handleLogout = () => {
+        logout();
+        setPage("Ligas");
+        setPreviousPage(null);
+        router.back()
+    }
 
     return (
         <ScrollView>
@@ -55,7 +63,7 @@ export default function Perfil() {
                     /> */}
                 </View>
 
-                <ThemedButton IconComponent={{ Icon: Ionicons, name: "exit-outline" }} title="Sair" backgroundColor="Red" textColor="Text" handleClick={() => {logout(); router.back()}} style={styles.logoutButton} />
+                <ThemedButton IconComponent={{ Icon: Ionicons, name: "exit-outline" }} title="Sair" backgroundColor="Red" textColor="Text" handleClick={handleLogout} style={styles.logoutButton} />
                 {/* <ThemedText onPress={} style={{textAlign: 'center', marginTop: 20, padding: 10}}>SAIR</ThemedText> */}
             </ThemedView>
         </ScrollView>
@@ -67,7 +75,6 @@ const styles = StyleSheet.create({
         paddingTop: 25,
         display: 'flex',
         alignItems: 'center',
-        // minHeight: windowHeight,
         minHeight: '100%',
         flexGrow: 1
     },

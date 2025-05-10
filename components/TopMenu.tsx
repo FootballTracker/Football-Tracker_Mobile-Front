@@ -19,8 +19,7 @@ export default function TopMenu() {
     const pathname = usePathname();
     const [showBackButton, setShowBackButton] = useState(false);
     const { user } = useUserContext();
-    const { page, setPage } = usePage()
-    const [previousPage, setPreviousPage] = useState<string | null>(null);
+    const { page, setPage, previousPage, setPreviousPage } = usePage();
 
     const handleProfileClick = () => {
         if(user) {
@@ -48,18 +47,18 @@ export default function TopMenu() {
                     {
                         showBackButton ? (
                             page !== "Configurações" ? (
-                                <ReturnArrow changePage={{pageName: previousPage, setPageName: setPreviousPage, setPage: setPage}} />
+                                <ReturnArrow returnPage={true} />
                             ) : (
-                                <ReturnArrow changePage={{pageName: "Perfil", setPage: setPage}} />
+                                <ReturnArrow changePage={{pageName: "Perfil"}} />
                             )
                         ) : ( 
                             <ThemedImage 
-                                source={{
-                                        light: require("@/assets/images/RedBlackLogo.png"),
-                                        dark: require("@/assets/images/RedWhiteLogo.png")
-                                    }}
-                                    style={styles.logo}
-                                />
+                                source = {{
+                                    light: require("@/assets/images/RedBlackLogo.png"),
+                                    dark: require("@/assets/images/RedWhiteLogo.png")
+                                }}
+                                style={styles.logo}
+                            />
                         )
                     }
                     <ThemedText style={styles.pageText} darkColor={Colors.dark.Text} lightColor={Colors.light.Text}>
