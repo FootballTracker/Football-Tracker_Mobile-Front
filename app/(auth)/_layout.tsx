@@ -17,17 +17,11 @@ SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
 
     return (
-        <Tabs screenOptions={{ headerShown: false, tabBarStyle: { display: 'none' }, }} >
-            <Tabs.Screen name="Login" />
-            <Tabs.Screen name="Cadastro" />
-        </Tabs>
+        <ThemedView style={{flex: 1}}>
+            <Tabs screenOptions={{ headerShown: false, tabBarStyle: { display: 'none' }}} >
+                <Tabs.Screen name="Login" />
+                <Tabs.Screen name="Cadastro" />
+            </Tabs>
+        </ThemedView>
     );
 }
-
-const styles = StyleSheet.create({
-    mainBlock: {
-        display: 'flex',
-        justifyContent: 'space-evenly',
-        height: windowHeight,
-    },
-});

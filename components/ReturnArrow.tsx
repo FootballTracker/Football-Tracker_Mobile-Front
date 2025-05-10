@@ -7,12 +7,18 @@ import { router } from "expo-router"
 
 type ReturnArrowProps = {
     double?: boolean;
+    changePage?: {pageName: string | null, setPageName?: (page: string | null) => void, setPage: (page: string) => void};
 }
 
-export function ReturnArrow({ double } : ReturnArrowProps) {
+export function ReturnArrow({ double, changePage } : ReturnArrowProps) {
     const returnRoute = () => {
         router.back();
         double && router.back();
+
+        if(changePage && changePage.pageName) {
+            changePage.setPage(changePage.pageName);
+            changePage.setPageName && changePage.setPageName(null);
+        }
     }
 
     return (

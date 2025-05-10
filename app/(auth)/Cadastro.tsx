@@ -58,7 +58,7 @@ export default function Cadastro() {
     return (
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} keyboardVerticalOffset={0} >
             <ScrollView>
-                <ThemedView style={styles.mainBlock}>
+                <ThemedView style={styles.background}>
                     <View style={{display: 'flex', flexDirection: "row", marginLeft: 5, position: 'absolute', top: 20}}>
                         <ReturnArrow double={true} />
                     </View>
@@ -95,12 +95,12 @@ export default function Cadastro() {
 }
 
 const styles = StyleSheet.create({
-    mainBlock: {
+    background: {
         display: 'flex',
         justifyContent: 'space-evenly',
         minHeight: windowHeight,
         paddingBottom: 20,
-        paddingTop: 20,
+        paddingTop: 25,
     },
     titleText: {
         fontFamily: 'Koulen',

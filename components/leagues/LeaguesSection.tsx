@@ -12,9 +12,10 @@ interface LeaguesSectionProps {
     text: string
     leagues?: LeagueCardI[]
     icon: ThemedIconProps
+    emptyMessage?: string
 };
 
-export default function LeaguesSection({ text, leagues, icon, ...rest }: LeaguesSectionProps) {
+export default function LeaguesSection({ text, leagues, icon, emptyMessage, ...rest }: LeaguesSectionProps) {
     return (
         <View style={styles.section}>
             <View style={styles.titleSection}>
@@ -32,7 +33,7 @@ export default function LeaguesSection({ text, leagues, icon, ...rest }: Leagues
                 <ThemedText style={styles.favoritesInfoText} darkColor={Colors.dark.DarkerText} lightColor={Colors.light.DarkerText}>
                     <ThemedIcon IconComponent={Feather} name="info" size={15} darkColor={Colors.dark.DarkerText} lightColor={Colors.light.DarkerText} />
                     {' '}
-                    Favorite uma liga para que ela apareça aqui.
+                    {emptyMessage ? emptyMessage : 'Favorite uma liga para que ela apareça aqui.'}
                 </ThemedText>
             )}
         </View>
