@@ -29,7 +29,6 @@ export default function LoadingIcon() {
     return (
         <ThemedView style={{
             flex: 1,
-            height: Dimensions.get('window').height,
             justifyContent: "center",
             alignItems: "center",
         }}>

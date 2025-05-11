@@ -20,7 +20,7 @@ export default function Ligas() {
                     text='Favoritas'
                     leagues={[
                         {
-                            id: '71',
+                            id: '1',
                             image: "https://media.api-sports.io/football/leagues/71.png",
                             name: "Serie A",
                             favoritie: true

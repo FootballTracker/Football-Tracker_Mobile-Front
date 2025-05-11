@@ -40,33 +40,45 @@ export default function TimeInfo() {
                     }}
                     matches={[
                         {
-                            id: '1',
-                            scoreHome: '4',
-                            scoreOut: '0',
-                            teamHomeImage: 'https://media.api-sports.io/football/teams/119.png',
-                            teamHomeName: 'Internacional',
-                            teamOutImage: 'https://media.api-sports.io/football/teams/10004.png',
-                            teamOutName: 'São Luiz',
+                            id: 1,
+                            home_team: {
+                                name: 'Internacional',
+                                logo: 'https://media.api-sports.io/football/teams/119.png',
+                                score: 4,
+                            },
+                            away_team: {
+                                name: 'São Luiz',
+                                logo: 'https://media.api-sports.io/football/teams/10004.png',
+                                score: 0,
+                            },
                             time: "28/01/23"
                         },
                         {
-                            id: '1',
-                            scoreHome: '1',
-                            scoreOut: '1',
-                            teamHomeImage: 'https://media.api-sports.io/football/teams/2205.png',
-                            teamHomeName: 'Avenida',
-                            teamOutImage: 'https://media.api-sports.io/football/teams/119.png',
-                            teamOutName: 'Internacional',
+                            id: 1,
+                            home_team: {
+                                name: 'Avenida',
+                                logo: 'https://media.api-sports.io/football/teams/2205.png',
+                                score: 1,
+                            },
+                            away_team: {
+                                name: 'Internacional',
+                                logo: 'https://media.api-sports.io/football/teams/119.png',
+                                score: 1,
+                            },
                             time: "24/01/23"
                         },
                         {
-                            id: '1',
-                            scoreHome: '2',
-                            scoreOut: '2',
-                            teamHomeImage: 'https://media.api-sports.io/football/teams/119.png',
-                            teamHomeName: 'Internacional',
-                            teamOutImage: 'https://media.api-sports.io/football/teams/152.png',
-                            teamOutName: 'Juventude',
+                            id: 1,
+                            home_team: {
+                                name: 'Internacional',
+                                logo: 'https://media.api-sports.io/football/teams/119.png',
+                                score: 2,
+                            },
+                            away_team: {
+                                name: 'Juventude',
+                                logo: 'https://media.api-sports.io/football/teams/152.png',
+                                score: 2,
+                            },
                             time: "20/01/23"
                         }
                     ]}

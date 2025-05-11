@@ -7,21 +7,23 @@ import { ThemedText } from '@/components/DefaultComponents/ThemedText';
 import { Colors } from '@/constants/Colors';
 import { router } from 'expo-router';
 
-export interface MatchCardI {
-    id: string
-    time: string
-    teamHomeName: string
-    teamHomeImage: string
-    teamOutName: string
-    teamOutImage: string
-    scoreHome: string
-    scoreOut: string
+interface TeamI {
+    score: number
+    logo: string
+    name: string
 }
 
-export default function MatchCard({ id, time, teamHomeName, teamHomeImage, teamOutName, teamOutImage, scoreHome, scoreOut }: MatchCardI) {
+export interface MatchCardI {
+    id: number
+    home_team: TeamI
+    away_team: TeamI
+    time: string
+}
+
+export default function MatchCard({ id, home_team, away_team, time }: MatchCardI) {
 
     const theme = useColorScheme() ?? 'light';
-    const result = scoreHome == scoreOut ? 1 : Number(scoreHome) > Number(scoreOut) ? 0 : 2;
+    const result = home_team.score == away_team.score ? 1 : Number(home_team.score) > Number(away_team.score) ? 0 : 2;
 
     const accessMatch = () => {
         //acessa partida
@@ -98,21 +100,21 @@ export default function MatchCard({ id, time, teamHomeName, teamHomeImage, teamO
                 <View style={styles.info}>
                     <View style={styles.teamView}>
                         <View style={[styles.teamInfo, result === 2 && styles.loser]}>
-                            <Image source={{uri: teamHomeImage}} resizeMode="contain" style={styles.image}/>
-                            <ThemedText style={styles.teamName} numberOfLines={1} ellipsizeMode='tail'>{teamHomeName}</ThemedText>
+                            <Image source={{uri: home_team.logo}} resizeMode="contain" style={styles.image}/>
+                            <ThemedText style={styles.teamName} numberOfLines={1} ellipsizeMode='tail'>{home_team.name}</ThemedText>
                         </View>
                     </View>
                     
                     <View style={styles.resultInfo}>
-                        <ThemedText style={[styles.result, result === 2 && styles.loser]}>{scoreHome} </ThemedText>
+                        <ThemedText style={[styles.result, result === 2 && styles.loser]}>{home_team.score} </ThemedText>
                         <ThemedText style={styles.result}>x</ThemedText>
-                        <ThemedText style={[styles.result, result === 0 && styles.loser]}> {scoreOut}</ThemedText>
+                        <ThemedText style={[styles.result, result === 0 && styles.loser]}> {away_team.score}</ThemedText>
                     </View>
 
                     <View style={styles.teamView}>
                         <View style={[styles.teamInfo, result === 0 && styles.loser]}>
-                            <Image source={{uri: teamOutImage}} resizeMode="contain" style={styles.image}/>
-                            <ThemedText style={styles.teamName} numberOfLines={1} ellipsizeMode='tail'>{teamOutName}</ThemedText>
+                            <Image source={{uri: away_team.logo}} resizeMode="contain" style={styles.image}/>
+                            <ThemedText style={styles.teamName} numberOfLines={1} ellipsizeMode='tail'>{away_team.name}</ThemedText>
                         </View>
                     </View>
                     {/* <ThemedText numberOfLines={1} ellipsizeMode='tail' style={styles.text}>{time}</ThemedText> */}

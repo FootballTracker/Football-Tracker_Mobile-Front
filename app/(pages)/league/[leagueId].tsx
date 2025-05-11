@@ -1,33 +1,35 @@
 import { Image, StyleSheet, View, TouchableOpacity, Dimensions } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Colors } from '@/constants/Colors';
 import { TabView, SceneMap } from 'react-native-tab-view';
 import FilledStar from '@/assets/Icons/FilledStar.svg'
 import UnfilledStar from '@/assets/Icons/UnfilledStar.svg'
+import api from "@/lib/Axios"
 
 import { ThemedText } from "@/components/DefaultComponents/ThemedText";
 import { ThemedIcon } from '@/components/DefaultComponents/ThemedIcon';
 import { Select } from '@/components/Select';
 import { CustomTabBar } from '@/components/CustomTabBar';
 import { ThemedView } from '@/components/DefaultComponents/ThemedView';
+import LoadingIcon from '@/components/LoadingIcon';
 
 //scenes to render
-import LigaPartidas from '../../../components/leagues/pagesComponents/LigaPartidas';
+import LigaPartidas, { MatchesI } from '../../../components/leagues/pagesComponents/LigaPartidas';
 import LigaClassificacao from '../../../components/leagues/pagesComponents/LigaClassificacao';
 import LigaRankings from '../../../components/leagues/pagesComponents/LigaRankings';
-import LoadingIcon from '@/components/LoadingIcon';
 
 export default function League() {
     const { leagueId } = useLocalSearchParams();
-    
     const [contentLoaded, setContentLoaded] = useState(false);
-    
     const [favoritieState, setFavoritieState] = useState(false);
-    
-    const [selectedSeason, setSelectedSeason] = useState<number>();
-    
-    const [index, setIndex] = useState(0);
+    const [selectedSeason, setSelectedSeason] = useState<number>(2023);
+    const [index, setIndex] = useState(0); //initial route index
+
+    //Partidas Page
+    const [round, setRound] = useState(1);
+    const [matches, setMatches] = useState<MatchesI[]>();
+    const cacheRef = useRef<Record<number, MatchesI[]>>({});
     
     //routes to render
     const [routes] = useState([
@@ -37,17 +39,46 @@ export default function League() {
     ]);
 
     const renderScene = SceneMap({
-        partidas: LigaPartidas,
-        classificacao: LigaClassificacao,
-        rankings: LigaRankings,
+        partidas: () => <LigaPartidas round={round} setRound={setRound} matches={matches}/>,
+        classificacao: () => <LigaClassificacao leagueId={leagueId} season={selectedSeason}/>,
+        rankings: () => <LigaRankings leagueId={leagueId} season={selectedSeason}/>,
     });
 
+    //search league info and seasons available
     useEffect(() => {
         //fazer requisição para o back
         
-        setSelectedSeason(22);
+        setSelectedSeason(2023);
         setContentLoaded(true);
     }, []);
+
+
+    //get matches from an round and season
+    useEffect(() => {
+        setMatches(undefined);
+        getMatches();
+    }, [round, selectedSeason]);
+
+    async function getMatches() {
+        if (cacheRef.current[round]) {
+            setMatches(cacheRef.current[round]);
+            return;
+        }
+        
+        await api.get('matches', {
+            params: {
+                round,
+                id: leagueId,
+                season: selectedSeason
+            }}
+        ).then((response: any) => {
+            cacheRef.current[round] = response.data;
+            setMatches(response.data);
+        }).catch((e: any) => {
+            if(e.response.data.detail) alert(e.response.data.detail);
+            else alert('Ocorreu algum erro.');
+        });
+    }
 
 
     const changeFavoritie = () => {
@@ -113,7 +144,6 @@ export default function League() {
                     style={{
                         top: 25
                     }}
-                    lazy
                     renderLazyPlaceholder={() => (
                         <View>
                             <LoadingIcon />

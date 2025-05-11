@@ -46,7 +46,6 @@ export default function Main() {
                 renderTabBar={props => (
                     <Menu {...props} />
                 )}
-                lazy
                 renderLazyPlaceholder={() => (
                     <LoadingIcon />
                 )}
