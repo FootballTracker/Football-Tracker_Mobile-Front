@@ -15,7 +15,7 @@ export type ThemedButtonProps = {
 };
 
 export function ThemedButton({ IconComponent, title = 'Continuar', handleClick, backgroundColor, textColor, style, ...rest }: ThemedButtonProps) {
-    const theme = useColorScheme() ?? 'light';
+    const { theme } = useColorScheme();
     const windowWidth = Dimensions.get('window').width;
     const size = IconComponent ? (IconComponent.size ? IconComponent.size : 30) : 0;
 

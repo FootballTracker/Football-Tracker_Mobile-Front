@@ -19,7 +19,7 @@ type ThemedInputProps = {
 } & TextInputProps;
 
 export function ThemedInput({ placeholder, value, onChangeText, onBlur, isPassword = false, isSearch = false, style, ...rest }: ThemedInputProps) {
-    const theme = useColorScheme() ?? 'light';
+    const { theme } = useColorScheme();
     const windowWidth = Dimensions.get('window').width;
     const [showPassword, setShowPassword] = useState(false);
 

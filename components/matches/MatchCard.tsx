@@ -20,7 +20,7 @@ export interface MatchCardI {
 
 export default function MatchCard({ id, time, teamHomeName, teamHomeImage, teamOutName, teamOutImage, scoreHome, scoreOut }: MatchCardI) {
 
-    const theme = useColorScheme() ?? 'light';
+    const { theme } = useColorScheme();
     const result = scoreHome == scoreOut ? 1 : Number(scoreHome) > Number(scoreOut) ? 0 : 2;
 
     const accessMatch = () => {

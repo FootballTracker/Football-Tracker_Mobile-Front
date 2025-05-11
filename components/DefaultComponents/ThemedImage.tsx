@@ -7,7 +7,7 @@ type ThemedImageProps = {
 } & ImageProps;
 
 export function ThemedImage({ source, ...rest }: ThemedImageProps) {
-    const theme = useColorScheme() ?? 'light';
+    const { theme } = useColorScheme();
 
     return (
         <Image resizeMode='contain' source={source[theme]} {...rest} />

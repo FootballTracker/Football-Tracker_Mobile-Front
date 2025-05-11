@@ -14,7 +14,7 @@ export interface InfoCardProps {
 
 export default function InfoCard({ description, value, icon, imageUrl }: InfoCardProps) {
 
-    const theme = useColorScheme() ?? 'light';
+    const { theme } = useColorScheme();
 
     const styles = StyleSheet.create({
         card: {

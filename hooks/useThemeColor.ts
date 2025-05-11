@@ -12,7 +12,7 @@ type colorType = keyof typeof Colors.light & keyof typeof Colors.dark;
 type multiColorType = { light: string; dark: string };
 
 export function useThemeColor( props: { light?: string; dark?: string }, colorName: colorType ) {
-    const theme = useColorScheme() ?? 'light';
+    const { theme } = useColorScheme();
     const colorFromProps = props[theme];
 
     if (colorFromProps) {
@@ -26,7 +26,7 @@ export function themedColor(color: colorType): string;
 export function themedColor(props: multiColorType): string;
 
 export function themedColor( arg: colorType | multiColorType ): string {
-    const theme = useColorScheme() ?? 'light';
+    const { theme } = useColorScheme();
   
     if (typeof arg === 'string') {
         return Colors[theme][arg];

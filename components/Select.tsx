@@ -1,10 +1,16 @@
 //Default Imports
+import React from "react";
 import { Pressable, ScrollView, StyleSheet, View } from "react-native";
 
 //Components
 import { ThemedText } from "./DefaultComponents/ThemedText";
+import { ThemedIcon } from "./DefaultComponents/ThemedIcon";
 import { ModalComponent } from "./ModalComponent";
-import React from "react";
+
+//Icons
+import AntDesign from '@expo/vector-icons/AntDesign';
+import { Colors } from "@/constants/Colors";
+import { useColorScheme } from "@/hooks/useColorScheme";
 
 //Types
 type SelectProps = {
@@ -16,12 +22,48 @@ type SelectProps = {
     setSelected: (value: any) => void;
     modalOpened: boolean;
     setModalOpened: (value: boolean) => void;
+    centered?: boolean;
 }
 
-export function Select({ title, values, setSelected, modalOpened, setModalOpened } : SelectProps) {
+export function Select({ title, values, setSelected, modalOpened, setModalOpened, centered = true } : SelectProps) {
+    const { theme } = useColorScheme();
+
+    const styles = StyleSheet.create({
+    headerBox: {
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
+    modalText: {
+        textAlign: 'center',
+        fontSize: 17,
+    },
+    values: {
+        width: "100%",
+        marginTop: 16,
+        paddingTop: 10,
+        alignItems: "stretch",
+        borderTopWidth: 0.5,
+        borderBlockColor: Colors[theme].Red,
+        maxHeight: 500
+    },
+    option: {
+        width: "100%",
+        paddingVertical: 7,
+        // borderTopWidth: 0.5,
+        // borderBottomWidth: 0.5,
+        // borderColor: Colors[theme].DarkBackground,
+    },
+});
+
     return (
         <ModalComponent modalOpened={modalOpened} setModalOpened={setModalOpened}>
-            <ThemedText style={styles.modalText}>{title}</ThemedText>
+            <View style={styles.headerBox}>
+                <ThemedText style={styles.modalText}>{title}</ThemedText>
+                <ThemedIcon IconComponent={AntDesign} name="close" lightColor={Colors.light.Red} darkColor={Colors.dark.Red} onPress={() => {setModalOpened(false)}} />
+            </View>
             <View style={styles.values}>
                 <ScrollView>
                     {values.map((option, index) => (
@@ -33,7 +75,7 @@ export function Select({ title, values, setSelected, modalOpened, setModalOpened
                             key={index}
                         >
                             <View style={styles.option}>
-                                <ThemedText style={{textAlign: "center"}}>{option.name}</ThemedText>
+                                <ThemedText style={centered && {textAlign: "center"}}>{option.name}</ThemedText>
                             </View>
                         </Pressable>
                     ))}
@@ -42,24 +84,3 @@ export function Select({ title, values, setSelected, modalOpened, setModalOpened
         </ModalComponent>
     )
 }
-
-const styles = StyleSheet.create({
-    modalText: {
-        marginBottom: 10,
-        textAlign: 'center',
-        fontSize: 19,
-        fontFamily: "Kdam"
-    },
-    values: {
-        width: "100%",
-        alignItems: "stretch",
-        borderBottomWidth: 0.5,
-        borderTopWidth: 0.5,
-        maxHeight: 500
-    },
-    option: {
-        width: "100%",
-        paddingTop: 5,
-        paddingBottom: 5
-    },
-});

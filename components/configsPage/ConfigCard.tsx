@@ -1,23 +1,23 @@
 //Default Imports
-import { Pressable, StyleSheet, View } from "react-native";
+import { Pressable, PressableProps, StyleSheet, View } from "react-native";
 import { Colors } from "@/constants/Colors";
 
 //Icons
-import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 
 //Components
 import { ThemedIcon, ThemedIconProps } from "../DefaultComponents/ThemedIcon";
 import { ThemedText } from "../DefaultComponents/ThemedText";
-import { useColorScheme } from "@/hooks/useColorScheme.web";
+import { useColorScheme } from "@/hooks/useColorScheme";
 
 //Types
 type ConfigCardProps = {
     icon: ThemedIconProps;
     text: string;
-}
+} & PressableProps;
 
-export function ConfigsCard({ icon, text } : ConfigCardProps) {
-    const theme = useColorScheme() ?? 'light';
+export function ConfigsCard({ icon, text, ...rest } : ConfigCardProps) {
+    const { theme } = useColorScheme();
 
     const styles = StyleSheet.create({
         configurationItem: {
@@ -42,7 +42,7 @@ export function ConfigsCard({ icon, text } : ConfigCardProps) {
     })
 
     return (
-        <Pressable style={({ pressed }) => [styles.configurationItem, pressed && styles.configurationItemHover]}>
+        <Pressable style={({ pressed }) => [styles.configurationItem, pressed && styles.configurationItemHover]} {...rest}>
             <View style={styles.configurationItemName}>
                 <ThemedIcon {...icon} darkColor={Colors.dark.Red} lightColor={Colors.light.Red} />
                 <ThemedText>{text}</ThemedText>

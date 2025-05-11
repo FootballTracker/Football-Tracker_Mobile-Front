@@ -1,4 +1,4 @@
-import { StyleSheet, View, Animated, useWindowDimensions, LayoutChangeEvent, Pressable, useColorScheme, Dimensions } from 'react-native';
+import { StyleSheet, View, Animated, useWindowDimensions, LayoutChangeEvent, Pressable, Dimensions } from 'react-native';
 import type { TabBarProps } from 'react-native-tab-view';
 import { Colors } from '@/constants/Colors';
 import { useState, useEffect, useRef } from 'react';
@@ -8,13 +8,14 @@ import Trophy from '@/assets/Icons/Trophy.svg';
 
 import { ThemedText } from "@/components/DefaultComponents/ThemedText";
 import { ThemedView } from '../DefaultComponents/ThemedView';
+import { useColorScheme } from '@/hooks/useColorScheme';
 
 const windowWidth = Dimensions.get('window').width;
 
 export const Menu: React.FC<TabBarProps<any>> = ({ navigationState, jumpTo }) => {
     const layout = useWindowDimensions();
     const totalTabs = navigationState.routes.length;
-    const theme = useColorScheme() ?? 'light';
+    const { theme } = useColorScheme();
 
     const indicatorTranslateX = useRef(new Animated.Value(0)).current;
 
