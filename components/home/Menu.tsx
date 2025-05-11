@@ -1,7 +1,7 @@
 import { StyleSheet, View, Animated, useWindowDimensions, LayoutChangeEvent, Pressable, useColorScheme, Dimensions } from 'react-native';
 import type { TabBarProps } from 'react-native-tab-view';
 import { Colors } from '@/constants/Colors';
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import Boot from '@/assets/Icons/Boot.svg';
 import Shield from '@/assets/Icons/Shield.svg';
 import Trophy from '@/assets/Icons/Trophy.svg';

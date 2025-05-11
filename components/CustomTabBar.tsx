@@ -1,44 +1,17 @@
-import { StyleSheet, View, Animated, useWindowDimensions, LayoutChangeEvent, Pressable } from 'react-native';
+import { StyleSheet, View, Animated, useWindowDimensions, Pressable } from 'react-native';
 import type { TabBarProps } from 'react-native-tab-view';
 import { Colors } from '@/constants/Colors';
-import { useState, useEffect, useRef } from 'react';
 
 import { ThemedText } from "@/components/DefaultComponents/ThemedText";
 
-export const CustomTabBar: React.FC<TabBarProps<any>> = ({ navigationState, jumpTo }) => {
+export const CustomTabBar: React.FC<TabBarProps<any>> = ({ navigationState, jumpTo, position }) => {
     const layout = useWindowDimensions();
-    const [textSizes, setTextSizes] = useState<{ [key: number]: number }>({});
-    const totalTabs = navigationState.routes.length;
+    const tabWidth = layout.width / navigationState.routes.length;
 
-    const indicatorTranslateX = useRef(new Animated.Value(0)).current;
-    const indicatorWidth = useRef(new Animated.Value(0)).current;
-
-    const handleLayout = (event: LayoutChangeEvent, index: number) => {
-        const { width } = event.nativeEvent.layout;
-        setTextSizes(prev => ({ ...prev, [index]: width }));
-    };
-
-    useEffect(() => {
-        const currentIndex = navigationState.index;
-        const baseX = (layout.width / totalTabs) * currentIndex;
-        const newWidth = textSizes[currentIndex];
-
-        if (newWidth != null) {
-            Animated.parallel([
-                Animated.timing(indicatorTranslateX, {
-                    toValue: baseX,
-                    duration: 100,
-                    useNativeDriver: true,
-                }),
-                Animated.timing(indicatorWidth, {
-                    toValue: newWidth,
-                    duration: 100,
-                    useNativeDriver: false, // width não pode usar useNativeDriver
-                }),
-            ]).start();
-        }
-    }, [navigationState.index, layout.width, textSizes]);
-
+    const translateX = position.interpolate({
+        inputRange: navigationState.routes.map((_, i) => i),
+        outputRange: navigationState.routes.map((_, i) => i * tabWidth),
+    });
 
     return (
         <View style={styles.wrapper}>
@@ -53,7 +26,7 @@ export const CustomTabBar: React.FC<TabBarProps<any>> = ({ navigationState, jump
                         style={[styles.tabItem, isFocused && styles.activeTab, isLast && styles.lastTabItem]}
                         onPress={() => jumpTo(route.key)}
                     >
-                        <ThemedText style={[styles.tabText, isFocused && styles.activeText]} onLayout={(e) => handleLayout(e, index)}>
+                        <ThemedText style={[styles.tabText, isFocused && styles.activeText]} >
                             {route.title}
                         </ThemedText>
                     </Pressable>
@@ -62,10 +35,10 @@ export const CustomTabBar: React.FC<TabBarProps<any>> = ({ navigationState, jump
             </View>
 
             <Animated.View
-                style={[styles.indicator, {width: layout.width / navigationState.routes.length, transform: [{translateX: indicatorTranslateX }] }]}
+                style={[styles.indicator, {width: layout.width / navigationState.routes.length, transform: [{translateX }] }]}
             >
                 <Animated.View 
-                    style={[styles.indicatorChildren, {width: indicatorWidth}]}
+                    style={[styles.indicatorChildren, {width: "75%"}]}
                 />
             </Animated.View>
 

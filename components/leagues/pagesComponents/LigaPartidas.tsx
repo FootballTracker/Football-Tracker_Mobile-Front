@@ -1,34 +1,70 @@
+import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet, Dimensions, View } from 'react-native';
 import { Colors } from '@/constants/Colors';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { MatchCardI } from '@/components/matches/MatchCard';
 import { formatDateToBR } from '@/lib/format';
+import api from "@/lib/Axios"
 
 import { ThemedScrollView } from '@/components/DefaultComponents/ThemedScrollView';
 import { PickRound } from '@/components/PickRound';
 import MatchSection from '@/components/matches/MatchSection';
 import LoadingIcon from '@/components/LoadingIcon';
 
-
 const windowWidth = Dimensions.get('window').width;
 
 interface LigaPartidasProps {
-    round: number
-    setRound: React.Dispatch<React.SetStateAction<number>>
-    matches?: MatchesI[]
+    season: number
+    leagueId: number
 }
 
-export interface MatchesI {
+interface MatchesI {
     day: string
     matches: MatchCardI[]
 }
 
-export default function LigaPartidas({ round, setRound, matches } : LigaPartidasProps) {
+function LigaPartidas({ season, leagueId } : LigaPartidasProps) {
+
+    const [round, setRound] = useState(1);
+    const [matches, setMatches] = useState<MatchesI[]>();
+    const cacheRef = useRef<Record<number, MatchesI[]>>({});
 
     const rounds = Array.from({ length: 38 }, (_, i) => ({
         name: `${i + 1}`,
         value: `${i + 1}`
     }));
+
+    useEffect(() => {
+        cacheRef.current = {};
+    }, [season]);
+
+    useEffect(() => {
+        getMatches();
+    }, [round, season]);
+
+
+    async function getMatches() {
+        if (cacheRef.current[round]) {
+            setMatches(cacheRef.current[round]);
+            return;
+        }
+
+        setMatches(undefined);
+        
+        await api.get('matches', {
+            params: {
+                round,
+                id: leagueId,
+                season: `20${season}`
+            }}
+        ).then((response: any) => {
+            cacheRef.current[round] = response.data;
+            setMatches(response.data);
+        }).catch((e: any) => {
+            if(e.response.data.detail) alert(e.response.data.detail);
+            else alert('Ocorreu algum erro.');
+        });
+    }
 
     return (
         <ThemedScrollView style={{top: 25}}>
@@ -79,4 +115,9 @@ const styles = StyleSheet.create({
         marginTop: 1,
         marginHorizontal: 5
     },
+});
+
+// Memoiza o componente para evitar re-renderizações desnecessárias com o TabView
+export default React.memo(LigaPartidas, (prevProps, nextProps) => {
+  return prevProps.season === nextProps.season;
 });
