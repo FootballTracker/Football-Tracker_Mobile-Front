@@ -4,10 +4,12 @@ import { Colors } from '@/constants/Colors';
 import { useState, useEffect, useRef } from 'react';
 
 import { ThemedText } from "@/components/DefaultComponents/ThemedText";
+import { useTheme } from '@/context/ThemeContext';
 
 export const CustomTabBar: React.FC<TabBarProps<any>> = ({ navigationState, jumpTo }) => {
     const layout = useWindowDimensions();
     const [textSizes, setTextSizes] = useState<{ [key: number]: number }>({});
+    const { theme } = useTheme();
     const totalTabs = navigationState.routes.length;
 
     const indicatorTranslateX = useRef(new Animated.Value(0)).current;
@@ -17,6 +19,56 @@ export const CustomTabBar: React.FC<TabBarProps<any>> = ({ navigationState, jump
         const { width } = event.nativeEvent.layout;
         setTextSizes(prev => ({ ...prev, [index]: width }));
     };
+
+    const styles = StyleSheet.create({
+        wrapper: {
+            position: 'relative',
+            paddingBottom: 5
+        },
+        tabBar: {
+            flexDirection: 'row',
+            justifyContent: "space-evenly",
+            width: "100%",
+        },
+        tabItem: {
+            flex: 1,
+            paddingTop: 1,
+            alignItems: 'center',
+            borderRightWidth: 0.3,
+            borderColor: Colors[theme].DarkerText,
+        },
+        lastTabItem: {
+            borderRightWidth: 0,
+        },
+        activeTab: {
+        
+        },
+        tabText: {
+            color: Colors[theme].DarkerText,
+            fontFamily: "Kokoro",
+            fontSize: 16,
+            lineHeight: 16,
+            top: 3
+        },
+        activeText: {
+            color: Colors[theme].Red,
+            paddingLeft: 4,
+            paddingRight: 4,
+            paddingBottom: 4
+        },
+        indicator: {
+            position: 'absolute',
+            bottom: 2.5,
+            height: 3,
+        },
+        indicatorChildren: {
+            height: 3,
+            backgroundColor: Colors.dark.Red,
+            marginLeft: "auto",
+            marginRight: "auto",
+            borderRadius: 5
+        }
+    });
 
     useEffect(() => {
         const currentIndex = navigationState.index;
@@ -72,53 +124,3 @@ export const CustomTabBar: React.FC<TabBarProps<any>> = ({ navigationState, jump
         </View>
     );
 };
-
-const styles = StyleSheet.create({
-    wrapper: {
-        position: 'relative',
-        paddingBottom: 5
-    },
-    tabBar: {
-        flexDirection: 'row',
-        justifyContent: "space-evenly",
-        width: "100%",
-    },
-    tabItem: {
-        flex: 1,
-        paddingTop: 1,
-        alignItems: 'center',
-        borderRightWidth: 0.3,
-        borderColor: Colors.dark.DarkerText,
-    },
-    lastTabItem: {
-        borderRightWidth: 0,
-    },
-    activeTab: {
-    
-    },
-    tabText: {
-        color: Colors.dark.DarkerText,
-        fontFamily: "Kokoro",
-        fontSize: 16,
-        lineHeight: 16,
-        top: 3
-    },
-    activeText: {
-        color: Colors.dark.Red,
-        paddingLeft: 4,
-        paddingRight: 4,
-        paddingBottom: 4
-    },
-    indicator: {
-        position: 'absolute',
-        bottom: 2.5,
-        height: 3,
-    },
-    indicatorChildren: {
-        height: 3,
-        backgroundColor: Colors.dark.Red,
-        marginLeft: "auto",
-        marginRight: "auto",
-        borderRadius: 5
-    }
-});

@@ -11,7 +11,6 @@ import { Menu } from '@/components/home/Menu';
 import LigasTeste from '@/components/home/Ligas';
 import TimesTeste from '@/components/home/Times';
 import JogadoresTeste from '@/components/home/Jogadores';
-import Perfil from '@/app/(pages)/Perfil';
 
 
 export default function Main() {

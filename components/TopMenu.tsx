@@ -24,8 +24,8 @@ export default function TopMenu() {
     const handleProfileClick = () => {
         if(user) {
             setPreviousPage(page);
-            router.navigate("/(pages)/Perfil");
-            setPage("Perfil");
+            router.navigate("/(pages)/Profile");
+            setPage("Profile");
         } else router.navigate("/(auth)/Login")
     }
 
@@ -49,7 +49,7 @@ export default function TopMenu() {
                             page !== "Configurações" ? (
                                 <ReturnArrow returnPage={true} />
                             ) : (
-                                <ReturnArrow changePage={{pageName: "Perfil"}} />
+                                <ReturnArrow changePage={{pageName: "Profile"}} />
                             )
                         ) : ( 
                             <ThemedImage 

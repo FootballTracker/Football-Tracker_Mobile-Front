@@ -66,7 +66,7 @@ export default function Configurations() {
                     />
                     <Select modalOpened={modalOpened} setModalOpened={setModalOpened} setSelected={setTheme} title='Selecione o tema desejado:' values={themes} />
                 </View>
-                <ThemedButton IconComponent={{ Icon: Ionicons, name: "trash-outline", size: 26 }} title="Excluir conta" backgroundColor="Red" textColor="Text" handleClick={() => {alert("fazer isso daqui")}} style={styles.deleteAccountButton} />
+                <ThemedButton IconComponent={{ Icon: Ionicons, name: "trash-outline", size: 26 }} title="Excluir conta" backgroundColor="Red" textColor="ButtonText" handleClick={() => {alert("fazer isso daqui")}} style={styles.deleteAccountButton} />
             </ThemedView>
         </ScrollView>
     )

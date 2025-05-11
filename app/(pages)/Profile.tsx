@@ -21,7 +21,7 @@ import { usePage } from "@/context/PageContext";
 //Consts
 const windowWidth = Dimensions.get('window').width;
 
-export default function Perfil() {
+export default function Profile() {
     const { user, logout } = useUserContext();
     const { setPage, setPreviousPage } = usePage();
 
@@ -63,7 +63,7 @@ export default function Perfil() {
                     /> */}
                 </View>
 
-                <ThemedButton IconComponent={{ Icon: Ionicons, name: "exit-outline" }} title="Sair" backgroundColor="Red" textColor="Text" handleClick={handleLogout} style={styles.logoutButton} />
+                <ThemedButton IconComponent={{ Icon: Ionicons, name: "exit-outline" }} title="Sair" backgroundColor="Red" textColor="ButtonText" handleClick={handleLogout} style={styles.logoutButton} />
                 {/* <ThemedText onPress={} style={{textAlign: 'center', marginTop: 20, padding: 10}}>SAIR</ThemedText> */}
             </ThemedView>
         </ScrollView>
