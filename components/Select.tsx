@@ -1,6 +1,7 @@
 //Default Imports
 import React from "react";
 import { Pressable, ScrollView, StyleSheet, View } from "react-native";
+import { useTheme } from "@/context/ThemeContext";
 
 //Components
 import { ThemedText } from "./DefaultComponents/ThemedText";
@@ -10,7 +11,6 @@ import { ModalComponent } from "./ModalComponent";
 //Icons
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { Colors } from "@/constants/Colors";
-import { useColorScheme } from "@/hooks/useColorScheme";
 
 //Types
 type SelectProps = {
@@ -26,7 +26,7 @@ type SelectProps = {
 }
 
 export function Select({ title, values, setSelected, modalOpened, setModalOpened, centered = true } : SelectProps) {
-    const { theme } = useColorScheme();
+    const { theme } = useTheme();
 
     const styles = StyleSheet.create({
     headerBox: {

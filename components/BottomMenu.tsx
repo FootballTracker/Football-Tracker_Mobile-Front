@@ -3,17 +3,17 @@ import Boot from '@/assets/Icons/Boot.svg';
 import Shield from '@/assets/Icons/Shield.svg';
 import Trophy from '@/assets/Icons/Trophy.svg';
 import { useState } from "react";
+import { useTheme } from '@/context/ThemeContext';
 import { router } from 'expo-router';
 
 import { ThemedText } from "@/components/DefaultComponents/ThemedText";
 import { ThemedView } from "./DefaultComponents/ThemedView";
 import { Colors } from "@/constants/Colors"
-import { useColorScheme } from '@/hooks/useColorScheme';
 
 const windowWidth = Dimensions.get('window').width;
 
 export default function BottomMenu() {
-    const { theme } = useColorScheme();
+    const { theme } = useTheme();
     const [selected, setSelected] = useState(1);
 
     const getColor = (index: number) => {

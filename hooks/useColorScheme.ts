@@ -1,1 +1,1 @@
-export { useTheme as useColorScheme } from '@/context/ThemeContext'
+export { useTheme } from '@/context/ThemeContext'

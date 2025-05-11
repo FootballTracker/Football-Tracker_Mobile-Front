@@ -1,11 +1,11 @@
 //Default Imports
 import { StyleSheet, TextInput, Dimensions, View, TouchableOpacity, TextInputProps } from 'react-native';
-import { useColorScheme } from '@/hooks/useColorScheme';
 import Feather from '@expo/vector-icons/Feather';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Colors } from '@/constants/Colors';
 import { useState } from 'react';
 import { StyleProps } from 'react-native-reanimated';
+import { useTheme } from '@/context/ThemeContext';
 
 //Type
 type ThemedInputProps = {
@@ -19,7 +19,7 @@ type ThemedInputProps = {
 } & TextInputProps;
 
 export function ThemedInput({ placeholder, value, onChangeText, onBlur, isPassword = false, isSearch = false, style, ...rest }: ThemedInputProps) {
-    const { theme } = useColorScheme();
+    const { theme } = useTheme();
     const windowWidth = Dimensions.get('window').width;
     const [showPassword, setShowPassword] = useState(false);
 

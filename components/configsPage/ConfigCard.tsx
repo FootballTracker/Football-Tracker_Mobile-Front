@@ -1,5 +1,6 @@
 //Default Imports
 import { Pressable, PressableProps, StyleSheet, View } from "react-native";
+import { useTheme } from "@/context/ThemeContext";
 import { Colors } from "@/constants/Colors";
 
 //Icons
@@ -8,7 +9,6 @@ import { MaterialIcons } from "@expo/vector-icons";
 //Components
 import { ThemedIcon, ThemedIconProps } from "../DefaultComponents/ThemedIcon";
 import { ThemedText } from "../DefaultComponents/ThemedText";
-import { useColorScheme } from "@/hooks/useColorScheme";
 
 //Types
 type ConfigCardProps = {
@@ -17,7 +17,7 @@ type ConfigCardProps = {
 } & PressableProps;
 
 export function ConfigsCard({ icon, text, ...rest } : ConfigCardProps) {
-    const { theme } = useColorScheme();
+    const { theme } = useTheme();
 
     const styles = StyleSheet.create({
         configurationItem: {
