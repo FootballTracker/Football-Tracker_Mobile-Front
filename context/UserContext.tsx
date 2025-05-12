@@ -13,6 +13,7 @@ interface UserContextType {
     user: User | null;
     login: (userData: User) => void;
     logout: () => void;
+    logged: boolean | null;
     // setUser: (user: User | null) => void;
 }
 
@@ -27,6 +28,7 @@ interface UserProviderProps {
 // Provider
 export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     const [user, setUser] = useState<User | null>(null);
+    const [logged, setLogged] = useState<boolean | null>(null);
 
     useEffect(() => {
         //Chamar rota do back que verifica se usuário é válido
@@ -34,22 +36,27 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
             if(storedUser) {
                 const user : User = JSON.parse(storedUser);
                 setUser(user);
+                setLogged(true);
+            } else {
+                setLogged(false);
             }
         })
     }, [])
 
     const login = (userData: User): void => {
         setUser(userData);
+        setLogged(true);
         saveItem('user', JSON.stringify(userData));
     }
     
     const logout = (): void => {
         setUser(null);
+        setLogged(false);
         deleteItem('user');
     }
 
     return (
-        <UserContext.Provider value={{ user, login, logout }}>
+        <UserContext.Provider value={{ user, login, logout, logged }}>
             {children}
         </UserContext.Provider>
     );

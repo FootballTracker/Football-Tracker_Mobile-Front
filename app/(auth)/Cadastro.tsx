@@ -37,10 +37,6 @@ export default function Cadastro() {
         resolver: zodResolver(userData)
     });
 
-    useEffect(() => {
-        console.log(user);
-    }, []);
-
     const handleForm = async ({user, email, password, confirmPassword}:userData) => {
         await api.post('auth/signup', {
             username: user,

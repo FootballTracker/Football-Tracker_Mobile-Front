@@ -16,12 +16,13 @@ const windowWidth = Dimensions.get('window').width;
 
 export default function Ligas() {
 
-    const { user } = useUserContext();
+    const { user, logged } = useUserContext();
     const [favorities, setFavorities] = useState<LeagueCardI[]>();
     const [leagues, setLeagues] = useState<LeagueCardI[]>();
     const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
+        if(logged === null) return;
         setLoading(true);
         getLeagues();
     }, [user?.id]);

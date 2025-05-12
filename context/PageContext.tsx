@@ -3,18 +3,18 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { usePathname } from 'expo-router';
 
 type PageInfo = {
-  elementName: string;
-  pageName: string;
+    elementName: string;
+    pageName: string;
 }
 
 type Pages = {
-  profile: PageInfo;
-  configurations: PageInfo;
-  deleteUser: PageInfo;
-  userConfigs: PageInfo;
-  updateUsername: PageInfo;
-  updateEmail: PageInfo;
-  updatePassword: PageInfo;
+    profile: PageInfo;
+    configurations: PageInfo;
+    deleteUser: PageInfo;
+    userConfigs: PageInfo;
+    updateUsername: PageInfo;
+    updateEmail: PageInfo;
+    updatePassword: PageInfo;
 }
 
 type pageContextProps = {
