@@ -20,6 +20,9 @@ export default function RootLayout() {
                     <Stack.Screen name="userConfigurations/Configurations" />
                     <Stack.Screen name="userConfigurations/UserConfigs" />
                     <Stack.Screen name="userConfigurations/DeleteUser" />
+                    <Stack.Screen name="userConfigurations/UpdateUsername" />
+                    <Stack.Screen name="userConfigurations/UpdateEmail" />
+                    <Stack.Screen name="userConfigurations/UpdatePassword" />
                 </Stack>
             </PageProvider>
         </ThemedView>

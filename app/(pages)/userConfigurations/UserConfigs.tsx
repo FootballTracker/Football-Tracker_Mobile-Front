@@ -24,17 +24,19 @@ export default function UserConfigs() {
             <ThemedView style={styles.background}>
                 <View style={styles.container}>
                     <ConfigsCard
-                        onPress={() => {alert("fazer")}}
+                        onPress={() => {router.navigate('/(pages)/userConfigurations/UpdateUsername')}}
                         icon={{IconComponent: Username, height: 22, width: 22}}
                         text='Nome de Usuário'
-                    />
+                        />
 
                     <ConfigsCard
+                        onPress={() => {router.navigate('/(pages)/userConfigurations/UpdateEmail')}}
                         icon={{IconComponent: MaterialCommunityIcons, name: 'email-outline'}}
                         text='Email'
-                    />
+                        />
 
                     <ConfigsCard
+                        onPress={() => {router.navigate('/(pages)/userConfigurations/UpdatePassword')}}
                         icon={{IconComponent: Password}}
                         text='Senha'
                     />

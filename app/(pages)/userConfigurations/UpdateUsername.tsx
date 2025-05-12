@@ -1,5 +1,5 @@
 //Default Imports
-import { ScrollView, StyleSheet, View } from "react-native";
+import { Alert, ScrollView, StyleSheet, View } from "react-native";
 import { useUserContext } from "@/context/UserContext";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTheme } from "@/context/ThemeContext";
@@ -11,7 +11,7 @@ import api from "@/lib/Axios";
 import { z } from "zod";
 
 //Icons
-import { Feather, Ionicons } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 
 //Components
 import { ThemedView } from "@/components/DefaultComponents/ThemedView";
@@ -22,34 +22,56 @@ import { FormInput } from "@/components/FormInput";
 
 //Consts
 const userData = z.object({
+    username: z.string({message: 'Obrigatório'}).min(1, 'Obrigatório'),
     password: z.string({message: 'Obrigatório'}).min(8, 'Mínimo 8 caracteres').regex(new RegExp('(?=.*[a-z])'), 'Deve conter uma letra minúscula').regex(new RegExp('(?=.*[A-Z])'), 'Deve conter uma letra maiúscula').regex(new RegExp('(?=.*[0-9])'), 'Deve conter um número').regex(new RegExp('(?=.*[!@#$%^&*()~`´])'), 'Deve conter um caractere especial'),
 })
 
 //Types
 type userData = z.infer<typeof userData>
 
-export default function DeleteUser() {
+export default function UpdateUsername() {
     const { setPage, setPreviousPage } = usePage();
-    const { user, logout } = useUserContext();
+    const { user, logout, login } = useUserContext();
     const { theme } = useTheme();
 
     const { control, handleSubmit, formState: {errors} } = useForm<userData>({
         resolver: zodResolver(userData)
     });
 
-    const handleForm = async ({password}:userData) => {
-        await api.post('auth/user_delete', {
-            user_id: user?.id,
-            password: password
-        }).then((response: any) => {
-            logout();
-            setPage("Ligas");
-            setPreviousPage(null);
-            router.replace('/');
-        }).catch((e: any) => {
-            if(e.response.data.detail) alert(e.response.data.detail);
-            else alert('Ocorreu algum erro. Tente novamente');
-        })
+    const handleForm = async ({username, password}:userData) => {
+        if(user) {
+            await api.put('auth/update_user', null, {
+                params: {
+                    user_id: user.id,
+                    username: username,
+                    password: password
+                }
+            }).then((response: any) => {
+                Alert.alert(
+                    'Sucesso',
+                    'Seu nome de usuário foi atualizado.',
+                    [
+                        // { text: 'Cancelar', onPress: () => console.log('Cancelado'), style: 'cancel', },
+                        { text: 'OK' },
+                    ],
+                    { cancelable: false }
+                );
+
+                const id = user.id;
+                const email = user.email;
+                logout();
+                login({
+                    id: id,
+                    username: username,
+                    email: email,
+                });
+                setPage("Ligas");
+                router.back();
+            }).catch((e: any) => {
+                if(e.response.data.detail) alert(e.response.data.detail);
+                else alert('Ocorreu algum erro. Tente novamente');
+            })
+        }
     }
 
     const styles = StyleSheet.create({
@@ -84,8 +106,6 @@ export default function DeleteUser() {
         infoText: {
             fontFamily: 'Kdam',
             fontSize: 13,
-            // width: '80%',
-            // marginHorizontal: 20,
             justifyContent: 'center',
             textAlign: 'justify',
             lineHeight: 20,
@@ -97,10 +117,11 @@ export default function DeleteUser() {
         <ScrollView>
             <ThemedView style={styles.background}>
                 <View style={styles.container}>
+                    <FormInput placeHolder="Novo nome de usuário" control={control} errors={errors} name="username" />
                     <FormInput placeHolder="Senha" control={control} errors={errors} name="password" isPassword />
-                    <ThemedText style={styles.infoText}><ThemedIcon IconComponent={Feather} name="info" size={15} /> Para confirmar a exclusão da sua conta, digite sua senha acima</ThemedText>
+                    <ThemedText style={styles.infoText}><ThemedIcon IconComponent={Feather} name="info" size={15} /> Para alterar seu nome de usuário, digite sua senha acima</ThemedText>
                 </View>
-                <ThemedButton IconComponent={{ Icon: Ionicons, name: "trash-outline", size: 26 }} title="Excluir" backgroundColor="Red" textColor="ButtonText" handleClick={handleSubmit(handleForm)} style={styles.deleteAccountButton} />
+                <ThemedButton IconComponent={{ Icon: Feather, name: "edit-3", size: 26 }} title="Confirmar" backgroundColor="Green" textColor="LightBackground" handleClick={handleSubmit(handleForm)} style={styles.deleteAccountButton} />
             </ThemedView>
         </ScrollView>
     )
