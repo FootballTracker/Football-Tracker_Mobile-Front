@@ -8,6 +8,6 @@ export function StatusBar() {
     const { theme } = useTheme();
 
     return (
-        <Bar style='auto' backgroundColor={(pathname === '/Login' || pathname === '/Cadastro') ? Colors[theme].LightBackground : Colors[theme].DarkBackground}/>
+        <Bar style={theme == 'dark' ? 'light' : 'dark'} backgroundColor={(pathname === '/Login' || pathname === '/Cadastro') ? Colors[theme].LightBackground : Colors[theme].DarkBackground}/>
     )
 }
