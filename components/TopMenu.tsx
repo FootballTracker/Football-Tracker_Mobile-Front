@@ -19,13 +19,12 @@ export default function TopMenu() {
     const pathname = usePathname();
     const [showBackButton, setShowBackButton] = useState(false);
     const { user } = useUserContext();
-    const { page, setPage, previousPage, setPreviousPage } = usePage();
+    const { page, pages, setPage, previousPage, setPreviousPage } = usePage();
 
     const handleProfileClick = () => {
         if(user) {
             setPreviousPage(page);
             router.navigate("/(pages)/Profile");
-            setPage("Profile");
         } else router.navigate("/(auth)/Login")
     }
 
@@ -46,10 +45,10 @@ export default function TopMenu() {
                 <View style={styles.leftInfo}>
                     {
                         showBackButton ? (
-                            page !== "Configurações" ? (
+                            page === pages?.profile.pageName ? (
                                 <ReturnArrow returnPage={true} />
                             ) : (
-                                <ReturnArrow changePage={{pageName: "Profile"}} />
+                                <ReturnArrow />
                             )
                         ) : ( 
                             <ThemedImage 
@@ -68,8 +67,8 @@ export default function TopMenu() {
                 
                 
                 {
-                    previousPage ? ( //Is on profile page
-                        page !== "Configurações" ? (
+                    previousPage ? ( //Is on profile area
+                        page === pages?.profile.pageName ? (
                             <TouchableOpacity onPress={handleConfigsClick}>
                                 <ThemedIcon IconComponent={Configs} width={60} height={35} style={{marginRight: 5}} />
                             </TouchableOpacity>

@@ -8,11 +8,10 @@ import { usePage } from "@/context/PageContext"
 
 type ReturnArrowProps = {
     double?: boolean;
-    changePage?: {pageName: string};
     returnPage?: boolean;
 }
 
-export function ReturnArrow({ double, changePage, returnPage = false } : ReturnArrowProps) {
+export function ReturnArrow({ double, returnPage = false } : ReturnArrowProps) {
     const { setPage, previousPage, setPreviousPage } = usePage();
 
     const returnRoute = () => {
@@ -24,7 +23,7 @@ export function ReturnArrow({ double, changePage, returnPage = false } : ReturnA
             setPreviousPage(null);
         }
 
-        if(changePage) setPage(changePage.pageName);
+        // if(changePage) setPage(changePage.pageName);
     }
 
     return (
