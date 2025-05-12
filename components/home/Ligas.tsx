@@ -25,7 +25,7 @@ export default function Ligas() {
         if(logged === null) return;
         setLoading(true);
         getLeagues();
-    }, [user?.id]);
+    }, [logged]);
 
     async function getLeagues() {
         await api.get('leagues', {
