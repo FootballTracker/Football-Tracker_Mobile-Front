@@ -51,7 +51,7 @@ export default function Cadastro() {
             router.replace('/');
         }).catch((e: any) => {
             if(e.response.data.detail) alert(e.response.data.detail);
-            else alert('Ocorreu algum erro.');
+            else alert('Ocorreu algum erro. Tente novamente');
         })
     }
 

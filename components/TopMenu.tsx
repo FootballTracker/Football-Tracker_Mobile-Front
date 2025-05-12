@@ -30,7 +30,7 @@ export default function TopMenu() {
     }
 
     const handleConfigsClick = () => {
-        router.navigate("/(pages)/Configurations");
+        router.navigate("/(pages)/userConfigurations/Configurations");
         setPage("Configurações");
     }
 
