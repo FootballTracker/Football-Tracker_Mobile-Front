@@ -18,6 +18,9 @@ export default function RootLayout() {
                     <Stack.Screen name="match/[matchId]" />
                     <Stack.Screen name="Time" />
                     <Stack.Screen name="Profile" />
+                    <Stack.Screen name="userConfigurations/Configurations" />
+                    <Stack.Screen name="userConfigurations/UserConfigs" />
+                    <Stack.Screen name="userConfigurations/DeleteUser" />
                 </Stack>
             </PageProvider>
         </ThemedView>
