@@ -4,16 +4,11 @@
     "slug": "mobile-front",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/WhiteSplashLogo.png",
+    "icon": "./assets/images/RedBlackLogo.png",
     "backgroundColor": "#22252B",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
-    "android": {
-      "adaptiveIcon": {
-        "backgroundColor": "#22252B"
-      }
-    },
     "ios": {
       "supportsTablet": true
     },
