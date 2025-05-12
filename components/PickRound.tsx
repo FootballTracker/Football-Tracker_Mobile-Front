@@ -1,4 +1,4 @@
-import { TouchableOpacity, StyleSheet, View, ViewProps, Dimensions } from "react-native"
+import { StyleSheet, View, ViewProps, Dimensions, Pressable, TouchableOpacity } from "react-native"
 import { useState } from "react"
 import { MaterialIcons } from "@expo/vector-icons"
 import { Colors } from "@/constants/Colors"
@@ -30,8 +30,8 @@ export function PickRound({ values, selected, setSelected, iconSize, ...otherPro
             <Select modalOpened={modalOpened} setModalOpened={setModalOpened} setSelected={setSelected} title="Selecione uma rodada:" values={values} />
 
             <View style={styles.round}>
-                <TouchableOpacity onPress={() => (
-                    selected > 1 && setSelected((value: number) => value - 1)
+                <Pressable onPress={() => (
+                    selected > 1 && setSelected((value: number) => Number(value) - 1)
                 )}>
                     <ThemedIcon
                         IconComponent={MaterialIcons}
@@ -39,12 +39,12 @@ export function PickRound({ values, selected, setSelected, iconSize, ...otherPro
                         darkColor={Colors.dark.Text}
                         lightColor={Colors.light.Text}
                         size={21}
-                        style={selected === 1 && {opacity: 0.3}}
+                        style={Number(selected) === 1 && {opacity: 0.3}}
                     />
-                </TouchableOpacity>
+                </Pressable>
                 <TouchableOpacity onPress={() => setModalOpened(!modalOpened)} {...otherProps}>
                     <View style={styles.currentRound}>
-                        <ThemedText style={{fontFamily: "Kdam"}}>Rodada {selected}</ThemedText>
+                        <ThemedText>Rodada {selected}</ThemedText>
                         <ThemedIcon
                             IconComponent={Ionicons}
                             name='ellipsis-horizontal-circle-outline'
@@ -55,8 +55,8 @@ export function PickRound({ values, selected, setSelected, iconSize, ...otherPro
                         />
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => (
-                        selected < 38 && setSelected((value: number) => value + 1)
+                <Pressable onPress={() => (
+                        selected < 38 && setSelected((value: number) => Number(value) + 1)
                     )}>
                     <ThemedIcon
                         IconComponent={MaterialIcons}
@@ -64,9 +64,9 @@ export function PickRound({ values, selected, setSelected, iconSize, ...otherPro
                         darkColor={Colors.dark.Text}
                         lightColor={Colors.light.Text}
                         size={21}
-                        style={selected === 38 && {opacity: 0.3}}
+                        style={Number(selected) === 38 && {opacity: 0.3}}
                     />
-                </TouchableOpacity>
+                </Pressable>
             </View>
         </>
     )

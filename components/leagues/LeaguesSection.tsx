@@ -27,7 +27,7 @@ export default function LeaguesSection({ text, leagues, icon, emptyMessage, ...r
             <ThemedView darkColor={Colors.dark.Red} lightColor={Colors.light.Red} style={styles.divisor}/>
             {leagues?.length ? (
                 leagues.map((league, index) => (
-                    <LeagueCard id={league.id} image={league.image} name={league.name} favoritie={league.favoritie} key={index}/>
+                    <LeagueCard {...league} key={index}/>
                 ))
             ) : (
                 <ThemedText style={styles.favoritesInfoText} darkColor={Colors.dark.DarkerText} lightColor={Colors.light.DarkerText}>

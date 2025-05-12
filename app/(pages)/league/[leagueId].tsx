@@ -3,28 +3,37 @@ import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Colors } from '@/constants/Colors';
 import { TabView } from 'react-native-tab-view';
-import FilledStar from '@/assets/Icons/FilledStar.svg'
-import UnfilledStar from '@/assets/Icons/UnfilledStar.svg'
+import FilledStar from '@/assets/Icons/FilledStar.svg';
+import UnfilledStar from '@/assets/Icons/UnfilledStar.svg';
+import api from '@/lib/Axios';
+import { useUserContext } from '@/context/UserContext';
 
 import { ThemedText } from "@/components/DefaultComponents/ThemedText";
 import { ThemedIcon } from '@/components/DefaultComponents/ThemedIcon';
-import { LeagueSelect } from '@/components/LeagueSelect';
 import { CustomTabBar } from '@/components/CustomTabBar';
 import { ThemedView } from '@/components/DefaultComponents/ThemedView';
+import { LeagueSelect } from '@/components/LeagueSelect';
 import LoadingIcon from '@/components/LoadingIcon';
 
 //scenes to render
 import LigaPartidas from '../../../components/leagues/pagesComponents/LigaPartidas';
 import LigaClassificacao from '../../../components/leagues/pagesComponents/LigaClassificacao';
 import LigaRankings from '../../../components/leagues/pagesComponents/LigaRankings';
+import { LeagueCardI } from '@/components/leagues/LeagueCard';
+
+interface LeagueFull {
+    league: LeagueCardI
+    seasons: number[]
+}
 
 export default function League() {
     const { leagueId } = useLocalSearchParams();
+    const { user } = useUserContext();
     const [contentLoaded, setContentLoaded] = useState(false);
     const [favoritieState, setFavoritieState] = useState(false);
-    const [selectedSeason, setSelectedSeason] = useState<number>(23);
+    const [selectedSeason, setSelectedSeason] = useState<number>(-1);
     const [index, setIndex] = useState(0); //initial route index
-    
+    const [league, setLeague] = useState<LeagueFull>();
     
     //routes to render
     const [routes] = useState([
@@ -48,12 +57,31 @@ export default function League() {
 
     //search league info and seasons available
     useEffect(() => {
-        //fazer requisição para o back
-        
-        setSelectedSeason(23);
-        setContentLoaded(true);
+        getLeague();
     }, []);
 
+    useEffect(() => {
+        if(league) {
+            setSelectedSeason(league.seasons[0]);
+            setFavoritieState(league.league.is_favorite);
+        }
+    }, [league]);
+
+    async function getLeague() {
+        await api.get('league', {
+            params: {
+                user_id: user?.user_id,
+                league_id: Number(leagueId)
+            }}
+        ).then((response: any) => {
+            setLeague(response.data);
+        }).catch((e: any) => {
+            if(e.response.data.detail) alert(e.response.data.detail);
+            else alert('Erro ao buscar liga.');
+        }).finally(() => {
+            setContentLoaded(true);
+        });
+    }
 
     const changeFavoritie = () => {
         // alert("trocar favorito");
@@ -69,24 +97,34 @@ export default function League() {
         contentLoaded ? (
             <ThemedView style={styles.background}>
                 <View style={styles.header}>
-                    <Image source={{uri: "https://media.api-sports.io/football/leagues/71.png"}} style={styles.leagueImage} resizeMode='contain'/>
-                    <ThemedText style={{fontSize: 19, fontFamily: "Kdam"}}>
-                        Brasileirão
+                    <Image source={{uri: league?.league.logo_url}} style={styles.leagueImage} resizeMode='contain'/>
+                    <ThemedText style={{fontSize: 19}}>
+                        {league?.league.name}
                     </ThemedText>
-                        <LeagueSelect selected={selectedSeason} setSelected={selectSeason} values={[
-                            {
-                                name: '22',
-                                value: '22'
-                            },
-                            {
-                                name: '23',
-                                value: '23'
-                            },
-                            {
-                                name: '24',
-                                value: '24'
-                            },
-                            ]}
+                        <LeagueSelect
+                            selected={selectedSeason === -1 ? '' : `${selectedSeason}`}
+                            setSelected={selectSeason}
+                            values={league ? league.seasons.map((season) => {
+                                return (
+                                    {
+                                        name: `${season}`,
+                                        value: `${season}`
+                                    }
+                                )
+                            }) : ([
+                                {
+                                    name: '22',
+                                    value: '2022'
+                                },
+                                {
+                                    name: '23',
+                                    value: '2023'
+                                },
+                                {
+                                    name: '24',
+                                    value: '2024'
+                                },
+                            ])}
                             style={{
                                 marginLeft: 6,
                                 marginTop: 2
@@ -127,9 +165,7 @@ export default function League() {
                 />
             </ThemedView>
         ) : (
-            <View>
-                <ThemedText>Loading</ThemedText>
-            </View>
+            <LoadingIcon />
         )
 
     );

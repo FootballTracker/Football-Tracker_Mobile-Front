@@ -11,13 +11,13 @@ import { ThemedText } from '@/components/DefaultComponents/ThemedText';
 
 export interface LeagueCardI {
     id: string
-    image: string
+    logo_url: string
     name: string
-    favoritie?: boolean
+    is_favorite: boolean
 }
 
-export default function LeagueCard({ id, image, name, favoritie }: LeagueCardI) {
-    const [favoritieState, setFavoritieState] = useState(favoritie);
+export default function LeagueCard({ id, logo_url, name, is_favorite }: LeagueCardI) {
+    const [favoritieState, setFavoritieState] = useState(is_favorite);
 
     const accessLeague = () => {
         router.push(`/(pages)/league/${id}` as any);
@@ -32,7 +32,7 @@ export default function LeagueCard({ id, image, name, favoritie }: LeagueCardI) 
         <Pressable onPress={accessLeague}>
             <View style={styles.card}>
                 <View style={[styles.sideInfo, styles.leftInfo]}>
-                    <Image source={{uri: image}} resizeMode="contain" style={styles.image}/>
+                    <Image source={{uri: logo_url}} resizeMode="contain" style={styles.image}/>
                     <ThemedText numberOfLines={1} ellipsizeMode='tail' style={styles.text}>{name}</ThemedText>
                 </View>
                 <View style={[styles.sideInfo, styles.rightInfo]}>

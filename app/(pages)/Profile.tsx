@@ -8,6 +8,9 @@ import Boot from '@/assets/Icons/Boot.svg'
 import Trophy from '@/assets/Icons/Trophy.svg'
 import Shield from '@/assets/Icons/Shield.svg'
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { LeagueCardI } from "@/components/leagues/LeagueCard";
+import { useEffect, useState } from "react";
+import api from '@/lib/Axios';
 
 //Components
 import { ThemedText } from "@/components/DefaultComponents/ThemedText";
@@ -17,6 +20,7 @@ import LeaguesSection from "@/components/leagues/LeaguesSection";
 import { Colors } from "@/constants/Colors";
 import { ThemedButton } from "@/components/DefaultComponents/ThemedButton";
 import { usePage } from "@/context/PageContext";
+import LoadingIcon from "@/components/LoadingIcon";
 
 //Consts
 const windowWidth = Dimensions.get('window').width;
@@ -24,12 +28,35 @@ const windowWidth = Dimensions.get('window').width;
 export default function Profile() {
     const { user, logout } = useUserContext();
     const { setPage, setPreviousPage } = usePage();
+    const [leagues, setLeagues] = useState<LeagueCardI[]>();
+    const [loading, setLoading] = useState<boolean>(true);
 
     const handleLogout = () => {
         logout();
         setPage("Ligas");
         setPreviousPage(null);
         router.back()
+    }
+
+    useEffect(() => {
+        if(user) {
+            getLeagues();
+        }
+    }, [user]);
+
+    async function getLeagues() {
+        await api.get('favorite_leagues', {
+            params: {
+                user_id: user?.user_id
+            }}
+        ).then((response: any) => {
+            setLeagues(response.data.all_leagues);
+        }).catch((e: any) => {
+            if(e.response.data.detail) alert(e.response.data.detail);
+            else alert('Erro ao buscar ligas.');
+        }).finally(() => {
+            setLoading(false);
+        });
     }
 
     return (
@@ -44,23 +71,30 @@ export default function Profile() {
                 </View>
 
                 <View style={styles.content}>
-                    {/* <LeaguesSection 
-                        text='Jogadores'
-                        leagues={favoriteLeagues}
-                        icon={{ IconComponent: Boot, width: 30, height: 30, darkColor: Colors.dark.Red, lightColor: Colors.light.Red, style: styles.favoriteSectionsIcons}}
-                        emptyMessage="Favorite um jogador para que ele apareça aqui."
-                    /> */}
-                    <LeaguesSection 
-                        text='Ligas'
-                        leagues={favoriteLeagues}
-                        icon={{ IconComponent: Trophy, width: 25, height: 25, darkColor: Colors.dark.Red, lightColor: Colors.light.Red, style: styles.favoriteSectionsIcons}}
-                    />
-                    {/* <LeaguesSection 
-                        text='Times'
-                        leagues={favoriteLeagues}
-                        icon={{ IconComponent: Shield, width: 30, height: 30, darkColor: Colors.dark.Red, lightColor: Colors.light.Red, style: styles.favoriteSectionsIcons}}
-                        emptyMessage="Favorite um time para que ele apareça aqui."
-                    /> */}
+                    {!loading ? (
+                        <>
+                            {/* <LeaguesSection 
+                            text='Jogadores'
+                            leagues={favoriteLeagues}
+                            icon={{ IconComponent: Boot, width: 30, height: 30, darkColor: Colors.dark.Red, lightColor: Colors.light.Red, style: styles.favoriteSectionsIcons}}
+                            emptyMessage="Favorite um jogador para que ele apareça aqui."
+                            /> */}
+                            <LeaguesSection 
+                                text='Ligas'
+                                leagues={leagues}
+                                icon={{ IconComponent: Trophy, width: 25, height: 25, darkColor: Colors.dark.Red, lightColor: Colors.light.Red, style: styles.favoriteSectionsIcons}}
+                            />
+                            {/* <LeaguesSection 
+                                text='Times'
+                                leagues={favoriteLeagues}
+                                icon={{ IconComponent: Shield, width: 30, height: 30, darkColor: Colors.dark.Red, lightColor: Colors.light.Red, style: styles.favoriteSectionsIcons}}
+                                emptyMessage="Favorite um time para que ele apareça aqui."
+                            /> */}
+                        </>
+                    ) : (
+                        <LoadingIcon />
+                    )}
+                    
                 </View>
 
                 <ThemedButton IconComponent={{ Icon: Ionicons, name: "exit-outline" }} title="Sair" backgroundColor="Red" textColor="ButtonText" handleClick={handleLogout} style={styles.logoutButton} />
@@ -107,24 +141,3 @@ const styles = StyleSheet.create({
         marginVertical: 25,
     },
 })
-
-const favoriteLeagues = [
-    {
-        id: '71',
-        image: "https://media.api-sports.io/football/leagues/71.png",
-        name: "Serie A",
-        favoritie: true
-    },
-    {
-        id: '140',
-        image: "https://media.api-sports.io/football/leagues/140.png",
-        name: "La Liga",
-        favoritie: true
-    },
-    {
-        id: '39',
-        image: "https://media.api-sports.io/football/leagues/39.png",
-        name: "Premier League",
-        favoritie: true
-    }
-]

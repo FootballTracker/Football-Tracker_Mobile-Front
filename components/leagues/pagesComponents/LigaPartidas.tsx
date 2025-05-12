@@ -55,14 +55,14 @@ function LigaPartidas({ season, leagueId } : LigaPartidasProps) {
             params: {
                 round,
                 id: leagueId,
-                season: `20${season}`
+                season: season
             }}
         ).then((response: any) => {
             cacheRef.current[round] = response.data;
             setMatches(response.data);
         }).catch((e: any) => {
             if(e.response.data.detail) alert(e.response.data.detail);
-            else alert('Ocorreu algum erro.');
+            else alert('Erro ao buscar partidas.');
         });
     }
 
