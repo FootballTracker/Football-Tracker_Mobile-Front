@@ -4,21 +4,27 @@ import { ThemedIcon } from "./DefaultComponents/ThemedIcon"
 import { FontAwesome6 } from "@expo/vector-icons"
 import { Colors } from "@/constants/Colors"
 import { router } from "expo-router"
+import { usePage } from "@/context/PageContext"
 
 type ReturnArrowProps = {
     double?: boolean;
-    changePage?: {pageName: string | null, setPageName?: (page: string | null) => void, setPage: (page: string) => void};
+    changePage?: {pageName: string};
+    returnPage?: boolean;
 }
 
-export function ReturnArrow({ double, changePage } : ReturnArrowProps) {
+export function ReturnArrow({ double, changePage, returnPage = false } : ReturnArrowProps) {
+    const { setPage, previousPage, setPreviousPage } = usePage();
+
     const returnRoute = () => {
         router.back();
         double && router.back();
 
-        if(changePage && changePage.pageName) {
-            changePage.setPage(changePage.pageName);
-            changePage.setPageName && changePage.setPageName(null);
+        if(returnPage && previousPage) {
+            setPage(previousPage);
+            setPreviousPage(null);
         }
+
+        if(changePage) setPage(changePage.pageName);
     }
 
     return (

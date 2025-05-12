@@ -1,11 +1,10 @@
-import { Image, Pressable, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Image, Pressable, StyleSheet, View } from 'react-native';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { useTheme } from '@/context/ThemeContext';
 
 import { ThemedIcon } from '../DefaultComponents/ThemedIcon';
 import { ThemedText } from '@/components/DefaultComponents/ThemedText';
 import { Colors } from '@/constants/Colors';
-import { router } from 'expo-router';
 
 interface TeamI {
     score: number
@@ -22,7 +21,7 @@ export interface MatchCardI {
 
 export default function MatchCard({ id, home_team, away_team, time }: MatchCardI) {
 
-    const theme = useColorScheme() ?? 'light';
+    const { theme } = useTheme();
     const result = home_team.score == away_team.score ? 1 : Number(home_team.score) > Number(away_team.score) ? 0 : 2;
 
     const accessMatch = () => {

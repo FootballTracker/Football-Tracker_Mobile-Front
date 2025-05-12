@@ -1,4 +1,4 @@
-import { TouchableOpacity, StyleSheet, View, Pressable, ViewProps, Dimensions, ScrollView } from "react-native"
+import { TouchableOpacity, StyleSheet, View, ViewProps, Dimensions } from "react-native"
 import { useState } from "react"
 import { MaterialIcons } from "@expo/vector-icons"
 import { Colors } from "@/constants/Colors"
@@ -6,7 +6,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 
 import { ThemedText } from "./DefaultComponents/ThemedText"
 import { ThemedIcon } from "./DefaultComponents/ThemedIcon"
-import { ModalComponent } from "./ModalComponent";
+import { Select } from "./Select";
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -27,27 +27,7 @@ export function PickRound({ values, selected, setSelected, iconSize, ...otherPro
 
     return (
         <>
-            
-            <ModalComponent modalOpened={modalOpened} setModalOpened={setModalOpened}>
-                <ThemedText style={styles.modalText}>Selecione uma rodada:</ThemedText>
-                <View style={styles.values}>
-                    <ScrollView>
-                        {values.map((option, index) => (
-                            <Pressable
-                                onPress={() => {
-                                    setSelected(Number(option.value));
-                                    setModalOpened(!modalOpened);
-                                }}
-                                key={index}
-                            >
-                                <View style={styles.option}>
-                                    <ThemedText style={{textAlign: "center"}}>{option.name}</ThemedText>
-                                </View>
-                            </Pressable>
-                        ))}
-                    </ScrollView>
-                </View>
-            </ModalComponent>
+            <Select modalOpened={modalOpened} setModalOpened={setModalOpened} setSelected={setSelected} title="Selecione uma rodada:" values={values} />
 
             <View style={styles.round}>
                 <TouchableOpacity onPress={() => (

@@ -1,98 +1,86 @@
-import { TouchableOpacity, StyleSheet, View, Pressable, ViewProps, ScrollView } from "react-native"
-import { useState } from "react"
-import { MaterialIcons } from "@expo/vector-icons"
-import { Colors } from "@/constants/Colors"
+//Default Imports
+import React from "react";
+import { Pressable, ScrollView, StyleSheet, View } from "react-native";
+import { useTheme } from "@/context/ThemeContext";
 
-import { ThemedText } from "./DefaultComponents/ThemedText"
-import { ThemedIcon } from "./DefaultComponents/ThemedIcon"
-import { ModalComponent } from "./ModalComponent"
+//Components
+import { ThemedText } from "./DefaultComponents/ThemedText";
+import { ThemedIcon } from "./DefaultComponents/ThemedIcon";
+import { ModalComponent } from "./ModalComponent";
 
-interface SelectProps extends ViewProps {
+//Icons
+import AntDesign from '@expo/vector-icons/AntDesign';
+import { Colors } from "@/constants/Colors";
+
+//Types
+type SelectProps = {
+    title: string;
     values: {
         name: string
         value: string
-    }[]
-    selected: any
-    setSelected: any
-    selectFontSize?: number
-    iconSize?: number
+    }[];
+    setSelected: (value: any) => void;
+    modalOpened: boolean;
+    setModalOpened: (value: boolean) => void;
+    centered?: boolean;
 }
 
-export function Select({ values, selected, setSelected, selectFontSize, iconSize, ...otherProps } : SelectProps) {
+export function Select({ title, values, setSelected, modalOpened, setModalOpened, centered = true } : SelectProps) {
+    const { theme } = useTheme();
 
-    const [modalOpened, setModalOpened] = useState(false);
-
-    return (
-        <>
-            <ModalComponent modalOpened={modalOpened} setModalOpened={setModalOpened}>
-                <ThemedText style={styles.modalText}>Selecione uma temporada da liga:</ThemedText>
-                <View style={styles.values}>
-                    <ScrollView>
-                        {values.map((option, index) => (
-                            <Pressable
-                                onPress={() => {
-                                    setSelected(option.value);
-                                    setModalOpened(!modalOpened);
-                                }}
-                                key={index}
-                            >
-                                <View style={styles.option}>
-                                    <ThemedText style={{textAlign: "center"}}>{option.name}</ThemedText>
-                                </View>
-                            </Pressable>
-                        ))}
-                    </ScrollView>
-                </View>
-            </ModalComponent>
-
-
-            <TouchableOpacity onPress={() => setModalOpened(!modalOpened)} {...otherProps}>
-                <View style={styles.select}>
-                    <ThemedText lightColor={Colors.light.DarkerText} darkColor={Colors.dark.DarkerText} style={{fontSize: selectFontSize && selectFontSize, fontFamily: "Kdam"}}>
-                        {selected}
-                    </ThemedText>
-                    <ThemedIcon
-                        IconComponent={MaterialIcons}
-                        name='keyboard-arrow-down'
-                        darkColor={Colors.dark.DarkerText}
-                        lightColor={Colors.light.DarkerText}
-                        size={iconSize ? iconSize : 22}
-                    />
-                </View>
-            </TouchableOpacity>
-        </>
-    )
-}
-
-const styles = StyleSheet.create({
-    select: {
-        display: "flex",
-        justifyContent: "center",
-        flexDirection: "row",
-        alignItems: "center"
+    const styles = StyleSheet.create({
+    headerBox: {
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
     },
     modalText: {
-        marginBottom: 10,
         textAlign: 'center',
-        fontSize: 19,
-        fontFamily: "Kdam"
+        fontSize: 17,
     },
     values: {
         width: "100%",
+        marginTop: 16,
+        paddingTop: 10,
         alignItems: "stretch",
-        borderBottomWidth: 0.5,
         borderTopWidth: 0.5,
+        borderBlockColor: Colors[theme].Red,
         maxHeight: 500
     },
     option: {
         width: "100%",
-        paddingTop: 5,
-        paddingBottom: 5
-    },
-    button: {
-        marginTop: 15,
-        borderRadius: 14,
-        height: 45,
-        width: 100,
+        paddingVertical: 7,
+        // borderTopWidth: 0.5,
+        // borderBottomWidth: 0.5,
+        // borderColor: Colors[theme].DarkBackground,
     },
 });
+
+    return (
+        <ModalComponent modalOpened={modalOpened} setModalOpened={setModalOpened}>
+            <View style={styles.headerBox}>
+                <ThemedText style={styles.modalText}>{title}</ThemedText>
+                <ThemedIcon IconComponent={AntDesign} name="close" lightColor={Colors.light.Red} darkColor={Colors.dark.Red} onPress={() => {setModalOpened(false)}} />
+            </View>
+            <View style={styles.values}>
+                <ScrollView>
+                    {values.map((option, index) => (
+                        <Pressable
+                            onPress={() => {
+                                setSelected(option.value);
+                                setModalOpened(false);
+                            }}
+                            key={index}
+                        >
+                            <View style={styles.option}>
+                                <ThemedText style={centered && {textAlign: "center"}}>{option.name}</ThemedText>
+                            </View>
+                        </Pressable>
+                    ))}
+                </ScrollView>
+            </View>
+        </ModalComponent>
+    )
+}

@@ -1,9 +1,9 @@
 import { StyleSheet, View, Image } from 'react-native';
-import { useColorScheme } from '@/hooks/useColorScheme';
 
 import { ThemedIcon, ThemedIconProps } from './DefaultComponents/ThemedIcon';
 import { ThemedText } from '@/components/DefaultComponents/ThemedText';
 import { Colors } from '@/constants/Colors';
+import { useTheme } from '@/context/ThemeContext';
 
 export interface InfoCardProps {
     description: string
@@ -14,7 +14,7 @@ export interface InfoCardProps {
 
 export default function InfoCard({ description, value, icon, imageUrl }: InfoCardProps) {
 
-    const theme = useColorScheme() ?? 'light';
+    const { theme } = useTheme();
 
     const styles = StyleSheet.create({
         card: {

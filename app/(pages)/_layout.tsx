@@ -16,7 +16,7 @@ export default function RootLayout() {
                     <Stack.Screen name="league/[leagueId]" />
                     <Stack.Screen name="team/[teamId]" />
                     <Stack.Screen name="match/[matchId]" />
-                    <Stack.Screen name="Perfil" />
+                    <Stack.Screen name="Profile" />
                 </Stack>
             </PageProvider>
         </ThemedView>

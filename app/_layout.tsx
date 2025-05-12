@@ -1,18 +1,16 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+// import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
 import 'react-native-reanimated';
-import { useColorScheme } from '@/hooks/useColorScheme';
 import { Dimensions, Platform, StatusBar as Status } from 'react-native';
 import { Host } from 'react-native-portalize';
-import { usePathname } from 'expo-router';
 
-import { Colors } from '@/constants/Colors';
 import { ThemedView } from '@/components/DefaultComponents/ThemedView';
 import { UserProvider } from '@/context/UserContext';
+import { ThemeProvider } from '@/context/ThemeContext';
+import { StatusBar } from '@/components/home/StatusBar';
 
 const windowHeight = Dimensions.get('window').height;
 
@@ -21,9 +19,7 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
     const [statusBarHeight, setStatusBarHeight] = useState(0);
-    const pathname = usePathname();
 
-    const colorScheme = useColorScheme() ?? 'light';
     const [loaded] = useFonts({
         Karla: require('../assets/fonts/Karla.ttf'),
         Kdam: require('../assets/fonts/Kdam Thmor.ttf'),
@@ -51,8 +47,8 @@ export default function RootLayout() {
     }
 
     return (
-        <UserProvider>
-            <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+        <ThemeProvider>
+            <UserProvider>
                 <Host>
                     <ThemedView  style={{ minHeight: windowHeight, top: statusBarHeight, }} >
                         <Stack screenOptions={{ headerShown: false }} >
@@ -60,11 +56,11 @@ export default function RootLayout() {
                             <Stack.Screen name="(pages)" />
                         </Stack>
 
-                        <StatusBar style='auto' backgroundColor={(pathname === '/Login' || pathname === '/Cadastro') ? Colors[colorScheme].LightBackground : Colors[colorScheme].DarkBackground}/>
-
+                        <StatusBar />
+                        
                     </ThemedView>
                 </Host>
-            </ThemeProvider>
-        </UserProvider>
+            </UserProvider>
+        </ThemeProvider>
     );
 }

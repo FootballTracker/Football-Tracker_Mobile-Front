@@ -4,11 +4,13 @@ import { Colors } from '@/constants/Colors';
 import { useEffect, useRef } from 'react';
 
 import { ThemedText } from "@/components/DefaultComponents/ThemedText";
+import { useTheme } from '@/context/ThemeContext';
 
 export const CustomTabBar: React.FC<TabBarProps<any>> = ({ navigationState, jumpTo, position }) => {
     const layout = useWindowDimensions();
     const tabWidth = layout.width / 3;
     const scrollRef = useRef<ScrollView>(null);
+    const { theme } = useTheme();
 
     // Faz scroll para deixar a aba selecionada visível
     useEffect(() => {
@@ -19,6 +21,59 @@ export const CustomTabBar: React.FC<TabBarProps<any>> = ({ navigationState, jump
     const translateX = position.interpolate({
         inputRange: navigationState.routes.map((_, i) => i),
         outputRange: navigationState.routes.map((_, i) => i * tabWidth),
+    });
+    
+    
+    const styles = StyleSheet.create({
+        wrapper: {
+            position: 'relative',
+            height: 28
+        },
+        scrollView: {
+            position: 'relative',
+            height: "100%",
+        },
+        tabBar: {
+            flexDirection: "row",
+            paddingBottom: 0
+        },
+        tabItem: {
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: "center",
+            borderRightWidth: 0.3,
+            borderColor: Colors[theme].DarkerText,
+        },
+        lastTabItem: {
+            borderRightWidth: 0,
+        },
+        activeTab: {
+        
+        },
+        tabText: {
+            color: Colors[theme].DarkerText,
+            fontFamily: "Kokoro",
+            fontSize: 16,
+            lineHeight: 20,
+        },
+        activeText: {
+            color: Colors[theme].Red,
+            paddingLeft: 4,
+            paddingRight: 4,
+        },
+        indicator: {
+            position: 'absolute',
+            bottom: 0,
+            height: 3,
+        },
+        indicatorChildren: {
+            height: 3,
+            backgroundColor: Colors.dark.Red,
+            marginLeft: "auto",
+            marginRight: "auto",
+            borderRadius: 5,
+            width: '75%',
+        }
     });
 
     return (

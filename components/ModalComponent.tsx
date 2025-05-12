@@ -16,7 +16,7 @@ interface ModalProps extends ViewProps {
 export function ModalComponent({ modalOpened, setModalOpened, backgroundViewOpacity, modalViewProps, buttonProps, children } : ModalProps) {
 
     const indicatorOpacity = useRef(new Animated.Value(0)).current;
-    const backgroundOpacity = backgroundViewOpacity ? backgroundViewOpacity : 0.8;
+    const backgroundOpacity = backgroundViewOpacity ? backgroundViewOpacity : .8;
 
     useEffect(() => {
         Animated.timing(indicatorOpacity, {
@@ -45,7 +45,7 @@ export function ModalComponent({ modalOpened, setModalOpened, backgroundViewOpac
                 <View style={styles.centeredView}>
                     <ThemedView style={styles.modalView} {... modalViewProps && modalViewProps }>
                     {children}
-                    {buttonProps ? (
+                    {/* {buttonProps ? (
                         <ThemedButton
                             title={buttonProps.title}
                             backgroundColor={buttonProps.backgroundColor}
@@ -62,7 +62,7 @@ export function ModalComponent({ modalOpened, setModalOpened, backgroundViewOpac
                             textColor="Text"
                             style={styles.button}
                         />
-                    )}
+                    )} */}
                     </ThemedView>
                 </View>
             </Modal>
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     },
     modalView: {
         margin: 20,
-        borderRadius: 20,
+        borderRadius: 10,
         padding: 20,
         alignItems: 'center',
         width: "90%",

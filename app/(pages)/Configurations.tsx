@@ -1,8 +1,6 @@
 //Default Imports
-import { useColorScheme } from '@/hooks/useColorScheme.web';
-import { useUserContext } from "@/context/UserContext";
-import { ScrollView, StyleSheet, TouchableOpacity } from "react-native";
-import { Colors } from '@/constants/Colors';
+import { useState } from 'react';
+import { ScrollView, StyleSheet } from "react-native";
 import { View } from "react-native";
 
 //Icons
@@ -14,10 +12,13 @@ import Username from '@/assets/Icons/Username.svg'
 import { ThemedView } from "@/components/DefaultComponents/ThemedView";
 import { ThemedButton } from "@/components/DefaultComponents/ThemedButton";
 import { ConfigsCard } from '@/components/configsPage/ConfigCard';
+import { Select } from '@/components/Select';
+import { useTheme } from '@/context/ThemeContext';
 
 
 export default function Configurations() {
-    const { user, logout } = useUserContext();
+    const { selectedTheme, setTheme, themes, themesNames } = useTheme();
+    const [ modalOpened, setModalOpened ] = useState(false);
 
     const styles = StyleSheet.create({
         background: {
@@ -58,11 +59,14 @@ export default function Configurations() {
                     />
 
                     <ConfigsCard
+                        onPress={() => {setModalOpened(true)}}
                         icon={{IconComponent: MaterialCommunityIcons, name: 'theme-light-dark'}}
-                        text='Tema: Sistema'
+                        text={'Tema: ' + themesNames[selectedTheme]}
+                        // text={'Tema: '}
                     />
+                    <Select modalOpened={modalOpened} setModalOpened={setModalOpened} setSelected={setTheme} title='Selecione o tema desejado:' values={themes} />
                 </View>
-                <ThemedButton IconComponent={{ Icon: Ionicons, name: "trash-outline", size: 26 }} title="Excluir conta" backgroundColor="Red" textColor="Text" handleClick={() => {alert("fazer isso daqui")}} style={styles.deleteAccountButton} />
+                <ThemedButton IconComponent={{ Icon: Ionicons, name: "trash-outline", size: 26 }} title="Excluir conta" backgroundColor="Red" textColor="ButtonText" handleClick={() => {alert("fazer isso daqui")}} style={styles.deleteAccountButton} />
             </ThemedView>
         </ScrollView>
     )

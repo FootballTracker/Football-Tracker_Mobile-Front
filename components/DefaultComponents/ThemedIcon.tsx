@@ -19,7 +19,7 @@ export function ThemedIcon({ IconComponent, name, size = 24, lightColor, darkCol
 
     return (
         name ? 
-        <IconComponent name={name} size={size} color={color} style={style} />
+        <IconComponent {...rest} name={name} size={size} color={color} style={style} />
         :
         <IconComponent {...rest} fill={color} style={style} />
     );

@@ -8,7 +8,7 @@ import UnfilledStar from '@/assets/Icons/UnfilledStar.svg'
 
 import { ThemedText } from "@/components/DefaultComponents/ThemedText";
 import { ThemedIcon } from '@/components/DefaultComponents/ThemedIcon';
-import { Select } from '@/components/Select';
+import { LeagueSelect } from '@/components/LeagueSelect';
 import { CustomTabBar } from '@/components/CustomTabBar';
 import { ThemedView } from '@/components/DefaultComponents/ThemedView';
 import LoadingIcon from '@/components/LoadingIcon';
@@ -73,7 +73,7 @@ export default function League() {
                     <ThemedText style={{fontSize: 19, fontFamily: "Kdam"}}>
                         Brasileirão
                     </ThemedText>
-                        <Select selected={selectedSeason} setSelected={selectSeason} values={[
+                        <LeagueSelect selected={selectedSeason} setSelected={selectSeason} values={[
                             {
                                 name: '22',
                                 value: '22'
