@@ -1,12 +1,20 @@
-import { StyleSheet, View, Animated, useWindowDimensions, Pressable } from 'react-native';
+import { StyleSheet, View, Animated, useWindowDimensions, Pressable, ScrollView } from 'react-native';
 import type { TabBarProps } from 'react-native-tab-view';
 import { Colors } from '@/constants/Colors';
+import { useEffect, useRef } from 'react';
 
 import { ThemedText } from "@/components/DefaultComponents/ThemedText";
 
 export const CustomTabBar: React.FC<TabBarProps<any>> = ({ navigationState, jumpTo, position }) => {
     const layout = useWindowDimensions();
-    const tabWidth = layout.width / navigationState.routes.length;
+    const tabWidth = layout.width / 3;
+    const scrollRef = useRef<ScrollView>(null);
+
+    // Faz scroll para deixar a aba selecionada visível
+    useEffect(() => {
+        const offsetX = Math.max(0, tabWidth * navigationState.index - layout.width / 2 + tabWidth / 2);
+        scrollRef.current?.scrollTo({ x: offsetX, animated: true });
+    }, [navigationState.index]);
 
     const translateX = position.interpolate({
         inputRange: navigationState.routes.map((_, i) => i),
@@ -15,33 +23,40 @@ export const CustomTabBar: React.FC<TabBarProps<any>> = ({ navigationState, jump
 
     return (
         <View style={styles.wrapper}>
-            <View style={styles.tabBar}>
-                {navigationState.routes.map((route, index) => {
-                const isFocused = navigationState.index === index;
-                const isLast = index === navigationState.routes.length - 1;
-        
-                return (
-                    <Pressable
-                        key={route.key}
-                        style={[styles.tabItem, isFocused && styles.activeTab, isLast && styles.lastTabItem]}
-                        onPress={() => jumpTo(route.key)}
-                    >
-                        <ThemedText style={[styles.tabText, isFocused && styles.activeText]} >
-                            {route.title}
-                        </ThemedText>
-                    </Pressable>
-                );
-                })}
-            </View>
-
-            <Animated.View
-                style={[styles.indicator, {width: layout.width / navigationState.routes.length, transform: [{translateX }] }]}
+            <ScrollView
+                ref={scrollRef}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                style={styles.scrollView}
             >
-                <Animated.View 
-                    style={[styles.indicatorChildren, {width: "75%"}]}
-                />
-            </Animated.View>
+                    <View style={styles.tabBar}>
+                        {navigationState.routes.map((route, index) => {
+                            const isFocused = navigationState.index === index;
+                            const isLast = index === navigationState.routes.length - 1;
 
+                            return (
+                                <Pressable
+                                    key={route.key}
+                                    style={[styles.tabItem, isFocused && styles.activeTab, isLast && styles.lastTabItem, { width: tabWidth } ]}
+                                    onPress={() => jumpTo(route.key)}
+                                >
+                                    <ThemedText style={[styles.tabText, isFocused && styles.activeText]} >
+                                        {route.title}
+                                    </ThemedText>
+                                </Pressable>
+                            );
+                        })}
+                    </View>
+
+                    <Animated.View
+                        style={[styles.indicator, { width: tabWidth, transform: [{ translateX }] }]}
+                    >
+                        <Animated.View 
+                            style={styles.indicatorChildren}
+                        />
+                    </Animated.View>
+
+            </ScrollView>
         </View>
     );
 };
@@ -49,17 +64,20 @@ export const CustomTabBar: React.FC<TabBarProps<any>> = ({ navigationState, jump
 const styles = StyleSheet.create({
     wrapper: {
         position: 'relative',
-        paddingBottom: 5
+        height: 28
+    },
+    scrollView: {
+        position: 'relative',
+        height: "100%",
     },
     tabBar: {
-        flexDirection: 'row',
-        justifyContent: "space-evenly",
-        width: "100%",
+        flexDirection: "row",
+        paddingBottom: 0
     },
     tabItem: {
         flex: 1,
-        paddingTop: 1,
         alignItems: 'center',
+        justifyContent: "center",
         borderRightWidth: 0.3,
         borderColor: Colors.dark.DarkerText,
     },
@@ -73,18 +91,16 @@ const styles = StyleSheet.create({
         color: Colors.dark.DarkerText,
         fontFamily: "Kokoro",
         fontSize: 16,
-        lineHeight: 16,
-        top: 3
+        lineHeight: 20,
     },
     activeText: {
         color: Colors.dark.Red,
         paddingLeft: 4,
         paddingRight: 4,
-        paddingBottom: 4
     },
     indicator: {
         position: 'absolute',
-        bottom: 2.5,
+        bottom: 0,
         height: 3,
     },
     indicatorChildren: {
@@ -92,6 +108,7 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.dark.Red,
         marginLeft: "auto",
         marginRight: "auto",
-        borderRadius: 5
+        borderRadius: 5,
+        width: '75%',
     }
 });
