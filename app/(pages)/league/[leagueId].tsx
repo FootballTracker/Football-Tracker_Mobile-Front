@@ -70,7 +70,7 @@ export default function League() {
     async function getLeague() {
         await api.get('league', {
             params: {
-                user_id: user?.user_id,
+                user_id: user?.id,
                 league_id: Number(leagueId)
             }}
         ).then((response: any) => {

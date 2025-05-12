@@ -24,12 +24,12 @@ export default function Ligas() {
     useEffect(() => {
         setLoading(true);
         getLeagues();
-    }, [user?.user_id]);
+    }, [user?.id]);
 
     async function getLeagues() {
         await api.get('leagues', {
             params: {
-                user_id: user?.user_id
+                user_id: user?.id
             }}
         ).then((response: any) => {
             setFavorities(response.data.favorite_leagues);

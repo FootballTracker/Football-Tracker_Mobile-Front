@@ -3,7 +3,7 @@ import { deleteItem, getItem, saveItem } from './StorageFunctions';
 
 // Tipo do usuário (pode ser expandido)
 interface User {
-    user_id: string;
+    id: string;
     username: string;
     email: string;
 }

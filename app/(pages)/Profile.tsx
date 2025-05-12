@@ -47,7 +47,7 @@ export default function Profile() {
     async function getLeagues() {
         await api.get('favorite_leagues', {
             params: {
-                user_id: user?.user_id
+                user_id: user?.id
             }}
         ).then((response: any) => {
             setLeagues(response.data.all_leagues);
