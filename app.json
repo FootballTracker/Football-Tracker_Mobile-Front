@@ -4,23 +4,18 @@
     "slug": "mobile-front",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/RedWhiteLogo.png",
+    "icon": "./assets/images/WhiteSplashLogo.png",
     "backgroundColor": "#22252B",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#22252B"
+      }
+    },
     "ios": {
       "supportsTablet": true
-    },
-    "splash": {
-      "image": "./assets/images/RedWhiteLogo.png",
-      "backgroundColor": "#191A1C",
-      "resizeMode": "contain"
-    },
-    "android": {
-      "splash": {
-        "backgroundColor": "#191A1C"
-      }
     },
     "web": {
       "bundler": "metro",
@@ -32,10 +27,22 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/RedWhiteLogo.png",
-          "imageWidth": 200,
+          "image": "./assets/images/BlackSplashLogo.png",
+          "backgroundColor": "#D9DADC",
+          "dark": {
+              "image": "./assets/images/WhiteSplashLogo.png",
+              "backgroundColor": "#191A1C"
+          },
           "resizeMode": "contain",
-          "backgroundColor": "#191A1C"
+          "imageWidth": 200,
+          "android": {
+            "image": "./assets/images/BlackSplashLogo.png",
+            "backgroundColor": "#D9DADC",
+            "dark": {
+                "image": "./assets/images/WhiteSplashLogo.png",
+                "backgroundColor": "#191A1C"
+            }
+          }
         }
       ],
       "expo-font",
