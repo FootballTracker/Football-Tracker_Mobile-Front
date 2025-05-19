@@ -7,7 +7,7 @@ import { formatDateToBR } from '@/lib/format';
 import api from "@/lib/Axios"
 
 import { ThemedScrollView } from '@/components/DefaultComponents/ThemedScrollView';
-import { PickRound } from '@/components/PickRound';
+import { PickRound } from '@/components/leagues/PickRound';
 import MatchSection from '@/components/matches/MatchSection';
 import LoadingIcon from '@/components/LoadingIcon';
 

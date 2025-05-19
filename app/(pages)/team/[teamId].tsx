@@ -8,7 +8,6 @@ import UnfilledStar from '@/assets/Icons/UnfilledStar.svg'
 
 import { ThemedText } from "@/components/DefaultComponents/ThemedText";
 import { ThemedIcon } from '@/components/DefaultComponents/ThemedIcon';
-import { LeagueSelect } from '@/components/LeagueSelect';
 import { CustomTabBar } from '@/components/CustomTabBar';
 import { ThemedView } from '@/components/DefaultComponents/ThemedView';
 

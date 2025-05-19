@@ -3,9 +3,9 @@ import { useState } from "react"
 import { MaterialIcons } from "@expo/vector-icons"
 import { Colors } from "@/constants/Colors"
 
-import { ThemedText } from "./DefaultComponents/ThemedText"
-import { ThemedIcon } from "./DefaultComponents/ThemedIcon"
-import { Select } from "./Select"
+import { ThemedText } from "../DefaultComponents/ThemedText"
+import { ThemedIcon } from "../DefaultComponents/ThemedIcon"
+import { Select } from "../Select"
 
 interface LeagueSelectProps extends ViewProps {
     values: {

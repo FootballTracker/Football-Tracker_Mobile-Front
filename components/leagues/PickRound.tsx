@@ -4,9 +4,9 @@ import { MaterialIcons } from "@expo/vector-icons"
 import { Colors } from "@/constants/Colors"
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-import { ThemedText } from "./DefaultComponents/ThemedText"
-import { ThemedIcon } from "./DefaultComponents/ThemedIcon"
-import { Select } from "./Select";
+import { ThemedText } from "../DefaultComponents/ThemedText"
+import { ThemedIcon } from "../DefaultComponents/ThemedIcon"
+import { Select } from "../Select";
 
 const windowWidth = Dimensions.get('window').width;
 

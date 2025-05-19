@@ -12,7 +12,7 @@ import { ThemedText } from "@/components/DefaultComponents/ThemedText";
 import { ThemedIcon } from '@/components/DefaultComponents/ThemedIcon';
 import { CustomTabBar } from '@/components/CustomTabBar';
 import { ThemedView } from '@/components/DefaultComponents/ThemedView';
-import { LeagueSelect } from '@/components/LeagueSelect';
+import { LeagueSelect } from '@/components/leagues/LeagueSelect';
 import LoadingIcon from '@/components/LoadingIcon';
 
 //scenes to render
@@ -47,7 +47,7 @@ export default function League() {
             case 'partidas':
                 return <LigaPartidas leagueId={Number(leagueId)} season={selectedSeason}/>;
             case 'classificacao':
-                return <LigaClassificacao leagueId={leagueId} season={selectedSeason}/>;
+                return <LigaClassificacao leagueId={Number(leagueId)} season={selectedSeason}/>;
             case 'rankings':
                 return <LigaRankings leagueId={leagueId} season={selectedSeason}/>;
             default:
