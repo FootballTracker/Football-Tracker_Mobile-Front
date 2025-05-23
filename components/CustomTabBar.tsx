@@ -8,7 +8,8 @@ import { useTheme } from '@/context/ThemeContext';
 
 export const CustomTabBar: React.FC<TabBarProps<any>> = ({ navigationState, jumpTo, position }) => {
     const layout = useWindowDimensions();
-    const tabWidth = layout.width / 3;
+    const totalTabs = navigationState.routes.length;
+    const tabWidth = totalTabs > 2 ? layout.width / 3 : layout.width /navigationState.routes.length;
     const scrollRef = useRef<ScrollView>(null);
     const { theme } = useTheme();
 
@@ -26,16 +27,16 @@ export const CustomTabBar: React.FC<TabBarProps<any>> = ({ navigationState, jump
     
     const styles = StyleSheet.create({
         wrapper: {
-            position: 'relative',
-            height: 28
+            height: 28,
         },
         scrollView: {
-            position: 'relative',
             height: "100%",
         },
         tabBar: {
             flexDirection: "row",
-            paddingBottom: 0
+            justifyContent: "space-around",
+            alignItems: "center",
+            minWidth: layout.width
         },
         tabItem: {
             flex: 1,
@@ -73,6 +74,7 @@ export const CustomTabBar: React.FC<TabBarProps<any>> = ({ navigationState, jump
             marginRight: "auto",
             borderRadius: 5,
             width: '75%',
+            maxWidth: 103
         }
     });
 
@@ -115,55 +117,3 @@ export const CustomTabBar: React.FC<TabBarProps<any>> = ({ navigationState, jump
         </View>
     );
 };
-
-const styles = StyleSheet.create({
-    wrapper: {
-        position: 'relative',
-        height: 28
-    },
-    scrollView: {
-        position: 'relative',
-        height: "100%",
-    },
-    tabBar: {
-        flexDirection: "row",
-        paddingBottom: 0
-    },
-    tabItem: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: "center",
-        borderRightWidth: 0.3,
-        borderColor: Colors.dark.DarkerText,
-    },
-    lastTabItem: {
-        borderRightWidth: 0,
-    },
-    activeTab: {
-    
-    },
-    tabText: {
-        color: Colors.dark.DarkerText,
-        fontFamily: "Kokoro",
-        fontSize: 16,
-        lineHeight: 20,
-    },
-    activeText: {
-        color: Colors.dark.Red,
-        paddingLeft: 4,
-        paddingRight: 4,
-    },
-    indicator: {
-        position: 'absolute',
-        bottom: 0,
-        height: 3,
-    },
-    indicatorChildren: {
-        height: 3,
-        backgroundColor: Colors.dark.Red,
-        marginLeft: "auto",
-        marginRight: "auto",
-        borderRadius: 5,
-        width: '75%',
-    }
-});
