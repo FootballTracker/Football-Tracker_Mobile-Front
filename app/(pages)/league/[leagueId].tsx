@@ -7,6 +7,7 @@ import FilledStar from '@/assets/Icons/FilledStar.svg';
 import UnfilledStar from '@/assets/Icons/UnfilledStar.svg';
 import api from '@/lib/Axios';
 import { useUserContext } from '@/context/UserContext';
+import { LeagueCardI } from '@/components/leagues/LeagueCard';
 
 import { ThemedText } from "@/components/DefaultComponents/ThemedText";
 import { ThemedIcon } from '@/components/DefaultComponents/ThemedIcon';
@@ -19,7 +20,6 @@ import LoadingIcon from '@/components/LoadingIcon';
 import LigaPartidas from '../../../components/leagues/pagesComponents/LigaPartidas';
 import LigaClassificacao from '../../../components/leagues/pagesComponents/LigaClassificacao';
 import LigaRankings from '../../../components/leagues/pagesComponents/LigaRankings';
-import { LeagueCardI } from '@/components/leagues/LeagueCard';
 
 interface LeagueFull {
     league: LeagueCardI

@@ -10,12 +10,12 @@ import { ThemedText } from "@/components/DefaultComponents/ThemedText";
 import { ThemedIcon } from '@/components/DefaultComponents/ThemedIcon';
 import { CustomTabBar } from '@/components/CustomTabBar';
 import { ThemedView } from '@/components/DefaultComponents/ThemedView';
+import LoadingIcon from '@/components/LoadingIcon';
 
 //scenes to render
 import TimeInfo from '@/components/teams/pagesComponents/TimeInfo';
 import TimeEquipe from '@/components/teams/pagesComponents/TimeEquipe';
 import TimeClassificacao from '@/components/teams/pagesComponents/TimeClassif';
-import LoadingIcon from '@/components/LoadingIcon';
 
 export default function Team() {
     const { teamId } = useLocalSearchParams();

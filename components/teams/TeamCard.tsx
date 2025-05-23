@@ -19,7 +19,7 @@ export interface TeamCardI {
 export default function TeamCard({ id, image, name, favoritie }: TeamCardI) {
     const [favoritieState, setFavoritieState] = useState(favoritie);
 
-    const accessLeague = () => {
+    const accessTeam = () => {
         router.push(`/(pages)/team/${id}` as any);
     }
 
@@ -29,7 +29,7 @@ export default function TeamCard({ id, image, name, favoritie }: TeamCardI) {
     }
 
     return (
-        <Pressable onPress={accessLeague}>
+        <Pressable onPress={accessTeam}>
             <View style={styles.card}>
                 <View style={[styles.sideInfo, styles.leftInfo]}>
                     <Image source={{uri: image}} resizeMode="contain" style={styles.image}/>
