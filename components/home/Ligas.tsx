@@ -2,7 +2,7 @@ import { StyleSheet, Dimensions, View  } from 'react-native';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import FilledStar from '@/assets/Icons/FilledStar.svg'
 import { Colors } from '@/constants/Colors';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import api from '@/lib/Axios';
 import { LeagueCardI } from '../leagues/LeagueCard';
 import { useUserContext } from '@/context/UserContext';
@@ -19,10 +19,14 @@ export default function Ligas() {
     const { user, logged } = useUserContext();
     const [favorities, setFavorities] = useState<LeagueCardI[]>();
     const [leagues, setLeagues] = useState<LeagueCardI[]>();
-    const [loading, setLoading] = useState<boolean>(true);
+    const [loading, setLoading] = useState<boolean>();
+    const hasFetched = useRef(false);
 
     useEffect(() => {
-        if(logged === null) return;
+        if(logged === false) setFavorities([]);
+        if(logged === null || hasFetched.current) return;
+
+        hasFetched.current = true;
         setLoading(true);
         getLeagues();
     }, [logged]);
