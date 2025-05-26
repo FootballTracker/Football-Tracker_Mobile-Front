@@ -1,10 +1,8 @@
 import { Image, StyleSheet, View, TouchableOpacity, Dimensions } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Colors } from '@/constants/Colors';
 import { TabView, SceneMap } from 'react-native-tab-view';
-import FilledStar from '@/assets/Icons/FilledStar.svg'
-import UnfilledStar from '@/assets/Icons/UnfilledStar.svg'
+import { SvgUri } from 'react-native-svg';
 
 import { ThemedText } from "@/components/DefaultComponents/ThemedText";
 import { ThemedIcon } from '@/components/DefaultComponents/ThemedIcon';
@@ -15,13 +13,12 @@ import LoadingIcon from '@/components/LoadingIcon';
 //scenes to render
 import JogadorPerfil from '@/components/players/pageComponents/JogadorPerfil';
 import JogadorEstatisticas from '@/components/players/pageComponents/JogadorEstatisticas';
+import FavoriteStar from '@/components/FavoriteStar';
 
 export default function Player() {
     const { playerId } = useLocalSearchParams();
     
     const [contentLoaded, setContentLoaded] = useState(false);
-    
-    const [favoritieState, setFavoritieState] = useState(false);
     
     const [index, setIndex] = useState(0);
     
@@ -31,10 +28,16 @@ export default function Player() {
         { key: 'estatisticas', title: 'Estatísticas' },
     ]);
 
-    const renderScene = SceneMap({
-        perfil: JogadorPerfil,
-        estatisticas: JogadorEstatisticas,
-    });
+    const renderScene = ({ route }: any) => {
+        switch (route.key) {
+            case 'perfil':
+                return <JogadorPerfil player={player}/>;
+            case 'estatisticas':
+                return <JogadorEstatisticas />;
+            default:
+                return null;
+        }
+    };
 
     useEffect(() => {
         //fazer requisição para o back
@@ -45,26 +48,33 @@ export default function Player() {
 
     const changeFavoritie = () => {
         // alert("trocar favorito");
-        setFavoritieState(!favoritieState);
     }
 
     return (
 
         contentLoaded ? (
             <ThemedView style={styles.background}>
-                <ThemedText style={{textAlign: "center"}}>Info geral</ThemedText>
-                
+                <View style={{display: 'flex', alignItems: 'center'}}>
+                    <Image source={{uri: player.photo_url}} style={styles.playerPhoto} />
+
+                    <View style={[styles.centerView, {gap: 0}]}>
+                        <ThemedText style={styles.playerName} >{player.firstname}</ThemedText>
+                        <FavoriteStar favorite={player.favorite} handleClick={changeFavoritie} />
+                    </View>
+
+                    <View style={styles.centerView}>
+                        <ThemedText>{player.age} anos</ThemedText>
+                        <SvgUri uri={player.flag_url} width={'25'} height={'20'} />
+                    </View>
+                </View>
+
                 <TabView
                     navigationState={{ index, routes }}
                     renderScene={renderScene}
                     onIndexChange={setIndex}
                     initialLayout={{ width: Dimensions.get('window').width }}
-                    renderTabBar={props => (
-                        <CustomTabBar {...props} />
-                    )}
-                    style={{
-                        top: 25
-                    }}
+                    renderTabBar={props => ( <CustomTabBar {...props} /> )}
+                    style={{ top: 25 }}
                     lazy
                     renderLazyPlaceholder={() => (
                         <LoadingIcon />
@@ -83,22 +93,37 @@ const styles = StyleSheet.create({
         paddingTop: 25,
         flex: 1
     },
-    header: {
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center",
-        marginLeft: "auto",
-        marginRight: "auto",
-        position: "relative"
+    playerPhoto: {
+        width: 120,
+        height: 120,
+        borderRadius: 15,
     },
-    teamImage: {
-        width: 55,
-        height: 45,
-        marginRight: 5
+    playerName: {
+        fontFamily: 'Kdam',
+        fontSize: 20,
     },
-    star: {
-        marginTop: -2,
-        paddingLeft: 3,
-        paddingRight: 3
-    }
+    centerView: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 10,
+    },
 });
+
+const player = {
+    name: "Neymar",
+    firstname: "Neymar",
+    lastname: "da Silva Santos Júnior",
+    age: 33,
+    birth_date : "1992-02-05",
+    birth_place: "Mogi das Cruzes",
+    birth_country: "Brazil",
+    nationality: "Brazil",
+    height: "175 cm",
+    weight: "68 kg",
+    number: 10,
+    position: "Attacker",
+    photo_url: "https://media.api-sports.io/football/players/276.png",
+    flag_url: "https://media.api-sports.io/flags/br.svg",
+    favorite: true,
+}
