@@ -72,9 +72,7 @@ export default function Player() {
                 />
             </ThemedView>
         ) : (
-            <View >
-                <ThemedText>Loading</ThemedText>
-            </View>
+            <LoadingIcon />
         )
 
     );
