@@ -27,11 +27,11 @@ export default function Team() {
     const [index, setIndex] = useState(0);
     
     //routes to render
-    const routes = [
+    const [routes] = useState([
         { key: 'informacoes', title: 'Informações' },
         { key: 'equipe', title: 'Equipe' },
         { key: 'classificacao', title: 'Classificação' },
-    ];
+    ]);
 
     const renderScene = SceneMap({
         informacoes: TimeInfo,

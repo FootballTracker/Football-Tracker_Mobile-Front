@@ -18,11 +18,11 @@ export default function Main() {
     const { setPage } = usePage();
 
     //routes to render
-    const routes = [
+    const [routes] = useState([
         { key: 'times', title: 'Times' },
         { key: 'ligas', title: 'Ligas' },
         { key: 'jogadores', title: 'Jogadores' },
-    ];
+    ]);
 
     const renderScene = SceneMap({
         times: Times,
