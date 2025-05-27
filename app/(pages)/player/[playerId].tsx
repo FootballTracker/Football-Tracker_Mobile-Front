@@ -26,10 +26,10 @@ export default function Player() {
     const [index, setIndex] = useState(0);
     
     //routes to render
-    const [routes] = useState([
+    const routes = [
         { key: 'perfil', title: 'Perfil' },
         { key: 'estatisticas', title: 'Estatísticas' },
-    ]);
+    ];
 
     const renderScene = SceneMap({
         perfil: JogadorPerfil,

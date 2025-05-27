@@ -36,11 +36,11 @@ export default function League() {
     const [league, setLeague] = useState<LeagueFull>();
     
     //routes to render
-    const [routes] = useState([
+    const routes = [
         { key: 'partidas', title: 'Partidas' },
         { key: 'classificacao', title: 'Classificação' },
         { key: 'rankings', title: 'Rankings' },
-    ]);
+    ];
 
     const renderScene = ({ route }: any) => {
         switch (route.key) {

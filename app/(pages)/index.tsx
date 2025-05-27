@@ -16,13 +16,13 @@ export default function Main() {
     
     const [index, setIndex] = useState(1);
     const { setPage } = usePage();
-    
+
     //routes to render
-    const [routes] = useState([
+    const routes = [
         { key: 'times', title: 'Times' },
         { key: 'ligas', title: 'Ligas' },
         { key: 'jogadores', title: 'Jogadores' },
-    ]);
+    ];
 
     const renderScene = SceneMap({
         times: Times,
