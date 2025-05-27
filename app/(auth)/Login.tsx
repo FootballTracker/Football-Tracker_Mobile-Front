@@ -42,7 +42,7 @@ export default function Login() {
             password: password
         }).then((response: any) => {
             login(response.data);
-            router.replace('/');
+            router.back();
         }).catch((e: any) => {
             if(e.response.data.detail) alert(e.response.data.detail);
             else alert('Ocorreu algum erro. Tente novamente');
@@ -74,7 +74,7 @@ export default function Login() {
                                 {'  '}
                                 <ThemedText
                                     style={styles.registerText}
-                                    onPress={() => router.push('/Cadastro')}
+                                    onPress={() => router.replace('/(auth)/Cadastro')}
                                     darkColor={Colors.dark.Green}
                                     lightColor={Colors.light.Green}
                                 >

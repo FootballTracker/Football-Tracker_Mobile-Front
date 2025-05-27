@@ -19,17 +19,16 @@ export default function Ligas() {
     const { user, logged } = useUserContext();
     const [favorities, setFavorities] = useState<LeagueCardI[]>();
     const [leagues, setLeagues] = useState<LeagueCardI[]>();
-    const [loading, setLoading] = useState<boolean>();
-    const hasFetched = useRef(false);
+    const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
-        if(logged === false) setFavorities([]);
-        if(logged === null || hasFetched.current) return;
+        if(logged === null) return;
 
-        hasFetched.current = true;
         setLoading(true);
         getLeagues();
+
     }, [logged]);
+
 
     async function getLeagues() {
         await api.get('leagues', {

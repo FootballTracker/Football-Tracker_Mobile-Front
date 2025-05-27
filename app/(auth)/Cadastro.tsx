@@ -44,7 +44,8 @@ export default function Cadastro() {
             password: password
         }).then((response: any) => {
             login(response.data);
-            router.replace('/');
+            router.back();
+            router.back();
         }).catch((e: any) => {
             if(e.response.data.detail) alert(e.response.data.detail);
             else alert('Ocorreu algum erro. Tente novamente');
@@ -77,7 +78,7 @@ export default function Cadastro() {
                             {'  '}
                             <ThemedText
                                 style={styles.loginText}
-                                onPress={() => router.replace('/Login')}
+                                onPress={() => router.replace('/(auth)/Login')}
                                 darkColor={Colors.dark.Green}
                                 lightColor={Colors.light.Green}>
                                 Faça login
