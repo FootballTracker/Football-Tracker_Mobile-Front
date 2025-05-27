@@ -8,6 +8,11 @@ interface User {
     email: string;
 }
 
+interface AuthState {
+    user: User | null;
+    logged: boolean | null;
+}
+
 // Tipos do contexto
 interface UserContextType {
     user: User | null;
@@ -27,36 +32,32 @@ interface UserProviderProps {
 
 // Provider
 export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
-    const [user, setUser] = useState<User | null>(null);
-    const [logged, setLogged] = useState<boolean | null>(null);
+    const [auth, setAuth] = useState<AuthState>({user: null, logged: null});
 
     useEffect(() => {
         //Chamar rota do back que verifica se usuário é válido
         getItem('user').then((storedUser) => {
             if(storedUser) {
                 const user : User = JSON.parse(storedUser);
-                setUser(user);
-                setLogged(true);
+                setAuth({user: user, logged: true});
             } else {
-                setLogged(false);
+                setAuth({user: null, logged: false});
             }
         })
     }, [])
 
     const login = (userData: User): void => {
-        setUser(userData);
-        setLogged(true);
+        setAuth({user: userData, logged: true});
         saveItem('user', JSON.stringify(userData));
     }
     
     const logout = (): void => {
-        setUser(null);
-        setLogged(false);
+        setAuth({user: null, logged: false});
         deleteItem('user');
     }
 
     return (
-        <UserContext.Provider value={{ user, login, logout, logged }}>
+        <UserContext.Provider value={{ user: auth.user, login, logout, logged: auth.logged }}>
             {children}
         </UserContext.Provider>
     );
