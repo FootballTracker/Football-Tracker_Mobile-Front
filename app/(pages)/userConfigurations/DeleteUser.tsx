@@ -45,7 +45,10 @@ export default function DeleteUser() {
             logout();
             setPage("Ligas");
             setPreviousPage(null);
-            router.replace('/');
+            // router.replace('/');
+            while (router.canGoBack()) {
+                router.back();
+            }
         }).catch((e: any) => {
             if(e.response.data.detail) alert(e.response.data.detail);
             else alert('Ocorreu algum erro. Tente novamente');

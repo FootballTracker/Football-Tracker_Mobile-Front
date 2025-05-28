@@ -42,7 +42,9 @@ export default function Login() {
             password: password
         }).then((response: any) => {
             login(response.data);
-            router.back();
+            while (router.canGoBack()) {
+                router.back();
+            }
         }).catch((e: any) => {
             if(e.response.data.detail) alert(e.response.data.detail);
             else alert('Ocorreu algum erro. Tente novamente');

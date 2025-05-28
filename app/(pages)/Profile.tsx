@@ -35,7 +35,9 @@ export default function Profile() {
         logout();
         setPage(previousPage ? previousPage : "Ligas");
         setPreviousPage(null);
-        router.back()
+        while (router.canGoBack()) {
+            router.back();
+        }
     }
 
     useEffect(() => {
