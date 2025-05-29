@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import React from 'react';
+import { memo } from 'react';
 
 import { ThemedText } from "@/components/DefaultComponents/ThemedText";
 import { ThemedScrollView } from '@/components/DefaultComponents/ThemedScrollView';
@@ -17,6 +17,6 @@ function LigaRankings({leagueId, season} : LigaRankingsProps) {
     )
 }
 
-export default React.memo(LigaRankings, (prevProps, nextProps) => {
+export default memo(LigaRankings, (prevProps, nextProps) => {
   return prevProps.season === nextProps.season;
 });

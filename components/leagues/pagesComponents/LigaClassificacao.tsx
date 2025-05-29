@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState, memo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import api from "@/lib/Axios"
 import { LeagueTableProps } from '../table/LeagueTable';
@@ -329,6 +329,6 @@ const styles = StyleSheet.create({
 });
 
 // Memoiza o componente para evitar re-renderizações desnecessárias com o TabView
-export default React.memo(LigaClassificacao, (prevProps, nextProps) => {
+export default memo(LigaClassificacao, (prevProps, nextProps) => {
   return prevProps.season === nextProps.season;
 });
