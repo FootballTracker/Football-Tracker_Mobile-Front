@@ -23,6 +23,7 @@ import TimeClassificacao from '@/components/teams/pagesComponents/TimeClassif';
 export interface TeamInfoI {
     id: string;
     name: string;
+    logo: string;
     code: string;
     country: string;
     country_flag: string;
@@ -110,7 +111,7 @@ export default function Team() {
             setTeamData(response.data);
         }).catch((e: any) => {
             if(e.response.data.detail) alert(e.response.data.detail);
-            else alert('Erro ao buscar partidas.');
+            else alert('Erro ao buscar dados do time.');
         }).finally(() => {
             setContentLoaded(true);
         });
@@ -127,7 +128,7 @@ export default function Team() {
         contentLoaded ? (
             <ThemedView style={styles.background}>
                 <View style={styles.header}>
-                    <Image source={{uri: "https://media.api-sports.io/football/teams/119.png"}} style={styles.teamImage} resizeMode='contain'/>
+                    <Image source={{uri: teamData?.team.logo}} style={styles.teamImage} resizeMode='contain'/>
                     <ThemedText style={{fontSize: 19, fontFamily: "Kdam", marginRight: 6}}>
                         {teamData?.team.name}
                     </ThemedText>
