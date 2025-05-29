@@ -3,7 +3,7 @@ import { toZonedTime } from 'date-fns-tz';
 
 export function formatDate(dateISO: string, fourDigitYear: boolean = true): string {
 
-    dateISO = dateISO.concat('Z');
+    if(!(dateISO.endsWith('Z'))) dateISO = dateISO.concat('Z');
 
     const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     const parsedDate = parseISO(dateISO);
@@ -15,7 +15,7 @@ export function formatDate(dateISO: string, fourDigitYear: boolean = true): stri
 
 export function formatTime(dateISO: string): string {
     
-    dateISO = dateISO.concat('Z');
+    if(!(dateISO.endsWith('Z'))) dateISO = dateISO.concat('Z');
 
     const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     const parsedDate = parseISO(dateISO);
