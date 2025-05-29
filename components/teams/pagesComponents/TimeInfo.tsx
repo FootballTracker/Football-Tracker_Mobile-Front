@@ -84,7 +84,7 @@ function TimeInfo({ team, team_venue, last_matches } : TeamInfoProps) {
                 }}
             >
                 <SingleInfo infoName='Nome' info={team_venue.name} />
-                <SingleInfo infoName='Endereço' info={team_venue.address} imageUrl={team.country_flag}/>
+                <SingleInfo infoName='Endereço' info={team_venue.address} />
                 <SingleInfo infoName='Cidade' info={team_venue.city} />
                 <SingleInfo infoName='Capacidade' info={team_venue.capacity} />
                 <SingleInfo infoName='Gramado' info={team_venue.surface === "grass" ? "Natural" : "Grama sintética"} />
