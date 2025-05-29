@@ -2,9 +2,12 @@ import { Image, StyleSheet, View, TouchableOpacity, Dimensions } from 'react-nat
 import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Colors } from '@/constants/Colors';
-import { TabView, SceneMap } from 'react-native-tab-view';
-import FilledStar from '@/assets/Icons/FilledStar.svg'
-import UnfilledStar from '@/assets/Icons/UnfilledStar.svg'
+import { TabView } from 'react-native-tab-view';
+import FilledStar from '@/assets/Icons/FilledStar.svg';
+import UnfilledStar from '@/assets/Icons/UnfilledStar.svg';
+import api from "@/lib/Axios";
+import { TeamInfoProps } from '@/components/teams/pagesComponents/TimeInfo';
+import { MatchCardI } from '@/components/matches/MatchCard';
 
 import { ThemedText } from "@/components/DefaultComponents/ThemedText";
 import { ThemedIcon } from '@/components/DefaultComponents/ThemedIcon';
@@ -17,8 +20,57 @@ import TimeInfo from '@/components/teams/pagesComponents/TimeInfo';
 import TimeEquipe from '@/components/teams/pagesComponents/TimeEquipe';
 import TimeClassificacao from '@/components/teams/pagesComponents/TimeClassif';
 
+export interface TeamInfoI {
+    id: string;
+    name: string;
+    code: string;
+    country: string;
+    country_flag: string;
+    founded: string;
+}
+
+export interface TeamVenueI {
+    name: string;
+    city: string;
+    address: string;
+    capacity: string;
+    surface: string;
+    image_url: string;
+}
+
+interface TeamLeaguesI {
+    id: string;
+    name: string;
+    season: string;
+    logo_url: string;
+}
+
+interface TeamPlayerI {
+    player: string;
+    playerImage: string;
+}
+
+interface TeamPlayersI {
+    coach: string;
+    coach_imagem: string | undefined;
+    goalkeeper: TeamPlayerI[];
+    defensor: TeamPlayerI[];
+    mid_field: TeamPlayerI[];
+    attacker: TeamPlayerI[];
+}
+
+interface TeamDataI {
+    team: TeamInfoI;
+    team_venue: TeamVenueI;
+    leagues: TeamLeaguesI;
+    last_matches: MatchCardI[];
+    players: TeamPlayersI;
+}
+
 export default function Team() {
     const { teamId } = useLocalSearchParams();
+
+    const [teamData, setTeamData] = useState<TeamDataI | undefined>();
     
     const [contentLoaded, setContentLoaded] = useState(false);
     
@@ -33,17 +85,36 @@ export default function Team() {
         { key: 'classificacao', title: 'Classificação' },
     ]);
 
-    const renderScene = SceneMap({
-        informacoes: TimeInfo,
-        equipe: TimeEquipe,
-        classificacao: TimeClassificacao,
-    });
+    const renderScene = ({ route }: any) => {
+        if(!teamData) return;
+        switch (route.key) {
+            case 'informacoes':
+                return <TimeInfo team={teamData.team} last_matches={teamData.last_matches} team_venue={teamData.team_venue}/>;
+            case 'equipe':
+                return <TimeEquipe />;
+            case 'classificacao':
+                return <TimeClassificacao />;
+            default:
+                return null;
+        }
+    };
 
     useEffect(() => {
-        //fazer requisição para o back
-
-        setContentLoaded(true);
+        getTeamData();
     }, []);
+
+
+    async function getTeamData() {
+        await api.get(`teams/${teamId}`).
+        then((response: any) => {
+            setTeamData(response.data);
+        }).catch((e: any) => {
+            if(e.response.data.detail) alert(e.response.data.detail);
+            else alert('Erro ao buscar partidas.');
+        }).finally(() => {
+            setContentLoaded(true);
+        });
+    }
 
 
     const changeFavoritie = () => {
@@ -58,7 +129,7 @@ export default function Team() {
                 <View style={styles.header}>
                     <Image source={{uri: "https://media.api-sports.io/football/teams/119.png"}} style={styles.teamImage} resizeMode='contain'/>
                     <ThemedText style={{fontSize: 19, fontFamily: "Kdam", marginRight: 6}}>
-                        Internacional
+                        {teamData?.team.name}
                     </ThemedText>
                     <TouchableOpacity onPress={changeFavoritie}>
                         <ThemedIcon
@@ -90,9 +161,7 @@ export default function Team() {
                 />
             </ThemedView>
         ) : (
-            <View >
-                <ThemedText>Loading</ThemedText>
-            </View>
+            <LoadingIcon />
         )
 
     );

@@ -1,7 +1,12 @@
 import { StyleSheet, Dimensions, View, Image } from 'react-native';
+import { memo, useEffect, useState } from 'react';
 import { Colors } from '@/constants/Colors';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import { MatchCardI } from '@/components/matches/MatchCard';
+import { TeamInfoI } from '@/app/(pages)/team/[teamId]';
+import { TeamVenueI } from '@/app/(pages)/team/[teamId]';
+import { formatDate } from '@/lib/format';
 
 import { ThemedText } from "@/components/DefaultComponents/ThemedText";
 import { ThemedScrollView } from '@/components/DefaultComponents/ThemedScrollView';
@@ -10,19 +15,26 @@ import InfoSection from '@/components/InfoSection';
 
 const windowWidth = Dimensions.get('window').width;
 
-export default function TimeInfo() {
+export interface TeamInfoProps {
+    team: TeamInfoI;
+    team_venue: TeamVenueI;
+    last_matches: MatchCardI[];
+}
 
+function TimeInfo({ team, team_venue, last_matches } : TeamInfoProps) {
 
-    //executa quando terminar de buscar dados do back para ver aspect radio da imagem e definir no styles.image
+    const [aspectRatio, setAspectRatio] = useState<number | undefined>();
+
+    useEffect(getImageSize, []);
+
     function getImageSize() {
-        // Image.getSize(imageUri, (width, height) => {
-        //     setImageWidth(width);
-        //     setImageHeight(height);
-        //     setLoading(false);
-        // }, (error) => {
-        //     console.error("Erro ao obter a imagem:", error);
-        //     setLoading(false);
-        // });
+        team_venue && Image.getSize(team_venue.image_url, (width, height) => {
+            setAspectRatio(width/height);
+            // setLoading(false);
+        }, (error) => {
+            console.error("Erro ao obter a imagem:", error);
+            setAspectRatio(1);
+        });
     }
 
     return (
@@ -38,50 +50,10 @@ export default function TimeInfo() {
                         lightColor: Colors.light.Red,
                         size: 28
                     }}
-                    matches={[
-                        {
-                            id: 1,
-                            home_team: {
-                                name: 'Internacional',
-                                logo: 'https://media.api-sports.io/football/teams/119.png',
-                                score: 4,
-                            },
-                            away_team: {
-                                name: 'São Luiz',
-                                logo: 'https://media.api-sports.io/football/teams/10004.png',
-                                score: 0,
-                            },
-                            time: "28/01/23"
-                        },
-                        {
-                            id: 1,
-                            home_team: {
-                                name: 'Avenida',
-                                logo: 'https://media.api-sports.io/football/teams/2205.png',
-                                score: 1,
-                            },
-                            away_team: {
-                                name: 'Internacional',
-                                logo: 'https://media.api-sports.io/football/teams/119.png',
-                                score: 1,
-                            },
-                            time: "24/01/23"
-                        },
-                        {
-                            id: 1,
-                            home_team: {
-                                name: 'Internacional',
-                                logo: 'https://media.api-sports.io/football/teams/119.png',
-                                score: 2,
-                            },
-                            away_team: {
-                                name: 'Juventude',
-                                logo: 'https://media.api-sports.io/football/teams/152.png',
-                                score: 2,
-                            },
-                            time: "20/01/23"
-                        }
-                    ]}
+                    matches={last_matches.map(match => ({
+                        ...match,
+                        date: formatDate(match.date, false)
+                    }))}
                     text='Últimas Partidas'
                 />
 
@@ -98,16 +70,16 @@ export default function TimeInfo() {
                     items={[
                         {
                             description: "Sigla",
-                            value: "INT"
+                            value: team.code
                         },
                         {
                             description: "País",
-                            value: "Brasil",
-                            imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Flag_of_Brazil.svg/1200px-Flag_of_Brazil.svg.png"
+                            value: team.country,
+                            imageUrl: team.country_flag
                         },
                         {
                             description: "Fundação",
-                            value: "1909"
+                            value: team.founded
                         },
                     ]}
                 />
@@ -126,34 +98,35 @@ export default function TimeInfo() {
                     items={[
                         {
                             description: "Nome",
-                            value: "Estádio José Pinheiro Borda"
+                            value: team_venue.name
                         },
                         {
                             description: "Endereço",
-                            value: "Avenida Padre Cacique 891, Bairro Menino Deus",
+                            value: team_venue.address
                         },
                         {
                             description: "Cidade",
-                            value: "Porto Alegre, Rio Grande do Sul"
+                            value: team_venue.city
                         },
                         {
                             description: "Capacidade",
-                            value: "50128"
+                            value: team_venue.capacity
                         },
                         {
                             description: "Gramado",
-                            value: "Natural"
+                            value: team_venue.surface === "grass" ? "Natural" : "Grama sintética"
                         },
                     ]}
                 />
 
-                <Image source={{uri: "https://media.api-sports.io/football/venues/244.png"}} style={styles.image}/>
+                <Image source={{uri: team_venue.image_url}} style={[styles.image, {aspectRatio: aspectRatio}]}/>
             </View>
 
         </ThemedScrollView>
     )
 }
 
+export default memo(TimeInfo);
 
 const styles = StyleSheet.create({
     content: {
@@ -168,7 +141,6 @@ const styles = StyleSheet.create({
     },
     image: {
         width: '98%',
-        aspectRatio: 1.33,
         resizeMode: 'contain',
         marginHorizontal: "auto",
         borderRadius: 15,
