@@ -1,11 +1,25 @@
 import { parseISO, format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
+import { toZonedTime } from 'date-fns-tz';
 
-export function formatDateToBR(dateISO: string): string {
-    try {
-        const parsedDate = parseISO(dateISO);
-        return format(parsedDate, 'dd/MM/yyyy', { locale: ptBR });
-    } catch {
-        return dateISO;
-    }
+export function formatDate(dateISO: string, fourDigitYear: boolean = true): string {
+
+    dateISO = dateISO.concat('Z');
+
+    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const parsedDate = parseISO(dateISO);
+    const date = toZonedTime(parsedDate, timeZone);
+
+    return fourDigitYear ? format(date, 'dd/MM/yyyy') : format(date, 'dd/MM/yy');
+    
+}
+
+export function formatTime(dateISO: string): string {
+    
+    dateISO = dateISO.concat('Z');
+
+    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const parsedDate = parseISO(dateISO);
+    const date = toZonedTime(parsedDate, timeZone);
+
+    return format(date, 'HH:mm');
 }
