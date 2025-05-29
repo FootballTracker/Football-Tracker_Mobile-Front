@@ -7,13 +7,13 @@ import { ThemedText } from '@/components/DefaultComponents/ThemedText'
 import MatchCard, { MatchCardI } from './MatchCard'
 
 
-interface LeaguesSectionProps {
+interface MatchSectionProps {
     text: string
     matches: MatchCardI[]
     icon: ThemedIconProps
 };
 
-export default function MatchSection({ text, matches, icon, ...rest }: LeaguesSectionProps) {
+export default function MatchSection({ text, matches, icon, ...rest }: MatchSectionProps) {
     return (
         <View style={styles.section}>
             <View style={styles.titleSection}>

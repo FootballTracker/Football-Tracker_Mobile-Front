@@ -19,7 +19,6 @@ import { ThemedIcon } from "@/components/DefaultComponents/ThemedIcon";
 import LeaguesSection from "@/components/leagues/LeaguesSection";
 import { Colors } from "@/constants/Colors";
 import { ThemedButton } from "@/components/DefaultComponents/ThemedButton";
-import { usePage } from "@/context/PageContext";
 import LoadingIcon from "@/components/LoadingIcon";
 
 //Consts
@@ -27,15 +26,14 @@ const windowWidth = Dimensions.get('window').width;
 
 export default function Profile() {
     const { user, logout } = useUserContext();
-    const { setPage, setPreviousPage, previousPage } = usePage();
     const [leagues, setLeagues] = useState<LeagueCardI[]>();
     const [loading, setLoading] = useState<boolean>(true);
 
     const handleLogout = () => {
         logout();
-        setPage(previousPage ? previousPage : "Ligas");
-        setPreviousPage(null);
-        router.back()
+        while (router.canGoBack()) {
+            router.back();
+        }
     }
 
     useEffect(() => {
@@ -81,7 +79,15 @@ export default function Profile() {
                             /> */}
                             <LeaguesSection 
                                 text='Ligas'
-                                leagues={leagues}
+                                leagues={[
+                                    {
+                                        id: '1',
+                                        is_favorite: true,
+                                        logo_url: 'https://upload.wikimedia.org/wikipedia/pt/4/42/Campeonato_Brasileiro_S%C3%A9rie_A_logo.png',
+                                        name: "Brasileirão"
+                                    }
+                                ]}
+                                
                                 icon={{ IconComponent: Trophy, width: 25, height: 25, darkColor: Colors.dark.Red, lightColor: Colors.light.Red, style: styles.favoriteSectionsIcons}}
                             />
                             {/* <LeaguesSection 

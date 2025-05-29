@@ -1,4 +1,4 @@
-import { Image, Pressable, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Image, Pressable, StyleSheet, View } from 'react-native';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { router } from 'expo-router';
 import { Colors } from '@/constants/Colors';
@@ -9,12 +9,12 @@ import FavoriteStar from '../FavoriteStar';
 
 export interface TeamCardI {
     id: string
-    image: string
     name: string
-    favoritie: boolean
+    logo: string
+    is_favorite: boolean
 }
 
-export default function TeamCard({ id, image, name, favoritie }: TeamCardI) {
+export default function TeamCard({ id, name, logo, is_favorite }: TeamCardI) {
 
     const accessTeam = () => {
         router.push(`/(pages)/team/${id}` as any);
@@ -28,11 +28,11 @@ export default function TeamCard({ id, image, name, favoritie }: TeamCardI) {
         <Pressable onPress={accessTeam}>
             <View style={styles.card}>
                 <View style={[styles.sideInfo, styles.leftInfo]}>
-                    <Image source={{uri: image}} resizeMode="contain" style={styles.image}/>
+                    <Image source={{uri: logo}} resizeMode="contain" style={styles.image}/>
                     <ThemedText numberOfLines={1} ellipsizeMode='tail' style={styles.text}>{name}</ThemedText>
                 </View>
                 <View style={[styles.sideInfo, styles.rightInfo]}>
-                    <FavoriteStar favorite={favoritie} handleClick={changeFavoritie} />
+                    <FavoriteStar favorite={is_favorite} handleClick={changeFavoritie} />
                     <ThemedIcon
                         IconComponent={MaterialIcons}
                         name='keyboard-arrow-right'

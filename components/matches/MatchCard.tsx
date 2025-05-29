@@ -16,10 +16,10 @@ export interface MatchCardI {
     id: number
     home_team: TeamI
     away_team: TeamI
-    time: string
+    date: string
 }
 
-export default function MatchCard({ id, home_team, away_team, time }: MatchCardI) {
+export default function MatchCard({ id, home_team, away_team, date }: MatchCardI) {
 
     const { theme } = useTheme();
     const result = home_team.score == away_team.score ? 1 : Number(home_team.score) > Number(away_team.score) ? 0 : 2;
@@ -95,7 +95,7 @@ export default function MatchCard({ id, home_team, away_team, time }: MatchCardI
     return (
         <Pressable onPress={accessMatch}>
             <View style={styles.card}>
-                <ThemedText style={styles.timeText} darkColor={Colors.dark.Red} lightColor={Colors.light.Red}>{time}</ThemedText>
+                <ThemedText style={styles.timeText} darkColor={Colors.dark.Red} lightColor={Colors.light.Red}>{date}</ThemedText>
                 <View style={styles.info}>
                     <View style={styles.teamView}>
                         <View style={[styles.teamInfo, result === 2 && styles.loser]}>

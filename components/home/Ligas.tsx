@@ -2,7 +2,7 @@ import { StyleSheet, Dimensions, View  } from 'react-native';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import FilledStar from '@/assets/Icons/FilledStar.svg'
 import { Colors } from '@/constants/Colors';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import api from '@/lib/Axios';
 import { LeagueCardI } from '../leagues/LeagueCard';
 import { useUserContext } from '@/context/UserContext';
@@ -80,7 +80,7 @@ export default function Ligas() {
                     />
                 </View>
             </ThemedScrollView>
-        ): (
+        ) : (
             <LoadingIcon />
         )
         

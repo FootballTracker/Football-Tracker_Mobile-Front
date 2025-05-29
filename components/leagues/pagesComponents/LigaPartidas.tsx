@@ -1,9 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, memo } from 'react';
 import { StyleSheet, Dimensions, View } from 'react-native';
 import { Colors } from '@/constants/Colors';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { MatchCardI } from '@/components/matches/MatchCard';
-import { formatDateToBR } from '@/lib/format';
+import { formatDate, formatTime } from '@/lib/format';
 import api from "@/lib/Axios"
 
 import { ThemedScrollView } from '@/components/DefaultComponents/ThemedScrollView';
@@ -18,16 +18,16 @@ interface LigaPartidasProps {
     leagueId: number
 }
 
-interface MatchesI {
-    day: string
-    matches: MatchCardI[]
+interface FullRoundI {
+    day: string;
+    matches: MatchCardI[];
 }
 
 function LigaPartidas({ season, leagueId } : LigaPartidasProps) {
 
     const [round, setRound] = useState(1);
-    const [matches, setMatches] = useState<MatchesI[]>();
-    const cacheRef = useRef<Record<number, MatchesI[]>>({});
+    const [fullRound, setFullRound] = useState<FullRoundI[]>();
+    const cacheRef = useRef<Record<number, FullRoundI[]>>({});
 
     const rounds = Array.from({ length: 38 }, (_, i) => ({
         name: `${i + 1}`,
@@ -46,11 +46,11 @@ function LigaPartidas({ season, leagueId } : LigaPartidasProps) {
 
     async function getMatches() {
         if (cacheRef.current[round]) {
-            setMatches(cacheRef.current[round]);
+            setFullRound(cacheRef.current[round]);
             return;
         }
 
-        setMatches(undefined);
+        setFullRound(undefined);
         
         await api.get('matches', {
             params: {
@@ -58,9 +58,33 @@ function LigaPartidas({ season, leagueId } : LigaPartidasProps) {
                 id: leagueId,
                 season: season
             }}
-        ).then((response: any) => {
-            cacheRef.current[round] = response.data;
-            setMatches(response.data);
+        ).then((response) => {
+
+            let currIndex = 0;
+            const currRound: FullRoundI[] = [{day: response.data[0].date, matches: []}];
+            let first = true;
+            let formatedDate: string;
+            let lastFormatedDate: string = '';
+
+            for(const match of response.data) {
+                formatedDate = formatDate(match.date);
+                
+                if(first) {
+                    lastFormatedDate = formatedDate;
+                    first = false;
+                }
+
+                if(formatedDate === lastFormatedDate) {
+                    currRound[currIndex].matches.push(match);
+                } else {
+                    currIndex++;
+                    lastFormatedDate = formatedDate;
+                    currRound.push({day: match.date, matches: [match]})
+                }
+            }
+
+            cacheRef.current[round] = currRound;
+            setFullRound(currRound);
         }).catch((e: any) => {
             if(e.response.data.detail) alert(e.response.data.detail);
             else alert('Erro ao buscar partidas.');
@@ -76,8 +100,8 @@ function LigaPartidas({ season, leagueId } : LigaPartidasProps) {
             />
 
             <View style={styles.content}>
-                { matches && matches.length ?
-                    matches.map((values, index) => (
+                { fullRound && fullRound.length ?
+                    fullRound.map((values, index) => (
                         <MatchSection
                             icon={{
                                 IconComponent: MaterialCommunityIcons,
@@ -87,8 +111,11 @@ function LigaPartidas({ season, leagueId } : LigaPartidasProps) {
                                 lightColor: Colors.light.Red,
                                 size: 28
                             }}
-                            matches={values.matches}
-                            text={formatDateToBR(values.day)}
+                            matches={values.matches.map(match => ({
+                                ...match,
+                                date: formatTime(match.date)
+                            }))}
+                            text={formatDate(values.day)}
                             key={index}
                         />
                     ))
@@ -119,6 +146,6 @@ const styles = StyleSheet.create({
 });
 
 // Memoiza o componente para evitar re-renderizações desnecessárias com o TabView
-export default React.memo(LigaPartidas, (prevProps, nextProps) => {
+export default memo(LigaPartidas, (prevProps, nextProps) => {
   return prevProps.season === nextProps.season;
 });

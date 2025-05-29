@@ -2,7 +2,7 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { usePathname } from 'expo-router';
 
-type Pages = {
+type UserPages = {
     Profile: string;
     Configurations: string;
     DeleteUser: string;
@@ -12,28 +12,38 @@ type Pages = {
     UpdatePassword: string;
 }
 
+type Pages = {
+    league: string;
+    team: string;
+    player: string;
+    match: string;
+}
+
 type pageContextProps = {
     page: string,
-    pages: Pages | null,
+    userPages: UserPages | null,
     setPage: (page: string) => void,
-    previousPage: string | null,
-    setPreviousPage: (page: string | null) => void
+    rootPage: string,
+    setRootPage: (page: string) => void,
+    isOnUserPages: boolean,
 }
 
 const PageContext = createContext<pageContextProps>({
     page: 'Ligas',
-    pages: null,
+    userPages: null,
     setPage: (page: string) => {},
-    previousPage: null,
-    setPreviousPage: (page: string | null) => {}
+    rootPage: 'Ligas',
+    setRootPage: (page: string) => {},
+    isOnUserPages: false,
 });
 
 export const PageProvider = ({ children }: { children: React.ReactNode }) => {
     const [page, setPage] = useState('Ligas');
-    const [previousPage, setPreviousPage] = useState<string | null>(null);
+    const [rootPage, setRootPage] = useState('Ligas');
+    const [isOnUserPages, setIsOnUserPages] = useState(false);
     const pathname = usePathname();
 
-    const pages : Pages = {
+    const userPages : UserPages = {
         Profile: 'Perfil',
         Configurations: 'Configurações',
         DeleteUser: 'Excluir Conta',
@@ -43,22 +53,32 @@ export const PageProvider = ({ children }: { children: React.ReactNode }) => {
         UpdatePassword: 'Senha',
     }
 
+    const pages : Pages = {
+        league: 'Ligas',
+        team: 'Times',
+        player: 'Jogadores',
+        match: 'Partida',
+    }
+
     useEffect(() => {
-        const currentPage : string | undefined = pathname.split('/').at(-1); //Gets the last part of the pathname (the current page name)
+        const currentPage : string[] = pathname.split('/'); //Gets the last part of the pathname (the current page name)
+        const length = currentPage.length;
 
-        if(currentPage && currentPage in pages) {
-            setPage(pages[currentPage as keyof typeof pages]);
-            return;
+        if(currentPage[length-1] in userPages) {
+            setPage(userPages[currentPage[length-1] as keyof typeof userPages]);
+            setIsOnUserPages(true);
+            return
         }
 
-        if(previousPage) {
-            setPage(previousPage);
-            setPreviousPage(null);
-        }
+        setIsOnUserPages(false);
+
+        if(pathname === '/') setPage(rootPage);
+        else setPage(pages[currentPage[length-2] as keyof typeof pages]);
+
     }, [pathname])
 
     return (
-        <PageContext.Provider value={{ page, pages, setPage, previousPage, setPreviousPage }}>
+        <PageContext.Provider value={{ page, userPages, setPage, rootPage, setRootPage, isOnUserPages }}>
             {children}
         </PageContext.Provider>
     );

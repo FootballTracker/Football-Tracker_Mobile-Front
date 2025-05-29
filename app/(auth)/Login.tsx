@@ -8,6 +8,7 @@ import { router } from 'expo-router';
 import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
 import api from "@/lib/Axios";
+import { useUserContext } from "@/context/UserContext";
 
 //Components
 import LoginLogo from "@/components/LoginLogo"
@@ -17,7 +18,6 @@ import { ThemedIcon } from "@/components/DefaultComponents/ThemedIcon";
 import { ThemedButton } from "@/components/DefaultComponents/ThemedButton";
 import { ReturnArrow } from "@/components/ReturnArrow";
 import { FormInput } from "@/components/FormInput";
-import { useUserContext } from "@/context/UserContext";
 
 //Consts
 const windowHeight = Dimensions.get('window').height;
@@ -42,7 +42,9 @@ export default function Login() {
             password: password
         }).then((response: any) => {
             login(response.data);
-            router.back();
+            while (router.canGoBack()) {
+                router.back();
+            }
         }).catch((e: any) => {
             if(e.response.data.detail) alert(e.response.data.detail);
             else alert('Ocorreu algum erro. Tente novamente');

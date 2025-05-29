@@ -3,7 +3,6 @@ import { Alert, ScrollView, StyleSheet, View } from "react-native";
 import { useUserContext } from "@/context/UserContext";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTheme } from "@/context/ThemeContext";
-import { usePage } from "@/context/PageContext";
 import { Colors } from "@/constants/Colors";
 import { useForm } from "react-hook-form";
 import { router } from "expo-router";
@@ -31,7 +30,6 @@ const userData = z.object({
 type userData = z.infer<typeof userData>
 
 export default function UpdatePassword() {
-    const { setPage } = usePage();
     const { user, logout, login } = useUserContext();
     const { theme } = useTheme();
 
@@ -58,7 +56,6 @@ export default function UpdatePassword() {
                     { cancelable: false }
                 );
 
-                setPage("Ligas");
                 router.back();
             }).catch((e: any) => {
                 if(e.response.data.detail) alert(e.response.data.detail);

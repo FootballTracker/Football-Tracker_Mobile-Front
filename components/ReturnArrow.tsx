@@ -11,19 +11,11 @@ type ReturnArrowProps = {
     returnPage?: boolean;
 }
 
-export function ReturnArrow({ double, returnPage = false } : ReturnArrowProps) {
-    const { setPage, previousPage, setPreviousPage } = usePage();
+export function ReturnArrow({ double } : ReturnArrowProps) {
 
     const returnRoute = () => {
         router.back();
         double && router.back();
-
-        if(returnPage && previousPage) {
-            setPage(previousPage);
-            setPreviousPage(null);
-        }
-
-        // if(changePage) setPage(changePage.pageName);
     }
 
     return (
