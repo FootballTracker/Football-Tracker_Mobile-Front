@@ -11,13 +11,13 @@ import { ThemedText } from '@/components/DefaultComponents/ThemedText';
 
 export interface TeamCardI {
     id: string
-    image: string
     name: string
-    favoritie?: boolean
+    logo: string
+    is_favorite: boolean
 }
 
-export default function TeamCard({ id, image, name, favoritie }: TeamCardI) {
-    const [favoritieState, setFavoritieState] = useState(favoritie);
+export default function TeamCard({ id, name, logo, is_favorite }: TeamCardI) {
+    const [favoritieState, setFavoritieState] = useState(is_favorite);
 
     const accessTeam = () => {
         router.push(`/(pages)/team/${id}` as any);
@@ -32,7 +32,7 @@ export default function TeamCard({ id, image, name, favoritie }: TeamCardI) {
         <Pressable onPress={accessTeam}>
             <View style={styles.card}>
                 <View style={[styles.sideInfo, styles.leftInfo]}>
-                    <Image source={{uri: image}} resizeMode="contain" style={styles.image}/>
+                    <Image source={{uri: logo}} resizeMode="contain" style={styles.image}/>
                     <ThemedText numberOfLines={1} ellipsizeMode='tail' style={styles.text}>{name}</ThemedText>
                 </View>
                 <View style={[styles.sideInfo, styles.rightInfo]}>

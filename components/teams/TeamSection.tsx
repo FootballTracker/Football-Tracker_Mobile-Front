@@ -26,7 +26,7 @@ export default function TeamSection({ text, teams, icon, ...rest }: TeamsSection
             <ThemedView darkColor={Colors.dark.Red} lightColor={Colors.light.Red} style={styles.divisor}/>
             {teams?.length ? (
                 teams.map((team, index) => (
-                    <TeamCard id={team.id} image={team.image} name={team.name} favoritie={team.favoritie} key={index}/>
+                    <TeamCard {...team} key={index}/>
                 ))
             ) : (
                 <ThemedText style={styles.favoritesInfoText} darkColor={Colors.dark.DarkerText} lightColor={Colors.light.DarkerText}>
