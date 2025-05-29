@@ -28,6 +28,12 @@ export default function Section({ icon, text, children } : SectionProps) {
 
             <View style={styles.content}>
                 {children}
+
+                {/* <ThemedText style={styles.favoritesInfoText} darkColor={Colors.dark.DarkerText} lightColor={Colors.light.DarkerText}>
+                    <ThemedIcon IconComponent={Feather} name="info" size={15} darkColor={Colors.dark.DarkerText} lightColor={Colors.light.DarkerText} />
+                    {' '}
+                    Nenhum dado para exibir.
+                </ThemedText> */}
             </View>
         </View>
     )
@@ -57,5 +63,6 @@ const styles = StyleSheet.create({
         marginTop: 15,
         alignItems: 'center',
         gap: 10,
+        paddingHorizontal: 10
     }
 });

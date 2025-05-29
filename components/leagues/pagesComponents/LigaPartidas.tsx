@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, memo } from 'react';
 import { StyleSheet, Dimensions, View } from 'react-native';
 import { Colors } from '@/constants/Colors';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import { MatchCardI } from '@/components/matches/MatchCard';
+import MatchCard, { MatchCardI } from '@/components/matches/MatchCard';
 import { formatDate, formatTime } from '@/lib/format';
 import api from "@/lib/Axios"
 
@@ -10,6 +10,7 @@ import { ThemedScrollView } from '@/components/DefaultComponents/ThemedScrollVie
 import { PickRound } from '@/components/leagues/PickRound';
 import MatchSection from '@/components/matches/MatchSection';
 import LoadingIcon from '@/components/LoadingIcon';
+import Section from '@/components/Section';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -99,32 +100,30 @@ function LigaPartidas({ season, leagueId } : LigaPartidasProps) {
                 setSelected={setRound}
             />
 
-            <View style={styles.content}>
-                { fullRound && fullRound.length ?
-                    fullRound.map((values, index) => (
-                        <MatchSection
-                            icon={{
-                                IconComponent: MaterialCommunityIcons,
-                                name: "calendar-text",
-                                style: styles.calendarIcon,
-                                darkColor: Colors.dark.Red,
-                                lightColor: Colors.light.Red,
-                                size: 28
-                            }}
-                            matches={values.matches.map(match => ({
-                                ...match,
-                                date: formatTime(match.date)
-                            }))}
-                            text={formatDate(values.day)}
-                            key={index}
-                        />
-                    ))
-                :
-                    <View>
-                        <LoadingIcon />
-                    </View> 
-                }
-            </View>
+            { fullRound && fullRound.length ?
+                fullRound.map((values, index) => (
+                    <Section 
+                        icon={{
+                            IconComponent: MaterialCommunityIcons,
+                            name: "calendar-text",
+                            style: styles.calendarIcon,
+                            darkColor: Colors.dark.Red,
+                            lightColor: Colors.light.Red,
+                            size: 28
+                        }}
+                        text={formatDate(values.day)}
+                        key={index}
+                    >
+                        {values.matches.map((match, index) => (
+                            <MatchCard id={match.id} home_team={match.home_team} away_team={match.away_team} date={formatTime(match.date)} key={index}/>
+                        ))}
+                    </Section>
+                ))
+            :
+                <View>
+                    <LoadingIcon />
+                </View> 
+            }
 
         </ThemedScrollView>
     )

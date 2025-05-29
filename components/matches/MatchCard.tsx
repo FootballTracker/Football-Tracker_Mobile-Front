@@ -35,8 +35,6 @@ export default function MatchCard({ id, home_team, away_team, date }: MatchCardI
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "space-between",
-            width: "98%",
-            marginTop: 18,
             marginHorizontal: "auto",
             borderColor: Colors[theme].Red,
             borderWidth: .5,
@@ -44,6 +42,7 @@ export default function MatchCard({ id, home_team, away_team, date }: MatchCardI
             paddingTop: 10,
             paddingBottom: 8,
             paddingHorizontal: 10,
+            width: "100%"
         },
         timeText: {
             fontFamily: "Kdam",
