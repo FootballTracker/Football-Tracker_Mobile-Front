@@ -8,7 +8,6 @@ import { router } from 'expo-router';
 import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
 import api from "@/lib/Axios";
-import { usePage } from "@/context/PageContext";
 import { useUserContext } from "@/context/UserContext";
 
 //Components
@@ -32,7 +31,6 @@ type userData = z.infer<typeof userData>
 
 export default function Login() {
     const { user, login } = useUserContext();
-    const { rootPage, setPage, setPreviousPage } = usePage();
 
     const { control, handleSubmit, formState: {errors} } = useForm<userData>({
         resolver: zodResolver(userData)
@@ -47,8 +45,6 @@ export default function Login() {
             while (router.canGoBack()) {
                 router.back();
             }
-            setPage(rootPage);
-            setPreviousPage(null);
         }).catch((e: any) => {
             if(e.response.data.detail) alert(e.response.data.detail);
             else alert('Ocorreu algum erro. Tente novamente');

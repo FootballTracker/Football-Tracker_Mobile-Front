@@ -1,6 +1,6 @@
 //Default Imports
 import { createContext, useContext, useEffect, useState } from 'react';
-import { usePathname } from 'expo-router';
+import { usePathname, useNavigation } from 'expo-router';
 
 type PageInfo = {
     elementName: string;
@@ -21,8 +21,6 @@ type pageContextProps = {
     page: string,
     pages: Pages | null,
     setPage: (page: string) => void,
-    previousPage: string | null,
-    setPreviousPage: (page: string | null) => void,
     rootPage: string,
     setRootPage: (page: string) => void
 }
@@ -31,17 +29,15 @@ const PageContext = createContext<pageContextProps>({
     page: 'Ligas',
     pages: null,
     setPage: (page: string) => {},
-    previousPage: null,
-    setPreviousPage: (page: string | null) => {},
     rootPage: 'Ligas',
     setRootPage: (page: string) => {}
 });
 
 export const PageProvider = ({ children }: { children: React.ReactNode }) => {
     const [page, setPage] = useState('Ligas');
-    const [previousPage, setPreviousPage] = useState<string | null>(null);
     const [rootPage, setRootPage] = useState('Ligas');
     const pathname = usePathname();
+    const navigation = useNavigation();
 
     const pages : Pages = {
         profile: {
@@ -77,14 +73,6 @@ export const PageProvider = ({ children }: { children: React.ReactNode }) => {
     useEffect(() => {
         const pageName = pathname.split('/').at(-1); //Gets the last part of the pathname (the current page name)
 
-        console.log(pageName, pathname);
-
-        if(pageName === '') {
-            setPage(rootPage);
-            setPreviousPage(null);
-            return;
-        }
-
         switch(pageName) {
             case pages.profile.elementName: 
                 setPage(pages.profile.pageName);
@@ -109,24 +97,22 @@ export const PageProvider = ({ children }: { children: React.ReactNode }) => {
                 break;
             case '':
                 setPage(rootPage);
-                setPreviousPage(null);
                 break;
             default:
                 if(pathname.includes('league')) {
                     setPage('Ligas');
-                    setPreviousPage(null);
                 } else if(pathname.includes('player')) {
                     setPage('Jogadores');
-                    setPreviousPage(null);
                 } else {
                     setPage('Times');
-                    setPreviousPage(null);
                 }
         }
+
+        console.log(navigation.getState()?.routeNames);
     }, [pathname])
 
     return (
-        <PageContext.Provider value={{ page, pages, setPage, previousPage, setPreviousPage, rootPage, setRootPage }}>
+        <PageContext.Provider value={{ page, pages, setPage, rootPage, setRootPage }}>
         {children}
         </PageContext.Provider>
     );

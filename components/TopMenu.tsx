@@ -19,13 +19,14 @@ export default function TopMenu() {
     const pathname = usePathname();
     const [showBackButton, setShowBackButton] = useState(false);
     const { user } = useUserContext();
-    const { page, pages, setPage, previousPage, setPreviousPage } = usePage();
+    const { page, pages, setPage } = usePage();
 
     const handleProfileClick = () => {
         if(user) {
-            setPreviousPage(page);
             router.navigate("/(pages)/Profile");
-        } else router.navigate("/(auth)/Login")
+        } else {
+            router.navigate("/(auth)/Login");
+        }
     }
 
     const handleConfigsClick = () => {
@@ -45,11 +46,7 @@ export default function TopMenu() {
                 <View style={styles.leftInfo}>
                     {
                         showBackButton ? (
-                            page === pages?.profile.pageName ? (
-                                <ReturnArrow returnPage={true} />
-                            ) : (
-                                <ReturnArrow />
-                            )
+                            <ReturnArrow />
                         ) : ( 
                             <ThemedImage 
                                 source = {{
@@ -67,12 +64,11 @@ export default function TopMenu() {
                 
                 
                 {
-                    previousPage ? ( //Is on profile area
-                        page === pages?.profile.pageName ? (
-                            <TouchableOpacity onPress={handleConfigsClick}>
-                                <ThemedIcon IconComponent={Configs} width={60} height={35} style={{marginRight: 5}} />
-                            </TouchableOpacity>
-                        ) : null
+                    //Is on profile area
+                    page === pages?.profile.pageName ? (
+                        <TouchableOpacity onPress={handleConfigsClick}>
+                            <ThemedIcon IconComponent={Configs} width={60} height={35} style={{marginRight: 5}} />
+                        </TouchableOpacity>
                     ) : (
                         <TouchableOpacity onPress={handleProfileClick}>
                             <ThemedImage 
