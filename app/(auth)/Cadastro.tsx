@@ -9,6 +9,7 @@ import { useContext, useEffect, useState } from "react";
 import api from "@/lib/Axios"
 import { z } from 'zod';
 import { UserContext, useUserContext } from "@/context/UserContext";
+import { usePage } from "@/context/PageContext";
 
 //Components
 import LoginLogo from "@/components/LoginLogo"
@@ -32,6 +33,7 @@ type userData = z.infer<typeof userData>
 
 export default function Cadastro() {
     const { user, login } = useUserContext();
+    const { rootPage, setPage, setPreviousPage } = usePage();
     
     const { control, handleSubmit, formState: {errors} } = useForm<userData>({
         resolver: zodResolver(userData)
@@ -47,6 +49,8 @@ export default function Cadastro() {
             while (router.canGoBack()) {
                 router.back();
             }
+            setPage(rootPage);
+            setPreviousPage(null);
         }).catch((e: any) => {
             if(e.response.data.detail) alert(e.response.data.detail);
             else alert('Ocorreu algum erro. Tente novamente');

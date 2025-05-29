@@ -22,7 +22,9 @@ type pageContextProps = {
     pages: Pages | null,
     setPage: (page: string) => void,
     previousPage: string | null,
-    setPreviousPage: (page: string | null) => void
+    setPreviousPage: (page: string | null) => void,
+    rootPage: string,
+    setRootPage: (page: string) => void
 }
 
 const PageContext = createContext<pageContextProps>({
@@ -30,12 +32,15 @@ const PageContext = createContext<pageContextProps>({
     pages: null,
     setPage: (page: string) => {},
     previousPage: null,
-    setPreviousPage: (page: string | null) => {}
+    setPreviousPage: (page: string | null) => {},
+    rootPage: 'Ligas',
+    setRootPage: (page: string) => {}
 });
 
 export const PageProvider = ({ children }: { children: React.ReactNode }) => {
     const [page, setPage] = useState('Ligas');
     const [previousPage, setPreviousPage] = useState<string | null>(null);
+    const [rootPage, setRootPage] = useState('Ligas');
     const pathname = usePathname();
 
     const pages : Pages = {
@@ -71,6 +76,15 @@ export const PageProvider = ({ children }: { children: React.ReactNode }) => {
 
     useEffect(() => {
         const pageName = pathname.split('/').at(-1); //Gets the last part of the pathname (the current page name)
+
+        console.log(pageName, pathname);
+
+        if(pageName === '') {
+            setPage(rootPage);
+            setPreviousPage(null);
+            return;
+        }
+
         switch(pageName) {
             case pages.profile.elementName: 
                 setPage(pages.profile.pageName);
@@ -93,11 +107,26 @@ export const PageProvider = ({ children }: { children: React.ReactNode }) => {
             case pages.updatePassword.elementName: 
                 setPage(pages.updatePassword.pageName);
                 break;
+            case '':
+                setPage(rootPage);
+                setPreviousPage(null);
+                break;
+            default:
+                if(pathname.includes('league')) {
+                    setPage('Ligas');
+                    setPreviousPage(null);
+                } else if(pathname.includes('player')) {
+                    setPage('Jogadores');
+                    setPreviousPage(null);
+                } else {
+                    setPage('Times');
+                    setPreviousPage(null);
+                }
         }
     }, [pathname])
 
     return (
-        <PageContext.Provider value={{ page, pages, setPage, previousPage, setPreviousPage }}>
+        <PageContext.Provider value={{ page, pages, setPage, previousPage, setPreviousPage, rootPage, setRootPage }}>
         {children}
         </PageContext.Provider>
     );

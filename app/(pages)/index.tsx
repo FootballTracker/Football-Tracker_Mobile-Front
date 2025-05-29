@@ -15,7 +15,7 @@ import Jogadores from '@/components/home/Jogadores';
 export default function Main() {
     
     const [index, setIndex] = useState(1);
-    const { setPage } = usePage();
+    const { setPage, setRootPage } = usePage();
 
     //routes to render
     const [routes] = useState([
@@ -33,6 +33,7 @@ export default function Main() {
     const handleIndexChange = (i: number) => {
         setIndex(i);
         setPage(routes[i].title);
+        setRootPage(routes[i].title);
     };
 
     return (

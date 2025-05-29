@@ -29,7 +29,7 @@ const userData = z.object({
 type userData = z.infer<typeof userData>
 
 export default function DeleteUser() {
-    const { setPage, setPreviousPage } = usePage();
+    const { setPage, setPreviousPage, rootPage } = usePage();
     const { user, logout } = useUserContext();
     const { theme } = useTheme();
 
@@ -43,12 +43,11 @@ export default function DeleteUser() {
             password: password
         }).then((response: any) => {
             logout();
-            setPage("Ligas");
-            setPreviousPage(null);
-            // router.replace('/');
             while (router.canGoBack()) {
                 router.back();
             }
+            setPage(rootPage);
+            setPreviousPage(null);
         }).catch((e: any) => {
             if(e.response.data.detail) alert(e.response.data.detail);
             else alert('Ocorreu algum erro. Tente novamente');

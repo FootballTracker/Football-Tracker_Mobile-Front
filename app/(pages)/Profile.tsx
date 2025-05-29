@@ -27,17 +27,17 @@ const windowWidth = Dimensions.get('window').width;
 
 export default function Profile() {
     const { user, logout } = useUserContext();
-    const { setPage, setPreviousPage, previousPage } = usePage();
+    const { setPage, setPreviousPage, rootPage } = usePage();
     const [leagues, setLeagues] = useState<LeagueCardI[]>();
     const [loading, setLoading] = useState<boolean>(true);
 
     const handleLogout = () => {
         logout();
-        setPage(previousPage ? previousPage : "Ligas");
-        setPreviousPage(null);
         while (router.canGoBack()) {
             router.back();
         }
+        setPage(rootPage);
+        setPreviousPage(null);
     }
 
     useEffect(() => {
