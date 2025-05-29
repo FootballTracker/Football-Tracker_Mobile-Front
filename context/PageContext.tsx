@@ -2,19 +2,14 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { usePathname } from 'expo-router';
 
-type PageInfo = {
-    elementName: string;
-    pageName: string;
-}
-
 type Pages = {
-    profile: PageInfo;
-    configurations: PageInfo;
-    deleteUser: PageInfo;
-    userConfigs: PageInfo;
-    updateUsername: PageInfo;
-    updateEmail: PageInfo;
-    updatePassword: PageInfo;
+    Profile: string;
+    Configurations: string;
+    DeleteUser: string;
+    UserConfigs: string;
+    UpdateUsername: string;
+    UpdateEmail: string;
+    UpdatePassword: string;
 }
 
 type pageContextProps = {
@@ -39,66 +34,32 @@ export const PageProvider = ({ children }: { children: React.ReactNode }) => {
     const pathname = usePathname();
 
     const pages : Pages = {
-        profile: {
-            elementName: 'Profile',
-            pageName: 'Perfil'
-        },
-        configurations: {
-            elementName: 'Configurations',
-            pageName: 'Configurações'
-        },
-        deleteUser: {
-            elementName: 'DeleteUser',
-            pageName: 'Excluir Conta'
-        },
-        userConfigs: {
-            elementName: 'UserConfigs',
-            pageName: 'Meus Dados'
-        },
-        updateUsername: {
-            elementName: 'UpdateUsername',
-            pageName: 'Nome de Usuário'
-        },
-        updateEmail: {
-            elementName: 'UpdateEmail',
-            pageName: 'Email'
-        },
-        updatePassword: {
-            elementName: 'UpdatePassword',
-            pageName: 'Senha'
-        },
+        Profile: 'Perfil',
+        Configurations: 'Configurações',
+        DeleteUser: 'Excluir Conta',
+        UserConfigs: 'Meus Dados',
+        UpdateUsername: 'Nome de Usuário',
+        UpdateEmail: 'Email',
+        UpdatePassword: 'Senha',
     }
 
     useEffect(() => {
-        const pageName = pathname.split('/').at(-1); //Gets the last part of the pathname (the current page name)
-        switch(pageName) {
-            case pages.profile.elementName: 
-                setPage(pages.profile.pageName);
-                break;
-            case pages.configurations.elementName: 
-                setPage(pages.configurations.pageName);
-                break;
-            case pages.deleteUser.elementName: 
-                setPage(pages.deleteUser.pageName);
-                break;
-            case pages.userConfigs.elementName: 
-                setPage(pages.userConfigs.pageName);
-                break;
-            case pages.updateUsername.elementName: 
-                setPage(pages.updateUsername.pageName);
-                break;
-            case pages.updateEmail.elementName: 
-                setPage(pages.updateEmail.pageName);
-                break;
-            case pages.updatePassword.elementName: 
-                setPage(pages.updatePassword.pageName);
-                break;
+        const currentPage : string | undefined = pathname.split('/').at(-1); //Gets the last part of the pathname (the current page name)
+
+        if(currentPage && currentPage in pages) {
+            setPage(pages[currentPage as keyof typeof pages]);
+            return;
+        }
+
+        if(previousPage) {
+            setPage(previousPage);
+            setPreviousPage(null);
         }
     }, [pathname])
 
     return (
         <PageContext.Provider value={{ page, pages, setPage, previousPage, setPreviousPage }}>
-        {children}
+            {children}
         </PageContext.Provider>
     );
 };

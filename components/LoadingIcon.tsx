@@ -1,14 +1,24 @@
-import { Animated, Easing, Dimensions } from 'react-native';
+//Default Imports
+import { Animated, Easing, Dimensions, View } from 'react-native';
 import { useEffect, useRef } from 'react';
 import { Colors } from '@/constants/Colors';
 import AntDesign from '@expo/vector-icons/AntDesign';
 
+//Icons
 import { ThemedIcon } from '@/components/DefaultComponents/ThemedIcon';
 import { ThemedView } from './DefaultComponents/ThemedView';
 
-export default function LoadingIcon() {
+//Type
+type LoadingIconProps = {
+    darkColor?: keyof typeof Colors.dark,
+    lightColor?: keyof typeof Colors.light,
+    themed?: boolean,
+    size?: number;
+}
 
+export default function LoadingIcon({ darkColor = 'Red', lightColor = 'Red', themed = true, size = 35 } : LoadingIconProps) {
     const rotateValue = useRef(new Animated.Value(0)).current;
+    const MyView : React.ComponentType<any> = themed ? ThemedView : View;
 
     useEffect(() => {
         Animated.loop(
@@ -27,18 +37,10 @@ export default function LoadingIcon() {
     });
 
     return (
-        <ThemedView style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-        }}>
-            <Animated.View
-                style={{
-                    transform: [{rotate}]
-                }}
-            >
-                <ThemedIcon IconComponent={AntDesign} name='loading1' darkColor={Colors.dark.Red} lightColor={Colors.light.Red} size={35}/>
+        <MyView style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+            <Animated.View style={{ transform: [{rotate}] }} >
+                <ThemedIcon IconComponent={AntDesign} name='loading1' darkColor={Colors.dark[darkColor]} lightColor={Colors.light[lightColor]} size={size}/>
             </Animated.View>
-        </ThemedView>
+        </MyView>
     );
 }

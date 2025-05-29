@@ -45,7 +45,7 @@ export default function TopMenu() {
                 <View style={styles.leftInfo}>
                     {
                         showBackButton ? (
-                            page === pages?.profile.pageName ? (
+                            page === pages?.Profile ? (
                                 <ReturnArrow returnPage={true} />
                             ) : (
                                 <ReturnArrow />
@@ -68,7 +68,7 @@ export default function TopMenu() {
                 
                 {
                     previousPage ? ( //Is on profile area
-                        page === pages?.profile.pageName ? (
+                        page === pages?.Profile ? (
                             <TouchableOpacity onPress={handleConfigsClick}>
                                 <ThemedIcon IconComponent={Configs} width={60} height={35} style={{marginRight: 5}} />
                             </TouchableOpacity>

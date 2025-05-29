@@ -1,8 +1,12 @@
 //Default Imports
-import { StyleSheet, TouchableOpacity, Dimensions, Text } from 'react-native';
+import { StyleSheet, TouchableOpacity, Dimensions, Text, View } from 'react-native';
 import { useTheme } from '@/context/ThemeContext';
 import { Colors } from '@/constants/Colors';
 import { StyleProps } from 'react-native-reanimated';
+import { useState } from 'react';
+
+//Components
+import LoadingIcon from '../LoadingIcon';
 
 //Type
 export type ThemedButtonProps = {
@@ -16,19 +20,18 @@ export type ThemedButtonProps = {
 
 export function ThemedButton({ IconComponent, title = 'Continuar', handleClick, backgroundColor, textColor, style, ...rest }: ThemedButtonProps) {
     const { theme } = useTheme();
-    const windowWidth = Dimensions.get('window').width;
     const size = IconComponent ? (IconComponent.size ? IconComponent.size : 30) : 0;
+
+    const [loading, setLoading] = useState<boolean>(false);
 
     const styles = StyleSheet.create({
         input: {
             backgroundColor: Colors[theme][backgroundColor],
-            // width: '80%',
             paddingVertical: 3,
             borderRadius: 10,
             display: 'flex',
             flexDirection: 'row',
-            // justifyContent: 'center',
-            // alignItems: 'center',
+            height: 45,
         },
         text: {
             color: Colors[theme][textColor],
@@ -48,10 +51,24 @@ export function ThemedButton({ IconComponent, title = 'Continuar', handleClick, 
         }
     })
 
+    const handleSubmit = async () => {
+        setLoading(true);
+        await handleClick();
+        setLoading(false);
+    }
+
     return (
-        <TouchableOpacity onPress={handleClick} style={[styles.input, style]} {...rest}>
-            {IconComponent && (<IconComponent.Icon name={IconComponent.name} size={size} style={styles.icon} />) }
-            <Text style={styles.text}>{title}</Text>
-        </TouchableOpacity>
-    );
+        <>
+            {loading ? (
+                <TouchableOpacity disabled={true} activeOpacity={0.5} style={[styles.input, style, {paddingVertical: 7}]} {...rest}>
+                    <LoadingIcon darkColor={'LightBackground'} themed={false} size={size} />
+                </TouchableOpacity>
+            ) : (
+                <TouchableOpacity onPress={handleSubmit} activeOpacity={0.5} style={[styles.input, style]} {...rest}>
+                    {IconComponent && (<IconComponent.Icon name={IconComponent.name} size={size} style={styles.icon} />)}
+                    <Text style={styles.text}>{title}</Text>
+                </TouchableOpacity>
+            )}
+        </>
+    )
 }

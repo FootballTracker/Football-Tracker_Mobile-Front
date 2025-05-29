@@ -1,23 +1,20 @@
 import { Image, Pressable, StyleSheet, TouchableOpacity, View } from 'react-native';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import FilledStar from '@/assets/Icons/FilledStar.svg'
-import UnfilledStar from '@/assets/Icons/UnfilledStar.svg'
-import { useState } from 'react';
 import { router } from 'expo-router';
 import { Colors } from '@/constants/Colors';
 
 import { ThemedIcon } from '../DefaultComponents/ThemedIcon';
 import { ThemedText } from '@/components/DefaultComponents/ThemedText';
+import FavoriteStar from '../FavoriteStar';
 
 export interface PlayerCardI {
     id: string
     image: string
     name: string
-    favoritie?: boolean
+    favoritie: boolean
 }
 
 export default function PlayerCard({ id, image, name, favoritie }: PlayerCardI) {
-    const [favoritieState, setFavoritieState] = useState(favoritie);
 
     const accessPlayer = () => {
         router.push(`/(pages)/player/${id}` as any);
@@ -25,7 +22,6 @@ export default function PlayerCard({ id, image, name, favoritie }: PlayerCardI) 
 
     const changeFavoritie = () => {
         // alert("trocar favorito");
-        setFavoritieState(!favoritieState);
     }
 
     return (
@@ -36,23 +32,14 @@ export default function PlayerCard({ id, image, name, favoritie }: PlayerCardI) 
                     <ThemedText numberOfLines={1} ellipsizeMode='tail' style={styles.text}>{name}</ThemedText>
                 </View>
                 <View style={[styles.sideInfo, styles.rightInfo]}>
-                    <TouchableOpacity onPress={changeFavoritie}>
-                        <ThemedIcon
-                            IconComponent={favoritieState ? FilledStar : UnfilledStar}
-                            darkColor={Colors.dark.Red}
-                            lightColor={Colors.light.Red}
-                            style={styles.star}
-                            width={30}
-                            height={22}
-                        />
-                    </TouchableOpacity>
-                        <ThemedIcon
-                            IconComponent={MaterialIcons}
-                            name='keyboard-arrow-right'
-                            darkColor={Colors.dark.Red}
-                            lightColor={Colors.light.Red}
-                            size={25}
-                        />
+                    <FavoriteStar favorite={favoritie} handleClick={changeFavoritie} />
+                    <ThemedIcon
+                        IconComponent={MaterialIcons}
+                        name='keyboard-arrow-right'
+                        darkColor={Colors.dark.Red}
+                        lightColor={Colors.light.Red}
+                        size={25}
+                    />
                 </View>
             </View>
         </Pressable>
@@ -91,9 +78,4 @@ const styles = StyleSheet.create({
         fontSize: 15,
         flex: 1
     },
-    star: {
-        marginTop: -2,
-        paddingLeft: 7,
-        paddingRight: 7
-    }
 });

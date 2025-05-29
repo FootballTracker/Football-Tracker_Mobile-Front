@@ -1,0 +1,61 @@
+//Default Imports
+import { Colors } from "@/constants/Colors";
+import { StyleSheet } from "react-native";
+
+//Components
+import { View } from "react-native";
+import { ThemedIcon, ThemedIconProps } from "./DefaultComponents/ThemedIcon";
+import { ThemedText } from "./DefaultComponents/ThemedText";
+import { ThemedView } from "./DefaultComponents/ThemedView";
+
+//Type
+type SectionProps = {
+    icon: ThemedIconProps;
+    text: string
+    children?: React.ReactNode
+}
+
+export default function Section({ icon, text, children } : SectionProps) {
+    return (
+        <View style={styles.section}>
+            <View style={styles.titleSection}>
+                <ThemedIcon {...icon} darkColor={Colors.dark.Red} lightColor={Colors.light.Red} />
+                <ThemedText lightColor={Colors.light.Text} darkColor={Colors.dark.Text} style={styles.sectionTitle}>
+                    {text}
+                </ThemedText>
+            </View>
+            <ThemedView darkColor={Colors.dark.Red} lightColor={Colors.light.Red} style={styles.divisor}/>
+
+            <View style={styles.content}>
+                {children}
+            </View>
+        </View>
+    )
+}
+
+const styles = StyleSheet.create({
+    section: {
+        marginVertical: 20,
+        width: '90%',
+        marginHorizontal: 'auto',
+    },
+    titleSection: {
+        display: "flex",
+        alignItems: 'center',
+        gap: 5,
+        flexDirection: "row",
+        paddingBottom: 1,
+    },
+    sectionTitle: {
+        fontFamily: "Kdam",
+        fontSize: 18,
+    },
+    divisor: {
+        height: .4,
+    },
+    content: {
+        marginTop: 15,
+        alignItems: 'center',
+        gap: 10,
+    }
+});
