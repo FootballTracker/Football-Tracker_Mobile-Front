@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, memo } from 'react';
-import { StyleSheet, Dimensions, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Colors } from '@/constants/Colors';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import MatchCard, { MatchCardI } from '@/components/matches/MatchCard';
@@ -8,11 +8,8 @@ import api from "@/lib/Axios"
 
 import { ThemedScrollView } from '@/components/DefaultComponents/ThemedScrollView';
 import { PickRound } from '@/components/leagues/PickRound';
-import MatchSection from '@/components/matches/MatchSection';
 import LoadingIcon from '@/components/LoadingIcon';
 import Section from '@/components/Section';
-
-const windowWidth = Dimensions.get('window').width;
 
 interface LigaPartidasProps {
     season: number
@@ -93,7 +90,7 @@ function LigaPartidas({ season, leagueId } : LigaPartidasProps) {
     }
 
     return (
-        <ThemedScrollView style={{top: 25}}>
+        <ThemedScrollView style={{top: 25, marginBottom: 50}}>
             <PickRound
                 values={rounds}
                 selected={round}
@@ -131,13 +128,6 @@ function LigaPartidas({ season, leagueId } : LigaPartidasProps) {
 
 
 const styles = StyleSheet.create({
-    content: {
-        width: windowWidth*0.86,
-        marginLeft: "auto",
-        marginRight: "auto",
-        marginTop: 25,
-        marginBottom: 40
-    },
     calendarIcon: {
         marginTop: 1,
         marginHorizontal: 5

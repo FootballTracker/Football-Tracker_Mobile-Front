@@ -14,6 +14,7 @@ import City from '@/assets/Icons/City.svg'
 import Height from '@/assets/Icons/Height.svg'
 import Weight from '@/assets/Icons/Weight.svg'
 import Position from '@/assets/Icons/Position.svg'
+import { formatDate } from '@/lib/format';
 
 //Type
 type JogadorPerfilProps = {
@@ -38,10 +39,10 @@ type JogadorPerfilProps = {
 
 export default function JogadorPerfil({ player } : JogadorPerfilProps) {
     return (
-        <ThemedScrollView>
+        <ThemedScrollView style={{marginBottom: 50}}>
             <Section icon={{IconComponent: MaterialCommunityIcons, name: 'information'}} text='Informações' >
                 <SingleInfo icon={{IconComponent: Username}} infoName='Nome: ' info={player.firstname + ' ' + player.lastname} />
-                <SingleInfo icon={{IconComponent: Birthday}} infoName='Data de nascimento: ' info={player.birth_date} />
+                <SingleInfo icon={{IconComponent: Birthday}} infoName='Data de nascimento: ' info={formatDate(player.birth_date)} />
                 <SingleInfo icon={{IconComponent: Flag}} infoName='Pais: ' info={player.birth_country} />
                 <SingleInfo StrokeIcon={City} infoName='Cidade de Origem: ' info={player.birth_place} />
                 <SingleInfo StrokeIcon={Height} infoName='Altura: ' info={player.height} />
