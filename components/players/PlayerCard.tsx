@@ -11,10 +11,10 @@ export interface PlayerCardI {
     id: string
     image: string
     name: string
-    favoritie: boolean
+    favorite: boolean
 }
 
-export default function PlayerCard({ id, image, name, favoritie }: PlayerCardI) {
+export default function PlayerCard({ id, image, name, favorite }: PlayerCardI) {
 
     const accessPlayer = () => {
         router.push(`/(pages)/player/${id}` as any);
@@ -32,7 +32,7 @@ export default function PlayerCard({ id, image, name, favoritie }: PlayerCardI) 
                     <ThemedText numberOfLines={1} ellipsizeMode='tail' style={styles.text}>{name}</ThemedText>
                 </View>
                 <View style={[styles.sideInfo, styles.rightInfo]}>
-                    <FavoriteStar favorite={favoritie} handleClick={changeFavoritie} />
+                    <FavoriteStar favorite={favorite} handleClick={changeFavoritie} />
                     <ThemedIcon
                         IconComponent={MaterialIcons}
                         name='keyboard-arrow-right'
@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         marginTop: 18,
         marginHorizontal: 5,
+        width: "100%"
     },
     sideInfo: {
         display: "flex",

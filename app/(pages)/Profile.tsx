@@ -8,18 +8,19 @@ import Boot from '@/assets/Icons/Boot.svg'
 import Trophy from '@/assets/Icons/Trophy.svg'
 import Shield from '@/assets/Icons/Shield.svg'
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { LeagueCardI } from "@/components/leagues/LeagueCard";
+import LeagueCard, { LeagueCardI } from "@/components/leagues/LeagueCard";
 import { useEffect, useState } from "react";
+import { Colors } from "@/constants/Colors";
 import api from '@/lib/Axios';
 
 //Components
 import { ThemedText } from "@/components/DefaultComponents/ThemedText";
 import { ThemedView } from "@/components/DefaultComponents/ThemedView";
 import { ThemedIcon } from "@/components/DefaultComponents/ThemedIcon";
-import LeaguesSection from "@/components/leagues/LeaguesSection";
-import { Colors } from "@/constants/Colors";
 import { ThemedButton } from "@/components/DefaultComponents/ThemedButton";
 import LoadingIcon from "@/components/LoadingIcon";
+import Section from "@/components/Section";
+import InfoMessage from "@/components/InfoMessage";
 
 //Consts
 const windowWidth = Dimensions.get('window').width;
@@ -77,19 +78,25 @@ export default function Profile() {
                             icon={{ IconComponent: Boot, width: 30, height: 30, darkColor: Colors.dark.Red, lightColor: Colors.light.Red, style: styles.favoriteSectionsIcons}}
                             emptyMessage="Favorite um jogador para que ele apareça aqui."
                             /> */}
-                            <LeaguesSection 
-                                text='Ligas'
-                                leagues={[
-                                    {
-                                        id: '1',
-                                        is_favorite: true,
-                                        logo_url: 'https://upload.wikimedia.org/wikipedia/pt/4/42/Campeonato_Brasileiro_S%C3%A9rie_A_logo.png',
-                                        name: "Brasileirão"
-                                    }
-                                ]}
-                                
-                                icon={{ IconComponent: Trophy, width: 25, height: 25, darkColor: Colors.dark.Red, lightColor: Colors.light.Red, style: styles.favoriteSectionsIcons}}
-                            />
+                            <Section 
+                                text='Principais'
+                                icon={{
+                                    IconComponent: Trophy,
+                                    width: 25,
+                                    height: 25,
+                                    darkColor: Colors.dark.Red,
+                                    lightColor: Colors.light.Red,
+                                    style: styles.favoriteSectionsIcons
+                                }}
+                            >
+                                {leagues && leagues.length ? (
+                                    leagues.map((league, index) => (
+                                        <LeagueCard  {...league} key={index} />
+                                    ))
+                                ) : (
+                                    <InfoMessage text='Nenhuma liga encontrada.'/>
+                                )}
+                            </Section>
                             {/* <LeaguesSection 
                                 text='Times'
                                 leagues={favoriteLeagues}
@@ -100,8 +107,7 @@ export default function Profile() {
                     ) : (
                         <LoadingIcon />
                     )}
-                    
-                </View>
+                </View>    
 
                 <ThemedButton IconComponent={{ Icon: Ionicons, name: "exit-outline" }} title="Sair" backgroundColor="Red" textColor="ButtonText" handleClick={handleLogout} style={styles.logoutButton} />
                 {/* <ThemedText onPress={} style={{textAlign: 'center', marginTop: 20, padding: 10}}>SAIR</ThemedText> */}
@@ -137,9 +143,8 @@ const styles = StyleSheet.create({
         fontSize: 20,
     },
     content: {
-        width: windowWidth * 0.9,
-        marginLeft: "auto",
-        marginRight: "auto",
+        width: "100%",
+        paddingHorizontal: 10,
         flex: 1,
     },
     logoutButton: {

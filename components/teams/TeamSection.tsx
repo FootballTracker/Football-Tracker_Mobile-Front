@@ -1,11 +1,11 @@
 import { StyleSheet, View } from 'react-native'
 import { Colors } from '@/constants/Colors'
+import { Feather } from '@expo/vector-icons'
 
 import { ThemedView } from '../DefaultComponents/ThemedView'
 import { ThemedIcon, ThemedIconProps } from '../DefaultComponents/ThemedIcon'
 import { ThemedText } from '@/components/DefaultComponents/ThemedText'
 import TeamCard, { TeamCardI } from './TeamCard'
-import { Feather } from '@expo/vector-icons'
 
 
 interface TeamsSectionProps {

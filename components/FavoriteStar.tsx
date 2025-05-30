@@ -1,7 +1,7 @@
 //Default Imports
 import { Colors } from "@/constants/Colors";
 import { StyleSheet } from "react-native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 //Components
 import { ThemedIcon } from "./DefaultComponents/ThemedIcon";

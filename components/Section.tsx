@@ -3,21 +3,21 @@ import { Colors } from "@/constants/Colors";
 import { StyleSheet } from "react-native";
 
 //Components
-import { View } from "react-native";
+import { View, ViewProps } from "react-native";
 import { ThemedIcon, ThemedIconProps } from "./DefaultComponents/ThemedIcon";
 import { ThemedText } from "./DefaultComponents/ThemedText";
 import { ThemedView } from "./DefaultComponents/ThemedView";
 
 //Type
-type SectionProps = {
+type SectionProps = ViewProps & {
     icon: ThemedIconProps;
-    text: string
-    children?: React.ReactNode
+    text: string;
+    children?: React.ReactNode;
 }
 
-export default function Section({ icon, text, children } : SectionProps) {
+export default function Section({ icon, text, children, ...rest } : SectionProps) {
     return (
-        <View style={styles.section}>
+        <View style={[styles.section, rest.style]}>
             <View style={styles.titleSection}>
                 <ThemedIcon {...icon} darkColor={Colors.dark.Red} lightColor={Colors.light.Red} />
                 <ThemedText lightColor={Colors.light.Text} darkColor={Colors.dark.Text} style={styles.sectionTitle}>

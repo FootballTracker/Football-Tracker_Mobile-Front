@@ -1,23 +1,25 @@
-import { StyleSheet, Dimensions, View  } from 'react-native';
+import { StyleSheet, Dimensions  } from 'react-native';
 import { useEffect, useState } from 'react';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import FilledStar from '@/assets/Icons/FilledStar.svg'
 import { Colors } from '@/constants/Colors';
-import { TeamCardI } from '../teams/TeamCard';
+import TeamCard, { TeamCardI } from '../teams/TeamCard';
 import api from '@/lib/Axios';
 import { useUserContext } from '@/context/UserContext';
 
-import TeamSection from '@/components/teams/TeamSection';
 import { ThemedScrollView } from '@/components/DefaultComponents/ThemedScrollView';
 import { ThemedInput } from '@/components/DefaultComponents/ThemedInput';
 import LoadingIcon from '../LoadingIcon';
+import Section from '../Section';
+import InfoMessage from '../InfoMessage';
+import SearchBar from './SearchBar';
 
 const windowWidth = Dimensions.get('window').width;
 
 export default function Times() {
 
     const { user, logged } = useUserContext();
-    const [favoritie, setFavoritie] = useState<TeamCardI[] | undefined>();
+    const [favorite, setFavorite] = useState<TeamCardI[] | undefined>();
     const [teams, setTeams] = useState<TeamCardI[]>();
     const [loading, setLoading] = useState<boolean>(true);
 
@@ -36,7 +38,7 @@ export default function Times() {
                 user_id: user?.id
             }}
         ).then((response: any) => {
-            setFavoritie(response.data.favorite_team);
+            setFavorite(response.data.favorite_team);
             setTeams(response.data.teams);
         }).catch((e: any) => {
             if(e.response.data.detail) alert(e.response.data.detail);
@@ -46,39 +48,58 @@ export default function Times() {
         });
     }
 
+    async function searchTeams() {
+        
+    }
+
     return (
         !loading ? (
             <ThemedScrollView style={styles.background}>
-                <ThemedInput isSearch={true} numberOfLines={1} style={styles.searchBar} />
+                <SearchBar handleSearch={searchTeams}/>
 
-                <View style={styles.content}>
+                <Section
+                    text='Favorito'
+                    icon={{
+                        IconComponent: FilledStar,
+                        width: 27,
+                        height: 27,
+                        style: styles.starIcon,
+                        darkColor: Colors.dark.Red,
+                        lightColor: Colors.light.Red,
+                    }}
+                >
+                    {favorite ? (
+                        favorite.map((team, index) => (
+                            <TeamCard {...team} key={index} />
+                        ))
+                    ) : (
+                        <InfoMessage text='Favorite um time para que ele apareça aqui.'/>
+                    )}
+                </Section>
 
-                    <TeamSection 
-                        text='Favorito'
-                        teams={favoritie}
-                        icon={{
-                            IconComponent: FilledStar,
-                            width: 27,
-                            height: 27,
-                            style: styles.starIcon,
-                            darkColor: Colors.dark.Red,
-                            lightColor: Colors.light.Red,
-                        }}
-                    />
+                <Section
+                    text='Principais'
+                    icon={{
+                        IconComponent: FontAwesome5,
+                        name: 'crown',
+                        size: 20,
+                        style: styles.crownIcon,
+                        darkColor: Colors.dark.Red,
+                        lightColor: Colors.light.Red,
+                    }}
+                    style={{
+                        marginBottom: 50
+                    }}
+                >
+                    {teams && teams.length ? (
+                        teams.map((team, index) => (
+                            <TeamCard  {...team} key={index} />
+                        ))
+                    ) : (
+                        <InfoMessage text='Nenhum time encontrado.'/>
+                    )}
+                </Section>
 
-                    <TeamSection 
-                        text='Principais'
-                        icon={{
-                            IconComponent: FontAwesome5,
-                            name: 'crown',
-                            size: 20,
-                            style: styles.crownIcon,
-                            darkColor: Colors.dark.Red,
-                            lightColor: Colors.light.Red
-                        }}
-                        teams={teams}
-                    />
-                </View>
             </ThemedScrollView>
         ) : (
             <LoadingIcon />
@@ -90,18 +111,6 @@ const styles = StyleSheet.create({
     background: {
         paddingTop: 25,
     },
-    searchBar: {
-        width: windowWidth*0.9,
-        marginHorizontal: 'auto',
-        height: 40,
-    },
-    content: {
-        top: 20,
-        width: windowWidth*0.9,
-        marginLeft: "auto",
-        marginRight: "auto",
-        paddingBottom: 30
-    },
     starIcon: {
         marginTop: 2,
         marginRight: 5
@@ -109,5 +118,10 @@ const styles = StyleSheet.create({
     crownIcon: {
         marginTop: 5,
         marginRight: 8
-    }
+    },
+    favoritesInfoText: {
+        textAlign: "center",
+        marginTop: 20,
+        fontSize: 14,
+    },
 });

@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         marginTop: 18,
         marginHorizontal: 5,
+        width: "100%"
     },
     sideInfo: {
         display: "flex",

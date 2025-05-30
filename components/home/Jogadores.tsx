@@ -3,13 +3,15 @@ import { useEffect, useState } from 'react';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import FilledStar from '@/assets/Icons/FilledStar.svg'
 import { Colors } from '@/constants/Colors';
-import { PlayerCardI } from '../players/PlayerCard';
+import PlayerCard, { PlayerCardI } from '../players/PlayerCard';
 import api from '@/lib/Axios';
 import { useUserContext } from '@/context/UserContext';
 
 import PlayerSection from '@/components/players/PlayerSection';
 import { ThemedScrollView } from '@/components/DefaultComponents/ThemedScrollView';
 import { ThemedInput } from '@/components/DefaultComponents/ThemedInput';
+import Section from '../Section';
+import SearchBar from './SearchBar';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -45,34 +47,16 @@ export default function Jogadores() {
         });
     }
 
+    async function searchPlayers() {
+        
+    }
+
     return (
         <ThemedScrollView style={styles.background}>
-            <ThemedInput isSearch={true} numberOfLines={1} style={styles.searchBar} />
+            <SearchBar handleSearch={searchPlayers}/>
 
-            <View style={styles.content}>
-
-                <PlayerSection 
+                <Section
                     text='Favoritos'
-                    players={[
-                        {
-                            id: '276',
-                            image: "https://media.api-sports.io/football/players/276.png",
-                            name: "Neymar",
-                            favoritie: true
-                        },
-                        {
-                            id: '629',
-                            image: "https://media.api-sports.io/football/players/629.png",
-                            name: "K. De Bruyne",
-                            favoritie: true
-                        },
-                        {
-                            id: '874',
-                            image: "https://media.api-sports.io/football/players/874.png",
-                            name: "Cristiano Ronaldo",
-                            favoritie: true
-                        },
-                    ]}
                     icon={{
                         IconComponent: FilledStar,
                         width: 27,
@@ -81,9 +65,13 @@ export default function Jogadores() {
                         darkColor: Colors.dark.Red,
                         lightColor: Colors.light.Red,
                     }}
-                />
+                >
+                    <PlayerCard id='276' image="https://media.api-sports.io/football/players/276.png" name="Neymar" favorite={true}/>
+                    <PlayerCard id='629' image="https://media.api-sports.io/football/players/629.png" name="K. De Bruyne" favorite={true}/>
+                    <PlayerCard id='874' image="https://media.api-sports.io/football/players/874.png" name="Cristiano Ronaldo" favorite={true}/>
+                </Section>
 
-                <PlayerSection 
+                <Section
                     text='Principais'
                     icon={{
                         IconComponent: FontAwesome5,
@@ -93,64 +81,18 @@ export default function Jogadores() {
                         darkColor: Colors.dark.Red,
                         lightColor: Colors.light.Red
                     }}
-                    players={[
-                        {
-                            id: '276',
-                            image: "https://media.api-sports.io/football/players/276.png",
-                            name: "Neymar",
-                            favoritie: false
-                        },
-                        {
-                            id: '629',
-                            image: "https://media.api-sports.io/football/players/629.png",
-                            name: "K. De Bruyne",
-                            favoritie: false
-                        },
-                        {
-                            id: '874',
-                            image: "https://media.api-sports.io/football/players/874.png",
-                            name: "Cristiano Ronaldo",
-                            favoritie: false
-                        },
-                        {
-                            id: '276',
-                            image: "https://media.api-sports.io/football/players/276.png",
-                            name: "Neymar",
-                            favoritie: false
-                        },
-                        {
-                            id: '629',
-                            image: "https://media.api-sports.io/football/players/629.png",
-                            name: "K. De Bruyne",
-                            favoritie: false
-                        },
-                        {
-                            id: '874',
-                            image: "https://media.api-sports.io/football/players/874.png",
-                            name: "Cristiano Ronaldo",
-                            favoritie: false
-                        },
-                        {
-                            id: '276',
-                            image: "https://media.api-sports.io/football/players/276.png",
-                            name: "Neymar",
-                            favoritie: false
-                        },
-                        {
-                            id: '629',
-                            image: "https://media.api-sports.io/football/players/629.png",
-                            name: "K. De Bruyne",
-                            favoritie: false
-                        },
-                        {
-                            id: '874',
-                            image: "https://media.api-sports.io/football/players/874.png",
-                            name: "Cristiano Ronaldo",
-                            favoritie: false
-                        },
-                    ]}
-                />
-            </View>
+                    style={{marginBottom: 50}}
+                >
+                    <PlayerCard id='276' image="https://media.api-sports.io/football/players/276.png" name="Neymar" favorite={false}/>
+                    <PlayerCard id='629' image="https://media.api-sports.io/football/players/629.png" name="K. De Bruyne" favorite={false}/>
+                    <PlayerCard id='874' image="https://media.api-sports.io/football/players/874.png" name="Cristiano Ronaldo" favorite={false}/>
+                    <PlayerCard id='276' image="https://media.api-sports.io/football/players/276.png" name="Neymar" favorite={false}/>
+                    <PlayerCard id='629' image="https://media.api-sports.io/football/players/629.png" name="K. De Bruyne" favorite={false}/>
+                    <PlayerCard id='874' image="https://media.api-sports.io/football/players/874.png" name="Cristiano Ronaldo" favorite={false}/>
+                    <PlayerCard id='276' image="https://media.api-sports.io/football/players/276.png" name="Neymar" favorite={false}/>
+                    <PlayerCard id='629' image="https://media.api-sports.io/football/players/629.png" name="K. De Bruyne" favorite={false}/>
+                    <PlayerCard id='874' image="https://media.api-sports.io/football/players/874.png" name="Cristiano Ronaldo" favorite={false}/>
+                </Section>
         </ThemedScrollView>
     )
 }
@@ -158,18 +100,6 @@ export default function Jogadores() {
 const styles = StyleSheet.create({
     background: {
         paddingTop: 25,
-    },
-    searchBar: {
-        width: windowWidth*0.9,
-        marginHorizontal: 'auto',
-        height: 40,
-    },
-    content: {
-        top: 20,
-        width: windowWidth*0.9,
-        marginLeft: "auto",
-        marginRight: "auto",
-        paddingBottom: 30
     },
     starIcon: {
         marginTop: 2,
