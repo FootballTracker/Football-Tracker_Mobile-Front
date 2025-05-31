@@ -1,26 +1,34 @@
-import { StyleSheet, Dimensions  } from 'react-native';
-import { useEffect, useState } from 'react';
-import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
-import FilledStar from '@/assets/Icons/FilledStar.svg'
-import { Colors } from '@/constants/Colors';
-import TeamCard, { TeamCardI } from '../teams/TeamCard';
-import api from '@/lib/Axios';
+//Default Imports
 import { useUserContext } from '@/context/UserContext';
+import { useEffect, useState } from 'react';
+import { StyleSheet } from 'react-native';
+import { router } from 'expo-router';
+import api from '@/lib/Axios';
 
+//Components
 import { ThemedScrollView } from '@/components/DefaultComponents/ThemedScrollView';
-import { ThemedInput } from '@/components/DefaultComponents/ThemedInput';
 import LoadingIcon from '../LoadingIcon';
-import Section from '../Section';
 import InfoMessage from '../InfoMessage';
 import SearchBar from './SearchBar';
+import Section from '../Section';
+import Card from '../Card';
 
-const windowWidth = Dimensions.get('window').width;
+//Icons
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+import FilledStar from '@/assets/Icons/FilledStar.svg'
+
+//Type
+type team = {
+    id: string
+    name: string
+    logo: string
+    is_favorite: boolean
+}
 
 export default function Times() {
-
     const { user, logged } = useUserContext();
-    const [favorite, setFavorite] = useState<TeamCardI[] | undefined>();
-    const [teams, setTeams] = useState<TeamCardI[]>();
+    const [favorite, setFavorite] = useState<team[] | undefined>();
+    const [teams, setTeams] = useState<team[]>();
     const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
@@ -52,48 +60,47 @@ export default function Times() {
         
     }
 
+    const accessTeam = (id: string) => {
+        router.push(`/(pages)/team/${id}` as any);
+    }
+
+    const changeFavorite = (id: string) => {
+        // alert("trocar favorito");
+    }
+
     return (
         !loading ? (
             <ThemedScrollView style={styles.background}>
                 <SearchBar handleSearch={searchTeams}/>
 
-                <Section
-                    text='Favorito'
-                    icon={{
-                        IconComponent: FilledStar,
-                        width: 27,
-                        height: 27,
-                        style: styles.starIcon,
-                        darkColor: Colors.dark.Red,
-                        lightColor: Colors.light.Red,
-                    }}
-                >
+                <Section text='Favorito' icon={{IconComponent: FilledStar, width: 27, height: 27}} iconUp >
                     {favorite ? (
                         favorite.map((team, index) => (
-                            <TeamCard {...team} key={index} />
+                            <Card
+                                favorite
+                                handleOpen={() => {accessTeam(team.id)}}
+                                handleFavorite={() => {changeFavorite(team.id)}}
+                                info={team.name}
+                                image={team.logo}
+                                key={index}
+                            />
                         ))
                     ) : (
                         <InfoMessage text='Favorite um time para que ele apareça aqui.'/>
                     )}
                 </Section>
 
-                <Section
-                    text='Principais'
-                    icon={{
-                        IconComponent: FontAwesome5,
-                        name: 'crown',
-                        size: 20,
-                        style: styles.crownIcon,
-                        darkColor: Colors.dark.Red,
-                        lightColor: Colors.light.Red,
-                    }}
-                    style={{
-                        marginBottom: 50
-                    }}
-                >
+                <Section text='Principais' icon={{IconComponent: FontAwesome5, name: 'crown', size: 20}} style={{marginBottom: 50}} iconUp >
                     {teams && teams.length ? (
                         teams.map((team, index) => (
-                            <TeamCard  {...team} key={index} />
+                            <Card
+                                favorite={false}
+                                handleOpen={() => {accessTeam(team.id)}}
+                                handleFavorite={() => {changeFavorite(team.id)}}
+                                info={team.name}
+                                image={team.logo}
+                                key={index}
+                            />
                         ))
                     ) : (
                         <InfoMessage text='Nenhum time encontrado.'/>

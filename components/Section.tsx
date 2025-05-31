@@ -13,13 +13,14 @@ type SectionProps = ViewProps & {
     icon: ThemedIconProps;
     text: string;
     children?: React.ReactNode;
+    iconUp?: boolean;
 }
 
-export default function Section({ icon, text, children, ...rest } : SectionProps) {
+export default function Section({ icon, text, children, iconUp = false, ...rest } : SectionProps) {
     return (
         <View style={[styles.section, rest.style]}>
             <View style={styles.titleSection}>
-                <ThemedIcon {...icon} darkColor={Colors.dark.Red} lightColor={Colors.light.Red} />
+                <ThemedIcon {...icon} darkColor={Colors.dark.Red} lightColor={Colors.light.Red} style={iconUp && {marginTop: -3.5}} />
                 <ThemedText lightColor={Colors.light.Text} darkColor={Colors.dark.Text} style={styles.sectionTitle}>
                     {text}
                 </ThemedText>

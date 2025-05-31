@@ -1,0 +1,75 @@
+//Default Imports
+import { StyleSheet, Image, TouchableOpacity } from "react-native";
+import { Colors } from "@/constants/Colors";
+import { SvgUri } from 'react-native-svg';
+import { useState } from "react";
+
+//Components
+import { ThemedIcon } from "./DefaultComponents/ThemedIcon";
+import { ThemedText } from "./DefaultComponents/ThemedText";
+import { View } from "react-native";
+import FavoriteStar from "./FavoriteStar";
+
+//Icons
+import { MaterialIcons } from "@expo/vector-icons";
+
+//Type
+type SingleInfoProps = {
+    image?: string;
+    info: string;
+    favorite: boolean;
+    handleOpen: () => void;
+    handleFavorite: () => void;
+}
+
+export default function Card({image, info, favorite, handleOpen, handleFavorite} : SingleInfoProps) {
+    const [favoritieState, setFavoritieState] = useState(favorite);
+    const svg = image?.endsWith('svg');
+
+    const styles = StyleSheet.create({
+        infoBox: {
+            justifyContent: 'space-between',
+            flexDirection: 'row',
+            width: "100%"
+        },
+        image: {
+            borderRadius: 5,
+            width: 35,
+            height: 35,
+        },
+        infoGroup: {
+            flexDirection: 'row',
+            alignItems: 'center',
+        },
+        leftGroup: {
+            gap: 13,
+            flex: 1,
+        },
+        infoText: {
+            // width: '70%',
+            flex: 1,
+            fontFamily: 'Kdam',
+            fontSize: 14,
+        }
+    });
+
+    return (
+        <TouchableOpacity style={styles.infoBox} activeOpacity={1} onPress={handleOpen} >
+            <View style={[styles.infoGroup, styles.leftGroup]}>
+                {image && (
+                    !svg ? (
+                        <Image source={{uri: image}} resizeMode="contain" style={styles.image} />
+                    ) : (
+                        <SvgUri uri={image} width={35} height={35}/>
+                    )
+                )}
+                <ThemedText numberOfLines={1} ellipsizeMode='tail' style={styles.infoText}>{info}</ThemedText>
+            </View>
+            
+            <View style={styles.infoGroup}>
+                <FavoriteStar favorite={favoritieState} handleClick={() => {setFavoritieState(!favoritieState); handleFavorite()}} />
+                <ThemedIcon onPress={handleOpen} IconComponent={MaterialIcons} name='keyboard-arrow-right' darkColor={Colors.dark.Red} lightColor={Colors.light.Red} size={25} />
+            </View>
+        </TouchableOpacity>
+    )
+}
