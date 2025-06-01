@@ -13,38 +13,44 @@
       "supportsTablet": true
     },
     "web": {
-      "bundler": "metro",
-      "output": "static",
-      "favicon": "./assets/images/RedWhiteLogo.png"
+        "bundler": "metro",
+        "output": "static",
+        "favicon": "./assets/images/RedWhiteLogo.png"
     },
     "plugins": [
-      "expo-router",
-      [
-        "expo-splash-screen",
-        {
-          "image": "./assets/images/BlackSplashLogo.png",
-          "backgroundColor": "#D9DADC",
-          "dark": {
-              "image": "./assets/images/WhiteSplashLogo.png",
-              "backgroundColor": "#191A1C"
-          },
-          "resizeMode": "contain",
-          "imageWidth": 200,
-          "android": {
-            "image": "./assets/images/BlackSplashLogo.png",
-            "backgroundColor": "#D9DADC",
-            "dark": {
-                "image": "./assets/images/WhiteSplashLogo.png",
-                "backgroundColor": "#191A1C"
+        [
+            "expo-image-picker",
+            {
+                "photosPermission": "The app accesses your photos to let you share them with your friends."
             }
-          }
-        }
-      ],
-      "expo-font",
-      "expo-secure-store"
+        ],
+        "expo-router",
+        [
+            "expo-splash-screen",
+            {
+                "image": "./assets/images/BlackSplashLogo.png",
+                "backgroundColor": "#D9DADC",
+                "dark": {
+                    "image": "./assets/images/WhiteSplashLogo.png",
+                    "backgroundColor": "#191A1C"
+                },
+                "resizeMode": "contain",
+                "imageWidth": 200,
+                "android": {
+                    "image": "./assets/images/BlackSplashLogo.png",
+                    "backgroundColor": "#D9DADC",
+                    "dark": {
+                        "image": "./assets/images/WhiteSplashLogo.png",
+                        "backgroundColor": "#191A1C"
+                    }
+                }
+            }
+        ],
+        "expo-font",
+        "expo-secure-store"
     ],
     "experiments": {
-      "typedRoutes": true
+        "typedRoutes": true
     }
   }
 }

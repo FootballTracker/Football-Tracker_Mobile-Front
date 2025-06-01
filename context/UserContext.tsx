@@ -6,6 +6,7 @@ interface User {
     id: string;
     username: string;
     email: string;
+    image: boolean;
 }
 
 interface AuthState {
@@ -19,6 +20,7 @@ interface UserContextType {
     login: (userData: User) => void;
     logout: () => void;
     logged: boolean | null;
+    setImage: (value: boolean) => void;
     // setUser: (user: User | null) => void;
 }
 
@@ -56,8 +58,23 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         deleteItem('user');
     }
 
+    const setImage = (value: boolean): void => {
+
+        setAuth((auth) => {
+            if(!auth.user) return auth;
+
+            return {
+                ...auth,
+                user: {
+                    ...auth.user,
+                    image: value
+                }
+            }
+        })
+    }
+
     return (
-        <UserContext.Provider value={{ user: auth.user, login, logout, logged: auth.logged }}>
+        <UserContext.Provider value={{ user: auth.user, login, logout, logged: auth.logged, setImage }}>
             {children}
         </UserContext.Provider>
     );

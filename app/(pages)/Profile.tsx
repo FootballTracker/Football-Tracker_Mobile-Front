@@ -1,7 +1,7 @@
 //Default Imports
 import { useUserContext } from "@/context/UserContext";
 import { router } from "expo-router";
-import { Dimensions, ScrollView, StyleSheet, View } from "react-native";
+import { Button, Dimensions, Image, ScrollView, StyleSheet, View } from "react-native";
 import User from "@/assets/Icons/User.svg"
 import FilledStar from '@/assets/Icons/FilledStar.svg'
 import Boot from '@/assets/Icons/Boot.svg'
@@ -11,7 +11,9 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import LeagueCard, { LeagueCardI } from "@/components/leagues/LeagueCard";
 import { useEffect, useState } from "react";
 import { Colors } from "@/constants/Colors";
+import * as ImagePicker from 'expo-image-picker';
 import api from '@/lib/Axios';
+
 
 //Components
 import { ThemedText } from "@/components/DefaultComponents/ThemedText";
@@ -22,13 +24,11 @@ import LoadingIcon from "@/components/LoadingIcon";
 import Section from "@/components/Section";
 import InfoMessage from "@/components/InfoMessage";
 
-//Consts
-const windowWidth = Dimensions.get('window').width;
-
 export default function Profile() {
-    const { user, logout } = useUserContext();
+    const { user, logout, setImage } = useUserContext();
     const [leagues, setLeagues] = useState<LeagueCardI[]>();
     const [loading, setLoading] = useState<boolean>(true);
+    const [reloadCounter, setReloadCounter] = useState(Date.now());
 
     const handleLogout = () => {
         logout();
@@ -58,11 +58,71 @@ export default function Profile() {
         });
     }
 
+    const pickImage = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ['images'],
+            allowsEditing: true,
+            aspect: [1, 1],
+            quality: 1,
+        });
+
+        if (!result.canceled) {
+            sendImage(result);
+        }
+    };
+
+    async function sendImage(image: ImagePicker.ImagePickerSuccessResult) {
+        if (!user?.id) {
+            return;
+        }
+
+        const formData = new FormData();
+        
+        formData.append('user_id', user?.id);
+        formData.append('image', {
+            uri: image.assets[0].uri,
+            name: image.assets[0].fileName,
+            type: image.assets[0].mimeType,
+        } as any);
+
+        await api.post("user/image", formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        }).then(() => {
+            setImage(true);
+            setReloadCounter(Date.now());
+        }).catch((e: any) => {
+            if(e.response.data.detail) alert(e.response.data.detail);
+            else alert('Erro ao atualizar imagem.');
+        })
+    }
+
+    async function removeImage() {
+        await api.delete('user/image', {
+            params: {
+                user_id: user?.id
+            }
+        }).then((response: any) => {
+            setImage(false);
+        }).catch((e) => {
+            if(e.response.data.detail) alert(e.response.data.detail);
+            else alert('Erro ao remover imagem.');
+        })
+    }
+
     return (
         <ScrollView>
             <ThemedView style={styles.background}>
-                <ThemedIcon IconComponent={User} width={200} height={200} style={{marginVertical: 10}} />
+                {user?.image ?
+                    <Image source={{uri: `https://intimate-primate-master.ngrok-free.app/user/${user?.id}/image?reload=${reloadCounter}`}} style={styles.userImage} />
+                    :
+                    <ThemedIcon IconComponent={User} width={200} height={200} style={{marginVertical: 10}} />
+                }
                 <ThemedText style={styles.userNickName}>{user?.username}</ThemedText>
+
+                <Button title="Trocar imagem" onPress={pickImage} />
+                <Button title="Remover imagem" onPress={removeImage} />
 
                 <View style={styles.favorites}>
                     <ThemedIcon IconComponent={FilledStar} lightColor={Colors.light.Red} darkColor={Colors.dark.Red} width={27} height={27}/>
@@ -123,6 +183,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         minHeight: '100%',
         flexGrow: 1
+    },
+    userImage: {
+        width: 200,
+        height: 200,
+        resizeMode: 'contain',
+        marginVertical: 10,
+        borderRadius: 100
     },
     userNickName: {
         fontFamily: 'Kdam',
