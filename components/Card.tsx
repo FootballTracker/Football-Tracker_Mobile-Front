@@ -26,26 +26,34 @@ type SingleInfoProps = {
 export default function Card({image, info, favorite, handleOpen, handleFavorite, show = true} : SingleInfoProps) {
     const svg = image?.endsWith('svg');
     const [visible, setVisible] = useState(show);
-    const fadeAnim = useRef(new Animated.Value(0)).current;
-    const heightAnim = useRef(new Animated.Value(0)).current;
-    const translateAnim = useRef(new Animated.Value(20)).current;
+
+    const defaultFadeValue : number = 1;
+    const hiddenFadeValue : number = 0;
+    const defaultHeightValue : number = 40;
+    const hiddenHeightValue : number = 0;
+    const defaultTranslateValue : number = 0;
+    const hiddenTranslateValue : number = 20;
+
+    const fadeAnim = useRef(new Animated.Value(defaultFadeValue)).current;
+    const heightAnim = useRef(new Animated.Value(defaultHeightValue)).current;
+    const translateAnim = useRef(new Animated.Value(defaultTranslateValue)).current;
 
     useEffect(() => {
         if(show) {
             setVisible(true);
             Animated.parallel([
                 Animated.timing(fadeAnim, {
-                    toValue: 1,
+                    toValue: defaultFadeValue,
                     duration: 100,
                     useNativeDriver: false
                 }),
                 Animated.timing(heightAnim, {
-                    toValue: 40,
+                    toValue: defaultHeightValue,
                     duration: 100,
                     useNativeDriver: false
                 }),
                 Animated.timing(translateAnim, {
-                    toValue: 0,
+                    toValue: defaultTranslateValue,
                     duration: 100,
                     useNativeDriver: false
                 })
@@ -54,17 +62,17 @@ export default function Card({image, info, favorite, handleOpen, handleFavorite,
         else {
             Animated.parallel([
                 Animated.timing(fadeAnim, {
-                    toValue: 0,
+                    toValue: hiddenFadeValue,
                     duration: 100,
                     useNativeDriver: false
                 }),
                 Animated.timing(heightAnim, {
-                    toValue: 0,
+                    toValue: hiddenHeightValue,
                     duration: 100,
                     useNativeDriver: false
                 }),
                 Animated.timing(translateAnim, {
-                    toValue: 20,
+                    toValue: hiddenTranslateValue,
                     duration: 100,
                     useNativeDriver: false
                 })

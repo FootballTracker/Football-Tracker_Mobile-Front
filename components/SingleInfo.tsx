@@ -16,11 +16,10 @@ type SingleInfoProps = {
     icon?: ThemedIconProps;
     infoName: string;
     info: string;
-    StrokeIcon?: React.ComponentType<any>;
     imageUrl?: string;
 }
 
-export default function SingleInfo({icon, infoName, info, StrokeIcon, imageUrl} : SingleInfoProps) {
+export default function SingleInfo({icon, infoName, info, imageUrl} : SingleInfoProps) {
     const [showFullInfo, setShowFullInfo] = useState<boolean>(false);
     const { theme } = useTheme();
     const svg = imageUrl?.endsWith('svg');
@@ -53,11 +52,7 @@ export default function SingleInfo({icon, infoName, info, StrokeIcon, imageUrl} 
                 {icon ? (
                     <ThemedIcon width={18} height={18} {...icon} darkColor={Colors.dark.Red} lightColor={Colors.light.Red} />
                 ) : (
-                    StrokeIcon ? (
-                        <StrokeIcon width={18} height={18} stroke={Colors[theme].Red} strokeWidth={3} />
-                    ) : (
-                        <ThemedText darkColor={Colors.dark.Red} lightColor={Colors.light.Red} style={styles.infoText}>•</ThemedText>
-                    )
+                    <ThemedText darkColor={Colors.dark.Red} lightColor={Colors.light.Red} style={styles.infoText}>•</ThemedText>
                 )}
                 <ThemedText style={styles.infoText}>{infoName}</ThemedText>
             </View>
