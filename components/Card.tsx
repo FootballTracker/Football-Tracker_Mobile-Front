@@ -34,9 +34,9 @@ export default function Card({image, info, favorite, handleOpen, handleFavorite,
     const defaultTranslateValue : number = 0;
     const hiddenTranslateValue : number = 20;
 
-    const fadeAnim = useRef(new Animated.Value(defaultFadeValue)).current;
-    const heightAnim = useRef(new Animated.Value(defaultHeightValue)).current;
-    const translateAnim = useRef(new Animated.Value(defaultTranslateValue)).current;
+    const fadeAnim = useRef(new Animated.Value(hiddenFadeValue)).current;
+    const heightAnim = useRef(new Animated.Value(hiddenHeightValue)).current;
+    const translateAnim = useRef(new Animated.Value(hiddenTranslateValue)).current;
 
     useEffect(() => {
         if(show) {
@@ -125,7 +125,7 @@ export default function Card({image, info, favorite, handleOpen, handleFavorite,
                 </View>
                 
                 <View style={styles.infoGroup}>
-                    <FavoriteStar favorite={favorite} swapFavoriteOnClick={false} handleClick={() => {handleFavorite()}} />
+                    <FavoriteStar favorite={favorite} handleClick={() => {handleFavorite()}} />
                     <ThemedIcon onPress={handleOpen} IconComponent={MaterialIcons} name='keyboard-arrow-right' darkColor={Colors.dark.Red} lightColor={Colors.light.Red} size={25} />
                 </View>
             </TouchableOpacity>

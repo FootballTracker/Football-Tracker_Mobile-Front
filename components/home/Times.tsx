@@ -49,7 +49,7 @@ export default function Times() {
             }}
         ).then((response: any) => {
             const mainTeams : team[] = response.data.teams;
-            setFavorites(response.data.favorite_team);
+            setFavorites(response.data.favorite_team ? response.data.favorite_team : []);
             setTeams(mainTeams.map(team => ({
                 ...team,
                 show: true
@@ -81,6 +81,7 @@ export default function Times() {
 
                 <Section text='Favorito' icon={{IconComponent: FilledStar, width: 27, height: 27}} iconUp >
                     {favorites && favorites.length ? (
+                        favorites.filter(t => t.show).length ? 
                         favorites.map((team, index) => (
                             <Card
                                 favorite={team.is_favorite}
@@ -91,7 +92,7 @@ export default function Times() {
                                 show={team.show}
                                 key={index}
                             />
-                        ))
+                        )) : <InfoMessage text='Favorite um time para que ele apareça aqui.'/>
                     ) : (
                         <InfoMessage text='Favorite um time para que ele apareça aqui.'/>
                     )}
@@ -99,6 +100,7 @@ export default function Times() {
 
                 <Section text='Principais' icon={{IconComponent: FontAwesome5, name: 'crown', size: 20}} style={{marginBottom: 50}} iconUp >
                     {teams && teams.length ? (
+                        teams.filter(t => t.show).length ? 
                         teams.map((team, index) => (
                             <Card
                                 favorite={team.is_favorite}
@@ -109,7 +111,7 @@ export default function Times() {
                                 show={team.show}
                                 key={index}
                             />
-                        ))
+                        )) : <InfoMessage text='Todos os times foram favoritados.'/>
                     ) : (
                         <InfoMessage text='Nenhum time encontrado.'/>
                     )}

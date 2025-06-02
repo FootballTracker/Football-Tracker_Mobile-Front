@@ -49,7 +49,7 @@ export default function Ligas() {
             }}
         ).then((response: any) => {
             const mainLeagues : league[] = response.data.all_leagues;
-            setFavorites(response.data.favorite_leagues);
+            setFavorites(response.data.favorite_leagues ? response.data.favorite_leagues : []);
             setLeagues(mainLeagues.map(league => ({
                 ...league,
                 show: true
@@ -71,7 +71,7 @@ export default function Ligas() {
     }
 
     const changeFavorite = (league: league) => {
-        const newLeagues = SwapFavorites(setFavorites, setLeagues, league);
+        SwapFavorites(setFavorites, setLeagues, league);
     }
     
     return (
@@ -81,6 +81,7 @@ export default function Ligas() {
 
                 <Section text='Favoritas' icon={{IconComponent: FilledStar, width: 27, height: 27}} iconUp >
                     {favorites && favorites.length ? (
+                        favorites.filter(l => l.show).length ? 
                         favorites.map((league, index) => (
                             <Card
                                 favorite={league.is_favorite}
@@ -91,7 +92,7 @@ export default function Ligas() {
                                 show={league.show}
                                 key={index}
                             />
-                        ))
+                        )) : <InfoMessage text='Favorite uma liga para que ela apareça aqui.'/>
                     ) : (
                         <InfoMessage text='Favorite uma liga para que ela apareça aqui.'/>
                     )}
@@ -100,6 +101,7 @@ export default function Ligas() {
 
                 <Section text='Principais' icon={{IconComponent: FontAwesome5, name: 'crown', size: 20}} style={{marginBottom: 50}} iconUp >
                     {leagues && leagues.length ? (
+                        leagues.filter(l => l.show).length ? 
                         leagues.map((league, index) => (
                             <Card
                                 favorite={league.is_favorite}
@@ -110,7 +112,7 @@ export default function Ligas() {
                                 show={league.show}
                                 key={index}
                             />
-                        ))
+                        )) : <InfoMessage text='Todas as ligas foram favoritadas.'/>
                     ) : (
                         <InfoMessage text='Nenhuma liga encontrada.'/>
                     )}

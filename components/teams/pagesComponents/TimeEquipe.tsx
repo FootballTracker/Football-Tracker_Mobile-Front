@@ -95,7 +95,7 @@ function TimeEquipe({players} : TimeEquipeProps) {
                 )}
             </Section>
 
-            <Section icon={{IconComponent: Boot}} text='Atacantes' >
+            <Section icon={{IconComponent: Boot}} text='Atacantes' style={{marginBottom: 50}} >
                 {players.attacker ? (
                     players.attacker.map((player, index) => (
                         <Card

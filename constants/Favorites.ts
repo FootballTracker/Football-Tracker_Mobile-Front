@@ -14,12 +14,10 @@ export function SwapFavorites<T extends item>(setFavorites: React.Dispatch<React
 
     if (item.is_favorite) {
         // Remover de favorites e adicionar em normal
-        setFavorites(prev => prev.filter(i => i.id !== item.id));
-        // setFavorites(prev =>
-        //     prev
-        //         .filter(i => i.show !== false)
-        //         .map(i => (i.id === item.id ? {...updatedItem, show: false} : i))
-        // );
+        // setFavorites(prev => prev.filter(i => i.id !== item.id));
+        setFavorites(prev =>
+            prev.map(i => (i.id === item.id ? {...updatedItem, show: false} : i))
+        );
 
         // Atualizar em normal: apenas ativar o item
         setNormal(prev =>
@@ -28,7 +26,7 @@ export function SwapFavorites<T extends item>(setFavorites: React.Dispatch<React
     } else {
         // Remover de normal e adicionar em favorites
         setFavorites(prev => [...prev, {...updatedItem, show: true}]);
-
+        
         // Atualizar em normal: ocultar o item
         setNormal(prev =>
             prev.map(i => (i.id === item.id ? {...updatedItem, show: false} : i))

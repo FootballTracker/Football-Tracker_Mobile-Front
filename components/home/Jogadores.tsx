@@ -48,7 +48,7 @@ export default function Jogadores() {
             }}
         ).then((response: any) => {
             const mainPlayers : player[] = response.data.players;
-            setFavorites(response.data.favorite_players);
+            setFavorites(response.data.favorite_players ? response.data.favorite_players : []);
             setPlayers(mainPlayers.map(player => ({
                 ...player,
                 show: true
@@ -80,6 +80,7 @@ export default function Jogadores() {
 
                     <Section text='Favoritos' icon={{IconComponent: FilledStar, width: 27, height: 27}} iconUp >
                         {favorites && favorites.length ? (
+                            favorites.filter(p => p.show).length ? 
                             favorites.map((player, index) => (
                                 <Card
                                     favorite={player.is_favorite}
@@ -90,7 +91,7 @@ export default function Jogadores() {
                                     show={player.show}
                                     key={index}
                                 />
-                            ))
+                            )) : <InfoMessage text='Favorite um jogador para que ele apareça aqui.'/>
                         ) : (
                             <InfoMessage text='Favorite um jogador para que ele apareça aqui.'/>
                         )}
@@ -98,6 +99,7 @@ export default function Jogadores() {
 
                     <Section text='Principais' icon={{IconComponent: FontAwesome5, name: 'crown', size: 20}} style={{marginBottom: 50}} iconUp >
                         {players && players.length ? (
+                            players.filter(p => p.show).length ? 
                             players.map((player, index) => (
                                 <Card
                                     favorite={player.is_favorite}
@@ -108,7 +110,7 @@ export default function Jogadores() {
                                     show={player.show}
                                     key={index}
                                 />
-                            ))
+                            )) : <InfoMessage text='Todos os jogadores foram favoritados.'/>
                         ) : (
                             <InfoMessage text='Nenhum jogador encontrado.'/>
                         )}
