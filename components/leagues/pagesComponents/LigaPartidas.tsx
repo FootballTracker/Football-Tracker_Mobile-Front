@@ -37,7 +37,6 @@ function LigaPartidas({ season, leagueId } : LigaPartidasProps) {
     }, [season]);
 
     useEffect(() => {
-        if(season === -1) return;
         getMatches();
     }, [round, season]);
 
@@ -117,7 +116,7 @@ function LigaPartidas({ season, leagueId } : LigaPartidasProps) {
                     </Section>
                 ))
             :
-                <View>
+                <View style={{marginTop: 20}}>
                     <LoadingIcon />
                 </View> 
             }
