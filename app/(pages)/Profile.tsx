@@ -28,7 +28,6 @@ export default function Profile() {
     const { user, logout, setImage } = useUserContext();
     const [leagues, setLeagues] = useState<LeagueCardI[]>();
     const [loading, setLoading] = useState<boolean>(true);
-    const [reloadCounter, setReloadCounter] = useState(Date.now());
 
     const handleLogout = () => {
         logout();
@@ -91,7 +90,6 @@ export default function Profile() {
             },
         }).then(() => {
             setImage(true);
-            setReloadCounter(Date.now());
         }).catch((e: any) => {
             if(e.response.data.detail) alert(e.response.data.detail);
             else alert('Erro ao atualizar imagem.');
@@ -115,7 +113,7 @@ export default function Profile() {
         <ScrollView>
             <ThemedView style={styles.background}>
                 {user?.image ?
-                    <Image source={{uri: `https://intimate-primate-master.ngrok-free.app/user/${user?.id}/image?reload=${reloadCounter}`}} style={styles.userImage} />
+                    <Image source={{uri: `https://intimate-primate-master.ngrok-free.app/user/${user?.id}/image?reload=${Date.now()}`}} style={styles.userImage} />
                     :
                     <ThemedIcon IconComponent={User} width={200} height={200} style={{marginVertical: 10}} />
                 }
