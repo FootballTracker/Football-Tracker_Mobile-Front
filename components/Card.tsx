@@ -1,8 +1,8 @@
 //Default Imports
-import { StyleSheet, Image, TouchableOpacity } from "react-native";
+import { StyleSheet, Image, TouchableOpacity, Animated } from "react-native";
 import { Colors } from "@/constants/Colors";
 import { SvgUri } from 'react-native-svg';
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 //Components
 import { ThemedIcon } from "./DefaultComponents/ThemedIcon";
@@ -20,10 +20,59 @@ type SingleInfoProps = {
     favorite: boolean;
     handleOpen: () => void;
     handleFavorite: () => void;
+    show?: boolean;
 }
 
-export default function Card({image, info, favorite, handleOpen, handleFavorite} : SingleInfoProps) {
+export default function Card({image, info, favorite, handleOpen, handleFavorite, show = true} : SingleInfoProps) {
     const svg = image?.endsWith('svg');
+    const [visible, setVisible] = useState(show);
+    const fadeAnim = useRef(new Animated.Value(0)).current;
+    const heightAnim = useRef(new Animated.Value(0)).current;
+    const translateAnim = useRef(new Animated.Value(20)).current;
+
+    useEffect(() => {
+        if(show) {
+            setVisible(true);
+            Animated.parallel([
+                Animated.timing(fadeAnim, {
+                    toValue: 1,
+                    duration: 100,
+                    useNativeDriver: false
+                }),
+                Animated.timing(heightAnim, {
+                    toValue: 40,
+                    duration: 100,
+                    useNativeDriver: false
+                }),
+                Animated.timing(translateAnim, {
+                    toValue: 0,
+                    duration: 100,
+                    useNativeDriver: false
+                })
+            ]).start();
+        }
+        else {
+            Animated.parallel([
+                Animated.timing(fadeAnim, {
+                    toValue: 0,
+                    duration: 100,
+                    useNativeDriver: false
+                }),
+                Animated.timing(heightAnim, {
+                    toValue: 0,
+                    duration: 100,
+                    useNativeDriver: false
+                }),
+                Animated.timing(translateAnim, {
+                    toValue: 20,
+                    duration: 100,
+                    useNativeDriver: false
+                })
+            ]).start(() => { setVisible(false) });
+        }
+    }, [show]);
+
+    if (!visible) return null;
 
     const styles = StyleSheet.create({
         infoBox: {
@@ -54,22 +103,24 @@ export default function Card({image, info, favorite, handleOpen, handleFavorite}
     });
 
     return (
-        <TouchableOpacity style={styles.infoBox} activeOpacity={1} onPress={handleOpen} >
-            <View style={[styles.infoGroup, styles.leftGroup]}>
-                {image && (
-                    !svg ? (
-                        <Image source={{uri: image}} resizeMode="contain" style={styles.image} />
-                    ) : (
-                        <SvgUri uri={image} width={35} height={35}/>
-                    )
-                )}
-                <ThemedText numberOfLines={1} ellipsizeMode='tail' style={styles.infoText}>{info}</ThemedText>
-            </View>
-            
-            <View style={styles.infoGroup}>
-                <FavoriteStar favorite={favorite} swapFavoriteOnClick={false} handleClick={() => {handleFavorite()}} />
-                <ThemedIcon onPress={handleOpen} IconComponent={MaterialIcons} name='keyboard-arrow-right' darkColor={Colors.dark.Red} lightColor={Colors.light.Red} size={25} />
-            </View>
-        </TouchableOpacity>
+        <Animated.View style={{ opacity: fadeAnim, transform: [{translateX: translateAnim}], height: heightAnim }}>
+            <TouchableOpacity style={styles.infoBox} activeOpacity={1} onPress={handleOpen} >
+                <View style={[styles.infoGroup, styles.leftGroup]}>
+                    {image && (
+                        !svg ? (
+                            <Image source={{uri: image}} resizeMode="contain" style={styles.image} />
+                        ) : (
+                            <SvgUri uri={image} width={35} height={35}/>
+                        )
+                    )}
+                    <ThemedText numberOfLines={1} ellipsizeMode='tail' style={styles.infoText}>{info}</ThemedText>
+                </View>
+                
+                <View style={styles.infoGroup}>
+                    <FavoriteStar favorite={favorite} swapFavoriteOnClick={false} handleClick={() => {handleFavorite()}} />
+                    <ThemedIcon onPress={handleOpen} IconComponent={MaterialIcons} name='keyboard-arrow-right' darkColor={Colors.dark.Red} lightColor={Colors.light.Red} size={25} />
+                </View>
+            </TouchableOpacity>
+        </Animated.View>
     )
 }

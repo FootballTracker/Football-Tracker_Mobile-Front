@@ -70,10 +70,7 @@ export default function Jogadores() {
     }
 
     const changeFavorite = (player: player) => {
-        const newPlayers = SwapFavorites(favorites, players, player);
-
-        setFavorites(newPlayers.favorites);
-        setPlayers(newPlayers.normal);
+        SwapFavorites(setFavorites, setPlayers, player);
     }
 
     return (
@@ -90,6 +87,7 @@ export default function Jogadores() {
                                     handleFavorite={() => {changeFavorite(player)}}
                                     info={player.name}
                                     image={player.photo}
+                                    show={player.show}
                                     key={index}
                                 />
                             ))
@@ -101,13 +99,13 @@ export default function Jogadores() {
                     <Section text='Principais' icon={{IconComponent: FontAwesome5, name: 'crown', size: 20}} style={{marginBottom: 50}} iconUp >
                         {players && players.length ? (
                             players.map((player, index) => (
-                                player.show &&
                                 <Card
                                     favorite={player.is_favorite}
                                     handleOpen={() => {accessPlayer(player.id)}}
                                     handleFavorite={() => {changeFavorite(player)}}
                                     info={player.name}
                                     image={player.photo}
+                                    show={player.show}
                                     key={index}
                                 />
                             ))

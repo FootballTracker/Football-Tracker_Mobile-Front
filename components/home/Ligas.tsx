@@ -71,10 +71,7 @@ export default function Ligas() {
     }
 
     const changeFavorite = (league: league) => {
-        const newLeagues = SwapFavorites(favorites, leagues, league);
-
-        setFavorites(newLeagues.favorites);
-        setLeagues(newLeagues.normal);
+        const newLeagues = SwapFavorites(setFavorites, setLeagues, league);
     }
     
     return (
@@ -91,6 +88,7 @@ export default function Ligas() {
                                 handleFavorite={() => {changeFavorite(league)}}
                                 info={league.name}
                                 image={league.logo_url}
+                                show={league.show}
                                 key={index}
                             />
                         ))
@@ -103,13 +101,13 @@ export default function Ligas() {
                 <Section text='Principais' icon={{IconComponent: FontAwesome5, name: 'crown', size: 20}} style={{marginBottom: 50}} iconUp >
                     {leagues && leagues.length ? (
                         leagues.map((league, index) => (
-                            league.show &&
                             <Card
                                 favorite={league.is_favorite}
                                 handleOpen={() => {accessLeague(league.id)}}
                                 handleFavorite={() => {changeFavorite(league)}}
                                 info={league.name}
                                 image={league.logo_url}
+                                show={league.show}
                                 key={index}
                             />
                         ))

@@ -20,7 +20,7 @@ type SectionProps = ViewProps & {
 
 export default function Section({ icon, text, children, iconUp = false, ...rest } : SectionProps) {
     return (
-        <Animated.View layout={LinearTransition} style={[styles.section, rest.style]}>
+        <Animated.View layout={LinearTransition.delay(0).duration(200)} style={[styles.section, rest.style]}>
             <View style={styles.titleSection}>
                 <ThemedIcon {...icon} darkColor={Colors.dark.Red} lightColor={Colors.light.Red} style={iconUp && {marginTop: -3.5}} />
                 <ThemedText lightColor={Colors.light.Text} darkColor={Colors.dark.Text} style={styles.sectionTitle}>

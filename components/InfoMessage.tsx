@@ -23,7 +23,7 @@ export default function InfoMessage({ text, ...rest }: InfoMessageProps) {
 const styles = StyleSheet.create({
     favoritesInfoText: {
         textAlign: "center",
-        marginTop: 17.5,
+        marginTop: 10,
         fontSize: 14,
     },
 });

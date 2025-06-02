@@ -71,10 +71,7 @@ export default function Times() {
     }
 
     function changeFavorite(team: team) {
-        const newTeams = SwapFavorites(favorites, teams, team);
-
-        setFavorites(newTeams.favorites);
-        setTeams(newTeams.normal);
+        SwapFavorites(setFavorites, setTeams, team);
     }
 
     return (
@@ -91,6 +88,7 @@ export default function Times() {
                                 handleFavorite={() => {changeFavorite(team)}}
                                 info={team.name}
                                 image={team.logo}
+                                show={team.show}
                                 key={index}
                             />
                         ))
@@ -102,13 +100,13 @@ export default function Times() {
                 <Section text='Principais' icon={{IconComponent: FontAwesome5, name: 'crown', size: 20}} style={{marginBottom: 50}} iconUp >
                     {teams && teams.length ? (
                         teams.map((team, index) => (
-                            team.show &&
                             <Card
                                 favorite={team.is_favorite}
                                 handleOpen={() => {accessTeam(team.id)}}
                                 handleFavorite={() => {changeFavorite(team)}}
                                 info={team.name}
                                 image={team.logo}
+                                show={team.show}
                                 key={index}
                             />
                         ))
