@@ -1,5 +1,6 @@
 //Default Imports
 import { useUserContext } from '@/context/UserContext';
+import { SwapFavorites } from '@/constants/Favorites';
 import { useEffect, useState } from 'react';
 import { StyleSheet  } from 'react-native';
 import { router } from 'expo-router';
@@ -23,12 +24,13 @@ type league = {
     logo_url: string
     name: string
     is_favorite: boolean
+    show: boolean
 }
 
 export default function Ligas() {
     const { user, logged } = useUserContext();
-    const [favorites, setFavorites] = useState<league[] | undefined>();
-    const [leagues, setLeagues] = useState<league[]>();
+    const [favorites, setFavorites] = useState<league[]>([]);
+    const [leagues, setLeagues] = useState<league[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
@@ -46,8 +48,12 @@ export default function Ligas() {
                 user_id: user?.id
             }}
         ).then((response: any) => {
+            const mainLeagues : league[] = response.data.all_leagues;
             setFavorites(response.data.favorite_leagues);
-            setLeagues(response.data.all_leagues);
+            setLeagues(mainLeagues.map(league => ({
+                ...league,
+                show: true
+            })));
         }).catch((e: any) => {
             if(e.response.data.detail) alert(e.response.data.detail);
             else alert('Erro ao buscar ligas.');
@@ -64,8 +70,11 @@ export default function Ligas() {
         router.push(`/(pages)/league/${id}` as any);;
     }
 
-    const changeFavorite = (id: string) => {
-        // alert("trocar favorito");
+    const changeFavorite = (league: league) => {
+        const newLeagues = SwapFavorites(favorites, leagues, league);
+
+        setFavorites(newLeagues.favorites);
+        setLeagues(newLeagues.normal);
     }
     
     return (
@@ -77,9 +86,9 @@ export default function Ligas() {
                     {favorites && favorites.length ? (
                         favorites.map((league, index) => (
                             <Card
-                                favorite
+                                favorite={league.is_favorite}
                                 handleOpen={() => {accessLeague(league.id)}}
-                                handleFavorite={() => {changeFavorite(league.id)}}
+                                handleFavorite={() => {changeFavorite(league)}}
                                 info={league.name}
                                 image={league.logo_url}
                                 key={index}
@@ -94,10 +103,11 @@ export default function Ligas() {
                 <Section text='Principais' icon={{IconComponent: FontAwesome5, name: 'crown', size: 20}} style={{marginBottom: 50}} iconUp >
                     {leagues && leagues.length ? (
                         leagues.map((league, index) => (
+                            league.show &&
                             <Card
-                                favorite={false}
+                                favorite={league.is_favorite}
                                 handleOpen={() => {accessLeague(league.id)}}
-                                handleFavorite={() => {changeFavorite(league.id)}}
+                                handleFavorite={() => {changeFavorite(league)}}
                                 info={league.name}
                                 image={league.logo_url}
                                 key={index}

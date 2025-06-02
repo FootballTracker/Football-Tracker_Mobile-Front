@@ -1,5 +1,6 @@
 //Default Imports
 import { useUserContext } from '@/context/UserContext';
+import { SwapFavorites } from '@/constants/Favorites';
 import { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { router } from 'expo-router';
@@ -23,12 +24,13 @@ type team = {
     name: string
     logo: string
     is_favorite: boolean
+    show: boolean
 }
 
 export default function Times() {
     const { user, logged } = useUserContext();
-    const [favorite, setFavorite] = useState<team[] | undefined>();
-    const [teams, setTeams] = useState<team[]>();
+    const [favorites, setFavorites] = useState<team[]>([]);
+    const [teams, setTeams] = useState<team[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
@@ -46,8 +48,12 @@ export default function Times() {
                 user_id: user?.id
             }}
         ).then((response: any) => {
-            setFavorite(response.data.favorite_team);
-            setTeams(response.data.teams);
+            const mainTeams : team[] = response.data.teams;
+            setFavorites(response.data.favorite_team);
+            setTeams(mainTeams.map(team => ({
+                ...team,
+                show: true
+            })));
         }).catch((e: any) => {
             if(e.response.data.detail) alert(e.response.data.detail);
             else alert('Erro ao buscar times.');
@@ -64,8 +70,11 @@ export default function Times() {
         router.push(`/(pages)/team/${id}` as any);
     }
 
-    const changeFavorite = (id: string) => {
-        // alert("trocar favorito");
+    function changeFavorite(team: team) {
+        const newTeams = SwapFavorites(favorites, teams, team);
+
+        setFavorites(newTeams.favorites);
+        setTeams(newTeams.normal);
     }
 
     return (
@@ -74,12 +83,12 @@ export default function Times() {
                 <SearchBar handleSearch={searchTeams}/>
 
                 <Section text='Favorito' icon={{IconComponent: FilledStar, width: 27, height: 27}} iconUp >
-                    {favorite ? (
-                        favorite.map((team, index) => (
+                    {favorites && favorites.length ? (
+                        favorites.map((team, index) => (
                             <Card
-                                favorite
+                                favorite={team.is_favorite}
                                 handleOpen={() => {accessTeam(team.id)}}
-                                handleFavorite={() => {changeFavorite(team.id)}}
+                                handleFavorite={() => {changeFavorite(team)}}
                                 info={team.name}
                                 image={team.logo}
                                 key={index}
@@ -93,10 +102,11 @@ export default function Times() {
                 <Section text='Principais' icon={{IconComponent: FontAwesome5, name: 'crown', size: 20}} style={{marginBottom: 50}} iconUp >
                     {teams && teams.length ? (
                         teams.map((team, index) => (
+                            team.show &&
                             <Card
-                                favorite={false}
+                                favorite={team.is_favorite}
                                 handleOpen={() => {accessTeam(team.id)}}
-                                handleFavorite={() => {changeFavorite(team.id)}}
+                                handleFavorite={() => {changeFavorite(team)}}
                                 info={team.name}
                                 image={team.logo}
                                 key={index}

@@ -23,14 +23,14 @@ type SingleInfoProps = {
 }
 
 export default function Card({image, info, favorite, handleOpen, handleFavorite} : SingleInfoProps) {
-    const [favoritieState, setFavoritieState] = useState(favorite);
     const svg = image?.endsWith('svg');
 
     const styles = StyleSheet.create({
         infoBox: {
             justifyContent: 'space-between',
             flexDirection: 'row',
-            width: "100%"
+            width: "100%",
+            marginBottom: 4,
         },
         image: {
             borderRadius: 5,
@@ -67,7 +67,7 @@ export default function Card({image, info, favorite, handleOpen, handleFavorite}
             </View>
             
             <View style={styles.infoGroup}>
-                <FavoriteStar favorite={favoritieState} handleClick={() => {setFavoritieState(!favoritieState); handleFavorite()}} />
+                <FavoriteStar favorite={favorite} swapFavoriteOnClick={false} handleClick={() => {handleFavorite()}} />
                 <ThemedIcon onPress={handleOpen} IconComponent={MaterialIcons} name='keyboard-arrow-right' darkColor={Colors.dark.Red} lightColor={Colors.light.Red} size={25} />
             </View>
         </TouchableOpacity>
