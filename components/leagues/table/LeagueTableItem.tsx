@@ -1,9 +1,11 @@
-import { Image, StyleSheet, View } from "react-native";
+import { Image, Pressable, StyleSheet, View } from "react-native";
 import { Colors } from "@/constants/Colors";
 
 import { ThemedText } from "@/components/DefaultComponents/ThemedText";
+import { router } from "expo-router";
 
 export interface LeagueTableItemProps {
+    teamId: string;
     teamName: string;
     teamLogo: string;
     rank: string;
@@ -17,31 +19,38 @@ export interface LeagueTableItemProps {
     points: string;
 }
 
-export default function LeagueTableItem({ teamName, teamLogo, rank, totalGames, victories, draws, loses, goalsFor, goalsAgainst, goalsDiff, points }: LeagueTableItemProps ) {
+export default function LeagueTableItem({ teamId, teamName, teamLogo, rank, totalGames, victories, draws, loses, goalsFor, goalsAgainst, goalsDiff, points }: LeagueTableItemProps ) {
+    
+    function accessTeam() {
+        router.push(`/(pages)/team/${teamId}` as any);
+    }
+    
     return (
-        <View style={styles.row}>
-            <ThemedText style={styles.rank}
-                {...Number(rank) < 5 ?
-                    {lightColor: Colors.light.Green, darkColor: Colors.dark.Green}
-                    : Number(rank) > 16 && 
-                    {lightColor: Colors.light.Red, darkColor: Colors.dark.Red}
-                }
-            >
-                {rank}
-            </ThemedText>
-            <View style={styles.teamInfo}>
-                <Image source={{uri: teamLogo}} style={styles.teamLogo} resizeMode='contain'/>
-                <ThemedText style={styles.teamName} numberOfLines={1} ellipsizeMode="tail">{teamName}</ThemedText>
+        <Pressable onPress={accessTeam}>
+            <View style={styles.row}>
+                <ThemedText style={styles.rank}
+                    {...Number(rank) < 5 ?
+                        {lightColor: Colors.light.Green, darkColor: Colors.dark.Green}
+                        : Number(rank) > 16 && 
+                        {lightColor: Colors.light.Red, darkColor: Colors.dark.Red}
+                    }
+                >
+                    {rank}
+                </ThemedText>
+                <View style={styles.teamInfo}>
+                    <Image source={{uri: teamLogo}} style={styles.teamLogo} resizeMode='contain'/>
+                    <ThemedText style={styles.teamName} numberOfLines={1} ellipsizeMode="tail">{teamName}</ThemedText>
+                </View>
+                <ThemedText style={styles.item}>{totalGames}</ThemedText>
+                <ThemedText style={styles.item}>{victories}</ThemedText>
+                <ThemedText style={styles.item}>{draws}</ThemedText>
+                <ThemedText style={styles.item}>{loses}</ThemedText>
+                <ThemedText style={styles.item}>{goalsFor}</ThemedText>
+                <ThemedText style={styles.item}>{goalsAgainst}</ThemedText>
+                <ThemedText style={styles.item}>{goalsDiff}</ThemedText>
+                <ThemedText style={styles.item}>{points}</ThemedText>
             </View>
-            <ThemedText style={styles.item}>{totalGames}</ThemedText>
-            <ThemedText style={styles.item}>{victories}</ThemedText>
-            <ThemedText style={styles.item}>{draws}</ThemedText>
-            <ThemedText style={styles.item}>{loses}</ThemedText>
-            <ThemedText style={styles.item}>{goalsFor}</ThemedText>
-            <ThemedText style={styles.item}>{goalsAgainst}</ThemedText>
-            <ThemedText style={styles.item}>{goalsDiff}</ThemedText>
-            <ThemedText style={styles.item}>{points}</ThemedText>
-        </View>
+        </Pressable>
     );
 }
 
