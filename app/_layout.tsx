@@ -11,6 +11,7 @@ import { ThemedView } from '@/components/DefaultComponents/ThemedView';
 import { UserProvider } from '@/context/UserContext';
 import { ThemeProvider } from '@/context/ThemeContext';
 import { StatusBar } from '@/components/home/StatusBar';
+import { ItemsProvider } from '@/context/ItemsContext';
 
 const windowHeight = Dimensions.get('window').height;
 
@@ -49,17 +50,19 @@ export default function RootLayout() {
     return (
         <ThemeProvider>
             <UserProvider>
-                <Host>
-                    <ThemedView  style={{ minHeight: windowHeight, top: statusBarHeight, }} >
-                        <Stack screenOptions={{ headerShown: false }} >
-                            <Stack.Screen name="(auth)" />
-                            <Stack.Screen name="(pages)" />
-                        </Stack>
+                <ItemsProvider>
+                    <Host>
+                        <ThemedView  style={{ minHeight: windowHeight, top: statusBarHeight, }} >
+                            <Stack screenOptions={{ headerShown: false }} >
+                                <Stack.Screen name="(auth)" />
+                                <Stack.Screen name="(pages)" />
+                            </Stack>
 
-                        <StatusBar />
-                        
-                    </ThemedView>
-                </Host>
+                            <StatusBar />
+                            
+                        </ThemedView>
+                    </Host>
+                </ItemsProvider>
             </UserProvider>
         </ThemeProvider>
     );

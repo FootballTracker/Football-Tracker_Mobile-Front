@@ -1,4 +1,5 @@
 //Default Imports
+import { useItemsContext } from '@/context/ItemsContext';
 import { useUserContext } from '@/context/UserContext';
 import { SwapFavorites } from '@/constants/Favorites';
 import { useEffect, useState } from 'react';
@@ -19,7 +20,7 @@ import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import FilledStar from '@/assets/Icons/FilledStar.svg'
 
 //Type
-type player = {
+export type player = {
     id: string,
     name: string,
     is_favorite: boolean,
@@ -29,8 +30,7 @@ type player = {
 
 export default function Jogadores() {
     const { user, logged } = useUserContext();
-    const [favorites, setFavorites] = useState<player[]>(favoritePlayersMock);
-    const [players, setPlayers] = useState<player[]>(playersMock);
+    const { favoritePlayers, setFavoritePlayers, players, setPlayers } = useItemsContext();
     const [loading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {
@@ -48,7 +48,7 @@ export default function Jogadores() {
             }}
         ).then((response: any) => {
             const mainPlayers : player[] = response.data.players;
-            setFavorites(response.data.favorite_players ? response.data.favorite_players : []);
+            setFavoritePlayers(response.data.favorite_players ? response.data.favorite_players : []);
             setPlayers(mainPlayers.map(player => ({
                 ...player,
                 show: true
@@ -70,7 +70,7 @@ export default function Jogadores() {
     }
 
     const changeFavorite = (player: player) => {
-        SwapFavorites(setFavorites, setPlayers, player);
+        SwapFavorites(setFavoritePlayers, setPlayers, player);
     }
 
     return (
@@ -79,9 +79,8 @@ export default function Jogadores() {
                 <SearchBar handleSearch={searchPlayers}/>
 
                     <Section text='Favoritos' icon={{IconComponent: FilledStar, width: 27, height: 27}} iconUp >
-                        {favorites && favorites.length ? (
-                            favorites.filter(p => p.show).length ? 
-                            favorites.map((player, index) => (
+                        {favoritePlayers && favoritePlayers.length && favoritePlayers.filter(p => p.show).length ? (
+                            favoritePlayers.map((player, index) => (
                                 <Card
                                     favorite={player.is_favorite}
                                     handleOpen={() => {accessPlayer(player.id)}}
@@ -91,8 +90,8 @@ export default function Jogadores() {
                                     show={player.show}
                                     key={index}
                                 />
-                            )) : <InfoMessage text='Favorite um jogador para que ele apareça aqui.'/>
-                        ) : (
+                            )
+                        )) : (
                             <InfoMessage text='Favorite um jogador para que ele apareça aqui.'/>
                         )}
                     </Section>

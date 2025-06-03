@@ -1,4 +1,5 @@
 //Default Imports
+import { useItemsContext } from '@/context/ItemsContext';
 import { useUserContext } from '@/context/UserContext';
 import { SwapFavorites } from '@/constants/Favorites';
 import { useEffect, useState } from 'react';
@@ -19,7 +20,7 @@ import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import FilledStar from '@/assets/Icons/FilledStar.svg'
 
 //Type
-type team = {
+export type team = {
     id: string
     name: string
     logo: string
@@ -29,8 +30,7 @@ type team = {
 
 export default function Times() {
     const { user, logged } = useUserContext();
-    const [favorites, setFavorites] = useState<team[]>([]);
-    const [teams, setTeams] = useState<team[]>([]);
+    const { favoriteTeams, setFavoriteTeams, teams, setTeams } = useItemsContext();
     const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
@@ -49,7 +49,7 @@ export default function Times() {
             }}
         ).then((response: any) => {
             const mainTeams : team[] = response.data.teams;
-            setFavorites(response.data.favorite_team ? response.data.favorite_team : []);
+            setFavoriteTeams(response.data.favorite_team ? response.data.favorite_team : []);
             setTeams(mainTeams.map(team => ({
                 ...team,
                 show: true
@@ -71,7 +71,7 @@ export default function Times() {
     }
 
     function changeFavorite(team: team) {
-        SwapFavorites(setFavorites, setTeams, team);
+        SwapFavorites(setFavoriteTeams, setTeams, team);
     }
 
     return (
@@ -80,9 +80,8 @@ export default function Times() {
                 <SearchBar handleSearch={searchTeams}/>
 
                 <Section text='Favorito' icon={{IconComponent: FilledStar, width: 27, height: 27}} iconUp >
-                    {favorites && favorites.length ? (
-                        favorites.filter(t => t.show).length ? 
-                        favorites.map((team, index) => (
+                    {favoriteTeams && favoriteTeams.length && favoriteTeams.filter(t => t.show).length ? (
+                        favoriteTeams.map((team, index) => (
                             <Card
                                 favorite={team.is_favorite}
                                 handleOpen={() => {accessTeam(team.id)}}
@@ -92,7 +91,7 @@ export default function Times() {
                                 show={team.show}
                                 key={index}
                             />
-                        )) : <InfoMessage text='Favorite um time para que ele apareça aqui.'/>
+                        ))
                     ) : (
                         <InfoMessage text='Favorite um time para que ele apareça aqui.'/>
                     )}

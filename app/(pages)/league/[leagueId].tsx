@@ -1,4 +1,7 @@
 import { Image, StyleSheet, View, TouchableOpacity, Dimensions } from 'react-native';
+import { useItemsContext } from '@/context/ItemsContext';
+import { SwapFavorites } from '@/constants/Favorites';
+import FavoriteStar from '@/components/FavoriteStar';
 import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Colors } from '@/constants/Colors';
@@ -32,6 +35,7 @@ interface LeagueFull {
 }
 
 export default function League() {
+    const { setFavoriteLeagues, setLeagues } = useItemsContext();
     const { leagueId } = useLocalSearchParams();
     const { user } = useUserContext();
     const [contentLoaded, setContentLoaded] = useState(false);
@@ -93,7 +97,7 @@ export default function League() {
 
     const changeFavoritie = () => {
         // alert("trocar favorito");
-        setFavoritieState(!favoritieState);
+        SwapFavorites(setFavoriteLeagues, setLeagues, {id: league?.league.id, name: league?.league.name, logo_url: league?.league.logo_url, is_favorite: league?.league.is_favorite, show: true})
     }
 
     const selectSeason = (season: string) => {
@@ -145,16 +149,7 @@ export default function League() {
                             selectFontSize={13}
                             iconSize={19}
                         />
-                    <TouchableOpacity onPress={changeFavoritie}>
-                        <ThemedIcon
-                            IconComponent={favoritieState ? FilledStar : UnfilledStar}
-                            darkColor={Colors.dark.Red}
-                            lightColor={Colors.light.Red}
-                            style={styles.star}
-                            height={24}
-                            width={24}
-                        />
-                    </TouchableOpacity>
+                    <FavoriteStar favorite handleClick={changeFavoritie} />
                 </View>
                 
                 <TabView

@@ -1,4 +1,5 @@
 //Default Imports
+import { useItemsContext } from '@/context/ItemsContext';
 import { useUserContext } from '@/context/UserContext';
 import { SwapFavorites } from '@/constants/Favorites';
 import { useEffect, useState } from 'react';
@@ -19,7 +20,7 @@ import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import FilledStar from '@/assets/Icons/FilledStar.svg'
 
 //Type
-type league = {
+export type league = {
     id: string
     logo_url: string
     name: string
@@ -29,8 +30,7 @@ type league = {
 
 export default function Ligas() {
     const { user, logged } = useUserContext();
-    const [favorites, setFavorites] = useState<league[]>([]);
-    const [leagues, setLeagues] = useState<league[]>([]);
+    const { setFavoriteLeagues, favoriteLeagues, setLeagues, leagues } = useItemsContext();
     const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
@@ -49,7 +49,7 @@ export default function Ligas() {
             }}
         ).then((response: any) => {
             const mainLeagues : league[] = response.data.all_leagues;
-            setFavorites(response.data.favorite_leagues ? response.data.favorite_leagues : []);
+            setFavoriteLeagues(response.data.favorite_leagues ? response.data.favorite_leagues : []);
             setLeagues(mainLeagues.map(league => ({
                 ...league,
                 show: true
@@ -71,7 +71,7 @@ export default function Ligas() {
     }
 
     const changeFavorite = (league: league) => {
-        SwapFavorites(setFavorites, setLeagues, league);
+        SwapFavorites(setFavoriteLeagues, setLeagues, league);
     }
     
     return (
@@ -80,9 +80,8 @@ export default function Ligas() {
                 <SearchBar handleSearch={searchLeagues}/>
 
                 <Section text='Favoritas' icon={{IconComponent: FilledStar, width: 27, height: 27}} iconUp >
-                    {favorites && favorites.length ? (
-                        favorites.filter(l => l.show).length ? 
-                        favorites.map((league, index) => (
+                    {favoriteLeagues && favoriteLeagues.length && favoriteLeagues.filter(l => l.show).length ? (
+                        favoriteLeagues.map((league, index) => (
                             <Card
                                 favorite={league.is_favorite}
                                 handleOpen={() => {accessLeague(league.id)}}
@@ -92,7 +91,7 @@ export default function Ligas() {
                                 show={league.show}
                                 key={index}
                             />
-                        )) : <InfoMessage text='Favorite uma liga para que ela apareça aqui.'/>
+                        ))
                     ) : (
                         <InfoMessage text='Favorite uma liga para que ela apareça aqui.'/>
                     )}
