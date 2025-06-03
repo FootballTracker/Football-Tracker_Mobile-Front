@@ -32,7 +32,8 @@ export default function SingleInfo({icon, infoName, info, imageUrl} : SingleInfo
             flexDirection: 'row',
             paddingVertical: 5,
             paddingHorizontal: 12,
-            width: "100%"
+            width: "100%",
+            justifyContent: "space-between",
         },
         infoGroup: {
             flexDirection: 'row',
@@ -57,7 +58,7 @@ export default function SingleInfo({icon, infoName, info, imageUrl} : SingleInfo
                 <ThemedText style={styles.infoText}>{infoName}</ThemedText>
             </View>
             
-            <View style={[styles.infoGroup, {flex: 1}]}>
+            <View style={[styles.infoGroup, {flex: 1, justifyContent: 'flex-end'}]}>
                 {imageUrl && (
                     !svg ? (
                         <Image source={{uri: imageUrl}} resizeMode="contain" style={{width: 22, height: 22}} />
@@ -66,9 +67,9 @@ export default function SingleInfo({icon, infoName, info, imageUrl} : SingleInfo
                     )
                 )}
                 {showFullInfo ? (
-                    <ThemedText style={[styles.infoText, {flex: 1}]} onPress={() => {setShowFullInfo(!showFullInfo)}}>{info}</ThemedText>
+                    <ThemedText style={[styles.infoText]} onPress={() => {setShowFullInfo(!showFullInfo)}}>{info}</ThemedText>
                 ) : (
-                    <ThemedText numberOfLines={1} ellipsizeMode='tail' style={[styles.infoText, {flex: 1}]} onPress={() => {setShowFullInfo(!showFullInfo)}}>{info}</ThemedText>
+                    <ThemedText numberOfLines={1} ellipsizeMode='tail' style={[styles.infoText]} onPress={() => {setShowFullInfo(!showFullInfo)}}>{info}</ThemedText>
                 )}
             </View>
         </View>
