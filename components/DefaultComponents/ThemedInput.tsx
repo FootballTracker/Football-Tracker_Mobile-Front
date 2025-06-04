@@ -27,7 +27,7 @@ export function ThemedInput({ placeholder, value, onChangeText, onBlur, isPasswo
         container: {
             flexDirection: 'row',
             alignItems: 'center',
-            borderColor: 'black',
+            borderColor: Colors[theme].BorderColor,
             borderWidth: .5,
             borderRadius: 10,
             backgroundColor: Colors[theme].LighterBackground,

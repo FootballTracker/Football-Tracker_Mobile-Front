@@ -8,12 +8,14 @@ import { Colors } from '@/constants/Colors';
 import { useTheme } from '@/context/ThemeContext';
 
 //
-type colorType = keyof typeof Colors.light & keyof typeof Colors.dark;
-type multiColorType = { light: string; dark: string };
+type colorType = keyof typeof Colors.light & keyof typeof Colors.dark & keyof typeof Colors.midnight;
+type multiColorType = { light: string; dark: string, midnight: string };
 
-export function useThemeColor( props: { light?: string; dark?: string }, colorName: colorType ) {
+export function useThemeColor( props: { light?: string; dark?: string, midnight?: string }, colorName: colorType ) {
     const { theme } = useTheme();
-    const colorFromProps = props[theme];
+    let colorFromProps = props[theme];
+    
+    if(theme == 'midnight' && !props.midnight && props.dark) colorFromProps = props.dark;
 
     if (colorFromProps) {
         return colorFromProps;

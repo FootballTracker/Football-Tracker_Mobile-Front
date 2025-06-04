@@ -1,5 +1,6 @@
 //Default Imports
 import { StyleSheet, TouchableOpacity, Dimensions, Text, View } from 'react-native';
+import { useThemeColor } from '@/hooks/useThemeColor';
 import { useTheme } from '@/context/ThemeContext';
 import { Colors } from '@/constants/Colors';
 import { StyleProps } from 'react-native-reanimated';
@@ -13,20 +14,24 @@ export type ThemedButtonProps = {
     IconComponent?: {Icon: React.ComponentType<any>, name: string, size?: number};
     title?: string;
     handleClick: () => void;
-    backgroundColor: keyof typeof Colors.light & keyof typeof Colors.dark
-    textColor: keyof typeof Colors.light & keyof typeof Colors.dark
+    backgroundLightcolor?: string;
+    backgroundDarkcolor?: string;
+    backgroundMidnightcolor?: string;
+    backgroundColor?: keyof typeof Colors.light & keyof typeof Colors.dark & keyof typeof Colors.midnight
+    textColor: keyof typeof Colors.light & keyof typeof Colors.dark & keyof typeof Colors.midnight
     style?: StyleProps
 };
 
-export function ThemedButton({ IconComponent, title = 'Continuar', handleClick, backgroundColor, textColor, style, ...rest }: ThemedButtonProps) {
+export function ThemedButton({ IconComponent, title = 'Continuar', handleClick, backgroundLightcolor, backgroundDarkcolor, backgroundMidnightcolor, backgroundColor = 'Green', textColor, style, ...rest }: ThemedButtonProps) {
     const { theme } = useTheme();
     const size = IconComponent ? (IconComponent.size ? IconComponent.size : 30) : 0;
+    const background = useThemeColor({light: backgroundLightcolor, dark: backgroundDarkcolor, midnight: backgroundMidnightcolor}, backgroundColor)
 
     const [loading, setLoading] = useState<boolean>(false);
 
     const styles = StyleSheet.create({
         input: {
-            backgroundColor: Colors[theme][backgroundColor],
+            backgroundColor: background,
             paddingVertical: 3,
             borderRadius: 10,
             display: 'flex',
