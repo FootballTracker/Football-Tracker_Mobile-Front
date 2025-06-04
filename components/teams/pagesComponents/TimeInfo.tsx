@@ -9,11 +9,8 @@ import { TeamVenueI } from '@/app/(pages)/team/[teamId]';
 import { formatDate } from '@/lib/format';
 
 import { ThemedScrollView } from '@/components/DefaultComponents/ThemedScrollView';
-import MatchSection from '@/components/matches/MatchSection';
 import Section from '@/components/Section';
 import SingleInfo from '@/components/SingleInfo';
-
-const windowWidth = Dimensions.get('window').width;
 
 export interface TeamInfoProps {
     team: TeamInfoI;
@@ -67,9 +64,9 @@ function TimeInfo({ team, team_venue, last_matches } : TeamInfoProps) {
                     style: [{marginTop: 3}, styles.icons]
                 }}
             >
-                <SingleInfo infoName='Sigla' info={team.code} />
-                <SingleInfo infoName='País' info={team.country} imageUrl={team.country_flag}/>
-                <SingleInfo infoName='Fundação' info={team.founded} />
+                <SingleInfo infoName='Sigla: ' info={team.code} />
+                <SingleInfo infoName='País: ' info={team.country} imageUrl={team.country_flag}/>
+                <SingleInfo infoName='Fundação: ' info={team.founded} />
             </Section>
 
             <Section 
@@ -83,11 +80,11 @@ function TimeInfo({ team, team_venue, last_matches } : TeamInfoProps) {
                     style: [{marginTop: 3}, styles.icons]
                 }}
             >
-                <SingleInfo infoName='Nome' info={team_venue.name} />
-                <SingleInfo infoName='Endereço' info={team_venue.address} />
-                <SingleInfo infoName='Cidade' info={team_venue.city} />
-                <SingleInfo infoName='Capacidade' info={team_venue.capacity} />
-                <SingleInfo infoName='Gramado' info={team_venue.surface === "grass" ? "Natural" : "Grama sintética"} />
+                <SingleInfo infoName='Nome: ' info={team_venue.name} />
+                <SingleInfo infoName='Endereço: ' info={team_venue.address} />
+                <SingleInfo infoName='Cidade: ' info={team_venue.city} />
+                <SingleInfo infoName='Capacidade: ' info={team_venue.capacity} />
+                <SingleInfo infoName='Gramado: ' info={team_venue.surface === "grass" ? "Natural" : "Grama sintética"} />
             </Section>
             
             <View style={{width: "90%", paddingHorizontal: 10, marginHorizontal: "auto", marginBottom: 50}}>

@@ -4,6 +4,7 @@ import { useTheme } from "@/context/ThemeContext";
 import { Colors } from "@/constants/Colors";
 import { StyleSheet, Image } from "react-native";
 import { SvgUri } from 'react-native-svg';
+import { useState } from "react";
 
 //Components
 import { ThemedIcon } from "./DefaultComponents/ThemedIcon";
@@ -15,11 +16,11 @@ type SingleInfoProps = {
     icon?: ThemedIconProps;
     infoName: string;
     info: string;
-    StrokeIcon?: React.ComponentType<any>;
     imageUrl?: string;
 }
 
-export default function SingleInfo({icon, infoName, info, StrokeIcon, imageUrl} : SingleInfoProps) {
+export default function SingleInfo({icon, infoName, info, imageUrl} : SingleInfoProps) {
+    const [showFullInfo, setShowFullInfo] = useState<boolean>(false);
     const { theme } = useTheme();
     const svg = imageUrl?.endsWith('svg');
 
@@ -28,11 +29,11 @@ export default function SingleInfo({icon, infoName, info, StrokeIcon, imageUrl} 
             borderColor: Colors[theme].Red,
             borderWidth: .5,
             borderRadius: 7,
-            justifyContent: 'space-between',
             flexDirection: 'row',
             paddingVertical: 5,
             paddingHorizontal: 12,
-            width: "100%"
+            width: "100%",
+            justifyContent: "space-between",
         },
         infoGroup: {
             flexDirection: 'row',
@@ -42,6 +43,7 @@ export default function SingleInfo({icon, infoName, info, StrokeIcon, imageUrl} 
         infoText: {
             fontFamily: 'Kdam',
             fontSize: 12,
+            textAlign: 'right',
         }
     });
 
@@ -51,16 +53,12 @@ export default function SingleInfo({icon, infoName, info, StrokeIcon, imageUrl} 
                 {icon ? (
                     <ThemedIcon width={18} height={18} {...icon} darkColor={Colors.dark.Red} lightColor={Colors.light.Red} />
                 ) : (
-                    StrokeIcon ? (
-                        <StrokeIcon width={18} height={18} stroke={Colors[theme].Red} strokeWidth={3} />
-                    ) : (
-                        <ThemedText darkColor={Colors.dark.Red} lightColor={Colors.light.Red} style={styles.infoText}>•</ThemedText>
-                    )
+                    <ThemedText darkColor={Colors.dark.Red} lightColor={Colors.light.Red} style={styles.infoText}>•</ThemedText>
                 )}
                 <ThemedText style={styles.infoText}>{infoName}</ThemedText>
             </View>
             
-            <View style={styles.infoGroup}>
+            <View style={[styles.infoGroup, {flex: 1, justifyContent: 'flex-end'}]}>
                 {imageUrl && (
                     !svg ? (
                         <Image source={{uri: imageUrl}} resizeMode="contain" style={{width: 22, height: 22}} />
@@ -68,7 +66,11 @@ export default function SingleInfo({icon, infoName, info, StrokeIcon, imageUrl} 
                         <SvgUri uri={imageUrl} width={22} height={22}/>
                     )
                 )}
-                <ThemedText style={styles.infoText}>{info}</ThemedText>
+                {showFullInfo ? (
+                    <ThemedText style={[styles.infoText]} onPress={() => {setShowFullInfo(!showFullInfo)}}>{info}</ThemedText>
+                ) : (
+                    <ThemedText numberOfLines={1} ellipsizeMode='tail' style={[styles.infoText]} onPress={() => {setShowFullInfo(!showFullInfo)}}>{info}</ThemedText>
+                )}
             </View>
         </View>
     )

@@ -1,31 +1,35 @@
 //Default Imports
+import { LinearTransition } from "react-native-reanimated";
 import { Colors } from "@/constants/Colors";
 import { StyleSheet } from "react-native";
 
 //Components
-import { View, ViewProps } from "react-native";
 import { ThemedIcon, ThemedIconProps } from "./DefaultComponents/ThemedIcon";
 import { ThemedText } from "./DefaultComponents/ThemedText";
 import { ThemedView } from "./DefaultComponents/ThemedView";
+import { View, ViewProps } from "react-native";
+import Animated from "react-native-reanimated";
 
 //Type
 type SectionProps = ViewProps & {
     icon: ThemedIconProps;
     text: string;
     children?: React.ReactNode;
+    iconUp?: boolean;
 }
 
-export default function Section({ icon, text, children, ...rest } : SectionProps) {
+export default function Section({ icon, text, children, iconUp = false, ...rest } : SectionProps) {
     return (
-        <View style={[styles.section, rest.style]}>
+        <Animated.View layout={LinearTransition.delay(0).duration(200)} style={[styles.section, rest.style]}>
             <View style={styles.titleSection}>
-                <ThemedIcon {...icon} darkColor={Colors.dark.Red} lightColor={Colors.light.Red} />
+                <ThemedIcon {...icon} darkColor={Colors.dark.Red} lightColor={Colors.light.Red} style={iconUp && {marginTop: -3.5}} />
                 <ThemedText lightColor={Colors.light.Text} darkColor={Colors.dark.Text} style={styles.sectionTitle}>
                     {text}
                 </ThemedText>
             </View>
             <ThemedView darkColor={Colors.dark.Red} lightColor={Colors.light.Red} style={styles.divisor}/>
 
+            
             <View style={styles.content}>
                 {children}
 
@@ -33,9 +37,9 @@ export default function Section({ icon, text, children, ...rest } : SectionProps
                     <ThemedIcon IconComponent={Feather} name="info" size={15} darkColor={Colors.dark.DarkerText} lightColor={Colors.light.DarkerText} />
                     {' '}
                     Nenhum dado para exibir.
-                </ThemedText> */}
+                    </ThemedText> */}
             </View>
-        </View>
+        </Animated.View>
     )
 }
 
@@ -63,6 +67,7 @@ const styles = StyleSheet.create({
         marginTop: 15,
         alignItems: 'center',
         gap: 10,
-        paddingHorizontal: 10
+        paddingHorizontal: 10,
+        minHeight: 30,
     }
 });

@@ -47,7 +47,7 @@ export default function MatchCard({ id, home_team, away_team, date }: MatchCardI
         timeText: {
             fontFamily: "Kdam",
             fontSize: 11,
-            width: 50,
+            width: 53,
             textAlign: "right",
             marginLeft: 3,
             marginRight: -12

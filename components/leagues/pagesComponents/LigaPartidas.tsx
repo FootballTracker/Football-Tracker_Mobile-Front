@@ -12,8 +12,8 @@ import LoadingIcon from '@/components/LoadingIcon';
 import Section from '@/components/Section';
 
 interface LigaPartidasProps {
-    season: number
-    leagueId: number
+    season: number;
+    leagueId: number;
 }
 
 interface FullRoundI {
@@ -34,13 +34,12 @@ function LigaPartidas({ season, leagueId } : LigaPartidasProps) {
 
     useEffect(() => {
         cacheRef.current = {};
+        setRound(1);
     }, [season]);
 
     useEffect(() => {
-        if(season === -1) return;
         getMatches();
-    }, [round, season]);
-
+    }, [round]);
 
     async function getMatches() {
         if (cacheRef.current[round]) {
@@ -117,7 +116,7 @@ function LigaPartidas({ season, leagueId } : LigaPartidasProps) {
                     </Section>
                 ))
             :
-                <View>
+                <View style={{marginTop: 20}}>
                     <LoadingIcon />
                 </View> 
             }

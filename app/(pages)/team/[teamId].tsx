@@ -47,11 +47,12 @@ interface TeamLeaguesI {
 }
 
 interface TeamPlayerI {
+    id: string;
     player: string;
     playerImage: string;
 }
 
-interface TeamPlayersI {
+export interface TeamPlayersI {
     coach: string;
     coach_imagem: string | undefined;
     goalkeeper: TeamPlayerI[];
@@ -92,7 +93,7 @@ export default function Team() {
             case 'informacoes':
                 return <TimeInfo team={teamData.team} last_matches={teamData.last_matches} team_venue={teamData.team_venue}/>;
             case 'equipe':
-                return <TimeEquipe />;
+                return <TimeEquipe players={teamData.players} />;
             case 'classificacao':
                 return <TimeClassificacao />;
             default:

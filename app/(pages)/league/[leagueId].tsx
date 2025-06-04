@@ -21,9 +21,14 @@ import LigaPartidas from '../../../components/leagues/pagesComponents/LigaPartid
 import LigaClassificacao from '../../../components/leagues/pagesComponents/LigaClassificacao';
 import LigaRankings from '../../../components/leagues/pagesComponents/LigaRankings';
 
+interface LeagueSeason {
+    season: number;
+    id: number;
+}
+
 interface LeagueFull {
-    league: LeagueCardI
-    seasons: number[]
+    league: LeagueCardI;
+    seasons: LeagueSeason[]
 }
 
 export default function League() {
@@ -31,7 +36,7 @@ export default function League() {
     const { user } = useUserContext();
     const [contentLoaded, setContentLoaded] = useState(false);
     const [favoritieState, setFavoritieState] = useState(false);
-    const [selectedSeason, setSelectedSeason] = useState<number>(-1);
+    const [selectedSeason, setSelectedSeason] = useState<LeagueSeason | null>(null);
     const [index, setIndex] = useState(0); //initial route index
     const [league, setLeague] = useState<LeagueFull>();
     
@@ -43,13 +48,16 @@ export default function League() {
     ]);
 
     const renderScene = ({ route }: any) => {
+
+        if(!selectedSeason) return;
+
         switch (route.key) {
             case 'partidas':
-                return <LigaPartidas leagueId={Number(leagueId)} season={selectedSeason}/>;
+                return <LigaPartidas leagueId={selectedSeason.id} season={selectedSeason.season}/>;
             case 'classificacao':
-                return <LigaClassificacao leagueId={Number(leagueId)} season={selectedSeason}/>;
+                return <LigaClassificacao leagueId={selectedSeason.id} season={selectedSeason.season}/>;
             case 'rankings':
-                return <LigaRankings leagueId={leagueId} season={selectedSeason}/>;
+                return <LigaRankings leagueId={selectedSeason.id} season={selectedSeason.season}/>;
             default:
                 return null;
         }
@@ -88,8 +96,13 @@ export default function League() {
         setFavoritieState(!favoritieState);
     }
 
-    const selectSeason = (season: number) => {
-        setSelectedSeason(season);
+    const selectSeason = (season: string) => {
+        if(!league) return;
+
+        const s = league.seasons.find((s) => s.season === Number(season))
+        if(!s) return;
+
+        setSelectedSeason(s);
     }
 
     return (
@@ -102,13 +115,13 @@ export default function League() {
                         {league?.league.name}
                     </ThemedText>
                         <LeagueSelect
-                            selected={selectedSeason === -1 ? '' : `${selectedSeason}`}
+                            selected={!selectedSeason ? '' : `${selectedSeason.season}`}
                             setSelected={selectSeason}
                             values={league ? league.seasons.map((season) => {
                                 return (
                                     {
-                                        name: `${season}`,
-                                        value: `${season}`
+                                        name: `${season.season}`,
+                                        value: `${season.season}`
                                     }
                                 )
                             }) : ([

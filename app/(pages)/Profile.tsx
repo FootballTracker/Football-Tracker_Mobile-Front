@@ -23,6 +23,7 @@ import { ThemedButton } from "@/components/DefaultComponents/ThemedButton";
 import LoadingIcon from "@/components/LoadingIcon";
 import Section from "@/components/Section";
 import InfoMessage from "@/components/InfoMessage";
+import { ThemedScrollView } from "@/components/DefaultComponents/ThemedScrollView";
 
 export default function Profile() {
     const { user, logout, setImage } = useUserContext();
@@ -110,7 +111,7 @@ export default function Profile() {
     }
 
     return (
-        <ScrollView>
+        <ThemedScrollView getData={getLeagues}>
             <ThemedView style={styles.background}>
                 {user?.image ?
                     <Image source={{uri: `https://intimate-primate-master.ngrok-free.app/user/${user?.id}/image?reload=${Date.now()}`}} style={styles.userImage} />
@@ -170,7 +171,7 @@ export default function Profile() {
                 <ThemedButton IconComponent={{ Icon: Ionicons, name: "exit-outline" }} title="Sair" backgroundColor="Red" textColor="ButtonText" handleClick={handleLogout} style={styles.logoutButton} />
                 {/* <ThemedText onPress={} style={{textAlign: 'center', marginTop: 20, padding: 10}}>SAIR</ThemedText> */}
             </ThemedView>
-        </ScrollView>
+        </ThemedScrollView>
     )
 }
 
