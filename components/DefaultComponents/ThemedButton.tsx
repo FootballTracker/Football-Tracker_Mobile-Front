@@ -66,7 +66,7 @@ export function ThemedButton({ IconComponent, title = 'Continuar', handleClick, 
         <>
             {loading ? (
                 <TouchableOpacity disabled={true} activeOpacity={0.5} style={[styles.input, style, {paddingVertical: 7}]} {...rest}>
-                    <LoadingIcon darkColor={'LightBackground'} themed={false} size={size} />
+                    <LoadingIcon darkColor={'LightBackground'} lightColor={'LightBackground'} themed={false} size={size} />
                 </TouchableOpacity>
             ) : (
                 <TouchableOpacity onPress={handleSubmit} activeOpacity={0.5} style={[styles.input, style]} {...rest}>
