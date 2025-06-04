@@ -99,10 +99,10 @@ export default function League() {
     const selectSeason = (season: string) => {
         if(!league) return;
 
-        const s = league.seasons.filter((s) => s.season === Number(season))
+        const s = league.seasons.find((s) => s.season === Number(season))
         if(!s) return;
 
-        setSelectedSeason(s[0]);
+        setSelectedSeason(s);
     }
 
     return (
