@@ -19,6 +19,7 @@ import { formatDate } from '@/lib/format';
 //Type
 type JogadorPerfilProps = {
     player: {
+        id: string,
         name: string,
         firstname: string,
         lastname: string,
@@ -33,7 +34,7 @@ type JogadorPerfilProps = {
         position: string,
         photo_url: string,
         flag_url: string,
-        favorite: boolean,
+        is_favorite: boolean,
     }
 }
 

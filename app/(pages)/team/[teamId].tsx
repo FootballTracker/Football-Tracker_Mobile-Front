@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Colors } from '@/constants/Colors';
 import { TabView } from 'react-native-tab-view';
 import FilledStar from '@/assets/Icons/FilledStar.svg';
+import { useItemsContext } from '@/context/ItemsContext';
 import UnfilledStar from '@/assets/Icons/UnfilledStar.svg';
 import api from "@/lib/Axios";
 import { TeamInfoProps } from '@/components/teams/pagesComponents/TimeInfo';
@@ -19,6 +20,8 @@ import LoadingIcon from '@/components/LoadingIcon';
 import TimeInfo from '@/components/teams/pagesComponents/TimeInfo';
 import TimeEquipe from '@/components/teams/pagesComponents/TimeEquipe';
 import TimeClassificacao from '@/components/teams/pagesComponents/TimeClassif';
+import FavoriteStar from '@/components/FavoriteStar';
+import { SwapFavorites } from '@/constants/Favorites';
 
 export interface TeamInfoI {
     id: string;
@@ -74,9 +77,9 @@ export default function Team() {
 
     const [teamData, setTeamData] = useState<TeamDataI | undefined>();
     
-    const [contentLoaded, setContentLoaded] = useState(false);
+    const { setFavoriteTeams, setTeams } = useItemsContext();
     
-    const [favoritieState, setFavoritieState] = useState(false);
+    const [contentLoaded, setContentLoaded] = useState(false);
     
     const [index, setIndex] = useState(0);
     
@@ -120,8 +123,8 @@ export default function Team() {
 
 
     const changeFavoritie = () => {
-        // alert("trocar favorito");
-        setFavoritieState(!favoritieState);
+        alert("trocar favorito");
+        SwapFavorites(setFavoriteTeams, setTeams, {id: teamData?.team.id, name: teamData?.team.name, logo: teamData?.team.logo, is_favorite: false, show: true})
     }
 
     return (
@@ -133,16 +136,7 @@ export default function Team() {
                     <ThemedText style={{fontSize: 19, fontFamily: "Kdam", marginRight: 6}}>
                         {teamData?.team.name}
                     </ThemedText>
-                    <TouchableOpacity onPress={changeFavoritie}>
-                        <ThemedIcon
-                            IconComponent={favoritieState ? FilledStar : UnfilledStar}
-                            darkColor={Colors.dark.Red}
-                            lightColor={Colors.light.Red}
-                            style={styles.star}
-                            height={24}
-                            width={24}
-                        />
-                    </TouchableOpacity>
+                    <FavoriteStar favorite handleClick={changeFavoritie} />
                 </View>
                 
                 <TabView

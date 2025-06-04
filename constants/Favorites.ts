@@ -1,6 +1,6 @@
 import Card from "@/components/Card";
 
-type item = {
+export type item = {
     id: string;
     is_favorite: boolean;
     show: boolean;

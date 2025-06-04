@@ -1,4 +1,6 @@
 import { Image, StyleSheet, View, TouchableOpacity, Dimensions } from 'react-native';
+import { useItemsContext } from '@/context/ItemsContext';
+import { SwapFavorites } from '@/constants/Favorites';
 import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { TabView, SceneMap } from 'react-native-tab-view';
@@ -17,6 +19,8 @@ import FavoriteStar from '@/components/FavoriteStar';
 
 export default function Player() {
     const { playerId } = useLocalSearchParams();
+
+    const { setFavoritePlayers, setPlayers } = useItemsContext();
     
     const [contentLoaded, setContentLoaded] = useState(false);
     
@@ -31,7 +35,7 @@ export default function Player() {
     const renderScene = ({ route }: any) => {
         switch (route.key) {
             case 'perfil':
-                return <JogadorPerfil player={player}/>;
+                return <JogadorPerfil player={player.player}/>;
             case 'estatisticas':
                 return <JogadorEstatisticas />;
             default:
@@ -48,6 +52,7 @@ export default function Player() {
 
     const changeFavoritie = () => {
         // alert("trocar favorito");
+        SwapFavorites(setFavoritePlayers, setPlayers, {id: player.player.id, name: player.player.name, photo: player.player.photo_url, is_favorite: player.player.is_favorite, show: true})
     }
 
     return (
@@ -55,16 +60,16 @@ export default function Player() {
         contentLoaded ? (
             <ThemedView style={styles.background}>
                 <View style={{display: 'flex', alignItems: 'center'}}>
-                    <Image source={{uri: player.photo_url}} style={styles.playerPhoto} />
+                    <Image source={{uri: player.player.photo_url}} style={styles.playerPhoto} />
 
                     <View style={[styles.centerView, {gap: 0}]}>
-                        <ThemedText style={styles.playerName} >{player.firstname}</ThemedText>
-                        <FavoriteStar favorite={player.favorite} handleClick={changeFavoritie} />
+                        <ThemedText style={styles.playerName} >{player.player.firstname}</ThemedText>
+                        <FavoriteStar favorite={player.player.is_favorite} handleClick={changeFavoritie} />
                     </View>
 
                     <View style={styles.centerView}>
-                        <ThemedText>{player.age} anos</ThemedText>
-                        <SvgUri uri={player.flag_url} width={'25'} height={'20'} />
+                        <ThemedText>{player.player.age} anos</ThemedText>
+                        <SvgUri uri={player.player.flag_url} width={'25'} height={'20'} />
                     </View>
                 </View>
 
@@ -111,19 +116,22 @@ const styles = StyleSheet.create({
 });
 
 const player = {
-    name: "Neymar",
-    firstname: "Neymar",
-    lastname: "da Silva Santos Júnior",
-    age: 33,
-    birth_date : "1992-02-05",
-    birth_place: "Mogi das Cruzes",
-    birth_country: "Brazil",
-    nationality: "Brazil",
-    height: "175 cm",
-    weight: "68 kg",
-    number: 10,
-    position: "Attacker",
-    photo_url: "https://media.api-sports.io/football/players/276.png",
-    flag_url: "https://media.api-sports.io/flags/br.svg",
-    favorite: true,
+    player: {
+        id: '276',
+        name: "Neymar",
+        firstname: "Neymar",
+        lastname: "da Silva Santos Júnior",
+        age: 33,
+        birth_date : "1992-02-05",
+        birth_place: "Mogi das Cruzes",
+        birth_country: "Brazil",
+        nationality: "Brazil",
+        height: "175 cm",
+        weight: "68 kg",
+        number: 10,
+        position: "Attacker",
+        photo_url: "https://media.api-sports.io/football/players/276.png",
+        flag_url: "https://media.api-sports.io/flags/br.svg",
+        is_favorite: true,
+    }
 }

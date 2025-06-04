@@ -40,8 +40,8 @@ export default function TopMenu() {
     }, [pathname])
 
     return (
-        <ThemedView darkColor={Colors.dark.LightBackground} lightColor={Colors.light.LightBackground}>
-            <ThemedView style={styles.menu} darkColor={Colors.dark.DarkBackground} lightColor={Colors.light.DarkBackground}>
+        <ThemedView colorName='DarkBackground'>
+            <ThemedView style={styles.menu} colorName='DarkBackground'>
                 
                 <View style={styles.leftInfo}>
                     {

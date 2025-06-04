@@ -1,9 +1,10 @@
 import React, { createContext, useState, ReactNode, useContext, useEffect } from 'react';
 import { useColorScheme } from 'react-native';
 import { getItem, saveItem } from './StorageFunctions';
+import { Colors } from '@/constants/Colors';
 
-type theme = 'dark' | 'light';
-type selectedTheme = 'dark' | 'light' | 'system';
+type theme = keyof typeof Colors;
+type selectedTheme = keyof typeof Colors | 'system';
 
 const saveName = 'theme';
 
@@ -16,8 +17,9 @@ interface ThemeContextType {
         value: string,
     }[];
     themesNames: {
-        dark: string,
         light: string,
+        dark: string,
+        midnight: string,
         system: string,
     };
     selectedTheme: selectedTheme;
@@ -47,6 +49,10 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
             value: 'dark',
         },
         {
+            name: 'Meia Noite',
+            value: 'midnight',
+        },
+        {
             name: 'Automático',
             value: 'system',
         }
@@ -55,7 +61,8 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     const themesNames = {
         light: themes[0].name,
         dark: themes[1].name,
-        system: themes[2].name,
+        midnight: themes[2].name,
+        system: themes[3].name,
     }
 
     const setTheme = (theme: selectedTheme, keepSelected?: boolean) => {

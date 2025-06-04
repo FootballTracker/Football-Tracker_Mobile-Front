@@ -84,7 +84,7 @@ export const Menu: React.FC<TabBarProps<any>> = ({ navigationState, jumpTo }) =>
 
     return (
         <View style={styles.wrapper}>
-            <ThemedView style={styles.tabBar} darkColor={Colors.dark.DarkBackground} lightColor={Colors.light.DarkBackground}>
+            <ThemedView style={styles.tabBar} colorName='DarkBackground'>
                     {navigationState.routes.map((route, index) => {
                     const isFocused = navigationState.index === index;
             

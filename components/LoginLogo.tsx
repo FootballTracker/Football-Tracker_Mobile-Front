@@ -12,7 +12,13 @@ export default function LoginLogo() {
     return (
         <View style={{alignItems: 'center', top: -9}}>
             <ThemedText style={[{fontSize: 45, top: 9}, styles.text]}>FOOTBALL</ThemedText>
-            <ThemedImage source={{light: require("@/assets/images/GreenBlackLogo.png"), dark: require("@/assets/images/GreenWhiteLogo.png")}} style={styles.logo} />
+            <ThemedImage
+                source={{
+                    light: require("@/assets/images/GreenBlackLogo.png"),
+                    dark: require("@/assets/images/GreenWhiteLogo.png"),
+                }}
+                style={styles.logo}
+            />
             <ThemedText style={[{fontSize: 25}, styles.text]}>TRACKER</ThemedText>
         </View>
     )
