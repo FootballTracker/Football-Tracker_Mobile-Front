@@ -76,7 +76,7 @@ export default function Ligas() {
     
     return (
         !loading ? (
-            <ThemedScrollView style={styles.background}>
+            <ThemedScrollView style={styles.background} getData={getLeagues}>
                 <SearchBar handleSearch={searchLeagues}/>
 
                 <Section text='Favoritas' icon={{IconComponent: FilledStar, width: 27, height: 27}} iconUp >

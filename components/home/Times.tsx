@@ -76,7 +76,7 @@ export default function Times() {
 
     return (
         !loading ? (
-            <ThemedScrollView style={styles.background}>
+            <ThemedScrollView style={styles.background} getData={getTeams}>
                 <SearchBar handleSearch={searchTeams}/>
 
                 <Section text='Favorito' icon={{IconComponent: FilledStar, width: 27, height: 27}} iconUp >

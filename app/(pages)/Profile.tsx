@@ -21,6 +21,7 @@ import { ThemedButton } from "@/components/DefaultComponents/ThemedButton";
 import LoadingIcon from "@/components/LoadingIcon";
 import Section from "@/components/Section";
 import InfoMessage from "@/components/InfoMessage";
+import { ThemedScrollView } from "@/components/DefaultComponents/ThemedScrollView";
 
 //Consts
 const windowWidth = Dimensions.get('window').width;
@@ -59,7 +60,7 @@ export default function Profile() {
     }
 
     return (
-        <ScrollView>
+        <ThemedScrollView getData={getLeagues}>
             <ThemedView style={styles.background}>
                 <ThemedIcon IconComponent={User} width={200} height={200} style={{marginVertical: 10}} />
                 <ThemedText style={styles.userNickName}>{user?.username}</ThemedText>
@@ -112,7 +113,7 @@ export default function Profile() {
                 <ThemedButton IconComponent={{ Icon: Ionicons, name: "exit-outline" }} title="Sair" backgroundColor="Red" textColor="ButtonText" handleClick={handleLogout} style={styles.logoutButton} />
                 {/* <ThemedText onPress={} style={{textAlign: 'center', marginTop: 20, padding: 10}}>SAIR</ThemedText> */}
             </ThemedView>
-        </ScrollView>
+        </ThemedScrollView>
     )
 }
 

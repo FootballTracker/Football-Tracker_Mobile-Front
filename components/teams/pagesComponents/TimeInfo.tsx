@@ -9,11 +9,8 @@ import { TeamVenueI } from '@/app/(pages)/team/[teamId]';
 import { formatDate } from '@/lib/format';
 
 import { ThemedScrollView } from '@/components/DefaultComponents/ThemedScrollView';
-import MatchSection from '@/components/matches/MatchSection';
 import Section from '@/components/Section';
 import SingleInfo from '@/components/SingleInfo';
-
-const windowWidth = Dimensions.get('window').width;
 
 export interface TeamInfoProps {
     team: TeamInfoI;

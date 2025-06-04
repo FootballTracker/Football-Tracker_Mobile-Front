@@ -75,7 +75,7 @@ export default function Jogadores() {
 
     return (
         !loading ? (
-            <ThemedScrollView style={styles.background}>
+            <ThemedScrollView style={styles.background} getData={getPlayers}>
                 <SearchBar handleSearch={searchPlayers}/>
 
                     <Section text='Favoritos' icon={{IconComponent: FilledStar, width: 27, height: 27}} iconUp >
