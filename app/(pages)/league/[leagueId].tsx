@@ -97,7 +97,8 @@ export default function League() {
 
     const changeFavoritie = () => {
         // alert("trocar favorito");
-        SwapFavorites(setFavoriteLeagues, setLeagues, {id: league?.league.id, name: league?.league.name, logo_url: league?.league.logo_url, is_favorite: league?.league.is_favorite, show: true})
+        SwapFavorites(setFavoriteLeagues, setLeagues, {id: league?.league.id, name: league?.league.name, logo_url: league?.league.logo_url, is_favorite: favoritieState, show: true})
+        setFavoritieState(!favoritieState);
     }
 
     const selectSeason = (season: string) => {
@@ -149,7 +150,7 @@ export default function League() {
                             selectFontSize={13}
                             iconSize={19}
                         />
-                    <FavoriteStar favorite handleClick={changeFavoritie} />
+                    <FavoriteStar favorite={ favoritieState } handleClick={changeFavoritie} />
                 </View>
                 
                 <TabView
