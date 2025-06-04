@@ -74,7 +74,7 @@ export default function TopMenu() {
                         <TouchableOpacity onPress={handleProfileClick}>
                             {user?.image ?
                                 <Image
-                                    source={{ uri: `https://intimate-primate-master.ngrok-free.app/user/${user?.id}/image?${imageVersion}` }}
+                                    source={{ uri: `${process.env.EXPO_PUBLIC_BACKEND_URL}user/${user?.id}/image?${imageVersion}` }}
                                     style={[{borderRadius: 100, resizeMode: 'contain', width: 35, height: 35, marginRight: 20}]}
                                 />
                             :

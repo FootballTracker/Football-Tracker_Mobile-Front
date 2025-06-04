@@ -105,7 +105,7 @@ export default function Profile() {
                     <View>
                         <Pressable onPress={pickImage}>
                             {user?.image ?
-                                <Image source={{uri: `https://intimate-primate-master.ngrok-free.app/user/${user?.id}/image?reload=${imageVersion}`}} style={styles.userImage} />
+                                <Image source={{uri: `${process.env.EXPO_PUBLIC_BACKEND_URL}user/${user?.id}/image?reload=${imageVersion}`}} style={styles.userImage} />
                                 :
                                 <ThemedIcon IconComponent={User} width={200} height={200} style={{marginVertical: 10}} />
                             }
