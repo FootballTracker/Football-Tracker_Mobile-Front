@@ -21,6 +21,7 @@ interface UserContextType {
     logout: () => void;
     logged: boolean | null;
     setImage: (value: boolean) => void;
+    imageVersion: number | null;
     // setUser: (user: User | null) => void;
 }
 
@@ -35,6 +36,7 @@ interface UserProviderProps {
 // Provider
 export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     const [auth, setAuth] = useState<AuthState>({user: null, logged: null});
+    const [imageVersion, setImageVersion] = useState<number | null>(null);
 
     useEffect(() => {
         //Chamar rota do back que verifica se usuário é válido
@@ -42,6 +44,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
             if(storedUser) {
                 const user : User = JSON.parse(storedUser);
                 setAuth({user: user, logged: true});
+                setImageVersion(Date.now());
             } else {
                 setAuth({user: null, logged: false});
             }
@@ -70,11 +73,13 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
                     image: value
                 }
             }
-        })
+        });
+
+        setImageVersion(Date.now());
     }
 
     return (
-        <UserContext.Provider value={{ user: auth.user, login, logout, logged: auth.logged, setImage }}>
+        <UserContext.Provider value={{ user: auth.user, login, logout, logged: auth.logged, setImage, imageVersion }}>
             {children}
         </UserContext.Provider>
     );

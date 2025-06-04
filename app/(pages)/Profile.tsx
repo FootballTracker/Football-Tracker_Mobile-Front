@@ -28,7 +28,7 @@ import InfoMessage from "@/components/InfoMessage";
 import { ThemedScrollView } from "@/components/DefaultComponents/ThemedScrollView";
 
 export default function Profile() {
-    const { user, logout, setImage } = useUserContext();
+    const { user, logout, setImage, imageVersion } = useUserContext();
     const [leagues, setLeagues] = useState<LeagueCardI[]>();
     const [loading, setLoading] = useState<boolean>(true);
     const { theme } = useTheme();
@@ -71,7 +71,7 @@ export default function Profile() {
 
         if (!result.canceled) {
             if(result.assets[0].fileSize && result.assets[0].fileSize > 25e+5) {
-                alert("Somente imagens menores que 5MB são permitidas");
+                alert("Somente imagens menores que 2.5MB são permitidas");
                 return;
             }
             sendImage(result);
@@ -125,7 +125,7 @@ export default function Profile() {
                 <View>
                     <Pressable onPress={pickImage}>
                         {user?.image ?
-                            <Image source={{uri: `https://intimate-primate-master.ngrok-free.app/user/${user?.id}/image?reload=${Date.now()}`}} style={styles.userImage} />
+                            <Image source={{uri: `https://intimate-primate-master.ngrok-free.app/user/${user?.id}/image?reload=${imageVersion}`}} style={styles.userImage} />
                             :
                             <ThemedIcon IconComponent={User} width={200} height={200} style={{marginVertical: 10}} />
                         }

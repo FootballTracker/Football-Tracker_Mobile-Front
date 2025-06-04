@@ -18,7 +18,7 @@ const windowWidth = Dimensions.get('window').width;
 export default function TopMenu() {
     const pathname = usePathname();
     const [showBackButton, setShowBackButton] = useState(false);
-    const { user } = useUserContext();
+    const { user, imageVersion } = useUserContext();
     const { page, setPage, isOnUserPages, userPages } = usePage();
 
     const handleProfileClick = () => {
@@ -74,7 +74,7 @@ export default function TopMenu() {
                         <TouchableOpacity onPress={handleProfileClick}>
                             {user?.image ?
                                 <Image
-                                    source={{ uri: `https://intimate-primate-master.ngrok-free.app/user/${user?.id}/image?${Date.now()}` }}
+                                    source={{ uri: `https://intimate-primate-master.ngrok-free.app/user/${user?.id}/image?${imageVersion}` }}
                                     style={[{borderRadius: 100, resizeMode: 'contain', width: 35, height: 35, marginRight: 20}]}
                                 />
                             :
