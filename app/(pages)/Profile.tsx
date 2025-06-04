@@ -1,7 +1,7 @@
 //Default Imports
 import { useUserContext } from "@/context/UserContext";
 import { router } from "expo-router";
-import { Dimensions, ScrollView, StyleSheet, View } from "react-native";
+import { Button, Dimensions, Image, Pressable, ScrollView, StyleSheet, View } from "react-native";
 import User from "@/assets/Icons/User.svg"
 import FilledStar from '@/assets/Icons/FilledStar.svg'
 import Boot from '@/assets/Icons/Boot.svg'
@@ -11,7 +11,11 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import LeagueCard, { LeagueCardI } from "@/components/leagues/LeagueCard";
 import { useEffect, useState } from "react";
 import { Colors } from "@/constants/Colors";
+import * as ImagePicker from 'expo-image-picker';
 import api from '@/lib/Axios';
+import Feather from '@expo/vector-icons/Feather';
+import { useTheme } from "@/context/ThemeContext";
+
 
 //Components
 import { ThemedText } from "@/components/DefaultComponents/ThemedText";
@@ -23,13 +27,11 @@ import Section from "@/components/Section";
 import InfoMessage from "@/components/InfoMessage";
 import { ThemedScrollView } from "@/components/DefaultComponents/ThemedScrollView";
 
-//Consts
-const windowWidth = Dimensions.get('window').width;
-
 export default function Profile() {
-    const { user, logout } = useUserContext();
+    const { user, logout, setImage, imageVersion } = useUserContext();
     const [leagues, setLeagues] = useState<LeagueCardI[]>();
     const [loading, setLoading] = useState<boolean>(true);
+    const { theme } = useTheme();
 
     const handleLogout = () => {
         logout();
@@ -59,11 +61,88 @@ export default function Profile() {
         });
     }
 
+    const pickImage = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ['images'],
+            allowsEditing: true,
+            aspect: [1, 1],
+            quality: 1,
+        });
+
+        if (!result.canceled) {
+            if(result.assets[0].fileSize && result.assets[0].fileSize > 25e+5) {
+                alert("Somente imagens menores que 2.5MB são permitidas");
+                return;
+            }
+            sendImage(result);
+        }
+    };
+
+    async function sendImage(image: ImagePicker.ImagePickerSuccessResult) {
+        if (!user?.id) {
+            return;
+        }
+
+        const formData = new FormData();
+        
+        formData.append('user_id', user?.id);
+        formData.append('image', {
+            uri: image.assets[0].uri,
+            name: image.assets[0].fileName,
+            type: image.assets[0].mimeType,
+        } as any);
+
+        await api.post("user/image", formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        }).then(() => {
+            setImage(true);
+        }).catch((e: any) => {
+            if(e.response.data.detail) alert(e.response.data.detail);
+            else alert('Erro ao atualizar imagem.');
+        })
+    }
+
+    async function removeImage() {
+        if(!user || !user.image) return;
+        await api.delete('user/image', {
+            params: {
+                user_id: user?.id
+            }
+        }).then((response: any) => {
+            setImage(false);
+        }).catch((e) => {
+            if(e.response.data.detail) alert(e.response.data.detail);
+            else alert('Erro ao remover imagem.');
+        })
+    }
+
     return (
         <ThemedScrollView getData={getLeagues}>
             <ThemedView style={styles.background}>
-                <ThemedIcon IconComponent={User} width={200} height={200} style={{marginVertical: 10}} />
+
+                <View>
+                    <Pressable onPress={pickImage}>
+                        {user?.image ?
+                            <Image source={{uri: `https://intimate-primate-master.ngrok-free.app/user/${user?.id}/image?reload=${imageVersion}`}} style={styles.userImage} />
+                            :
+                            <ThemedIcon IconComponent={User} width={200} height={200} style={{marginVertical: 10}} />
+                        }
+                    </Pressable>
+                    <Pressable onPress={removeImage}>
+                        <ThemedIcon
+                            IconComponent={Feather}
+                            name="camera-off"
+                            lightColor={Colors.light.Red}
+                            darkColor={Colors.dark.Red}
+                            style={[styles.cameraIcon, {backgroundColor: Colors[theme].DarkBackground}]}
+                        />
+                    </Pressable>
+                </View>
+                    
                 <ThemedText style={styles.userNickName}>{user?.username}</ThemedText>
+
 
                 <View style={styles.favorites}>
                     <ThemedIcon IconComponent={FilledStar} lightColor={Colors.light.Red} darkColor={Colors.dark.Red} width={27} height={27}/>
@@ -124,6 +203,20 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         minHeight: '100%',
         flexGrow: 1
+    },
+    userImage: {
+        width: 200,
+        height: 200,
+        resizeMode: 'contain',
+        marginVertical: 10,
+        borderRadius: 100
+    },
+    cameraIcon: {
+        padding: 7,
+        borderRadius: 100,
+        position: 'absolute',
+        bottom: 14,
+        right: 5
     },
     userNickName: {
         fontFamily: 'Kdam',

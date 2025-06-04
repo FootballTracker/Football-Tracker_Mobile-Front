@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Dimensions, View, TouchableOpacity, Image } from 'react-native';
 import { router } from 'expo-router';
 import { usePathname } from 'expo-router';
 import { usePage } from '@/context/PageContext';
@@ -18,7 +18,7 @@ const windowWidth = Dimensions.get('window').width;
 export default function TopMenu() {
     const pathname = usePathname();
     const [showBackButton, setShowBackButton] = useState(false);
-    const { user } = useUserContext();
+    const { user, imageVersion } = useUserContext();
     const { page, setPage, isOnUserPages, userPages } = usePage();
 
     const handleProfileClick = () => {
@@ -72,13 +72,21 @@ export default function TopMenu() {
                         ) : null
                     ) : (
                         <TouchableOpacity onPress={handleProfileClick}>
-                            <ThemedImage 
-                                source={{
-                                    light: require("@/assets/images/DarkUserIcon.png"),
-                                    dark: require("@/assets/images/LightUserIcon.png")
-                                }}
-                                style={styles.userImage}
-                            />
+                            {user?.image ?
+                                <Image
+                                    source={{ uri: `https://intimate-primate-master.ngrok-free.app/user/${user?.id}/image?${imageVersion}` }}
+                                    style={[{borderRadius: 100, resizeMode: 'contain', width: 35, height: 35, marginRight: 20}]}
+                                />
+                            :
+                                <ThemedImage 
+                                    source={{
+                                        light: require("@/assets/images/DarkUserIcon.png"),
+                                        dark: require("@/assets/images/LightUserIcon.png")
+                                    }}
+                                    style={styles.userImage}
+                                />
+                            }
+                            
                         </TouchableOpacity>
                     )
                 }
