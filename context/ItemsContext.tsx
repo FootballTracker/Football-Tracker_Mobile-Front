@@ -1,6 +1,8 @@
 //Default Importws
-import React, { createContext, useState, ReactNode, useContext } from 'react';
+import React, { createContext, useState, ReactNode, useContext, useEffect } from 'react';
+import { useUserContext } from './UserContext';
 import { item } from '@/constants/Favorites'
+import api from '@/lib/Axios';
 
 //Type imports
 import { player } from '@/components/home/Jogadores'
@@ -21,6 +23,10 @@ type ItemsContextType<T extends item> = {
     setLeagues: React.Dispatch<React.SetStateAction<T[]>>;
     setFavoritePlayers: React.Dispatch<React.SetStateAction<T[]>>;
     setPlayers: React.Dispatch<React.SetStateAction<T[]>>;
+    getTeams: () => Promise<void>;
+    getLeagues: () => Promise<void>;
+    getPlayers: () => Promise<void>;
+    loading: boolean;
 }
 
 // Criação do contexto
@@ -39,6 +45,83 @@ export const ItemsProvider: React.FC<ItemsProviderProps> = ({ children }) => {
     const [teams, setTeams] = useState<team[]>([]);
     const [leagues, setLeagues] = useState<league[]>([]);
     const [players, setPlayers] = useState<player[]>(playersMock);
+    const [loading, setLoading] = useState<boolean>(true);
+    
+    const { user, logged } = useUserContext();
+
+    useEffect(() => {
+        if(logged !== null) LoadData();
+    }, [logged]);
+
+    async function getTeams() {
+        await api.get('teams', {
+            params: {
+                user_id: user?.id
+            }}
+        ).then((response: any) => {
+            const mainTeams : team[] = response.data.teams;
+            setFavoriteTeams(response.data.favorite_team ? response.data.favorite_team : []);
+            setTeams(mainTeams.map(team => ({
+                ...team,
+                show: true
+            })));
+        }).catch((e: any) => {
+            if(e.response.data.detail) alert(e.response.data.detail);
+            else alert('Erro ao buscar times.');
+        })
+    }
+
+    async function getLeagues() {
+        await api.get('leagues', {
+            params: {
+                user_id: user?.id
+            }}
+        ).then((response: any) => {
+            const mainLeagues : league[] = response.data.all_leagues;
+            setFavoriteLeagues(response.data.favorite_leagues ? response.data.favorite_leagues : []);
+            setLeagues(mainLeagues.map(league => ({
+                ...league,
+                show: true
+            })));
+        }).catch((e: any) => {
+            if(e.response.data.detail) alert(e.response.data.detail);
+            else alert('Erro ao buscar ligas.');
+        })
+    }
+
+    async function getPlayers() {
+        await api.get('players', {
+            params: {
+                user_id: user?.id
+            }}
+        ).then((response: any) => {
+            const mainPlayers : player[] = response.data.players;
+            setFavoritePlayers(response.data.favorite_players ? response.data.favorite_players : []);
+            setPlayers(mainPlayers.map(player => ({
+                ...player,
+                show: true
+            })));
+        }).catch((e: any) => {
+            if(e.response.data.detail) alert(e.response.data.detail);
+            else alert('Erro ao buscar jogadores.');
+        })
+    }
+
+    const LoadData = async () => {
+        setLoading(true);
+        try {
+            await Promise.all([
+                getTeams(),
+                getLeagues(),
+                // getPlayers()
+            ]);
+        } catch (erro) {
+            console.error('Erro ao carregar dados:', erro);
+            alert('Erro ao carregar dados');
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <ItemsContext.Provider value={{
@@ -54,6 +137,10 @@ export const ItemsProvider: React.FC<ItemsProviderProps> = ({ children }) => {
             setLeagues: setLeagues,
             setFavoritePlayers: setFavoritePlayers,
             setPlayers: setPlayers,
+            loading: loading,
+            getTeams: getTeams,
+            getLeagues: getLeagues,
+            getPlayers: getPlayers,
         }}>
             {children}
         </ItemsContext.Provider>

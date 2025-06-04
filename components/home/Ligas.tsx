@@ -1,19 +1,16 @@
 //Default Imports
 import { useItemsContext } from '@/context/ItemsContext';
 import { useUserContext } from '@/context/UserContext';
-import { SwapFavorites } from '@/constants/Favorites';
 import { useEffect, useState } from 'react';
 import { StyleSheet  } from 'react-native';
-import { router } from 'expo-router';
 import api from '@/lib/Axios';
 
 //Components
 import { ThemedScrollView } from '@/components/DefaultComponents/ThemedScrollView';
+import { FavoriteLeagues, MainLeagues } from '../Items';
 import LoadingIcon from '../LoadingIcon';
-import InfoMessage from '../InfoMessage';
 import SearchBar from './SearchBar';
 import Section from '../Section';
-import Card from '../Card';
 
 //Icons
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
@@ -29,49 +26,10 @@ export type league = {
 }
 
 export default function Ligas() {
-    const { user, logged } = useUserContext();
-    const { setFavoriteLeagues, favoriteLeagues, setLeagues, leagues } = useItemsContext();
-    const [loading, setLoading] = useState<boolean>(true);
-
-    useEffect(() => {
-        if(logged === null) return;
-
-        setLoading(true);
-        getLeagues();
-
-    }, [logged]);
-
-
-    async function getLeagues() {
-        await api.get('leagues', {
-            params: {
-                user_id: user?.id
-            }}
-        ).then((response: any) => {
-            const mainLeagues : league[] = response.data.all_leagues;
-            setFavoriteLeagues(response.data.favorite_leagues ? response.data.favorite_leagues : []);
-            setLeagues(mainLeagues.map(league => ({
-                ...league,
-                show: true
-            })));
-        }).catch((e: any) => {
-            if(e.response.data.detail) alert(e.response.data.detail);
-            else alert('Erro ao buscar ligas.');
-        }).finally(() => {
-            setLoading(false);
-        });
-    }
+    const { loading, getLeagues } = useItemsContext();
 
     async function searchLeagues() {
         
-    }
-
-    const accessLeague = (id: string) => {
-        router.push(`/(pages)/league/${id}` as any);;
-    }
-
-    const changeFavorite = (league: league) => {
-        SwapFavorites(setFavoriteLeagues, setLeagues, league);
     }
     
     return (
@@ -80,41 +38,11 @@ export default function Ligas() {
                 <SearchBar handleSearch={searchLeagues}/>
 
                 <Section text='Favoritas' icon={{IconComponent: FilledStar, width: 27, height: 27}} iconUp >
-                    {favoriteLeagues && favoriteLeagues.length && favoriteLeagues.filter(l => l.show).length ? (
-                        favoriteLeagues.map((league, index) => (
-                            <Card
-                                favorite={league.is_favorite}
-                                handleOpen={() => {accessLeague(league.id)}}
-                                handleFavorite={() => {changeFavorite(league)}}
-                                info={league.name}
-                                image={league.logo_url}
-                                show={league.show}
-                                key={index}
-                            />
-                        ))
-                    ) : (
-                        <InfoMessage text='Favorite uma liga para que ela apareça aqui.'/>
-                    )}
-                    
+                    <FavoriteLeagues />
                 </Section>
 
                 <Section text='Principais' icon={{IconComponent: FontAwesome5, name: 'crown', size: 20}} style={{marginBottom: 50}} iconUp >
-                    {leagues && leagues.length ? (
-                        leagues.filter(l => l.show).length ? 
-                        leagues.map((league, index) => (
-                            <Card
-                                favorite={league.is_favorite}
-                                handleOpen={() => {accessLeague(league.id)}}
-                                handleFavorite={() => {changeFavorite(league)}}
-                                info={league.name}
-                                image={league.logo_url}
-                                show={league.show}
-                                key={index}
-                            />
-                        )) : <InfoMessage text='Todas as ligas foram favoritadas.'/>
-                    ) : (
-                        <InfoMessage text='Nenhuma liga encontrada.'/>
-                    )}
+                    <MainLeagues />
                 </Section>
             </ThemedScrollView>
         ) : (

@@ -1,6 +1,7 @@
 import { StyleSheet, Dimensions } from 'react-native';
 import { useState } from 'react';
 import { TabView, SceneMap } from 'react-native-tab-view';
+import { useItemsContext } from '@/context/ItemsContext';
 import { usePage } from '@/context/PageContext';
 
 import { ThemedView } from '@/components/DefaultComponents/ThemedView';
@@ -13,7 +14,6 @@ import Times from '@/components/home/Times';
 import Jogadores from '@/components/home/Jogadores';
 
 export default function Main() {
-    
     const [index, setIndex] = useState(1);
     const { setPage, setRootPage } = usePage();
 
@@ -46,10 +46,6 @@ export default function Main() {
                 initialLayout={{ width: Dimensions.get('window').width }}
                 renderTabBar={props => (
                     <Menu {...props} />
-                )}
-                lazy
-                renderLazyPlaceholder={() => (
-                    <LoadingIcon />
                 )}
             />
         </ThemedView>
