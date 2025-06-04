@@ -1,7 +1,7 @@
 //Default Imports
 import { useUserContext } from "@/context/UserContext";
 import { router } from "expo-router";
-import { Button, Dimensions, Image, ScrollView, StyleSheet, View } from "react-native";
+import { Button, Dimensions, Image, Pressable, ScrollView, StyleSheet, View } from "react-native";
 import User from "@/assets/Icons/User.svg"
 import FilledStar from '@/assets/Icons/FilledStar.svg'
 import Boot from '@/assets/Icons/Boot.svg'
@@ -13,6 +13,8 @@ import { useEffect, useState } from "react";
 import { Colors } from "@/constants/Colors";
 import * as ImagePicker from 'expo-image-picker';
 import api from '@/lib/Axios';
+import Feather from '@expo/vector-icons/Feather';
+import { useTheme } from "@/context/ThemeContext";
 
 
 //Components
@@ -29,6 +31,7 @@ export default function Profile() {
     const { user, logout, setImage } = useUserContext();
     const [leagues, setLeagues] = useState<LeagueCardI[]>();
     const [loading, setLoading] = useState<boolean>(true);
+    const { theme } = useTheme();
 
     const handleLogout = () => {
         logout();
@@ -67,6 +70,10 @@ export default function Profile() {
         });
 
         if (!result.canceled) {
+            if(result.assets[0].fileSize && result.assets[0].fileSize > 25e+5) {
+                alert("Somente imagens menores que 5MB são permitidas");
+                return;
+            }
             sendImage(result);
         }
     };
@@ -98,6 +105,7 @@ export default function Profile() {
     }
 
     async function removeImage() {
+        if(!user || !user.image) return;
         await api.delete('user/image', {
             params: {
                 user_id: user?.id
@@ -113,15 +121,28 @@ export default function Profile() {
     return (
         <ThemedScrollView getData={getLeagues}>
             <ThemedView style={styles.background}>
-                {user?.image ?
-                    <Image source={{uri: `https://intimate-primate-master.ngrok-free.app/user/${user?.id}/image?reload=${Date.now()}`}} style={styles.userImage} />
-                    :
-                    <ThemedIcon IconComponent={User} width={200} height={200} style={{marginVertical: 10}} />
-                }
+
+                <View>
+                    <Pressable onPress={pickImage}>
+                        {user?.image ?
+                            <Image source={{uri: `https://intimate-primate-master.ngrok-free.app/user/${user?.id}/image?reload=${Date.now()}`}} style={styles.userImage} />
+                            :
+                            <ThemedIcon IconComponent={User} width={200} height={200} style={{marginVertical: 10}} />
+                        }
+                    </Pressable>
+                    <Pressable onPress={removeImage}>
+                        <ThemedIcon
+                            IconComponent={Feather}
+                            name="camera-off"
+                            lightColor={Colors.light.Red}
+                            darkColor={Colors.dark.Red}
+                            style={[styles.cameraIcon, {backgroundColor: Colors[theme].DarkBackground}]}
+                        />
+                    </Pressable>
+                </View>
+                    
                 <ThemedText style={styles.userNickName}>{user?.username}</ThemedText>
 
-                <Button title="Trocar imagem" onPress={pickImage} />
-                <Button title="Remover imagem" onPress={removeImage} />
 
                 <View style={styles.favorites}>
                     <ThemedIcon IconComponent={FilledStar} lightColor={Colors.light.Red} darkColor={Colors.dark.Red} width={27} height={27}/>
@@ -189,6 +210,13 @@ const styles = StyleSheet.create({
         resizeMode: 'contain',
         marginVertical: 10,
         borderRadius: 100
+    },
+    cameraIcon: {
+        padding: 7,
+        borderRadius: 100,
+        position: 'absolute',
+        bottom: 14,
+        right: 5
     },
     userNickName: {
         fontFamily: 'Kdam',
