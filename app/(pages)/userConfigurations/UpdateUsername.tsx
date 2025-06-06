@@ -55,13 +55,12 @@ export default function UpdateUsername() {
                     { cancelable: false }
                 );
 
-                const id = user.id;
-                const email = user.email;
                 logout();
                 login({
-                    id: id,
+                    id: user.id,
                     username: username,
-                    email: email,
+                    email: user.email,
+                    image: user.image,
                 });
                 router.back();
             }).catch((e: any) => {

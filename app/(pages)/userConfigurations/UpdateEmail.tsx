@@ -55,13 +55,12 @@ export default function UpdateEmail() {
                     { cancelable: false }
                 );
 
-                const id = user.id;
-                const username = user.username;
                 logout();
                 login({
-                    id: id,
-                    username: username,
+                    id: user.id,
+                    username: user.username,
                     email: email,
+                    image: user.image,
                 });
                 router.back();
             }).catch((e: any) => {
