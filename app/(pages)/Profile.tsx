@@ -1,25 +1,24 @@
 //Default Imports
 import { useUserContext } from "@/context/UserContext";
 import { router } from "expo-router";
-import { Image, Pressable, StyleSheet, View } from "react-native";
+import { Image, Pressable, StyleSheet, View, TouchableOpacity } from "react-native";
 import { useItemsContext } from "@/context/ItemsContext";
 import User from "@/assets/Icons/User.svg"
-import FilledStar from '@/assets/Icons/FilledStar.svg'
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { Colors } from "@/constants/Colors";
 import * as ImagePicker from 'expo-image-picker';
 import api from '@/lib/Axios';
-import Feather from '@expo/vector-icons/Feather';
 import { useTheme } from "@/context/ThemeContext";
 
 
 //Components
 import Section from "@/components/Section";
 import LoadingIcon from "@/components/LoadingIcon";
+import { useState } from "react";
 import { ThemedText } from "@/components/DefaultComponents/ThemedText";
 import { ThemedView } from "@/components/DefaultComponents/ThemedView";
 import { ThemedIcon } from "@/components/DefaultComponents/ThemedIcon";
 import { ThemedButton } from "@/components/DefaultComponents/ThemedButton";
+import { ModalComponent } from "@/components/ModalComponent";
 import { ThemedScrollView } from "@/components/DefaultComponents/ThemedScrollView";
 import { FavoriteLeagues, FavoritePlayers, FavoriteTeams } from "@/components/Items";
 
@@ -27,11 +26,14 @@ import { FavoriteLeagues, FavoritePlayers, FavoriteTeams } from "@/components/It
 import Shield from '@/assets/Icons/Shield.svg'
 import Trophy from '@/assets/Icons/Trophy.svg'
 import Boot from '@/assets/Icons/Boot.svg'
+import Ionicons from '@expo/vector-icons/Ionicons';
+import FilledStar from '@/assets/Icons/FilledStar.svg';
 
 export default function Profile() {
     const { user, logout, setImage, imageVersion } = useUserContext();
     const { theme } = useTheme();
     const { loading } = useItemsContext();
+    const [modalOpened, setModalOpened] = useState(false);
 
     const handleLogout = () => {
         logout();
@@ -77,10 +79,12 @@ export default function Profile() {
             },
         }).then(() => {
             setImage(true);
+            setModalOpened(false);
         }).catch((e: any) => {
             if(e.response.data.detail) alert(e.response.data.detail);
             else alert('Erro ao atualizar imagem.');
-        })
+        });
+
     }
 
     async function removeImage() {
@@ -89,12 +93,13 @@ export default function Profile() {
             params: {
                 user_id: user?.id
             }
-        }).then((response: any) => {
+        }).then(() => {
             setImage(false);
+            setModalOpened(false);
         }).catch((e) => {
             if(e.response.data.detail) alert(e.response.data.detail);
             else alert('Erro ao remover imagem.');
-        })
+        });
     }
 
     return (
@@ -102,24 +107,61 @@ export default function Profile() {
             <ThemedScrollView>
                 <ThemedView style={styles.background}>
 
-                    <View>
-                        <Pressable onPress={pickImage}>
+                    <Pressable onPress={() => setModalOpened(true)}>
+                        {user?.image ?
+                            <Image source={{uri: `${process.env.EXPO_PUBLIC_BACKEND_URL}user/${user?.id}/image?reload=${imageVersion}`}} style={styles.userImage} />
+                            :
+                            <ThemedIcon IconComponent={User} width={200} height={200} style={{marginVertical: 10}} />
+                        }
+                    </Pressable>
+
+                    <ModalComponent
+                        modalOpened={modalOpened}
+                        setModalOpened={setModalOpened}
+                        modalViewProps={{style: {backgroundColor: 'none', alignItems: 'center', flex: 1}}}
+                    >
+                        <View style={[{ marginTop: 200 }, !user?.image && {
+                                backgroundColor: Colors[theme].DarkBackground,
+                                borderRadius: 150,
+                            }]}
+                        >
                             {user?.image ?
-                                <Image source={{uri: `${process.env.EXPO_PUBLIC_BACKEND_URL}user/${user?.id}/image?reload=${imageVersion}`}} style={styles.userImage} />
+                                <Image source={{uri: `${process.env.EXPO_PUBLIC_BACKEND_URL}user/${user?.id}/image?reload=${imageVersion}`}} style={styles.userImageModal} />
                                 :
-                                <ThemedIcon IconComponent={User} width={200} height={200} style={{marginVertical: 10}} />
+                                <ThemedIcon IconComponent={User} width={250} height={250}/>
                             }
-                        </Pressable>
-                        <Pressable onPress={removeImage}>
-                            <ThemedIcon
-                                IconComponent={Feather}
-                                name="camera-off"
-                                lightColor={Colors.light.Red}
-                                darkColor={Colors.dark.Red}
-                                style={[styles.cameraIcon, {backgroundColor: Colors[theme].DarkBackground}]}
-                            />
-                        </Pressable>
-                    </View>
+                        </View>
+
+                        <ThemedView style={styles.modalButtonsView} lightColor={Colors.light.DarkBackground} darkColor={Colors.dark.DarkBackground}>
+                            <TouchableOpacity
+                                onPress={pickImage}
+                                activeOpacity={0.5}
+                                style={styles.modalButtons}
+                            >
+                                <ThemedText>Editar Foto</ThemedText>
+                            </TouchableOpacity>
+
+                            <ThemedView darkColor={Colors.dark.Red} lightColor={Colors.light.Red} style={styles.divisor}/>
+
+                            <TouchableOpacity
+                                onPress={removeImage}
+                                activeOpacity={0.5}
+                                style={styles.modalButtons}
+                            >
+                                <ThemedText>Remover Foto</ThemedText>
+                            </TouchableOpacity>
+
+                            <ThemedView darkColor={Colors.dark.Red} lightColor={Colors.light.Red} style={styles.divisor}/>
+                            
+                            <TouchableOpacity
+                                onPress={() => setModalOpened(false)}
+                                activeOpacity={0.5}
+                                style={styles.modalButtons}
+                            >
+                                <ThemedText>Fechar</ThemedText>
+                            </TouchableOpacity>
+                        </ThemedView>
+                    </ModalComponent>
                         
                     <ThemedText style={styles.userNickName}>{user?.username}</ThemedText>
 
@@ -162,12 +204,31 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         borderRadius: 100
     },
-    cameraIcon: {
-        padding: 7,
-        borderRadius: 100,
+    userImageModal: {
+        width: 270,
+        height: 270,
+        resizeMode: 'contain',
+        borderRadius: 15,
+    },
+    modalButtonsView: {
+        alignItems: "center",
+        gap: 10,
+        width: "100%",
         position: 'absolute',
-        bottom: 14,
-        right: 5
+        bottom: -20,
+        paddingVertical: 15,
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+    },
+    modalButtons: {
+        justifyContent: "center",
+        alignItems: "center",
+        height: 35,
+        width: "100%",
+    },
+    divisor: {
+        height: .6,
+        width: "100%",
     },
     userNickName: {
         fontFamily: 'Kdam',
