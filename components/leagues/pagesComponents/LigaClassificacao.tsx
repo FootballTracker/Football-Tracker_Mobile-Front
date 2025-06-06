@@ -1,18 +1,23 @@
 import { useEffect, useState, memo } from 'react';
-import { _View, StyleSheet, View } from 'react-native';
+import { _View, Image, StyleSheet, View } from 'react-native';
 import api from "@/lib/Axios"
 import { LeagueTableItemProps } from '../table/LeagueTableItem';
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 
 import LoadingIcon from '@/components/LoadingIcon';
 import LeagueTable from '../table/LeagueTable';
 import { ThemedView } from '@/components/DefaultComponents/ThemedView';
+import { ThemedText } from '@/components/DefaultComponents/ThemedText';
+import { ThemedIcon } from '@/components/DefaultComponents/ThemedIcon';
+import { Colors } from '@/constants/Colors';
 
 interface LigaClassificacaoProps {
-    season: number
-    leagueId: number
+    season: number;
+    leagueId: number;
+    leagueName: string;
 }
 
-function LigaClassificacao({ season, leagueId } : LigaClassificacaoProps) {
+function LigaClassificacao({ season, leagueId, leagueName } : LigaClassificacaoProps) {
 
     const [classi, setClassi] = useState<LeagueTableItemProps[] | null>(null);
 
@@ -37,10 +42,23 @@ function LigaClassificacao({ season, leagueId } : LigaClassificacaoProps) {
         <ThemedView style={{top: 25}}>
 
             <View style={styles.content}>
+
                 {classi && classi.length ?
-                    <LeagueTable 
-                        teams={classi}
-                    />
+                    <>
+                        <View style={styles.winner}>
+                            <ThemedText style={styles.winnerLeagueText}>
+                                Vencedor {leagueName} - {season}
+                            </ThemedText>
+                            <Image source={{uri: classi[0].teamLogo}} resizeMode={"contain"} style={styles.winnerImage}/>
+                            <ThemedText style={styles.winnerName}>
+                                {classi[0].teamName}
+                            </ThemedText>
+                        </View>
+                        
+                        <LeagueTable 
+                            teams={classi}
+                        />
+                    </>
                 :
                  <View style={{height: 50}}>
                      <LoadingIcon />
@@ -55,7 +73,28 @@ function LigaClassificacao({ season, leagueId } : LigaClassificacaoProps) {
 
 const styles = StyleSheet.create({
     content: {
-        marginBottom: 40
+        marginBottom: 40,
+    },
+    winner: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 20,
+        // marginTop: 5
+    },
+    winnerLeagueText: {
+        fontFamily: "Kokoro",
+        fontSize: 19,
+        marginTop: -5,
+    },
+    winnerName: {
+        marginTop: 5,
+        fontFamily: "Kokoro",
+        fontSize: 22,
+    },
+    winnerImage: {
+        marginTop: 15,
+        height: 80,
+        width: 80,
     },
 });
 

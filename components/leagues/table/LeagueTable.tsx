@@ -33,7 +33,7 @@ export default function LeagueTable({ teams }: LeagueTableProps) {
                             {teams.map((team, index) => (
                                 <LeagueTableItem {...team} key={index}/>
                             ))}
-                            <ThemedView style={{paddingBottom: 30}}/>
+                            <ThemedView style={{paddingBottom: 400}}/>
                         </View>
                     </ThemedScrollView>
                 </View>

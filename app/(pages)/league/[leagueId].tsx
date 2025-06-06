@@ -53,13 +53,13 @@ export default function League() {
 
     const renderScene = ({ route }: any) => {
 
-        if(!selectedSeason) return;
+        if(!selectedSeason || !league) return;
 
         switch (route.key) {
             case 'partidas':
                 return <LigaPartidas leagueId={selectedSeason.id} season={selectedSeason.season}/>;
             case 'classificacao':
-                return <LigaClassificacao leagueId={selectedSeason.id} season={selectedSeason.season}/>;
+                return <LigaClassificacao leagueId={selectedSeason.id} season={selectedSeason.season} leagueName={league.league.name}/>;
             case 'rankings':
                 return <LigaRankings leagueId={selectedSeason.id} season={selectedSeason.season}/>;
             default:
