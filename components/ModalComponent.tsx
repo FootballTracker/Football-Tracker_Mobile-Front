@@ -1,8 +1,8 @@
-import { StyleSheet, Modal, View, ViewProps, Animated } from "react-native"
+import { StyleSheet, View, ViewProps, Animated } from "react-native"
 import { useEffect, useRef } from "react"
+import Modal from 'react-native-modal';
 
 import { ThemedView, ThemedViewProps } from "./DefaultComponents/ThemedView"
-import { ThemedButton, ThemedButtonProps } from "./DefaultComponents/ThemedButton"
 import { Portal } from "react-native-portalize"
 
 interface ModalProps extends ViewProps {
@@ -10,10 +10,9 @@ interface ModalProps extends ViewProps {
     setModalOpened: any
     backgroundViewOpacity?: number
     modalViewProps?: ThemedViewProps
-    buttonProps?: ThemedButtonProps
 }
 
-export function ModalComponent({ modalOpened, setModalOpened, backgroundViewOpacity, modalViewProps, buttonProps, children } : ModalProps) {
+export function ModalComponent({ modalOpened, setModalOpened, backgroundViewOpacity, modalViewProps, children } : ModalProps) {
 
     const indicatorOpacity = useRef(new Animated.Value(0)).current;
     const backgroundOpacity = backgroundViewOpacity ? backgroundViewOpacity : .8;
@@ -28,20 +27,29 @@ export function ModalComponent({ modalOpened, setModalOpened, backgroundViewOpac
 
     return (
         <>
-        <Portal>
-            <Animated.View
-                pointerEvents={modalOpened ? "auto" : "none"}
-                style={[styles.modalBackView,  {opacity: indicatorOpacity}]}
-            />
-        </Portal>
+            <Portal>
+                <Animated.View
+                    pointerEvents={modalOpened ? "auto" : "none"}
+                    style={[styles.modalBackView,  {opacity: indicatorOpacity}]}
+                />
+            </Portal>
             <Modal
-                animationType="slide"
-                transparent={true}
-                visible={modalOpened}
-                onRequestClose={() => {
-                    setModalOpened(!modalOpened);
+                backdropOpacity={0}
+                animationIn="slideInUp"
+                animationOut="slideOutDown"
+                animationInTiming={300}
+                animationOutTiming={300}
+                useNativeDriver={true}
+                isVisible={modalOpened}
+                onBackdropPress={() => {
+                    setModalOpened(false);
                 }}
-            >
+                style={{
+                    width: "100%",
+                    marginHorizontal: "auto",
+                    height: "100%",
+                }}
+                >
                 <View style={styles.centeredView}>
                     <ThemedView style={styles.modalView} {... modalViewProps && modalViewProps }>
                     {children}
@@ -80,9 +88,10 @@ const styles = StyleSheet.create({
         backgroundColor: 'black',
     },
     centeredView: {
-        flex: 1,
+        height: "100%",
         justifyContent: 'center',
         alignItems: 'center',
+        position: 'relative'
     },
     modalView: {
         margin: 20,
@@ -91,6 +100,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: "90%",
         maxWidth: 400,
+        position: 'absolute',
     },
     button: {
         marginTop: 15,
