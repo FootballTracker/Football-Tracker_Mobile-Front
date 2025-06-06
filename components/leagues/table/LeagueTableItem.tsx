@@ -28,17 +28,7 @@ export default function LeagueTableItem({ teamId, teamName, teamLogo, rank, tota
     return (
         <Pressable onPress={accessTeam}>
             <View style={styles.row}>
-                <ThemedText style={styles.rank}
-                    {...Number(rank) < 5 ?
-                        {lightColor: Colors.light.Green, darkColor: Colors.dark.Green}
-                        : Number(rank) > 16 && 
-                        {lightColor: Colors.light.Red, darkColor: Colors.dark.Red}
-                    }
-                >
-                    {rank}
-                </ThemedText>
                 <View style={styles.teamInfo}>
-                    <Image source={{uri: teamLogo}} style={styles.teamLogo} resizeMode='contain'/>
                     <ThemedText style={styles.teamName} numberOfLines={1} ellipsizeMode="tail">{teamName}</ThemedText>
                 </View>
                 <ThemedText style={styles.item}>{totalGames}</ThemedText>
@@ -71,8 +61,7 @@ const styles = StyleSheet.create({
     teamInfo: {
         flexDirection: "row",
         alignItems: "center",
-        width: 190,
-        marginLeft: -15
+        width: 170,
     },
     teamName: {
         fontSize: 14.5,

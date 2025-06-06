@@ -1,6 +1,8 @@
-import { StyleSheet, View } from "react-native";
+import { Image, NativeScrollEvent, NativeSyntheticEvent, ScrollView, StyleSheet, View } from "react-native";
 import LeagueTableItem, { LeagueTableItemProps } from "./LeagueTableItem";
 import { Colors } from "@/constants/Colors";
+import { useTheme } from "@/context/ThemeContext";
+import { useRef } from "react";
 
 import { ThemedText } from "@/components/DefaultComponents/ThemedText";
 import { ThemedScrollView } from "@/components/DefaultComponents/ThemedScrollView";
@@ -11,12 +13,68 @@ export interface LeagueTableProps {
 }
 
 export default function LeagueTable({ teams }: LeagueTableProps) {
+
+    const { theme } = useTheme();
+    const scrollLeftRef = useRef<ScrollView>(null);
+    const scrollRightRef = useRef<ScrollView>(null);
+    const isSyncingScroll = useRef(false);
+
+    function setScrollSameHeight(left: boolean, event: NativeSyntheticEvent<NativeScrollEvent>) {
+
+        if (isSyncingScroll.current) return;
+
+        const y = event.nativeEvent.contentOffset.y;
+
+        isSyncingScroll.current = true;
+        if(left) {
+            scrollLeftRef.current?.scrollTo({ y: y, animated: false });
+        } else {
+            scrollRightRef.current?.scrollTo({ y: y, animated: false });
+        }
+
+        setTimeout(() => {
+            isSyncingScroll.current = false;
+        }, 5); // Delay curto para evitar rebote
+    }
+
     return (
-        <>
-            <ThemedScrollView horizontal showsHorizontalScrollIndicator={false}>
+        <ThemedView style={styles.fullTable}>
+
+            <View style={{borderRightWidth: 0.5, borderColor: Colors[theme].Red}}>
+                <ThemedText lightColor={Colors.light.Red} darkColor={Colors.dark.Red} style={styles.index}>#</ThemedText>
+
+                <ThemedView darkColor={Colors.dark.Red} lightColor={Colors.light.Red} style={[styles.divisor]}/>
+
+                <ScrollView 
+                    showsVerticalScrollIndicator={false}
+                    style={{marginTop: 2}}
+                    ref={scrollLeftRef}
+                    scrollEventThrottle={8}
+                    onScroll={(event) => {
+                        setScrollSameHeight(false, event)
+                    }}>
+                    {teams.map((team, index) => (
+                        <View key={index} style={styles.teamsLeft}>
+                            <ThemedText style={styles.rank}
+                                {...Number(team.rank) < 5 ?
+                                    {lightColor: Colors.light.Green, darkColor: Colors.dark.Green}
+                                    : Number(team.rank) > 16 && 
+                                    {lightColor: Colors.light.Red, darkColor: Colors.dark.Red}
+                                }
+                            >
+                                {team.rank}
+                            </ThemedText>
+
+                            <Image source={{uri: team.teamLogo}} style={styles.teamLogo} resizeMode='contain'/>
+                        </View>
+                    ))}
+                    <ThemedView style={{paddingBottom: 30}}/>
+                </ScrollView>
+            </View>
+
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 <View style={styles.table}>
                     <View style={styles.header}>
-                        <ThemedText lightColor={Colors.light.Red} darkColor={Colors.dark.Red} style={styles.index}>#</ThemedText>
                         <ThemedText style={styles.teamSection}>Equipe</ThemedText>
                         <ThemedText style={styles.item}>J</ThemedText>
                         <ThemedText style={styles.item}>V</ThemedText>
@@ -27,26 +85,73 @@ export default function LeagueTable({ teams }: LeagueTableProps) {
                         <ThemedText style={styles.item}>SG</ThemedText>
                         <ThemedText style={styles.item}>P</ThemedText>
                     </View>
-                    <ThemedView darkColor={Colors.dark.Red} lightColor={Colors.light.Red} style={styles.divisor}/>
-                    <ThemedScrollView showsVerticalScrollIndicator={false}>
+
+                    <ThemedView darkColor={Colors.dark.Red} lightColor={Colors.light.Red} style={styles.divisor1}/>
+
+                    <ScrollView
+                        showsVerticalScrollIndicator={false}
+                        ref={scrollRightRef}
+                        scrollEventThrottle={8}
+                        onScroll={(event) => {
+                            setScrollSameHeight(true, event)
+                        }}
+                    >
                         <View>
                             {teams.map((team, index) => (
                                 <LeagueTableItem {...team} key={index}/>
                             ))}
                             <ThemedView style={{paddingBottom: 30}}/>
                         </View>
-                    </ThemedScrollView>
+                    </ScrollView>
+
                 </View>
-            </ThemedScrollView>
-        </>
+            </ScrollView>
+        </ThemedView>
     );
 }
 
 const styles = StyleSheet.create({
+    fullTable: {
+        flexDirection: 'row',
+        justifyContent: "flex-start",
+        marginLeft: 10,
+        flex: 1
+    },
+    index: {
+        fontFamily: "Karla",
+        fontSize: 18,
+        textAlign: "center",
+    },
+    teamsLeft: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: "space-between",
+        marginTop: 10.7
+    },
+    rank: {
+        fontFamily: "Kdam",
+        textAlign: "center",
+        fontSize: 13,
+        width: 20,
+    },
+    divisor: {
+        marginTop: 5.5,
+        height: .6,
+        width: "104%",
+        marginLeft: "-2%",
+        // bottom: 3
+    },
+    teamLogo: {
+        height: 25,
+        width: 25,
+        marginRight: 16,
+        marginLeft: 10
+    },
     table: {
         flexDirection: "column",
         width: "100%",
-        paddingHorizontal: 15,
+        paddingRight: 15,
+        paddingLeft: 10
     },
     header: {
         flexDirection: "row",
@@ -54,15 +159,8 @@ const styles = StyleSheet.create({
         gap: 25,
         marginBottom: 5
     },
-    index: {
-        fontFamily: "Karla",
-        fontSize: 18,
-        width: 20,
-        textAlign: "center"
-    },
     teamSection: {
-        width: 190,
-        marginLeft: -15,
+        width: 170,
         fontSize: 14.5,
     },
     item: {
@@ -70,11 +168,11 @@ const styles = StyleSheet.create({
         textAlign: "center",
         fontFamily: "Karla"
     },
-    divisor: {
+    divisor1: {
         marginTop: 3,
         height: .6,
-        width: "102%",
-        marginLeft: "-1%"
+        width: "104%",
+        marginLeft: "-2%",
         // bottom: 3
     },
 });

@@ -34,7 +34,7 @@ function LigaClassificacao({ season, leagueId } : LigaClassificacaoProps) {
     }
 
     return (
-        <ThemedView style={{top: 25}}>
+        <ThemedView style={{top: 25, flex: 1}}>
 
             <View style={styles.content}>
                 {classi && classi.length ?
@@ -55,7 +55,8 @@ function LigaClassificacao({ season, leagueId } : LigaClassificacaoProps) {
 
 const styles = StyleSheet.create({
     content: {
-        marginBottom: 40
+        marginBottom: 40,
+        flex: 1
     },
 });
 

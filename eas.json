@@ -8,19 +8,19 @@
       "developmentClient": true,
       "distribution": "internal",
       "env": {
-         "EXPO_PUBLIC_BACKEND_URL": "https://footballtracker-backend.onrender.com/"
+         "EXPO_PUBLIC_BACKEND_URL": "https://intimate-primate-master.ngrok-free.app/"
       }
     },
     "preview": {
       "distribution": "internal",
       "env": {
-         "EXPO_PUBLIC_BACKEND_URL": "https://footballtracker-backend.onrender.com/"
+         "EXPO_PUBLIC_BACKEND_URL": "https://intimate-primate-master.ngrok-free.app/"
       }
     },
     "production": {
       "autoIncrement": true,
       "env": {
-         "EXPO_PUBLIC_BACKEND_URL": "https://footballtracker-backend.onrender.com/"
+         "EXPO_PUBLIC_BACKEND_URL": "https://intimate-primate-master.ngrok-free.app/"
       }
     }
   },
