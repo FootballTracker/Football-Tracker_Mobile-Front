@@ -1,11 +1,11 @@
-import { Image, NativeScrollEvent, NativeSyntheticEvent, ScrollView, StyleSheet, View } from "react-native";
+import { Image, NativeScrollEvent, NativeSyntheticEvent, Pressable, ScrollView, StyleSheet, View } from "react-native";
 import LeagueTableItem, { LeagueTableItemProps } from "./LeagueTableItem";
 import { Colors } from "@/constants/Colors";
 import { useTheme } from "@/context/ThemeContext";
 import { useRef } from "react";
+import { router } from "expo-router";
 
 import { ThemedText } from "@/components/DefaultComponents/ThemedText";
-import { ThemedScrollView } from "@/components/DefaultComponents/ThemedScrollView";
 import { ThemedView } from "@/components/DefaultComponents/ThemedView";
 
 export interface LeagueTableProps {
@@ -34,7 +34,11 @@ export default function LeagueTable({ teams }: LeagueTableProps) {
 
         setTimeout(() => {
             isSyncingScroll.current = false;
-        }, 5); // Delay curto para evitar rebote
+        }, 1);
+    }
+
+    function accessTeam(teamId: string) {
+        router.push(`/(pages)/team/${teamId}` as any);
     }
 
     return (
@@ -49,24 +53,26 @@ export default function LeagueTable({ teams }: LeagueTableProps) {
                     showsVerticalScrollIndicator={false}
                     style={{marginTop: 2}}
                     ref={scrollLeftRef}
-                    scrollEventThrottle={8}
+                    scrollEventThrottle={1}
                     onScroll={(event) => {
                         setScrollSameHeight(false, event)
                     }}>
                     {teams.map((team, index) => (
-                        <View key={index} style={styles.teamsLeft}>
-                            <ThemedText style={styles.rank}
-                                {...Number(team.rank) < 5 ?
-                                    {lightColor: Colors.light.Green, darkColor: Colors.dark.Green}
-                                    : Number(team.rank) > 16 && 
-                                    {lightColor: Colors.light.Red, darkColor: Colors.dark.Red}
-                                }
-                            >
-                                {team.rank}
-                            </ThemedText>
+                        <Pressable key={index} onPress={() => accessTeam(team.teamId)}>
+                            <View style={styles.teamsLeft}>
+                                <ThemedText style={styles.rank}
+                                    {...Number(team.rank) < 5 ?
+                                        {lightColor: Colors.light.Green, darkColor: Colors.dark.Green}
+                                        : Number(team.rank) > 16 && 
+                                        {lightColor: Colors.light.Red, darkColor: Colors.dark.Red}
+                                    }
+                                >
+                                    {team.rank}
+                                </ThemedText>
 
-                            <Image source={{uri: team.teamLogo}} style={styles.teamLogo} resizeMode='contain'/>
-                        </View>
+                                <Image source={{uri: team.teamLogo}} style={styles.teamLogo} resizeMode='contain'/>
+                            </View>
+                        </Pressable>
                     ))}
                     <ThemedView style={{paddingBottom: 30}}/>
                 </ScrollView>
@@ -91,7 +97,7 @@ export default function LeagueTable({ teams }: LeagueTableProps) {
                     <ScrollView
                         showsVerticalScrollIndicator={false}
                         ref={scrollRightRef}
-                        scrollEventThrottle={8}
+                        scrollEventThrottle={1}
                         onScroll={(event) => {
                             setScrollSameHeight(true, event)
                         }}
@@ -114,7 +120,8 @@ const styles = StyleSheet.create({
     fullTable: {
         flexDirection: 'row',
         justifyContent: "flex-start",
-        marginLeft: 10,
+        width: "90%",
+        marginHorizontal: "auto",
         flex: 1
     },
     index: {
@@ -126,7 +133,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: "space-between",
-        marginTop: 10.7
+        height: 40
     },
     rank: {
         fontFamily: "Kdam",
@@ -139,7 +146,6 @@ const styles = StyleSheet.create({
         height: .6,
         width: "104%",
         marginLeft: "-2%",
-        // bottom: 3
     },
     teamLogo: {
         height: 25,
@@ -169,10 +175,9 @@ const styles = StyleSheet.create({
         fontFamily: "Karla"
     },
     divisor1: {
-        marginTop: 3,
+        marginTop: 2.5,
         height: .6,
         width: "104%",
         marginLeft: "-2%",
-        // bottom: 3
     },
 });

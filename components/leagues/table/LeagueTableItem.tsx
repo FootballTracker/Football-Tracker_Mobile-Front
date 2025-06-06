@@ -26,11 +26,8 @@ export default function LeagueTableItem({ teamId, teamName, teamLogo, rank, tota
     }
     
     return (
-        <Pressable onPress={accessTeam}>
-            <View style={styles.row}>
-                <View style={styles.teamInfo}>
-                    <ThemedText style={styles.teamName} numberOfLines={1} ellipsizeMode="tail">{teamName}</ThemedText>
-                </View>
+        <View style={styles.row}>
+                <ThemedText style={styles.teamName} numberOfLines={1} ellipsizeMode="tail" onPress={accessTeam}>{teamName}</ThemedText>
                 <ThemedText style={styles.item}>{totalGames}</ThemedText>
                 <ThemedText style={styles.item}>{victories}</ThemedText>
                 <ThemedText style={styles.item}>{draws}</ThemedText>
@@ -40,32 +37,21 @@ export default function LeagueTableItem({ teamId, teamName, teamLogo, rank, tota
                 <ThemedText style={styles.item}>{goalsDiff}</ThemedText>
                 <ThemedText style={styles.item}>{points}</ThemedText>
             </View>
-        </Pressable>
     );
 }
 
 const styles = StyleSheet.create({
     row: {
         flexDirection: "row",
-        alignContent: "center",
-        gap: 25,
-        // marginVertical: 5
-        marginTop: 10,
-    },
-    rank: {
-        fontFamily: "Kdam",
-        textAlign: "center",
-        fontSize: 13,
-        width: 20
-    },
-    teamInfo: {
-        flexDirection: "row",
         alignItems: "center",
-        width: 170,
+        justifyContent: "center",
+        gap: 25,
+        height: 40
     },
     teamName: {
         fontSize: 14.5,
-        width: "90%"
+        width: 153,
+        marginRight: 17,
     },
     teamLogo: {
         height: 25,
