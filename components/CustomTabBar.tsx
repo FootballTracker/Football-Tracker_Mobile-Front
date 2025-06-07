@@ -9,7 +9,7 @@ import { useTheme } from '@/context/ThemeContext';
 export const CustomTabBar: React.FC<TabBarProps<any>> = ({ navigationState, jumpTo, position }) => {
     const layout = useWindowDimensions();
     const totalTabs = navigationState.routes.length;
-    const tabWidth = totalTabs > 2 ? layout.width / 3 : layout.width /navigationState.routes.length;
+    const tabWidth = totalTabs > 3 ? layout.width * 0.31 : layout.width /navigationState.routes.length;
     const scrollRef = useRef<ScrollView>(null);
     const { theme } = useTheme();
 
