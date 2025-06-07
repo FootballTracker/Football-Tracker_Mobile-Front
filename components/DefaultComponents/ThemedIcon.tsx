@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleProp } from 'react-native';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import { SvgProps } from 'react-native-svg';
+import { Colors } from '@/constants/Colors';
 
 export type ThemedIconProps = {
     IconComponent: React.ComponentType<any>; // Ex: Ionicons, MaterialIcons...
@@ -13,10 +14,11 @@ export type ThemedIconProps = {
     width?: number;
     height?: number;
     Stroke?: boolean;
+    colorName?: keyof typeof Colors.light & keyof typeof Colors.dark & keyof typeof Colors.midnight
 } & SvgProps;
 
-export function ThemedIcon({ IconComponent, name, size = 24, lightColor, darkColor, style, Stroke = false, ...rest }: ThemedIconProps) {
-    const color = useThemeColor({ light: lightColor, dark: darkColor }, 'Text');
+export function ThemedIcon({ IconComponent, name, size = 24, lightColor, darkColor, style, Stroke = false, colorName = 'Text', ...rest }: ThemedIconProps) {
+    const color = useThemeColor({ light: lightColor, dark: darkColor }, colorName);
 
     return (
         name ? 

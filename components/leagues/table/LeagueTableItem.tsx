@@ -1,8 +1,17 @@
-import { Image, Pressable, StyleSheet, View } from "react-native";
+//Default Imports
 import { Colors } from "@/constants/Colors";
-
-import { ThemedText } from "@/components/DefaultComponents/ThemedText";
+import { Animated, StyleSheet } from "react-native";
 import { router } from "expo-router";
+import { useRef, useState } from "react";
+
+//Components
+import { ThemedText } from "@/components/DefaultComponents/ThemedText";
+import { ThemedIcon } from "@/components/DefaultComponents/ThemedIcon";
+import LeagueTableItemInfo from "./LeagueTableItemInfo";
+import { Image, Pressable, View } from "react-native";
+
+//Icons
+import { MaterialIcons } from "@expo/vector-icons";
 
 export interface LeagueTableItemProps {
     teamId: string;
@@ -20,13 +29,34 @@ export interface LeagueTableItemProps {
 }
 
 export default function LeagueTableItem({ teamId, teamName, teamLogo, rank, totalGames, victories, draws, loses, goalsFor, goalsAgainst, goalsDiff, points }: LeagueTableItemProps ) {
-    
+    const [opened, setOpened] = useState<boolean>(false);
+    const rotation = useRef(new Animated.Value(0)).current;
+
+    Animated.timing(rotation, {
+        toValue: opened ? 1 : 0,
+        duration: 100,
+        useNativeDriver: true,
+    }).start();
+
+    const rotateInterpolate = rotation.interpolate({
+        inputRange: [0, 1],
+        outputRange: ['0deg', '180deg'],
+    });
+
+    const animatedStyle = {
+        transform: [{ rotate: rotateInterpolate }],
+    };
+
+    const handleOpen = () => {
+        setOpened(!opened);
+    }
+
     function accessTeam() {
         router.push(`/(pages)/team/${teamId}` as any);
     }
     
     return (
-        <Pressable onPress={accessTeam}>
+        <Pressable onPress={handleOpen}>
             <View style={styles.row}>
                 <ThemedText style={styles.rank}
                     {...Number(rank) < 5 ?
@@ -38,18 +68,36 @@ export default function LeagueTableItem({ teamId, teamName, teamLogo, rank, tota
                     {rank}
                 </ThemedText>
                 <View style={styles.teamInfo}>
-                    <Image source={{uri: teamLogo}} style={styles.teamLogo} resizeMode='contain'/>
-                    <ThemedText style={styles.teamName} numberOfLines={1} ellipsizeMode="tail">{teamName}</ThemedText>
+                    <Pressable onPress={accessTeam}><Image source={{uri: teamLogo}} style={styles.teamLogo} resizeMode='contain'/></Pressable>
+                    <ThemedText onPress={accessTeam} style={styles.teamName} numberOfLines={1} ellipsizeMode="tail">{teamName}</ThemedText>
                 </View>
-                <ThemedText style={styles.item}>{totalGames}</ThemedText>
-                <ThemedText style={styles.item}>{victories}</ThemedText>
-                <ThemedText style={styles.item}>{draws}</ThemedText>
-                <ThemedText style={styles.item}>{loses}</ThemedText>
-                <ThemedText style={styles.item}>{goalsFor}</ThemedText>
-                <ThemedText style={styles.item}>{goalsAgainst}</ThemedText>
-                <ThemedText style={styles.item}>{goalsDiff}</ThemedText>
-                <ThemedText style={styles.item}>{points}</ThemedText>
+
+                <Animated.View style={[animatedStyle, {width: 25, height: 25}]}>
+                    <ThemedIcon
+                        onPress={handleOpen}
+                        IconComponent={MaterialIcons}
+                        name='expand-more'
+                        darkColor={Colors.dark.Red}
+                        lightColor={Colors.light.Red}
+                        size={25}
+                    />
+                </Animated.View>
+
+                {/* <ThemedText style={styles.item}>{points}</ThemedText>
+                <ThemedText style={styles.item}>{victories}</ThemedText> */}
             </View>
+            
+            <LeagueTableItemInfo
+                draws={draws}
+                goalsAgainst={goalsAgainst}
+                goalsDiff={goalsDiff}
+                goalsFor={goalsFor}
+                loses={loses}
+                points={points}
+                totalGames={totalGames}
+                victories={victories}
+                opened={opened}
+            />
         </Pressable>
     );
 }
@@ -59,8 +107,9 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignContent: "center",
         gap: 25,
-        // marginVertical: 5
+        width: '100%',
         marginTop: 10,
+        marginVertical: 3,
     },
     rank: {
         fontFamily: "Kdam",
@@ -71,12 +120,11 @@ const styles = StyleSheet.create({
     teamInfo: {
         flexDirection: "row",
         alignItems: "center",
-        width: 190,
-        marginLeft: -15
+        flex: 1,
+        marginLeft: -15,
     },
     teamName: {
         fontSize: 14.5,
-        width: "90%"
     },
     teamLogo: {
         height: 25,
@@ -86,7 +134,6 @@ const styles = StyleSheet.create({
     item: {
         width: 25,
         textAlign: "center",
-        fontFamily: "Kdam",
-        fontSize: 14
+        fontSize: 14,
     }
 });
