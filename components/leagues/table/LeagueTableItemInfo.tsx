@@ -42,7 +42,7 @@ export default function LeagueTableItemInfo({ totalGames, victories, draws, lose
                 }),
                 Animated.timing(opacity, {
                     toValue: 1,
-                    duration: 150,
+                    duration: 200,
                     useNativeDriver: false,
                 }),
             ]).start();
@@ -60,7 +60,7 @@ export default function LeagueTableItemInfo({ totalGames, victories, draws, lose
                 }),
                 Animated.timing(opacity, {
                     toValue: 0,
-                    duration: 150,
+                    duration: 100,
                     useNativeDriver: false,
                 }),
             ]).start(() => { setVisible(false) });
