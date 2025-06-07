@@ -1,5 +1,5 @@
 //Default Imports
-import { StyleSheet, View, Dimensions, KeyboardAvoidingView, Platform, ScrollView } from "react-native";
+import { StyleSheet, View, Dimensions, KeyboardAvoidingView, Platform, ScrollView, Keyboard } from "react-native";
 import Feather from '@expo/vector-icons/Feather';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -8,6 +8,7 @@ import { router } from 'expo-router';
 import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
 import api from "@/lib/Axios";
+import { useEffect, useState } from "react";
 import { useUserContext } from "@/context/UserContext";
 
 //Components
@@ -30,7 +31,8 @@ const userData = z.object({
 type userData = z.infer<typeof userData>
 
 export default function Login() {
-    const { user, login } = useUserContext();
+    const { login } = useUserContext();
+    const [keyboardVisible, setKeyboardVisible] = useState(false);
 
     const { control, handleSubmit, formState: {errors} } = useForm<userData>({
         resolver: zodResolver(userData)
@@ -51,15 +53,30 @@ export default function Login() {
         })
     }
 
+    useEffect(() => {
+        const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
+            setKeyboardVisible(true);
+        });
+        const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+            setKeyboardVisible(false);
+        });
+
+        // Limpeza do listener quando o componente for desmontado
+        return () => {
+            keyboardDidShowListener.remove();
+            keyboardDidHideListener.remove();
+        };
+    }, []);
+
     return (
             <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} keyboardVerticalOffset={0}>
                 <ScrollView>
-                    <ThemedView style={[styles.background]}>
+                    <ThemedView style={[styles.background, {minHeight: keyboardVisible ? '100%' : windowHeight}]}>
                         <View style={{display: 'flex', flexDirection: "row", marginLeft: 5, position: 'absolute', top: 20}}>
                             <ReturnArrow />
                         </View>
                         
-                        <LoginLogo />
+                        {!keyboardVisible &&<LoginLogo />}
 
                         <View style={styles.form}>
                             <ThemedText style={styles.titleText}>Login</ThemedText>
@@ -94,7 +111,6 @@ const styles = StyleSheet.create({
     background: {
         display: 'flex',
         justifyContent: 'space-evenly',
-        minHeight: windowHeight,
         paddingBottom: 20,
         paddingTop: 25,
     },

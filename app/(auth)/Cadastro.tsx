@@ -1,5 +1,5 @@
 //Default Imports
-import { StyleSheet, View, Dimensions, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
+import { StyleSheet, View, Dimensions, ScrollView, KeyboardAvoidingView, Platform, Keyboard } from "react-native";
 import Feather from '@expo/vector-icons/Feather';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -31,13 +31,14 @@ const userData = z.object({
 type userData = z.infer<typeof userData>
 
 export default function Cadastro() {
-    const { user, login } = useUserContext();
+    const { login } = useUserContext();
+    const [keyboardVisible, setKeyboardVisible] = useState(false);
     
     const { control, handleSubmit, formState: {errors} } = useForm<userData>({
         resolver: zodResolver(userData)
     });
 
-    const handleForm = async ({user, email, password, confirmPassword}:userData) => {
+    const handleForm = async ({user, email, password}:userData) => {
         await api.post('auth/signup', {
             username: user,
             email: email,
@@ -53,15 +54,30 @@ export default function Cadastro() {
         })
     }
 
+    useEffect(() => {
+        const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
+            setKeyboardVisible(true);
+        });
+        const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+            setKeyboardVisible(false);
+        });
+
+        // Limpeza do listener quando o componente for desmontado
+        return () => {
+            keyboardDidShowListener.remove();
+            keyboardDidHideListener.remove();
+        };
+    }, []);
+
     return (
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} keyboardVerticalOffset={0} >
             <ScrollView>
-                <ThemedView style={styles.background}>
+                <ThemedView style={[styles.background, {minHeight: keyboardVisible ? '100%' : windowHeight}]}>
                     <View style={{display: 'flex', flexDirection: "row", marginLeft: 5, position: 'absolute', top: 20}}>
                         <ReturnArrow double={true} />
                     </View>
 
-                    <LoginLogo />
+                    {!keyboardVisible && <LoginLogo />}
 
                     <View style={styles.form}>
                         <ThemedText style={styles.titleText}>Cadastrar</ThemedText>
