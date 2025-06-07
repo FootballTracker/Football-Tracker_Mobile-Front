@@ -46,7 +46,15 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
             if(storedUser) {
                 const user : User = JSON.parse(storedUser);
                 setAuth({user: user, logged: true});
-                updateImage();
+                api.get(`user/${user.id}/has_image`)
+                    .then((response) => {
+                        setImage(response.data);
+                    })
+                    .catch(() => {
+                        alert("Erro ao buscar imagem do usuário");
+                    })
+
+                setImageVersion(Date.now());
             } else {
                 setAuth({user: null, logged: false});
             }
