@@ -27,10 +27,11 @@ import Shield from '@/assets/Icons/Shield.svg'
 import Trophy from '@/assets/Icons/Trophy.svg'
 import Boot from '@/assets/Icons/Boot.svg'
 import Ionicons from '@expo/vector-icons/Ionicons';
+import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import FilledStar from '@/assets/Icons/FilledStar.svg';
 
 export default function Profile() {
-    const { user, logout, setImage, imageVersion } = useUserContext();
+    const { user, logout, setImage, imageVersion, updateImage } = useUserContext();
     const { theme } = useTheme();
     const { loading } = useItemsContext();
     const [modalOpened, setModalOpened] = useState(false);
@@ -104,63 +105,58 @@ export default function Profile() {
 
     return (
         !loading ? (
-            <ThemedScrollView>
+            <ThemedScrollView getData={updateImage}>
                 <ThemedView style={styles.background}>
 
-                    <Pressable onPress={() => setModalOpened(true)}>
-                        {user?.image ?
+                    {user?.image ?
+                        <Pressable onPress={() => setModalOpened(true)}>
                             <Image source={{uri: `${process.env.EXPO_PUBLIC_BACKEND_URL}user/${user?.id}/image?reload=${imageVersion}`}} style={styles.userImage} />
-                            :
+                        </Pressable>
+                        :
+                        <Pressable onPress={pickImage}>
                             <ThemedIcon IconComponent={User} width={200} height={200} style={{marginVertical: 10}} />
-                        }
-                    </Pressable>
+                            <View style={{
+                                position: 'absolute',
+                                bottom: 10,
+                                right: 10,
+                                backgroundColor: Colors[theme].LightBackground,
+                                padding: 10,
+                                borderRadius: 100
+                            }}>
+                                <ThemedIcon IconComponent={FontAwesome6} name="edit" size={21} />
+                            </View>
+                        </Pressable>
+                    }
 
                     <ModalComponent
                         modalOpened={modalOpened}
                         setModalOpened={setModalOpened}
-                        modalViewProps={{style: {backgroundColor: 'none', alignItems: 'center', flex: 1}}}
+                        modalViewProps={{style: {flexDirection: 'column', backgroundColor: 'none', flex: 1}}}
                     >
-                        <View style={[{ marginTop: 200 }, !user?.image && {
-                                backgroundColor: Colors[theme].DarkBackground,
-                                borderRadius: 150,
-                            }]}
-                        >
-                            {user?.image ?
-                                <Image source={{uri: `${process.env.EXPO_PUBLIC_BACKEND_URL}user/${user?.id}/image?reload=${imageVersion}`}} style={styles.userImageModal} />
-                                :
-                                <ThemedIcon IconComponent={User} width={250} height={250}/>
-                            }
-                        </View>
+                        <ThemedView style={styles.modalView}>
 
-                        <ThemedView style={styles.modalButtonsView} lightColor={Colors.light.DarkBackground} darkColor={Colors.dark.DarkBackground}>
-                            <TouchableOpacity
-                                onPress={pickImage}
-                                activeOpacity={0.5}
-                                style={styles.modalButtons}
-                            >
-                                <ThemedText>Editar Foto</ThemedText>
-                            </TouchableOpacity>
+                            <Image source={{uri: `${process.env.EXPO_PUBLIC_BACKEND_URL}user/${user?.id}/image?reload=${imageVersion}`}} style={styles.userImageModal} />
 
-                            <ThemedView darkColor={Colors.dark.Red} lightColor={Colors.light.Red} style={styles.divisor}/>
+                            <ThemedView style={styles.modalButtonsView}>
+                                <TouchableOpacity
+                                    onPress={pickImage}
+                                    activeOpacity={0.5}
+                                    style={[styles.modalButtons, {borderBottomLeftRadius: 8, backgroundColor: Colors[theme].LightBackground}]}
+                                >
+                                    <ThemedIcon IconComponent={FontAwesome6} name="edit" size={21} lightColor={Colors.light.Red} darkColor={Colors.dark.Red}/>
+                                </TouchableOpacity>
 
-                            <TouchableOpacity
-                                onPress={removeImage}
-                                activeOpacity={0.5}
-                                style={styles.modalButtons}
-                            >
-                                <ThemedText>Remover Foto</ThemedText>
-                            </TouchableOpacity>
+                                <TouchableOpacity
+                                    onPress={removeImage}
+                                    activeOpacity={0.5}
+                                    style={[styles.modalButtons, {borderBottomRightRadius: 8, backgroundColor: Colors[theme].LightBackground}]}
+                                >
+                                    <ThemedIcon IconComponent={FontAwesome6} name="trash" size={21} lightColor={Colors.light.Red} darkColor={Colors.dark.Red}/>
+                                </TouchableOpacity>
+                            </ThemedView>
 
-                            <ThemedView darkColor={Colors.dark.Red} lightColor={Colors.light.Red} style={styles.divisor}/>
-                            
-                            <TouchableOpacity
-                                onPress={() => setModalOpened(false)}
-                                activeOpacity={0.5}
-                                style={styles.modalButtons}
-                            >
-                                <ThemedText>Fechar</ThemedText>
-                            </TouchableOpacity>
                         </ThemedView>
+
                     </ModalComponent>
                         
                     <ThemedText style={styles.userNickName}>{user?.username}</ThemedText>
@@ -204,31 +200,30 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         borderRadius: 100
     },
+    modalView: {
+        flexDirection: 'column',
+        alignItems: 'center',
+        marginTop: 150,
+        borderRadius: 8,
+    },
     userImageModal: {
         width: 270,
         height: 270,
         resizeMode: 'contain',
-        borderRadius: 15,
+        borderRadius: 8,
     },
     modalButtonsView: {
-        alignItems: "center",
-        gap: 10,
+        flexDirection: "row",
+        justifyContent: "center",
+        borderBottomLeftRadius: 20,
+        borderBottomRightRadius: 20,
         width: "100%",
-        position: 'absolute',
-        bottom: -20,
-        paddingVertical: 15,
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
     },
     modalButtons: {
         justifyContent: "center",
         alignItems: "center",
-        height: 35,
-        width: "100%",
-    },
-    divisor: {
-        height: .6,
-        width: "100%",
+        height: 50,
+        flex: 1,
     },
     userNickName: {
         fontFamily: 'Kdam',

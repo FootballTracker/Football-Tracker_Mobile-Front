@@ -23,6 +23,7 @@ interface UserContextType {
     logged: boolean | null;
     setImage: (value: boolean) => void;
     imageVersion: number | null;
+    updateImage: () => Promise<void>
     // setUser: (user: User | null) => void;
 }
 
@@ -45,14 +46,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
             if(storedUser) {
                 const user : User = JSON.parse(storedUser);
                 setAuth({user: user, logged: true});
-                api.get(`user/${user.id}/has_image`)
-                    .then((response) => {
-                        setImage(response.data);
-                    })
-                    .catch(() => {
-                        alert("Erro ao buscar imagem do usuário");
-                    })
-                setImageVersion(Date.now());
+                updateImage();
             } else {
                 setAuth({user: null, logged: false});
             }
@@ -67,6 +61,18 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     const logout = (): void => {
         setAuth({user: null, logged: false});
         deleteItem('user');
+    }
+
+    const updateImage = async (): Promise<void> => {
+        if(!auth.user) return;
+
+        await api.get(`user/${auth.user.id}/has_image`)
+            .then((response) => {
+                setImage(response.data);
+            })
+            .catch(() => {
+                alert("Erro ao buscar imagem do usuário");
+            })
     }
 
     const setImage = (value: boolean): void => {
@@ -87,7 +93,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     }
 
     return (
-        <UserContext.Provider value={{ user: auth.user, login, logout, logged: auth.logged, setImage, imageVersion }}>
+        <UserContext.Provider value={{ user: auth.user, login, logout, logged: auth.logged, setImage, imageVersion, updateImage }}>
             {children}
         </UserContext.Provider>
     );
