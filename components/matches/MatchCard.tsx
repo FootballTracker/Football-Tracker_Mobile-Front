@@ -1,12 +1,14 @@
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useTheme } from '@/context/ThemeContext';
+import { router } from 'expo-router';
+import { Colors } from '@/constants/Colors';
 
 import { ThemedIcon } from '../DefaultComponents/ThemedIcon';
 import { ThemedText } from '@/components/DefaultComponents/ThemedText';
-import { Colors } from '@/constants/Colors';
 
 interface TeamI {
+    id?: number
     score: number
     logo: string
     name: string
@@ -26,7 +28,7 @@ export default function MatchCard({ id, home_team, away_team, date }: MatchCardI
 
     const accessMatch = () => {
         //acessa partida
-        // router.push(`/(pages)/match/${id}` as any);
+        router.push(`/(pages)/match/${id}` as any);
     }
 
     const styles = StyleSheet.create({
