@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
     },
     divisor: {
-        height: .4,
+        height: .6,
     },
     content: {
         marginTop: 15,

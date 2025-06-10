@@ -62,7 +62,7 @@ const data: MatchI = {
         league: "Serie A",
         leagueLogo: "https://media.api-sports.io/football/leagues/71.png",
         country: "Brazil",
-        countryFlag: "https://media.api-sports.io/football/contries/5.png",
+        countryFlag: "https://media.api-sports.io/flags/br.svg",
         season: 2022,
         round: 23
     }
@@ -89,7 +89,7 @@ export default function Match() {
 
         switch (route.key) {
             case 'informacoes':
-                return <MatchInfo />;
+                return <MatchInfo {...data.info}/>;
             case 'estatisticas':
                 return <MatchStatistcs />;
             case 'eventos':
@@ -123,7 +123,6 @@ export default function Match() {
     }
 
     function accessTeam(id?: number) {
-        console.log("aqui");
         id && router.push(`/(pages)/team/${id}`);
     }
 
