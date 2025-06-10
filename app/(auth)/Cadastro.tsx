@@ -1,14 +1,14 @@
 //Default Imports
-import { StyleSheet, View, Dimensions, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
+import { StyleSheet, View, Dimensions, ScrollView, Platform, Keyboard, KeyboardEvent } from "react-native";
 import Feather from '@expo/vector-icons/Feather';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { router } from "expo-router";
 import { Colors } from "@/constants/Colors";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import api from "@/lib/Axios"
 import { z } from 'zod';
-import { UserContext, useUserContext } from "@/context/UserContext";
+import { useUserContext } from "@/context/UserContext";
 
 //Components
 import LoginLogo from "@/components/LoginLogo"
@@ -31,8 +31,10 @@ const userData = z.object({
 type userData = z.infer<typeof userData>
 
 export default function Cadastro() {
-    const { user, login } = useUserContext();
-    
+    const { login } = useUserContext();
+    const scrollViewRef = useRef<ScrollView>(null);
+    const [keyboardHeight, setKeyboardHeight] = useState(0);
+
     const { control, handleSubmit, formState: {errors} } = useForm<userData>({
         resolver: zodResolver(userData)
     });
@@ -52,11 +54,30 @@ export default function Cadastro() {
             else alert('Ocorreu algum erro. Tente novamente');
         })
     }
+    
+    useEffect(() => {
+        const showListener = Keyboard.addListener('keyboardDidShow', (e: KeyboardEvent) => {
+            setKeyboardHeight(e.endCoordinates.height);
+        });
+
+        const hideListener = Keyboard.addListener('keyboardDidHide', () => {
+            setKeyboardHeight(0);
+        });
+
+        return () => {
+            showListener.remove();
+            hideListener.remove();
+        };
+    }, []);
+
+    useEffect(() => {
+        scrollViewRef.current?.scrollToEnd({animated: true});
+    }, [keyboardHeight]);
 
     return (
-        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} keyboardVerticalOffset={0} >
-            <ScrollView>
-                <ThemedView style={styles.background}>
+        <ThemedView>
+            <ScrollView ref={scrollViewRef} keyboardShouldPersistTaps="handled">
+                <ThemedView style={[styles.background, {marginBottom: keyboardHeight}, !keyboardHeight && {minHeight: windowHeight}]}>
                     <View style={{display: 'flex', flexDirection: "row", marginLeft: 5, position: 'absolute', top: 20}}>
                         <ReturnArrow double={true} />
                     </View>
@@ -74,7 +95,7 @@ export default function Cadastro() {
                             <ThemedButton style={{width: '100%'}} IconComponent={{Icon: Feather, name: 'plus', size: 25}} backgroundMidnightcolor={Colors.dark.Green} textColor="LightBackground" title="Cadastrar" handleClick={handleSubmit(handleForm)} />
                         </View>
 
-                        <ThemedText style={styles.loginText}>
+                        <ThemedText style={[styles.loginText]}>
                             Já tem uma conta?
                             {'  '}
                             <ThemedText
@@ -89,7 +110,7 @@ export default function Cadastro() {
                     </View>
                 </ThemedView>
             </ScrollView>
-        </KeyboardAvoidingView>
+        </ThemedView>
     )
 }
 
@@ -97,7 +118,6 @@ const styles = StyleSheet.create({
     background: {
         display: 'flex',
         justifyContent: 'space-evenly',
-        minHeight: windowHeight,
         paddingBottom: 20,
         paddingTop: 25,
     },

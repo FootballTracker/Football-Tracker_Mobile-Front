@@ -1,5 +1,5 @@
 //Default Imports
-import { StyleSheet, View, Dimensions, KeyboardAvoidingView, Platform, ScrollView } from "react-native";
+import { StyleSheet, View, Dimensions, ScrollView, Keyboard, KeyboardEvent } from "react-native";
 import Feather from '@expo/vector-icons/Feather';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -9,6 +9,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
 import api from "@/lib/Axios";
 import { useUserContext } from "@/context/UserContext";
+import { useRef, useEffect, useState } from "react";
 
 //Components
 import LoginLogo from "@/components/LoginLogo"
@@ -30,10 +31,12 @@ const userData = z.object({
 type userData = z.infer<typeof userData>
 
 export default function Login() {
-    const { user, login } = useUserContext();
-
+    const { login } = useUserContext();
+    const scrollViewRef = useRef<ScrollView>(null);
+    const [keyboardHeight, setKeyboardHeight] = useState(0);
+    
     const { control, handleSubmit, formState: {errors} } = useForm<userData>({
-        resolver: zodResolver(userData)
+    resolver: zodResolver(userData)
     });
 
     const handleForm = async ({user, password}:userData) => {
@@ -51,42 +54,61 @@ export default function Login() {
         })
     }
 
+    useEffect(() => {
+        const showListener = Keyboard.addListener('keyboardDidShow', (e: KeyboardEvent) => {
+            setKeyboardHeight(e.endCoordinates.height);
+        });
+
+        const hideListener = Keyboard.addListener('keyboardDidHide', () => {
+            setKeyboardHeight(0);
+        });
+
+        return () => {
+            showListener.remove();
+            hideListener.remove();
+        };
+    }, []);
+
+     useEffect(() => {
+        scrollViewRef.current?.scrollToEnd({animated: true});
+    }, [keyboardHeight]);
+
     return (
-            <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} keyboardVerticalOffset={0}>
-                <ScrollView>
-                    <ThemedView style={[styles.background]}>
-                        <View style={{display: 'flex', flexDirection: "row", marginLeft: 5, position: 'absolute', top: 20}}>
-                            <ReturnArrow />
+        <ThemedView>
+            <ScrollView ref={scrollViewRef} keyboardShouldPersistTaps="handled">
+                <ThemedView style={[styles.background, {marginBottom: keyboardHeight}, !keyboardHeight && {minHeight: windowHeight}]}>
+                    <View style={{display: 'flex', flexDirection: "row", marginLeft: 5, position: 'absolute', top: 20}}>
+                        <ReturnArrow />
+                    </View>
+                    
+                    <LoginLogo />
+
+                    <View style={styles.form}>
+                        <ThemedText style={styles.titleText}>Login</ThemedText>
+                        <ThemedText style={styles.infoText}><ThemedIcon IconComponent={Feather} name="info" size={15} /> Faça login para personalizar sua experiência com jogadores, ligas e times favoritos.</ThemedText>
+        
+                        <View style={{width: '80%'}}>
+                            <FormInput placeHolder="Usuário ou Email" name="user" control={control} errors={errors} />
+                            <FormInput placeHolder="Senha" name="password" isPassword control={control} errors={errors} />
+                            <ThemedButton style={{width: '100%'}} IconComponent={{Icon: Ionicons, name: 'enter-outline'}} backgroundMidnightcolor={Colors.dark.Green} textColor="LightBackground" title="Entrar" handleClick={handleSubmit(handleForm)} />
                         </View>
                         
-                        <LoginLogo />
-
-                        <View style={styles.form}>
-                            <ThemedText style={styles.titleText}>Login</ThemedText>
-                            <ThemedText style={styles.infoText}><ThemedIcon IconComponent={Feather} name="info" size={15} /> Faça login para personalizar sua experiência com jogadores, ligas e times favoritos.</ThemedText>
-            
-                            <View style={{width: '80%'}}>
-                                <FormInput placeHolder="Usuário ou Email" name="user" control={control} errors={errors}  />
-                                <FormInput placeHolder="Senha" name="password" isPassword control={control} errors={errors}  />
-                                <ThemedButton style={{width: '100%'}} IconComponent={{Icon: Ionicons, name: 'enter-outline'}} backgroundMidnightcolor={Colors.dark.Green} textColor="LightBackground" title="Entrar" handleClick={handleSubmit(handleForm)} />
-                            </View>
-                            
-                            <ThemedText style={styles.registerText}>
-                                Ainda não tem uma conta?
-                                {'  '}
-                                <ThemedText
-                                    style={styles.registerText}
-                                    onPress={() => router.replace('/(auth)/Cadastro')}
-                                    darkColor={Colors.dark.Green}
-                                    lightColor={Colors.light.Green}
-                                >
-                                    Cadastre-se
-                                </ThemedText>
+                        <ThemedText style={[styles.registerText]}>
+                            Ainda não tem uma conta?
+                            {'  '}
+                            <ThemedText
+                                style={styles.registerText}
+                                onPress={() => router.replace('/(auth)/Cadastro')}
+                                darkColor={Colors.dark.Green}
+                                lightColor={Colors.light.Green}
+                            >
+                                Cadastre-se
                             </ThemedText>
-                        </View>
-                    </ThemedView>
-                </ScrollView>
-            </KeyboardAvoidingView>
+                        </ThemedText>
+                    </View>
+                </ThemedView>
+            </ScrollView>
+        </ThemedView>
     )
 }
 
@@ -94,9 +116,8 @@ const styles = StyleSheet.create({
     background: {
         display: 'flex',
         justifyContent: 'space-evenly',
-        minHeight: windowHeight,
-        paddingBottom: 20,
         paddingTop: 25,
+        paddingBottom: 20,
     },
     titleText: {
         fontFamily: 'Koulen',
