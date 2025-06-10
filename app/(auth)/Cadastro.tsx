@@ -1,14 +1,14 @@
 //Default Imports
-import { StyleSheet, View, Dimensions, ScrollView, Platform, Keyboard, KeyboardEvent } from "react-native";
+import { StyleSheet, View, Dimensions, ScrollView } from "react-native";
 import Feather from '@expo/vector-icons/Feather';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { router } from "expo-router";
 import { Colors } from "@/constants/Colors";
-import { useEffect, useRef, useState } from "react";
 import api from "@/lib/Axios"
 import { z } from 'zod';
 import { useUserContext } from "@/context/UserContext";
+import Animated, { useAnimatedKeyboard, useAnimatedStyle } from 'react-native-reanimated';
 
 //Components
 import LoginLogo from "@/components/LoginLogo"
@@ -32,12 +32,15 @@ type userData = z.infer<typeof userData>
 
 export default function Cadastro() {
     const { login } = useUserContext();
-    const scrollViewRef = useRef<ScrollView>(null);
-    const [keyboardHeight, setKeyboardHeight] = useState(0);
-
+    const keyboard = useAnimatedKeyboard({isStatusBarTranslucentAndroid: true});
+    
     const { control, handleSubmit, formState: {errors} } = useForm<userData>({
         resolver: zodResolver(userData)
     });
+
+    const animatedStyles = useAnimatedStyle(() => ({
+        transform: [{ translateY: -keyboard.height.value }],
+    }));
 
     const handleForm = async ({user, email, password, confirmPassword}:userData) => {
         await api.post('auth/signup', {
@@ -54,30 +57,11 @@ export default function Cadastro() {
             else alert('Ocorreu algum erro. Tente novamente');
         })
     }
-    
-    useEffect(() => {
-        const showListener = Keyboard.addListener('keyboardDidShow', (e: KeyboardEvent) => {
-            setKeyboardHeight(e.endCoordinates.height);
-        });
-
-        const hideListener = Keyboard.addListener('keyboardDidHide', () => {
-            setKeyboardHeight(0);
-        });
-
-        return () => {
-            showListener.remove();
-            hideListener.remove();
-        };
-    }, []);
-
-    useEffect(() => {
-        scrollViewRef.current?.scrollToEnd({animated: true});
-    }, [keyboardHeight]);
 
     return (
-        <ThemedView>
-            <ScrollView ref={scrollViewRef} keyboardShouldPersistTaps="handled">
-                <ThemedView style={[styles.background, {marginBottom: keyboardHeight}, !keyboardHeight && {minHeight: windowHeight}]}>
+        <ScrollView keyboardShouldPersistTaps="handled">
+            <Animated.View style={animatedStyles}>
+                <ThemedView style={[styles.background]}>
                     <View style={{display: 'flex', flexDirection: "row", marginLeft: 5, position: 'absolute', top: 20}}>
                         <ReturnArrow double={true} />
                     </View>
@@ -109,8 +93,8 @@ export default function Cadastro() {
                         </ThemedText>
                     </View>
                 </ThemedView>
-            </ScrollView>
-        </ThemedView>
+            </Animated.View>
+        </ScrollView>
     )
 }
 
@@ -118,6 +102,7 @@ const styles = StyleSheet.create({
     background: {
         display: 'flex',
         justifyContent: 'space-evenly',
+        minHeight: windowHeight,
         paddingBottom: 20,
         paddingTop: 25,
     },
