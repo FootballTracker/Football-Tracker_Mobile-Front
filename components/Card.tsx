@@ -17,9 +17,9 @@ import { MaterialIcons } from "@expo/vector-icons";
 type SingleInfoProps = {
     image?: string;
     info: string;
-    favorite: boolean;
+    favorite?: boolean;
     handleOpen: () => void;
-    handleFavorite: () => void;
+    handleFavorite?: () => void;
     show?: boolean;
 }
 
@@ -125,7 +125,7 @@ export default function Card({image, info, favorite, handleOpen, handleFavorite,
                 </View>
                 
                 <View style={styles.infoGroup}>
-                    <FavoriteStar favorite={favorite} handleClick={() => {handleFavorite()}} />
+                    { favorite !== undefined && handleFavorite && <FavoriteStar favorite={favorite} handleClick={() => {handleFavorite()}} /> }
                     <ThemedIcon onPress={handleOpen} IconComponent={MaterialIcons} name='keyboard-arrow-right' darkColor={Colors.dark.Red} lightColor={Colors.light.Red} size={25} />
                 </View>
             </TouchableOpacity>
