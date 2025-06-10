@@ -1,14 +1,14 @@
 //Default Imports
-import { StyleSheet, View, Dimensions, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
+import { StyleSheet, View, Dimensions, ScrollView } from "react-native";
 import Feather from '@expo/vector-icons/Feather';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { router } from "expo-router";
 import { Colors } from "@/constants/Colors";
-import { useContext, useEffect, useState } from "react";
 import api from "@/lib/Axios"
 import { z } from 'zod';
-import { UserContext, useUserContext } from "@/context/UserContext";
+import { useUserContext } from "@/context/UserContext";
+import Animated, { useAnimatedKeyboard, useAnimatedStyle } from 'react-native-reanimated';
 
 //Components
 import LoginLogo from "@/components/LoginLogo"
@@ -31,11 +31,16 @@ const userData = z.object({
 type userData = z.infer<typeof userData>
 
 export default function Cadastro() {
-    const { user, login } = useUserContext();
+    const { login } = useUserContext();
+    const keyboard = useAnimatedKeyboard({isStatusBarTranslucentAndroid: true});
     
     const { control, handleSubmit, formState: {errors} } = useForm<userData>({
         resolver: zodResolver(userData)
     });
+
+    const animatedStyles = useAnimatedStyle(() => ({
+        transform: [{ translateY: -keyboard.height.value }],
+    }));
 
     const handleForm = async ({user, email, password, confirmPassword}:userData) => {
         await api.post('auth/signup', {
@@ -54,9 +59,9 @@ export default function Cadastro() {
     }
 
     return (
-        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} keyboardVerticalOffset={0} >
-            <ScrollView>
-                <ThemedView style={styles.background}>
+        <ScrollView keyboardShouldPersistTaps="handled">
+            <Animated.View style={animatedStyles}>
+                <ThemedView style={[styles.background]}>
                     <View style={{display: 'flex', flexDirection: "row", marginLeft: 5, position: 'absolute', top: 20}}>
                         <ReturnArrow double={true} />
                     </View>
@@ -74,7 +79,7 @@ export default function Cadastro() {
                             <ThemedButton style={{width: '100%'}} IconComponent={{Icon: Feather, name: 'plus', size: 25}} backgroundMidnightcolor={Colors.dark.Green} textColor="LightBackground" title="Cadastrar" handleClick={handleSubmit(handleForm)} />
                         </View>
 
-                        <ThemedText style={styles.loginText}>
+                        <ThemedText style={[styles.loginText]}>
                             Já tem uma conta?
                             {'  '}
                             <ThemedText
@@ -88,8 +93,8 @@ export default function Cadastro() {
                         </ThemedText>
                     </View>
                 </ThemedView>
-            </ScrollView>
-        </KeyboardAvoidingView>
+            </Animated.View>
+        </ScrollView>
     )
 }
 

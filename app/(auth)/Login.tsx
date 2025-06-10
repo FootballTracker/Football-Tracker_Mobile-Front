@@ -1,5 +1,5 @@
 //Default Imports
-import { StyleSheet, View, Dimensions, KeyboardAvoidingView, Platform, ScrollView } from "react-native";
+import { StyleSheet, View, Dimensions, ScrollView } from "react-native";
 import Feather from '@expo/vector-icons/Feather';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -9,6 +9,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
 import api from "@/lib/Axios";
 import { useUserContext } from "@/context/UserContext";
+import Animated, { useAnimatedKeyboard, useAnimatedStyle } from 'react-native-reanimated';
+
 
 //Components
 import LoginLogo from "@/components/LoginLogo"
@@ -30,11 +32,16 @@ const userData = z.object({
 type userData = z.infer<typeof userData>
 
 export default function Login() {
-    const { user, login } = useUserContext();
-
+    const { login } = useUserContext();
+    const keyboard = useAnimatedKeyboard({isStatusBarTranslucentAndroid: true});
+    
     const { control, handleSubmit, formState: {errors} } = useForm<userData>({
-        resolver: zodResolver(userData)
+    resolver: zodResolver(userData)
     });
+
+    const animatedStyles = useAnimatedStyle(() => ({
+        transform: [{ translateY: -keyboard.height.value}],
+    }));
 
     const handleForm = async ({user, password}:userData) => {
         await api.post('auth/signin', {
@@ -52,13 +59,12 @@ export default function Login() {
     }
 
     return (
-            <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} keyboardVerticalOffset={0}>
-                <ScrollView>
-                    <ThemedView style={[styles.background]}>
-                        <View style={{display: 'flex', flexDirection: "row", marginLeft: 5, position: 'absolute', top: 20}}>
-                            <ReturnArrow />
-                        </View>
-                        
+        <ScrollView keyboardShouldPersistTaps="handled">
+            <Animated.View style={animatedStyles}>
+                <ThemedView style={styles.background}>
+                    <View style={{display: 'flex', flexDirection: "row", marginLeft: 5, position: 'absolute', top: 20}}>
+                        <ReturnArrow />
+                    </View>
                         <LoginLogo />
 
                         <View style={styles.form}>
@@ -66,12 +72,12 @@ export default function Login() {
                             <ThemedText style={styles.infoText}><ThemedIcon IconComponent={Feather} name="info" size={15} /> Faça login para personalizar sua experiência com jogadores, ligas e times favoritos.</ThemedText>
             
                             <View style={{width: '80%'}}>
-                                <FormInput placeHolder="Usuário ou Email" name="user" control={control} errors={errors}  />
-                                <FormInput placeHolder="Senha" name="password" isPassword control={control} errors={errors}  />
+                                <FormInput placeHolder="Usuário ou Email" name="user" control={control} errors={errors} />
+                                <FormInput placeHolder="Senha" name="password" isPassword control={control} errors={errors} />
                                 <ThemedButton style={{width: '100%'}} IconComponent={{Icon: Ionicons, name: 'enter-outline'}} backgroundMidnightcolor={Colors.dark.Green} textColor="LightBackground" title="Entrar" handleClick={handleSubmit(handleForm)} />
                             </View>
                             
-                            <ThemedText style={styles.registerText}>
+                            <ThemedText style={[styles.registerText]}>
                                 Ainda não tem uma conta?
                                 {'  '}
                                 <ThemedText
@@ -84,9 +90,9 @@ export default function Login() {
                                 </ThemedText>
                             </ThemedText>
                         </View>
-                    </ThemedView>
-                </ScrollView>
-            </KeyboardAvoidingView>
+                </ThemedView>
+            </Animated.View>
+        </ScrollView>
     )
 }
 
@@ -95,8 +101,8 @@ const styles = StyleSheet.create({
         display: 'flex',
         justifyContent: 'space-evenly',
         minHeight: windowHeight,
-        paddingBottom: 20,
         paddingTop: 25,
+        paddingBottom: 20,
     },
     titleText: {
         fontFamily: 'Koulen',
