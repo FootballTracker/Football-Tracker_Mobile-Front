@@ -27,6 +27,13 @@ export type league = {
 
 export default function Ligas() {
     const { loading, getLeagues } = useItemsContext();
+    const [reloading, setReloading] = useState(false);
+
+    async function onReload() {
+        setReloading(true);
+        await getLeagues();
+        setReloading(false);
+    }
 
     async function searchLeagues() {
         
@@ -34,20 +41,25 @@ export default function Ligas() {
     
     return (
         !loading ? (
-            <ThemedScrollView style={styles.background} getData={getLeagues}>
-                <SearchBar handleSearch={searchLeagues}/>
+            <ThemedScrollView style={styles.background} getData={onReload}>
+                {!reloading && (
+                    <>
+                        <SearchBar handleSearch={searchLeagues}/>
 
-                <Section text='Favoritas' icon={{IconComponent: FilledStar, width: 27, height: 27}} iconUp >
-                    <FavoriteLeagues />
-                </Section>
+                        <Section text='Favoritas' icon={{IconComponent: FilledStar, width: 27, height: 27}} iconUp >
+                            <FavoriteLeagues />
+                        </Section>
 
-                <Section text='Principais' icon={{IconComponent: FontAwesome5, name: 'crown', size: 20}} style={{marginBottom: 50}} iconUp >
-                    <MainLeagues />
-                </Section>
+                        <Section text='Principais' icon={{IconComponent: FontAwesome5, name: 'crown', size: 20}} style={{marginBottom: 50}} iconUp >
+                            <MainLeagues />
+                        </Section>
+                    </>
+                )}
             </ThemedScrollView>
         ) : (
             <LoadingIcon />
         )
+        
         
     )
 }
