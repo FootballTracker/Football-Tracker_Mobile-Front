@@ -19,6 +19,25 @@ import MatchEvents from '@/components/matches/pageComponents/MatchEvents';
 import MatchLineup from '@/components/matches/pageComponents/MatchLineup';
 import { AxiosResponse } from 'axios';
 
+export interface TeamStatistics {
+    shotsOnGoal: number;
+    shotsOffGoal: number;
+    shotsInsidebox: number;
+    shotsOutsidebox: number;
+    totalShots: number;
+    blockedShots: number;
+    fouls: number;
+    cornerKicks: number;
+    offsides: number;
+    ballPossession: string;
+    yellowCards: number;
+    redCards: number;
+    goalkeeperSaves: number;
+    totalPasses: number;
+    passesAccurate: number;
+    passesPercentage: string;
+}
+
 interface MatchI {
     match: MatchCardI;
     info: {
@@ -33,6 +52,10 @@ interface MatchI {
         countryFlag: string;
         season: number;
         round: number;
+    }
+    statistics: {
+        home_team: TeamStatistics;
+        away_team: TeamStatistics;
     }
 }
 
@@ -65,6 +88,44 @@ const data: MatchI = {
         countryFlag: "https://media.api-sports.io/flags/br.svg",
         season: 2022,
         round: 23
+    },
+    statistics: {
+        home_team: {
+            shotsOnGoal: 7,
+            shotsOffGoal: 16,
+            shotsInsidebox: 28,
+            shotsOutsidebox: 5,
+            totalShots: 18,
+            blockedShots: 10,
+            fouls: 10,
+            cornerKicks: 7,
+            offsides: 0,
+            ballPossession: '73%',
+            yellowCards: 0,
+            redCards: 0,
+            goalkeeperSaves: 2,
+            totalPasses: 591,
+            passesAccurate: 504,
+            passesPercentage: '1',
+        },
+        away_team: {
+            shotsOnGoal: 3,
+            shotsOffGoal: 2,
+            shotsInsidebox: 5,
+            shotsOutsidebox: 0,
+            totalShots: 1,
+            blockedShots: 4,
+            fouls: 13,
+            cornerKicks: 0,
+            offsides: 2,
+            ballPossession: '27%',
+            yellowCards: 0,
+            redCards: 0,
+            goalkeeperSaves: 7,
+            totalPasses: 233,
+            passesAccurate: 147,
+            passesPercentage: '63%',
+        }
     }
 }
 
@@ -91,7 +152,7 @@ export default function Match() {
             case 'informacoes':
                 return <MatchInfo {...data.info}/>;
             case 'estatisticas':
-                return <MatchStatistcs />;
+                return <MatchStatistcs match={data.match} home_team={data.statistics.home_team} away_team={data.statistics.away_team} />;
             case 'eventos':
                 return <MatchEvents />;
             case 'escalacoes':

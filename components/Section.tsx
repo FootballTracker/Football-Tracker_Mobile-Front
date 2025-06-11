@@ -12,8 +12,8 @@ import Animated from "react-native-reanimated";
 
 //Type
 type SectionProps = ViewProps & {
-    icon: ThemedIconProps;
-    text: string;
+    icon?: ThemedIconProps;
+    text?: string;
     children?: React.ReactNode;
     iconUp?: boolean;
 }
@@ -21,13 +21,17 @@ type SectionProps = ViewProps & {
 export default function Section({ icon, text, children, iconUp = false, ...rest } : SectionProps) {
     return (
         <Animated.View layout={LinearTransition.delay(0).duration(200)} style={[styles.section, rest.style]}>
-            <View style={styles.titleSection}>
-                <ThemedIcon {...icon} darkColor={Colors.dark.Red} lightColor={Colors.light.Red} style={iconUp && {marginTop: -3.5}} />
-                <ThemedText lightColor={Colors.light.Text} darkColor={Colors.dark.Text} style={styles.sectionTitle}>
-                    {text}
-                </ThemedText>
-            </View>
-            <ThemedView darkColor={Colors.dark.Red} lightColor={Colors.light.Red} style={styles.divisor}/>
+            {(icon || text) && (
+                <>
+                    <View style={styles.titleSection}>
+                        {icon && <ThemedIcon {...icon} darkColor={Colors.dark.Red} lightColor={Colors.light.Red} style={iconUp && {marginTop: -3.5}} />}
+                        <ThemedText lightColor={Colors.light.Text} darkColor={Colors.dark.Text} style={styles.sectionTitle}>
+                            {text}
+                        </ThemedText>
+                    </View>
+                    <ThemedView darkColor={Colors.dark.Red} lightColor={Colors.light.Red} style={styles.divisor}/>
+                </>
+            )}
 
             
             <View style={styles.content}>
