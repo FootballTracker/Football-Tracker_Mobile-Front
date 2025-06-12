@@ -2,6 +2,7 @@ import { Image, StyleSheet, TouchableOpacity, View, ScrollView } from 'react-nat
 import { memo, useEffect, useState } from 'react';
 import { Colors } from '@/constants/Colors';
 import { MaterialIcons } from '@expo/vector-icons';
+import AntDesign from '@expo/vector-icons/AntDesign';
 import Boot from "@/assets/Icons/Boot.svg";
 
 import { ThemedText } from "@/components/DefaultComponents/ThemedText";
@@ -80,11 +81,12 @@ function LigaRankings({leagueId, season} : LigaRankingsProps) {
                             ) : rank === 1 ? (
                                 <>
                                     <ThemedIcon
-                                        IconComponent={Boot}
+                                        IconComponent={AntDesign}
+                                        name={"team"}
                                         darkColor={Colors.dark.Red}
                                         lightColor={Colors.light.Red}
                                         size={26}
-                                        style={{marginHorizontal: 10}}
+                                        style={{marginHorizontal: 7}}
                                     />
                                     <ThemedText lightColor={Colors.light.Text} darkColor={Colors.dark.Text} style={{fontSize: 17}}>
                                         Assistências
@@ -93,11 +95,12 @@ function LigaRankings({leagueId, season} : LigaRankingsProps) {
                             ) : (
                                 <>
                                     <ThemedIcon
-                                        IconComponent={Boot}
+                                        IconComponent={MaterialIcons}
+                                        name={"grade"}
                                         darkColor={Colors.dark.Red}
                                         lightColor={Colors.light.Red}
-                                        size={26}
-                                        style={{marginHorizontal: 10}}
+                                        size={24}
+                                        style={{marginHorizontal: 7, marginTop: -1, marginBottom: 2}}
                                     />
                                     <ThemedText lightColor={Colors.light.Text} darkColor={Colors.dark.Text} style={{fontSize: 17}}>
                                         Melhores notas
