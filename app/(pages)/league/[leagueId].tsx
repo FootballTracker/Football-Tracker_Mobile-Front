@@ -39,7 +39,7 @@ export default function League() {
     const { leagueId } = useLocalSearchParams();
     const { user } = useUserContext();
     const [contentLoaded, setContentLoaded] = useState(false);
-    const [favoritieState, setFavoritieState] = useState(false);
+    const [favoriteState, setFavoriteState] = useState(false);
     const [selectedSeason, setSelectedSeason] = useState<LeagueSeason | null>(null);
     const [index, setIndex] = useState(0); //initial route index
     const [league, setLeague] = useState<LeagueFull>();
@@ -75,7 +75,7 @@ export default function League() {
     useEffect(() => {
         if(league) {
             setSelectedSeason(league.seasons[0]);
-            setFavoritieState(league.league.is_favorite);
+            setFavoriteState(league.league.is_favorite);
         }
     }, [league]);
 
@@ -96,9 +96,8 @@ export default function League() {
     }
 
     const changeFavoritie = () => {
-        // alert("trocar favorito");
-        SwapFavorites(setFavoriteLeagues, setLeagues, {id: league?.league.id, name: league?.league.name, logo_url: league?.league.logo_url, is_favorite: favoritieState, show: true})
-        setFavoritieState(!favoritieState);
+        SwapFavorites(setFavoriteLeagues, setLeagues, {id: league?.league.id, name: league?.league.name, logo_url: league?.league.logo_url, is_favorite: favoriteState, show: true})
+        setFavoriteState(!favoriteState);
     }
 
     const selectSeason = (season: string) => {
@@ -150,7 +149,7 @@ export default function League() {
                             selectFontSize={13}
                             iconSize={19}
                         />
-                    <FavoriteStar favorite={ favoritieState } handleClick={changeFavoritie} />
+                    <FavoriteStar favorite={ favoriteState } handleClick={changeFavoritie} />
                 </View>
                 
                 <TabView

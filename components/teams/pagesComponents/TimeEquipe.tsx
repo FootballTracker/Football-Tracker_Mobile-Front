@@ -33,8 +33,6 @@ function TimeEquipe({players} : TimeEquipeProps) {
             <Section icon={{IconComponent: Notebook, Stroke: true}} text='Treinadores' >
                 {(players.coach && players.coach_imagem) ? (
                     <Card
-                        favorite
-                        handleFavorite={() => {}}
                         handleOpen={() => {}}
                         info={players.coach}
                         image={players.coach_imagem}
@@ -48,8 +46,6 @@ function TimeEquipe({players} : TimeEquipeProps) {
                 {players.goalkeeper ? (
                     players.goalkeeper.map((player, index) => (
                         <Card
-                            favorite
-                            handleFavorite={() => {}}
                             handleOpen={() => {accessPlayer(player.id)}}
                             info={player.player}
                             image={player.playerImage}
@@ -65,8 +61,6 @@ function TimeEquipe({players} : TimeEquipeProps) {
                 {players.defensor ? (
                     players.defensor.map((player, index) => (
                         <Card
-                            favorite
-                            handleFavorite={() => {}}
                             handleOpen={() => {accessPlayer(player.id)}}
                             info={player.player}
                             image={player.playerImage}
@@ -82,8 +76,6 @@ function TimeEquipe({players} : TimeEquipeProps) {
                 {players.mid_field ? (
                     players.mid_field.map((player, index) => (
                         <Card
-                            favorite
-                            handleFavorite={() => {}}
                             handleOpen={() => {accessPlayer(player.id)}}
                             info={player.player}
                             image={player.playerImage}
@@ -99,8 +91,6 @@ function TimeEquipe({players} : TimeEquipeProps) {
                 {players.attacker ? (
                     players.attacker.map((player, index) => (
                         <Card
-                            favorite
-                            handleFavorite={() => {}}
                             handleOpen={() => {accessPlayer(player.id)}}
                             info={player.player}
                             image={player.playerImage}

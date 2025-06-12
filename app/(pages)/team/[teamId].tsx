@@ -76,6 +76,8 @@ export default function Team() {
     const { teamId } = useLocalSearchParams();
 
     const [teamData, setTeamData] = useState<TeamDataI | undefined>();
+
+    const [favoriteState, setFavoriteState] = useState(false);
     
     const { setFavoriteTeams, setTeams } = useItemsContext();
     
@@ -113,6 +115,7 @@ export default function Team() {
         await api.get(`teams/${teamId}`).
         then((response: any) => {
             setTeamData(response.data);
+            setFavoriteState(response.data.team.is_favorite);
         }).catch((e: any) => {
             if(e.response.data.detail) alert(e.response.data.detail);
             else alert('Erro ao buscar dados do time.');
@@ -123,8 +126,8 @@ export default function Team() {
 
 
     const changeFavoritie = () => {
-        alert("trocar favorito");
-        SwapFavorites(setFavoriteTeams, setTeams, {id: teamData?.team.id, name: teamData?.team.name, logo: teamData?.team.logo, is_favorite: false, show: true})
+        SwapFavorites(setFavoriteTeams, setTeams, {id: teamData?.team.id, name: teamData?.team.name, logo: teamData?.team.logo, is_favorite: favoriteState, show: true});
+        setFavoriteState(!favoriteState);
     }
 
     return (
@@ -136,7 +139,7 @@ export default function Team() {
                     <ThemedText style={{fontSize: 19, fontFamily: "Kdam", marginRight: 6}}>
                         {teamData?.team.name}
                     </ThemedText>
-                    <FavoriteStar favorite handleClick={changeFavoritie} />
+                    <FavoriteStar favorite={ favoriteState } handleClick={ changeFavoritie } />
                 </View>
                 
                 <TabView

@@ -25,7 +25,7 @@ export default function SingleInfo({icon, infoName, info, imageUrl} : SingleInfo
     const svg = imageUrl?.endsWith('svg');
 
     const styles = StyleSheet.create({
-        infoBox: {
+        container: {
             borderColor: Colors[theme].Red,
             borderWidth: .5,
             borderRadius: 7,
@@ -48,7 +48,7 @@ export default function SingleInfo({icon, infoName, info, imageUrl} : SingleInfo
     });
 
     return (
-        <View style={styles.infoBox}>
+        <View style={styles.container}>
             <View style={styles.infoGroup}>
                 {icon ? (
                     <ThemedIcon width={18} height={18} {...icon} darkColor={Colors.dark.Red} lightColor={Colors.light.Red} />

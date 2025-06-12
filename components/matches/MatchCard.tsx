@@ -7,7 +7,7 @@ import { Colors } from '@/constants/Colors';
 import { ThemedIcon } from '../DefaultComponents/ThemedIcon';
 import { ThemedText } from '@/components/DefaultComponents/ThemedText';
 
-interface TeamI {
+export interface TeamI {
     id?: number
     score: number
     logo: string

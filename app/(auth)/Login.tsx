@@ -74,7 +74,7 @@ export default function Login() {
                             <View style={{width: '80%'}}>
                                 <FormInput placeHolder="Usuário ou Email" name="user" control={control} errors={errors} />
                                 <FormInput placeHolder="Senha" name="password" isPassword control={control} errors={errors} />
-                                <ThemedButton style={{width: '100%'}} IconComponent={{Icon: Ionicons, name: 'enter-outline'}} backgroundMidnightcolor={Colors.dark.Green} textColor="LightBackground" title="Entrar" handleClick={handleSubmit(handleForm)} />
+                                <ThemedButton style={{width: '100%'}} IconComponent={{Icon: Ionicons, name: 'enter-outline'}} textColor="LightBackground" title="Entrar" handleClick={handleSubmit(handleForm)} />
                             </View>
                             
                             <ThemedText style={[styles.registerText]}>

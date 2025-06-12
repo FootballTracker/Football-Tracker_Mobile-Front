@@ -10,6 +10,7 @@ import { ThemedView } from '@/components/DefaultComponents/ThemedView';
 import { ThemedText } from '@/components/DefaultComponents/ThemedText';
 import { ThemedIcon } from '@/components/DefaultComponents/ThemedIcon';
 import { Colors } from '@/constants/Colors';
+import InfoMessage from '@/components/InfoMessage';
 
 interface LigaClassificacaoProps {
     season: number;
@@ -55,6 +56,10 @@ function LigaClassificacao({ season, leagueId, leagueName } : LigaClassificacaoP
                             </ThemedText>
                         </View>
                         
+                        {/* <View style={{marginBottom: 30, marginTop: 10}}>
+                            <InfoMessage text='Clique em uma linha para mais informações.' />
+                        </View> */}
+
                         <LeagueTable 
                             teams={classi}
                         />
@@ -78,7 +83,8 @@ const styles = StyleSheet.create({
     winner: {
         justifyContent: 'center',
         alignItems: 'center',
-        marginBottom: 20,
+        marginTop: 10,
+        marginBottom: 25,
         // marginTop: 5
     },
     winnerLeagueText: {
@@ -89,12 +95,12 @@ const styles = StyleSheet.create({
     winnerName: {
         marginTop: 5,
         fontFamily: "Kokoro",
-        fontSize: 22,
+        fontSize: 19,
     },
     winnerImage: {
         marginTop: 15,
-        height: 80,
-        width: 80,
+        height: 90,
+        width: 90,
     },
 });
 

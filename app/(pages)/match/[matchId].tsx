@@ -19,6 +19,48 @@ import MatchEvents from '@/components/matches/pageComponents/MatchEvents';
 import MatchLineup from '@/components/matches/pageComponents/MatchLineup';
 import { AxiosResponse } from 'axios';
 
+export interface TeamStatistics {
+    shotsOnGoal: number;
+    shotsOffGoal: number;
+    shotsInsidebox: number;
+    shotsOutsidebox: number;
+    totalShots: number;
+    blockedShots: number;
+    fouls: number;
+    cornerKicks: number;
+    offsides: number;
+    ballPossession: string;
+    yellowCards: number;
+    redCards: number;
+    goalkeeperSaves: number;
+    totalPasses: number;
+    passesAccurate: number;
+    passesPercentage: string;
+}
+
+// export interface Event {
+//     time: {
+//         elapsed: number,
+//         extra: number | null,
+//     },
+//     team: {
+//         id: string,
+//         name: string,
+//         logo: string,
+//     },
+//     player: {
+//         id: string,
+//         name: string,
+//     },
+//     assist: {
+//         id: string | null,
+//         name: string | null,
+//     },
+//     type: string,
+//     detail: string,
+//     comments: string | null,
+// }
+
 interface MatchI {
     match: MatchCardI;
     info: {
@@ -34,38 +76,10 @@ interface MatchI {
         season: number;
         round: number;
     }
-}
-
-const data: MatchI = {
-    match: {
-        id: 1,
-        home_team: {
-            id: 1062,
-            name: "Atlético-MG",
-            logo: "https://media.api-sports.io/football/teams/1062.png",
-            score: 0
-        },
-        away_team: {
-            id: 151,
-            name: "Goiás",
-            logo: "https://media.api-sports.io/football/teams/151.png",
-            score: 1
-        },
-        date: "2022-08-20T19:30:00"
+    statistics: {
+        home_team: TeamStatistics;
+        away_team: TeamStatistics;
     },
-    info: {
-        referee: "Vinicius Gonçalves Dias Araujo",
-        venue: "Estádio Governador Magalhães Pinto",
-        city: "Belo Horizonte, Minas Gerais",
-        status: "Match Finished",
-        matchTime: "90 min",
-        league: "Serie A",
-        leagueLogo: "https://media.api-sports.io/football/leagues/71.png",
-        country: "Brazil",
-        countryFlag: "https://media.api-sports.io/flags/br.svg",
-        season: 2022,
-        round: 23
-    }
 }
 
 export default function Match() {
@@ -91,9 +105,9 @@ export default function Match() {
             case 'informacoes':
                 return <MatchInfo {...data.info}/>;
             case 'estatisticas':
-                return <MatchStatistcs />;
+                return <MatchStatistcs match={data.match} home_team={data.statistics.home_team} away_team={data.statistics.away_team} />;
             case 'eventos':
-                return <MatchEvents />;
+                return <MatchEvents match={data.match} />;
             case 'escalacoes':
                 return <MatchLineup matchId={matchId.toString()}/>;
             default:
@@ -232,3 +246,73 @@ const styles = StyleSheet.create({
         height: 32,
     },
 });
+
+const data: MatchI = {
+    match: {
+        id: 1,
+        home_team: {
+            id: 1062,
+            name: "Atlético-MG",
+            logo: "https://media.api-sports.io/football/teams/1062.png",
+            score: 0
+        },
+        away_team: {
+            id: 151,
+            name: "Goiás",
+            logo: "https://media.api-sports.io/football/teams/151.png",
+            score: 1
+        },
+        date: "2022-08-20T19:30:00"
+    },
+    info: {
+        referee: "Vinicius Gonçalves Dias Araujo",
+        venue: "Estádio Governador Magalhães Pinto",
+        city: "Belo Horizonte, Minas Gerais",
+        status: "Match Finished",
+        matchTime: "90 min",
+        league: "Serie A",
+        leagueLogo: "https://media.api-sports.io/football/leagues/71.png",
+        country: "Brazil",
+        countryFlag: "https://media.api-sports.io/flags/br.svg",
+        season: 2022,
+        round: 23
+    },
+    statistics: {
+        home_team: {
+            shotsOnGoal: 7,
+            shotsOffGoal: 16,
+            shotsInsidebox: 28,
+            shotsOutsidebox: 5,
+            totalShots: 18,
+            blockedShots: 10,
+            fouls: 10,
+            cornerKicks: 7,
+            offsides: 0,
+            ballPossession: '73%',
+            yellowCards: 0,
+            redCards: 0,
+            goalkeeperSaves: 2,
+            totalPasses: 591,
+            passesAccurate: 504,
+            passesPercentage: '1',
+        },
+        away_team: {
+            shotsOnGoal: 3,
+            shotsOffGoal: 2,
+            shotsInsidebox: 5,
+            shotsOutsidebox: 0,
+            totalShots: 1,
+            blockedShots: 4,
+            fouls: 13,
+            cornerKicks: 0,
+            offsides: 2,
+            ballPossession: '27%',
+            yellowCards: 0,
+            redCards: 0,
+            goalkeeperSaves: 7,
+            totalPasses: 233,
+            passesAccurate: 147,
+            passesPercentage: '63%',
+        }
+    },
+}
