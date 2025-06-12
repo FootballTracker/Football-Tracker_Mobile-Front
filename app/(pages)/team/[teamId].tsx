@@ -98,7 +98,7 @@ export default function Team() {
             case 'equipe':
                 return <TimeEquipe players={teamData.players} />;
             case 'classificacao':
-                return <TimeClassificacao />;
+                return <TimeClassificacao id={teamData.team.id}/>;
             default:
                 return null;
         }

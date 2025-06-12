@@ -1,5 +1,5 @@
 import { StyleSheet, View, ViewProps, Animated } from "react-native"
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import Modal from 'react-native-modal';
 
 import { ThemedView, ThemedViewProps } from "./DefaultComponents/ThemedView"
@@ -13,7 +13,6 @@ interface ModalProps extends ViewProps {
 }
 
 export function ModalComponent({ modalOpened, setModalOpened, backgroundViewOpacity, modalViewProps, children } : ModalProps) {
-
     const indicatorOpacity = useRef(new Animated.Value(0)).current;
     const backgroundOpacity = backgroundViewOpacity ? backgroundViewOpacity : .8;
 
@@ -35,10 +34,10 @@ export function ModalComponent({ modalOpened, setModalOpened, backgroundViewOpac
             </Portal>
             <Modal
                 backdropOpacity={0}
-                animationIn="slideInUp"
-                animationOut="slideOutDown"
+                animationIn="fadeInUp"
+                animationOut="fadeOutDown"
                 animationInTiming={300}
-                animationOutTiming={300}
+                animationOutTiming={200}
                 useNativeDriver={true}
                 isVisible={modalOpened}
                 onBackdropPress={() => {

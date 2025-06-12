@@ -37,7 +37,7 @@ export function Select({ title, values, setSelected, modalOpened, setModalOpened
         justifyContent: 'space-between',
     },
     modalText: {
-        textAlign: 'center',
+        width: "90%",
         fontSize: 17,
     },
     values: {
