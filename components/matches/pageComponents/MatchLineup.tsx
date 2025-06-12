@@ -177,6 +177,10 @@ function MatchLineup({ matchId }: MatchLineupI) {
     )
 }
 
+export default memo(MatchLineup, (prevProps, nextProps) => {
+    return prevProps.matchId === nextProps.matchId
+});
+
 const styles = StyleSheet.create(({
     container: {
         width: "90%",
@@ -249,8 +253,6 @@ const styles = StyleSheet.create(({
         width: "40%",
     },
 }));
-
-export default memo(MatchLineup);
 
 const Lineups: FullLineup = {
     home: {

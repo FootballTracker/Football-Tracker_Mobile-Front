@@ -188,8 +188,9 @@ export default function Match() {
                         top: 25
                     }}
                     lazy
+                    lazyPreloadDistance={1}
                     renderLazyPlaceholder={() => (
-                        <View>
+                        <View style={{height: 500, width: "100%"}}>
                             <LoadingIcon />
                         </View>
                         )

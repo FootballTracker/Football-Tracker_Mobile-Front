@@ -46,4 +46,6 @@ function MatchStatistcs({ match, home_team, away_team } : MatchStatisticsProps) 
     )
 }
 
-export default memo(MatchStatistcs);
+export default memo(MatchStatistcs, (prevProps, nextProps) => {
+    return prevProps.match === nextProps.match
+});

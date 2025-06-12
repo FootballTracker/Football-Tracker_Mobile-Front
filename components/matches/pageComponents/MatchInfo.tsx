@@ -27,7 +27,7 @@ function MatchInfo({ referee, venue, city, status, matchTime, league, leagueLogo
                 <SingleInfo infoName="Estádio" info={venue}/>
                 <SingleInfo infoName="Cidade" info={city}/>
                 <SingleInfo infoName="Status" info={status}/>
-                <SingleInfo infoName="Tempo de Partida" info={matchTime}/>
+                <SingleInfo infoName="Tempo de Partida" info={`${matchTime} min`}/>
             </Section>
 
             <Section text="Liga" icon={{IconComponent: MaterialCommunityIcons, name: 'information'}}>

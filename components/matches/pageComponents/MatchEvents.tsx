@@ -153,7 +153,9 @@ function MatchEvents({ match } : MatchEventsProps) {
     )
 }
 
-export default memo(MatchEvents);
+export default memo(MatchEvents, (prevProps, nextProps) => {
+    return prevProps.match === nextProps.match
+});
 
 const eventsMock : MinuteEvent[] = [
     {
