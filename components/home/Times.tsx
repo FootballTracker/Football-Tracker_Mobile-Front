@@ -27,13 +27,6 @@ export type team = {
 
 export default function Times() {
     const { loading, getTeams } = useItemsContext();
-    const [reloading, setReloading] = useState(false);
-
-    async function onReload() {
-        setReloading(true);
-        await getTeams();
-        setReloading(false);
-    }
 
     async function searchTeams() {
         
@@ -41,20 +34,16 @@ export default function Times() {
 
     return (
         !loading ? (
-            <ThemedScrollView style={styles.background} getData={onReload}>
-                {!reloading && (
-                    <>
-                        <SearchBar handleSearch={searchTeams}/>
+            <ThemedScrollView style={styles.background} getData={getTeams}>
+                <SearchBar handleSearch={searchTeams}/>
 
-                        <Section text='Favorito' icon={{IconComponent: FilledStar, width: 27, height: 27}} iconUp >
-                            <FavoriteTeams />
-                        </Section>
+                <Section text='Favorito' icon={{IconComponent: FilledStar, width: 27, height: 27}} iconUp >
+                    <FavoriteTeams />
+                </Section>
 
-                        <Section text='Principais' icon={{IconComponent: FontAwesome5, name: 'crown', size: 20}} style={{marginBottom: 50}} iconUp >
-                            <MainTeams />
-                        </Section>
-                    </>
-                )}
+                <Section text='Principais' icon={{IconComponent: FontAwesome5, name: 'crown', size: 20}} style={{marginBottom: 50}} iconUp >
+                    <MainTeams />
+                </Section>
             </ThemedScrollView>
         ) : (
             <LoadingIcon />
