@@ -79,15 +79,15 @@ interface MatchI {
     statistics: {
         home_team: TeamStatistics;
         away_team: TeamStatistics;
-    },
+    } | null,
 }
 
 export default function Match() {
     const { matchId } = useLocalSearchParams();
-    const [contentLoaded, setContentLoaded] = useState(true);
+    const [contentLoaded, setContentLoaded] = useState(false);
     const [index, setIndex] = useState(0); //initial route index
-    const [match, setMatch] = useState<MatchI>(data);
-    const [result, setResult] = useState<number | undefined>(2);
+    const [match, setMatch] = useState<MatchI>();
+    const [result, setResult] = useState<number>();
     
     //routes to render
     const [routes] = useState([
@@ -103,11 +103,11 @@ export default function Match() {
 
         switch (route.key) {
             case 'informacoes':
-                return <MatchInfo {...data.info}/>;
+                return <MatchInfo {...match.info}/>;
             case 'estatisticas':
-                return <MatchStatistcs match={data.match} home_team={data.statistics.home_team} away_team={data.statistics.away_team} />;
+                return <MatchStatistcs match={match.match} home_team={match.statistics ? match.statistics.home_team : undefined} away_team={match.statistics ? match.statistics.away_team : undefined} />;
             case 'eventos':
-                return <MatchEvents match={data.match} />;
+                return <MatchEvents match={match.match} />;
             case 'escalacoes':
                 return <MatchLineup matchId={matchId.toString()}/>;
             default:
@@ -117,14 +117,11 @@ export default function Match() {
 
     //search match
     useEffect(() => {
-        // getMatch();
+        getMatch();
     }, []);
 
     async function getMatch() {
-        await api.get('match', {
-            params: {
-                match_id: Number(matchId)
-            }}
+        await api.get(`match/${matchId}`
         ).then((response: AxiosResponse<MatchI>) => {
             setMatch(response.data);
             setResult(response.data.match.home_team.score == response.data.match.away_team.score ? 1 : Number(response.data.match.home_team.score) > Number(response.data.match.away_team.score) ? 0 : 2);

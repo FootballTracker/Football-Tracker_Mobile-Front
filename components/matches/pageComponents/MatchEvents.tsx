@@ -51,8 +51,8 @@ export type MinuteEvent = {
 function MatchEvents({ match } : MatchEventsProps) {
     const { theme } = useTheme();
     const { matchId } = useLocalSearchParams();
-    const [contentLoaded, setContentLoaded] = useState(true);
-    const [events, setEvents] = useState<MinuteEvent[]>(eventsMock);
+    const [contentLoaded, setContentLoaded] = useState(false);
+    const [events, setEvents] = useState<MinuteEvent[]>();
 
     useEffect(() => {
         // getEvents();
@@ -60,14 +60,11 @@ function MatchEvents({ match } : MatchEventsProps) {
 
     //Temporário, apenas enquanto ainda n ta buscando os dados do back
     useEffect(() => {
-        setEvents(eventsMock);
-    }, [eventsMock])
+        getEvents();
+    }, [])
 
     async function getEvents() {
-        await api.get('events', {
-            params: {
-                match_id: Number(matchId)
-            }}
+        await api.get(`match/${matchId}/events`
         ).then((response: AxiosResponse<MinuteEvent[]>) => {
             setEvents(response.data);
         }).catch((e: any) => {
@@ -130,7 +127,7 @@ function MatchEvents({ match } : MatchEventsProps) {
                             <View style={[styles.backgroundLine, styles.bottomLine]}></View>
                         </View>
                         
-                        {events.map((event, index) => (
+                        {events && events.map((event, index) => (
                             <EventLine
                                 time={event.time}
                                 home_team={event.home_team}
