@@ -76,7 +76,7 @@ export default function Cadastro() {
                             <FormInput placeHolder="Email" name="email" control={control} errors={errors} />
                             <FormInput placeHolder="Senha" name="password" control={control} errors={errors} isPassword={true} />
                             <FormInput placeHolder="Confirmar Senha" name="confirmPassword" control={control} errors={errors} isPassword={true} />
-                            <ThemedButton style={{width: '100%'}} IconComponent={{Icon: Feather, name: 'plus', size: 25}} backgroundMidnightcolor={Colors.dark.Green} textColor="LightBackground" title="Cadastrar" handleClick={handleSubmit(handleForm)} />
+                            <ThemedButton style={{width: '100%'}} IconComponent={{Icon: Feather, name: 'plus', size: 25}} textColor="LightBackground" title="Cadastrar" handleClick={handleSubmit(handleForm)} />
                         </View>
 
                         <ThemedText style={[styles.loginText]}>

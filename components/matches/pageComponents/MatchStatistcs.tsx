@@ -4,7 +4,7 @@ import { MatchCardI } from "../MatchCard";
 import { memo } from "react";
 
 //Components
-import { ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView } from "react-native";
 import { TeamsLogosInformation } from "../TeamsLogosInformation";
 import { ThemedText } from "@/components/DefaultComponents/ThemedText";
 import DoubleInfo from "@/components/DoubleInfo";
@@ -45,13 +45,5 @@ function MatchStatistcs({ match, home_team, away_team } : MatchStatisticsProps) 
         </ScrollView>
     )
 }
-
-const styles = StyleSheet.create({
-    container: {
-        width: '90%',
-        marginHorizontal: 'auto',
-        gap: 10,
-    },
-})
 
 export default memo(MatchStatistcs);

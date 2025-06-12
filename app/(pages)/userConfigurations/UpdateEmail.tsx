@@ -117,7 +117,7 @@ export default function UpdateEmail() {
                     <FormInput placeHolder="Senha" control={control} errors={errors} name="password" isPassword />
                     <ThemedText style={styles.infoText}><ThemedIcon IconComponent={Feather} name="info" size={15} /> Para alterar seu email, digite sua senha acima</ThemedText>
                 </View>
-                <ThemedButton IconComponent={{ Icon: Feather, name: "edit-3", size: 26 }} title="Confirmar" backgroundColor="Green" textColor="LightBackground" handleClick={handleSubmit(handleForm)} style={styles.deleteAccountButton} />
+                <ThemedButton IconComponent={{ Icon: Feather, name: "edit-3", size: 26 }} title="Confirmar" backgroundColor="Green" backgroundMidnightcolor="rgb(200, 200, 200)" textColor="LightBackground" handleClick={handleSubmit(handleForm)} style={styles.deleteAccountButton} />
             </ThemedView>
         </ScrollView>
     )
