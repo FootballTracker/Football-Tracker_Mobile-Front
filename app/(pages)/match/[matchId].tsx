@@ -109,7 +109,7 @@ export default function Match() {
             case 'eventos':
                 return <MatchEvents match={match.match} />;
             case 'escalacoes':
-                return <MatchLineup matchId={matchId.toString()}/>;
+                return <MatchLineup match={match.match}/>;
             default:
                 return null;
         }

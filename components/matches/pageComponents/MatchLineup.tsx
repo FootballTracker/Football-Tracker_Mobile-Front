@@ -3,6 +3,7 @@ import { memo, useEffect, useState } from "react";
 import Field from "@/assets/Icons/Field.svg";
 import Swap from "@/assets/Icons/Swap.svg";
 import { Colors } from "@/constants/Colors";
+import { MatchCardI } from "../MatchCard";
 
 import { ThemedText } from "@/components/DefaultComponents/ThemedText";
 import { ThemedScrollView } from "@/components/DefaultComponents/ThemedScrollView";
@@ -13,16 +14,10 @@ import Section from "@/components/Section";
 import Card from "@/components/Card";
 
 interface MatchLineupI {
-    matchId: string;
+    match: MatchCardI
 }
 
 interface Lineup {
-    team: {
-        id: string;
-        name: string;
-        logo: string;
-        formation: string;
-    };
     coach: {
         id: string;
         name: string;
@@ -45,7 +40,7 @@ interface FullLineup {
     away: Lineup
 }
 
-function MatchLineup({ matchId }: MatchLineupI) {
+function MatchLineup({ match }: MatchLineupI) {
 
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState(Lineups);
@@ -70,9 +65,9 @@ function MatchLineup({ matchId }: MatchLineupI) {
 
                     <View style={{width: "100%"}}>
                         <View style={styles.coachesHeader}>
-                            <Image source={{uri: data.home.team.logo}} width={25} height={35} resizeMode="contain"/>
+                            <Image source={{uri: match.home_team.logo}} width={25} height={35} resizeMode="contain"/>
                             <ThemedText style={{fontSize: 20}}>Treinador</ThemedText>
-                            <Image source={{uri: data.away.team.logo}} width={25} height={35} resizeMode="contain"/>
+                            <Image source={{uri: match.away_team.logo}} width={25} height={35} resizeMode="contain"/>
                         </View>
 
                         <ThemedView darkColor={Colors.dark.Red} lightColor={Colors.light.Red} style={styles.divisor}/>
@@ -133,16 +128,16 @@ function MatchLineup({ matchId }: MatchLineupI) {
 
                     <View style={styles.teamsSelectView}>
                         <Pressable style={[styles.teamSelectOption, selectedTeam === 1 && {opacity: 0.4}]} onPress={() => setSelectedTeam(0)}>
-                            <Image source={{uri: data.home.team.logo}} width={28} height={35} resizeMode="contain"/>
+                            <Image source={{uri: match.home_team.logo}} width={28} height={35} resizeMode="contain"/>
                             <ThemedText lightColor={Colors.light.Text} darkColor={Colors.dark.Text} style={{width: "80%", textAlign: "center", fontSize: 13}} numberOfLines={1} ellipsizeMode="tail">
-                                {data.home.team.name}
+                                {match.home_team.name}
                             </ThemedText>
                         </Pressable>
 
                         <Pressable style={[styles.teamSelectOption, selectedTeam === 0 && {opacity: 0.4}]} onPress={() => setSelectedTeam(1)}>
-                            <Image source={{uri: data.away.team.logo}} width={28} height={35} resizeMode="contain"/>
+                            <Image source={{uri: match.away_team.logo}} width={28} height={35} resizeMode="contain"/>
                             <ThemedText lightColor={Colors.light.Text} darkColor={Colors.dark.Text} style={{width: "80%", textAlign: "center", fontSize: 13}} numberOfLines={1} ellipsizeMode="tail">
-                                {data.away.team.name}
+                                {match.away_team.name}
                             </ThemedText>
                         </Pressable>
                     </View>
@@ -178,7 +173,7 @@ function MatchLineup({ matchId }: MatchLineupI) {
 }
 
 export default memo(MatchLineup, (prevProps, nextProps) => {
-    return prevProps.matchId === nextProps.matchId
+    return prevProps.match.id === nextProps.match.id
 });
 
 const styles = StyleSheet.create(({
@@ -256,12 +251,6 @@ const styles = StyleSheet.create(({
 
 const Lineups: FullLineup = {
     home: {
-        team: {
-            id: "1062",
-            name: "Atletico-MG",
-            formation: "4-1-4-1",
-            logo: "https://media.api-sports.io/football/teams/1062.png"
-        },
         coach: {
             id: "2417",
             name: "Cuca",
@@ -353,12 +342,6 @@ const Lineups: FullLineup = {
         ]
     },
     away: {
-        team: {
-            id: "151",
-            name: "Goias",
-            formation: "",
-            logo: "https://media.api-sports.io/football/teams/151.png"
-        },
         coach: {
             id: "3054",
             name: "Jair Ventura",
