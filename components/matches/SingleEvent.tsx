@@ -22,11 +22,12 @@ export function SingleEvent({ player, assist, type, detail, comments, reverse=fa
         return (
             <View style={[styles.eventBox, reverse && {alignItems: 'flex-end'}]}>
                 <View style={[styles.itemText, reverse && {flexDirection: 'row-reverse'}]}>
-                    <ThemedText style={[styles.text, styles.title]} colorName="Green" onPress={() => {accessPlayer(player.id)}}>Gol de {player.name}</ThemedText>
+                    <ThemedText style={[styles.text, styles.title]} colorName="Green" onPress={() => {accessPlayer(player.id)}}>Gooooooool</ThemedText>
                     <ThemedIcon IconComponent={Ionicons} name="football-outline" size={21} colorName="Green" style={!reverse && {transform: [{scaleX: -1}]}}/>
                 </View>
 
-                {assist.name != null && <ThemedText style={styles.text} colorName="DarkerText" onPress={() => {accessPlayer(assist.id)}}>Assistência: {assist.name}</ThemedText>}
+                <ThemedText style={[styles.text, reverse && {textAlign: 'right'}]} colorName="DarkerText" onPress={() => {accessPlayer(player.id)}}>De: {player.name}</ThemedText>
+                {assist.name != null && <ThemedText style={[styles.text, reverse && {textAlign: 'right'}]} colorName="DarkerText" onPress={() => {accessPlayer(assist.id)}}>Assistência: {assist.name}</ThemedText>}
                 {detail == 'Own Goal' && <ThemedText style={styles.text} colorName="DarkerText">Gol Contra</ThemedText>}
                 {comments == 'Penalty' && <ThemedText style={styles.text} colorName="DarkerText">Pênalti</ThemedText>}
             </View>
