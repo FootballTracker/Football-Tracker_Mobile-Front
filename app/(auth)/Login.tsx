@@ -1,15 +1,15 @@
 //Default Imports
-import { StyleSheet, View, Dimensions, ScrollView } from "react-native";
+import { StyleSheet, View, Dimensions, ScrollView, Animated, Keyboard, KeyboardEvent } from "react-native";
 import Feather from '@expo/vector-icons/Feather';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { router } from 'expo-router';
 import { Ionicons } from "@expo/vector-icons";
+import { useEffect, useRef, useState } from "react";
 import { Colors } from "@/constants/Colors";
 import api from "@/lib/Axios";
 import { useUserContext } from "@/context/UserContext";
-import Animated, { useAnimatedKeyboard, useAnimatedStyle } from 'react-native-reanimated';
 
 
 //Components
@@ -33,15 +33,33 @@ type userData = z.infer<typeof userData>
 
 export default function Login() {
     const { login } = useUserContext();
-    const keyboard = useAnimatedKeyboard({isStatusBarTranslucentAndroid: true});
+    const [keyboardHeight, setKeyboardHeight] = useState(0);
+    const translateAnim = useRef(new Animated.Value(0)).current;
     
     const { control, handleSubmit, formState: {errors} } = useForm<userData>({
-    resolver: zodResolver(userData)
+        resolver: zodResolver(userData)
     });
 
-    const animatedStyles = useAnimatedStyle(() => ({
-        transform: [{ translateY: -keyboard.height.value}],
-    }));
+    useEffect(() => {
+        const showSubscription = Keyboard.addListener('keyboardDidShow', (event: KeyboardEvent) => {
+            setKeyboardHeight(event.endCoordinates.height);
+        });
+
+        const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
+            setKeyboardHeight(0);
+        });
+
+        return () => {
+            showSubscription.remove();
+            hideSubscription.remove();
+        };
+    }, []);
+
+    Animated.timing(translateAnim, {
+        toValue: -keyboardHeight,
+        duration: 150,
+        useNativeDriver: true,
+    }).start();
 
     const handleForm = async ({user, password}:userData) => {
         await api.post('auth/signin', {
@@ -60,7 +78,9 @@ export default function Login() {
 
     return (
         <ScrollView keyboardShouldPersistTaps="handled">
-            <Animated.View style={animatedStyles}>
+            <ThemedView style={{position: 'absolute', width: '100%', height: '100%'}} />
+
+            <Animated.View style={{transform: [{translateY: translateAnim}]}}>
                 <ThemedView style={styles.background}>
                     <View style={{display: 'flex', flexDirection: "row", marginLeft: 5, position: 'absolute', top: 20}}>
                         <ReturnArrow />
