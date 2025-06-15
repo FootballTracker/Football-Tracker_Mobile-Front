@@ -173,7 +173,7 @@ function LigaClassificacao({ season, leagueId, leagueName }: LigaClassificacaoPr
                 <>
                     <ThemedView colorName='Transparent' style={{position: 'absolute', height: 115, width: '100%', zIndex: 1}}/>
 
-                    <Animated.ScrollView ref={scrollRef} stickyHeaderIndices={[0]} scrollEventThrottle={16} onScroll={onScrollHandler} contentContainerStyle={styles.content} onScrollEndDrag={handleValidScrollPoints}>
+                    <Animated.ScrollView ref={scrollRef} stickyHeaderIndices={[0]} scrollEventThrottle={16} onScroll={onScrollHandler} contentContainerStyle={styles.content} onMomentumScrollEnd={handleValidScrollPoints}>
                         <Animated.View style={{pointerEvents: 'none'}}>
                             <ThemedView style={{position: 'absolute', height: 115, width: '100%'}}/>
 
