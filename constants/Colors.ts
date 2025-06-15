@@ -35,7 +35,8 @@ export const Colors = {
         Green: '#5D9142',
         ButtonText: '#E2E5EB',
         BorderColor: '#000',
-        Yellow: 'rgb(182, 149, 31)'
+        Yellow: 'rgb(182, 149, 31)',
+        Transparent: 'rgba(0, 0, 0, 0)'
     },
     dark: {
         DarkBackground: '#191A1C',
@@ -48,7 +49,8 @@ export const Colors = {
         Green: '#6DA152',
         ButtonText: '#E2E5EB',
         BorderColor: '#000',
-        Yellow:'rgb(182, 149, 31)'
+        Yellow:'rgb(182, 149, 31)',
+        Transparent: 'rgba(0, 0, 0, 0)'
     },
     midnight: {
         DarkBackground: '#0a0a0a',
@@ -62,6 +64,7 @@ export const Colors = {
         Green: '#6DA152',
         ButtonText: '#E2E5EB',
         BorderColor: '#000',
-        Yellow: 'rgb(182, 149, 31)'
+        Yellow: 'rgb(182, 149, 31)',
+        Transparent: 'rgba(0, 0, 0, 0)'
     },
 };

@@ -2,6 +2,7 @@ import { Text, type TextProps, StyleSheet } from 'react-native';
 
 import { useThemeColor } from '@/hooks/useThemeColor';
 import { Colors } from '@/constants/Colors';
+import { Animated } from 'react-native';
 
 export type ThemedTextProps = TextProps & {
     lightColor?: string;
@@ -23,7 +24,7 @@ export function ThemedText({
   const color = useThemeColor({ light: lightColor, dark: darkColor, midnight: midnightColor }, colorName);
 
   return (
-    <Text
+    <Animated.Text
       style={[
         { color },
         type === 'default' ? styles.default : undefined,

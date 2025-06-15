@@ -15,9 +15,6 @@ const windowWidth = Dimensions.get('window').width;
 export default function LeagueTable({ teams, ...rest }: LeagueTableProps & ViewProps) {
     return (
         <View style={[styles.table, rest.style]}>
-            <ThemedText style={styles.tableText}>Tabela de Classificação</ThemedText>
-            <ThemedView darkColor={Colors.dark.Red} lightColor={Colors.light.Red} style={styles.divisor} />
-
             <ThemedScrollView showsVerticalScrollIndicator={false} style={{ width: '100%' }}>
                 {teams.map((team, index) => (
                     <LeagueTableItem {...team} key={index}/>
@@ -32,11 +29,6 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         width: windowWidth*0.9,
         marginHorizontal: 'auto',
-    },
-    tableText: {
-        textAlign: 'center',
-        marginBottom: 3,
-        fontSize: 17,
     },
     header: {
         flexDirection: "row",
@@ -59,12 +51,5 @@ const styles = StyleSheet.create({
         width: 25,
         textAlign: "center",
         fontFamily: "Karla"
-    },
-    divisor: {
-        marginTop: 3,
-        height: .6,
-        width: "102%",
-        marginLeft: "-1%"
-        // bottom: 3
     },
 });

@@ -2,6 +2,8 @@
 import { LeagueTableItemProps } from '../table/LeagueTableItem';
 import { useEffect, useState, memo, useRef } from 'react';
 import { Animated, StyleSheet } from 'react-native';
+import { useTheme } from '@/context/ThemeContext';
+import { Colors } from '@/constants/Colors';
 import api from "@/lib/Axios"
 
 //Components
@@ -22,6 +24,8 @@ interface LigaClassificacaoProps {
 function LigaClassificacao({ season, leagueId, leagueName }: LigaClassificacaoProps) {
     const [classi, setClassi] = useState<LeagueTableItemProps[] | null>(null);
     const scrollY = useRef(new Animated.Value(0)).current;
+    const { theme } = useTheme();
+    const animationHeight = 110;
 
     useEffect(() => {
         getClassi();
@@ -39,50 +43,125 @@ function LigaClassificacao({ season, leagueId, leagueName }: LigaClassificacaoPr
         }
     }
 
-    const animatedHeaderOpacity = scrollY.interpolate({
-        inputRange: [0, 130],
-        outputRange: [1, 0],
+    const animatedLeagueTextTranslateY = scrollY.interpolate({
+        inputRange: [0, animationHeight],
+        outputRange: [0, 57],
+        extrapolate: 'clamp',
+    });
+
+    const animatedLeagueTextTranslateX = scrollY.interpolate({
+        inputRange: [0, animationHeight],
+        outputRange: [0, 120],
+        extrapolate: 'clamp',
+    });
+
+    const animatedTeamTextTranslateY = scrollY.interpolate({
+        inputRange: [0, animationHeight],
+        outputRange: [0, -50],
+        extrapolate: 'clamp',
+    });
+
+    const animatedTeamTextTranslateX = scrollY.interpolate({
+        inputRange: [0, animationHeight],
+        outputRange: [0, 70],
+        extrapolate: 'clamp',
+    });
+
+    const animatedTextFontScale = scrollY.interpolate({
+        inputRange: [0, animationHeight],
+        outputRange: [1, 0.8],
+        extrapolate: 'clamp',
+    });
+    
+    const animatedImageScale = scrollY.interpolate({
+        inputRange: [0, animationHeight],
+        outputRange: [1, .5],
+        extrapolate: 'clamp',
+    });
+
+    const animatedHeaderTranslateX = scrollY.interpolate({
+        inputRange: [0, animationHeight],
+        outputRange: [0, -150],
         extrapolate: 'clamp',
     });
 
     const animatedHeaderTranslateY = scrollY.interpolate({
-        inputRange: [0, 150],
-        outputRange: [0, 150],
+        inputRange: [0, animationHeight],
+        outputRange: [0, -50],
         extrapolate: 'clamp',
     });
 
-    const animatedHeaderScale = scrollY.interpolate({
-        inputRange: [0, 180],
-        outputRange: [1, 0],
+    const animatedTableHeaderTranslateY = scrollY.interpolate({
+        inputRange: [0, animationHeight],
+        outputRange: [0, -110],
         extrapolate: 'clamp',
     });
 
     const animatedStyles = StyleSheet.create({
         header: {
             transform: [
-                {scale: animatedHeaderScale},
-                {translateY: animatedHeaderTranslateY}
+                {translateX: animatedHeaderTranslateX},
+                {translateY: animatedHeaderTranslateY},
             ],
-            opacity: animatedHeaderOpacity,
-        }
+        },
+        image: {
+            transform: [
+                {scale: animatedImageScale},
+            ],
+        },
+        leagueName: {
+            transform: [
+                {translateY: animatedLeagueTextTranslateY},
+                {translateX: animatedLeagueTextTranslateX},
+                {scale: animatedTextFontScale},
+            ],
+        },
+        teamName: {
+            transform: [
+                {translateY: animatedTeamTextTranslateY},
+                {translateX: animatedTeamTextTranslateX},
+                {scale: animatedTextFontScale},
+            ],
+        },
+        tableHeader: {
+            transform: [
+                {translateY: animatedTableHeaderTranslateY},
+            ],
+        },
     });
+
+    const onScrollHandler = Animated.event(
+        [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+        { useNativeDriver: true }
+    );
 
     return (
         <ThemedView style={{flex: 1}}>
             {classi && classi.length ? (
-                <Animated.ScrollView scrollEventThrottle={16} onScroll={Animated.event([{nativeEvent: {contentOffset: {y: scrollY}}}], { useNativeDriver: true})} contentContainerStyle={styles.content}>
-                    <Animated.View style={[styles.winnerContainer, animatedStyles.header]}>
-                        <ThemedText style={styles.winnerLeagueText}> Vencedor {leagueName} - {season} </ThemedText>
-                        <Animated.Image
-                            source={{ uri: classi[0].teamLogo }}
-                            resizeMode="contain"
-                            style={styles.winnerImage}
-                        />
-                        <ThemedText style={styles.winnerName}> {classi[0].teamName} </ThemedText>
-                    </Animated.View>
+                <>
+                    <ThemedView colorName='Transparent' style={{position: 'absolute', height: 115, width: '100%', zIndex: 1}}/>
+                    <Animated.ScrollView stickyHeaderIndices={[0]} scrollEventThrottle={16} onScroll={onScrollHandler} contentContainerStyle={styles.content}>
+                        <Animated.View style={{pointerEvents: 'none'}}>
+                            <ThemedView style={{position: 'absolute', height: 115, width: '100%'}}/>
 
-                    <LeagueTable teams={classi} />
-                </Animated.ScrollView>
+                            <View style={styles.winnerContainer}>
+                                <Animated.View style={[{alignItems: 'center'}, animatedStyles.header]} >
+                                    <ThemedText style={[styles.winnerLeagueText, animatedStyles.leagueName]}> Vencedor {leagueName} - {season} </ThemedText>
+                                    <Animated.Image source={{ uri: classi[0].teamLogo }} resizeMode="contain" style={[styles.winnerImage, animatedStyles.image]} />
+                                    <ThemedText style={[styles.winnerName, animatedStyles.teamName]}> {classi[0].teamName} </ThemedText>
+                                </Animated.View>
+
+                                <Animated.View style={[animatedStyles.tableHeader, styles.tableHeader, {borderColor: Colors[theme].Red, marginTop: 12}]}>
+                                    <ThemedView style={{zIndex: 2}}>
+                                        <ThemedText style={styles.tableTitle}>Tabela de Classificação</ThemedText>
+                                    </ThemedView>
+                                </Animated.View>
+                            </View>
+                        </Animated.View>
+
+                        <LeagueTable teams={classi} />
+                    </Animated.ScrollView>
+                </>
             ) : (
                 <View style={{ height: 50 }}>
                     <LoadingIcon />
@@ -97,11 +176,10 @@ const styles = StyleSheet.create({
         paddingBottom: 40,
     },
     winnerContainer: {
+        width: '90%',
+        marginHorizontal: 'auto',
+        paddingTop: 30,
         alignItems: 'center',
-        justifyContent: 'center',
-        marginTop: 30,
-        marginBottom: 25,
-        transformOrigin: 'center'
     },
     winnerLeagueText: {
         fontFamily: "Kokoro",
@@ -112,12 +190,28 @@ const styles = StyleSheet.create({
         marginTop: 5,
         fontFamily: "Kokoro",
         fontSize: 19,
+        marginBottom: 10,
     },
     winnerImage: {
         marginTop: 15,
         height: 90,
         width: 90,
-    }
+    },
+    divisor: {
+        marginTop: 3,
+        height: .6,
+        width: "102%",
+        marginLeft: "-1%"
+    },
+    tableTitle: {
+        textAlign: 'center',
+        paddingVertical: 6,
+        fontSize: 17,
+    },
+    tableHeader: {
+        width: '100%',
+        borderBottomWidth: .6,
+    },
 });
 
 export default memo(LigaClassificacao, (prevProps, nextProps) => {
