@@ -23,7 +23,9 @@ interface LigaClassificacaoProps {
 
 function LigaClassificacao({ season, leagueId, leagueName }: LigaClassificacaoProps) {
     const [classi, setClassi] = useState<LeagueTableItemProps[] | null>(null);
-    const scrollY = useRef(new Animated.Value(0)).current;
+    const scrollY = useRef<any>(new Animated.Value(0)).current;
+    const scrollValue = useRef(0);
+    const scrollRef = useRef<any>(null);
     const { theme } = useTheme();
     const animationHeight = 110;
 
@@ -135,12 +137,43 @@ function LigaClassificacao({ season, leagueId, leagueName }: LigaClassificacaoPr
         { useNativeDriver: true }
     );
 
+    const handleValidScrollPoints = () => {
+        console.log(scrollValue.current);
+        
+        if (scrollValue.current <= 60) {
+            console.log('sobe');
+            scrollRef.current?.scrollTo({
+                y: 0,
+                animated: true,
+            });
+        }
+
+        else if(scrollValue.current <= 110) {
+            console.log('desce');
+            scrollRef.current?.scrollTo({
+                y: 110,
+                animated: true,
+            });
+        }
+    };
+
+    useEffect(() => {
+        const listenerId = scrollY.addListener((v: any) => {
+            scrollValue.current = v.value;
+        });
+
+        return () => {
+            scrollY.removeListener(listenerId);
+        };
+    }, [scrollY]);
+
     return (
         <ThemedView style={{flex: 1}}>
             {classi && classi.length ? (
                 <>
                     <ThemedView colorName='Transparent' style={{position: 'absolute', height: 115, width: '100%', zIndex: 1}}/>
-                    <Animated.ScrollView stickyHeaderIndices={[0]} scrollEventThrottle={16} onScroll={onScrollHandler} contentContainerStyle={styles.content}>
+
+                    <Animated.ScrollView ref={scrollRef} stickyHeaderIndices={[0]} scrollEventThrottle={16} onScroll={onScrollHandler} contentContainerStyle={styles.content} onScrollEndDrag={handleValidScrollPoints}>
                         <Animated.View style={{pointerEvents: 'none'}}>
                             <ThemedView style={{position: 'absolute', height: 115, width: '100%'}}/>
 
@@ -197,12 +230,6 @@ const styles = StyleSheet.create({
         height: 90,
         width: 90,
     },
-    divisor: {
-        marginTop: 3,
-        height: .6,
-        width: "102%",
-        marginLeft: "-1%"
-    },
     tableTitle: {
         textAlign: 'center',
         paddingVertical: 6,
@@ -215,5 +242,5 @@ const styles = StyleSheet.create({
 });
 
 export default memo(LigaClassificacao, (prevProps, nextProps) => {
-  return prevProps.season === nextProps.season;
+    return prevProps.season === nextProps.season;
 });
