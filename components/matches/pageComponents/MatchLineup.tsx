@@ -4,6 +4,7 @@ import Field from "@/assets/Icons/Field.svg";
 import Swap from "@/assets/Icons/Swap.svg";
 import { Colors } from "@/constants/Colors";
 import { MatchCardI } from "../MatchCard";
+import api from "@/lib/Axios";
 
 import { ThemedText } from "@/components/DefaultComponents/ThemedText";
 import { ThemedScrollView } from "@/components/DefaultComponents/ThemedScrollView";
@@ -43,7 +44,7 @@ interface FullLineup {
 function MatchLineup({ match }: MatchLineupI) {
 
     const [loading, setLoading] = useState(true);
-    const [data, setData] = useState(Lineups);
+    const [data, setData] = useState<FullLineup>();
     const [selectedTeam, setSelectedTeam] = useState<number>(0);
 
     useEffect(() => {
@@ -55,117 +56,131 @@ function MatchLineup({ match }: MatchLineupI) {
     }
 
     async function getData() {
-        setLoading(false);
+        await api.get(`match/${match.id}/lineups`)
+        .then((response) => {
+            setData(response.data);
+        }).catch((e) => {
+            if(e.response.data.detail) alert(e.response.data.detail);
+            else alert('Erro ao buscar escalações.');
+        }).finally(() => {
+            setLoading(false);
+        });
     }
 
     return (
         !loading ? (
-            <ThemedScrollView style={{flex: 1}}>
-                <View style={styles.container}>
+            data ? (
+                <ThemedScrollView style={{flex: 1}}>
+                    <View style={styles.container}>
+                        
+                        <View style={{width: "100%"}}>
+                            <View style={styles.coachesHeader}>
+                                <Image source={{uri: match.home_team.logo}} width={25} height={35} resizeMode="contain"/>
+                                <ThemedText style={{fontSize: 20}}>Treinador</ThemedText>
+                                <Image source={{uri: match.away_team.logo}} width={25} height={35} resizeMode="contain"/>
+                            </View>
 
-                    <View style={{width: "100%"}}>
-                        <View style={styles.coachesHeader}>
-                            <Image source={{uri: match.home_team.logo}} width={25} height={35} resizeMode="contain"/>
-                            <ThemedText style={{fontSize: 20}}>Treinador</ThemedText>
-                            <Image source={{uri: match.away_team.logo}} width={25} height={35} resizeMode="contain"/>
+                            <ThemedView darkColor={Colors.dark.Red} lightColor={Colors.light.Red} style={styles.divisor}/>
+
+                            <View style={styles.coachesView}>
+                                <View style={styles.coachImageAndName}>
+                                    {data.home.coach.image !== "" && <Image source={{uri: data.home.coach.image}} width={30} height={30} resizeMode="contain" borderRadius={5}/>}
+                                    <ThemedText numberOfLines={1} ellipsizeMode='tail' style={{width: "70%", fontSize: 14, }}>{data.home.coach.name}</ThemedText>
+                                </View>
+                                <View style={[styles.coachImageAndName, {justifyContent: "flex-end"}]}>
+                                    <ThemedText numberOfLines={1} ellipsizeMode='tail' style={{width: "70%", fontSize: 14,  textAlign: "right"}}>{data.away.coach.name}</ThemedText>
+                                    {data.away.coach.image !== "" && <Image source={{uri: data.away.coach.image}} width={30} height={30} resizeMode="contain" borderRadius={5}/>}
+                                </View>
+                            </View>
                         </View>
 
-                        <ThemedView darkColor={Colors.dark.Red} lightColor={Colors.light.Red} style={styles.divisor}/>
 
-                        <View style={styles.coachesView}>
-                            <View style={styles.coachImageAndName}>
-                                <Image source={{uri: data.home.coach.image}} width={30} height={30} resizeMode="contain" borderRadius={5}/>
-                                <ThemedText numberOfLines={1} ellipsizeMode='tail' style={{width: "70%", fontSize: 14, }}>{data.home.coach.name}</ThemedText>
+                        <View style={{position: 'relative', top: 5}}>
+                            <View style={styles.fieldPlayers}>
+                                <View style={styles.lineup}>
+                                    {data.home.initial.map((line, index) => (
+                                        <View style={styles.line} key={index}>
+                                            {line.map((player) => (
+                                                <Pressable key={player.id} onPress={() => accessPlayer(player.id)}>
+                                                    <View style={styles.player}>
+                                                        <Image source={{uri: `https://media.api-sports.io/football/players/${player.id}.png`}} width={31} height={31} style={{borderRadius: 100}}/>
+                                                        <ThemedText lightColor={Colors.light.DarkerText} darkColor={Colors.dark.DarkerText} midnightColor={Colors.midnight.DarkerText} style={styles.playerNumber}>{player.number}</ThemedText>
+                                                    </View>
+                                                </Pressable>
+                                            ))}
+                                        </View>
+                                    ))}
+                                </View>
+                                <View style={styles.lineup}>
+                                    {data.away.initial.map((line, index) => (
+                                        <View style={styles.line} key={index}>
+                                            {line.map((player) => (
+                                                <Pressable key={player.id} onPress={() => accessPlayer(player.id)}>
+                                                    <View style={styles.player}>
+                                                        <Image source={{uri: `https://media.api-sports.io/football/players/${player.id}.png`}} width={31} height={31} style={{borderRadius: 100}}/>
+                                                        <ThemedText lightColor={Colors.light.DarkerText} darkColor={Colors.dark.DarkerText} midnightColor={Colors.midnight.DarkerText} style={styles.playerNumber}>{player.number}</ThemedText>
+                                                    </View>
+                                                </Pressable>
+                                            ))}
+                                        </View>
+                                    ))}
+                                </View>
                             </View>
-                            <View style={[styles.coachImageAndName, {justifyContent: "flex-end"}]}>
-                                <ThemedText numberOfLines={1} ellipsizeMode='tail' style={{width: "70%", fontSize: 14,  textAlign: "right"}}>{data.away.coach.name}</ThemedText>
-                                <Image source={{uri: data.away.coach.image}} width={30} height={30} resizeMode="contain" borderRadius={5}/>
-                            </View>
+                            <Field strokeWidth={5} width={"100%"} height={"100%"} style={{position: "absolute", top: 0, left: 0}}/>
                         </View>
                     </View>
 
+                    <InfoMessage text="Clique em um jogador para ver suas estatísticas na partida." fontSize={12.5} style={{
+                        marginHorizontal: "auto"
+                    }}/>  
 
-                    <View style={{position: 'relative', top: 5}}>
-                        <View style={styles.fieldPlayers}>
-                            <View style={styles.lineup}>
-                                {data.home.initial.map((line, index) => (
-                                    <View style={styles.line} key={index}>
-                                        {line.map((player) => (
-                                            <Pressable key={player.id} onPress={() => accessPlayer(player.id)}>
-                                                <View style={styles.player}>
-                                                    <Image source={{uri: `https://media.api-sports.io/football/players/${player.id}.png`}} width={31} height={31} style={{borderRadius: 100}}/>
-                                                    <ThemedText lightColor={Colors.light.DarkerText} darkColor={Colors.dark.DarkerText} midnightColor={Colors.midnight.DarkerText} style={styles.playerNumber}>{player.number}</ThemedText>
-                                                </View>
-                                            </Pressable>
-                                        ))}
-                                    </View>
-                                ))}
-                            </View>
-                            <View style={styles.lineup}>
-                                {data.away.initial.map((line, index) => (
-                                    <View style={styles.line} key={index}>
-                                        {line.map((player) => (
-                                            <Pressable key={player.id} onPress={() => accessPlayer(player.id)}>
-                                                <View style={styles.player}>
-                                                    <Image source={{uri: `https://media.api-sports.io/football/players/${player.id}.png`}} width={31} height={31} style={{borderRadius: 100}}/>
-                                                    <ThemedText lightColor={Colors.light.DarkerText} darkColor={Colors.dark.DarkerText} midnightColor={Colors.midnight.DarkerText} style={styles.playerNumber}>{player.number}</ThemedText>
-                                                </View>
-                                            </Pressable>
-                                        ))}
-                                    </View>
-                                ))}
-                            </View>
+                    <Section icon={{IconComponent: Swap, width: 25, height: 25, Stroke: true, strokeWidth: 5.5}} text="Substitutos" style={{marginBottom: 50, minHeight: 270}}>
+
+                        <View style={styles.teamsSelectView}>
+                            <Pressable style={[styles.teamSelectOption, selectedTeam === 1 && {opacity: 0.4}]} onPress={() => setSelectedTeam(0)}>
+                                <Image source={{uri: match.home_team.logo}} width={28} height={35} resizeMode="contain"/>
+                                <ThemedText lightColor={Colors.light.Text} darkColor={Colors.dark.Text} style={{width: "80%", textAlign: "center", fontSize: 13}} numberOfLines={1} ellipsizeMode="tail">
+                                    {match.home_team.name}
+                                </ThemedText>
+                            </Pressable>
+
+                            <Pressable style={[styles.teamSelectOption, selectedTeam === 0 && {opacity: 0.4}]} onPress={() => setSelectedTeam(1)}>
+                                <Image source={{uri: match.away_team.logo}} width={28} height={35} resizeMode="contain"/>
+                                <ThemedText lightColor={Colors.light.Text} darkColor={Colors.dark.Text} style={{width: "80%", textAlign: "center", fontSize: 13}} numberOfLines={1} ellipsizeMode="tail">
+                                    {match.away_team.name}
+                                </ThemedText>
+                            </Pressable>
                         </View>
-                        <Field strokeWidth={5} width={"100%"} height={"100%"} style={{position: "absolute", top: 0, left: 0}}/>
-                    </View>
-                </View>
 
-                <InfoMessage text="Clique em um jogador para ver suas estatísticas na partida." fontSize={12.5} style={{
-                    marginHorizontal: "auto"
+                        {selectedTeam === 0 ? 
+                            data.home.substitutes.map((sub) => (
+                                <Card
+                                    handleOpen={() => accessPlayer(sub.id)}
+                                    info={`${sub.name} - ${sub.number}`}
+                                    image={`https://media.api-sports.io/football/players/${sub.id}.png`}
+                                    key={sub.id}
+                                />
+                            ))
+                        :
+                            data.away.substitutes.map((sub) => (
+                                <Card
+                                    handleOpen={() => accessPlayer(sub.id)}
+                                    info={`${sub.name} - ${sub.number}`}
+                                    image={`https://media.api-sports.io/football/players/${sub.id}.png`}
+                                    show
+                                    key={sub.id}
+                                />
+                            ))
+                        }
+
+                    </Section>
+
+                </ThemedScrollView>
+            ) : (
+                <InfoMessage text="Escalações indisponíveis" fontSize={12.5} style={{
+                    marginHorizontal: "auto", marginTop: 40
                 }}/>  
-
-                <Section icon={{IconComponent: Swap, width: 25, height: 25, Stroke: true, strokeWidth: 5.5}} text="Substitutos" style={{marginBottom: 50, minHeight: 270}}>
-
-                    <View style={styles.teamsSelectView}>
-                        <Pressable style={[styles.teamSelectOption, selectedTeam === 1 && {opacity: 0.4}]} onPress={() => setSelectedTeam(0)}>
-                            <Image source={{uri: match.home_team.logo}} width={28} height={35} resizeMode="contain"/>
-                            <ThemedText lightColor={Colors.light.Text} darkColor={Colors.dark.Text} style={{width: "80%", textAlign: "center", fontSize: 13}} numberOfLines={1} ellipsizeMode="tail">
-                                {match.home_team.name}
-                            </ThemedText>
-                        </Pressable>
-
-                        <Pressable style={[styles.teamSelectOption, selectedTeam === 0 && {opacity: 0.4}]} onPress={() => setSelectedTeam(1)}>
-                            <Image source={{uri: match.away_team.logo}} width={28} height={35} resizeMode="contain"/>
-                            <ThemedText lightColor={Colors.light.Text} darkColor={Colors.dark.Text} style={{width: "80%", textAlign: "center", fontSize: 13}} numberOfLines={1} ellipsizeMode="tail">
-                                {match.away_team.name}
-                            </ThemedText>
-                        </Pressable>
-                    </View>
-
-                    {selectedTeam === 0 ? 
-                        data.home.substitutes.map((sub) => (
-                            <Card
-                                handleOpen={() => accessPlayer(sub.id)}
-                                info={`${sub.name} - ${sub.number}`}
-                                image={`https://media.api-sports.io/football/players/${sub.id}.png`}
-                                key={sub.id}
-                            />
-                        ))
-                    :
-                        data.away.substitutes.map((sub) => (
-                            <Card
-                                handleOpen={() => accessPlayer(sub.id)}
-                                info={`${sub.name} - ${sub.number}`}
-                                image={`https://media.api-sports.io/football/players/${sub.id}.png`}
-                                show
-                                key={sub.id}
-                            />
-                        ))
-                    }
-
-                </Section>
-
-            </ThemedScrollView>
+            )
         ) : (
             <LoadingIcon />
         )
