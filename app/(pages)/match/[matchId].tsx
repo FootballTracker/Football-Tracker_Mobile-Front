@@ -1,6 +1,6 @@
-import { Image, StyleSheet, View, Dimensions, Pressable } from 'react-native';
+import { Image, StyleSheet, View, Dimensions, Pressable, NativeSyntheticEvent, NativeScrollEvent, Animated } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Colors } from '@/constants/Colors';
 import { TabView } from 'react-native-tab-view';
 import api from '@/lib/Axios';
@@ -38,29 +38,6 @@ export interface TeamStatistics {
     passesPercentage: string;
 }
 
-// export interface Event {
-//     time: {
-//         elapsed: number,
-//         extra: number | null,
-//     },
-//     team: {
-//         id: string,
-//         name: string,
-//         logo: string,
-//     },
-//     player: {
-//         id: string,
-//         name: string,
-//     },
-//     assist: {
-//         id: string | null,
-//         name: string | null,
-//     },
-//     type: string,
-//     detail: string,
-//     comments: string | null,
-// }
-
 interface MatchI {
     match: MatchCardI;
     info: {
@@ -88,6 +65,118 @@ export default function Match() {
     const [index, setIndex] = useState(0); //initial route index
     const [match, setMatch] = useState<MatchI>();
     const [result, setResult] = useState<number>();
+
+    const animationDuration = 150;
+    const nativeDriver = true;
+
+    const defaultTeamLogoTranslateY = 0;
+    const changedTeamLogoTranslateY = -15;
+    const defaultLeftTeamLogoTranslateX = 0;
+    const changedLeftTeamLogoTranslateX = 35;
+    const defaultRightTeamLogoTranslateX = 0;
+    const changedRightTeamLogoTranslateX = -35;
+    const defaultReamLogoScale = 1;
+    const changedReamLogoScale = .8;
+    const defaultOpacity = 1;
+    const changedOpacity = 0;
+    const defaultResultTranslateY = 0;
+    const changedResultTranslateY = -25;
+    const defaultTabViewMarginTop = 80;
+    const changedTabViewMarginTop = 10;
+
+    const teamLogoTranslateY = useRef(new Animated.Value(defaultTeamLogoTranslateY)).current;
+    const leftTeamLogoTranslateX = useRef(new Animated.Value(defaultLeftTeamLogoTranslateX)).current;
+    const rightTeamLogoTranslateX = useRef(new Animated.Value(defaultRightTeamLogoTranslateX)).current;
+    const teamLogoScale = useRef(new Animated.Value(defaultReamLogoScale)).current;
+    const opacity = useRef(new Animated.Value(defaultOpacity)).current;
+    const resultTranslateY = useRef(new Animated.Value(defaultResultTranslateY)).current;
+    const tabViewMarginTop = useRef(new Animated.Value(defaultTabViewMarginTop)).current;
+
+    useEffect(() => {
+        if(index) {
+            Animated.parallel([
+                Animated.timing(teamLogoTranslateY, {
+                    toValue: changedTeamLogoTranslateY,
+                    duration: animationDuration,
+                    useNativeDriver: nativeDriver
+                }),
+                Animated.timing(leftTeamLogoTranslateX, {
+                    toValue: changedLeftTeamLogoTranslateX,
+                    duration: animationDuration,
+                    useNativeDriver: nativeDriver
+                }),
+                Animated.timing(rightTeamLogoTranslateX, {
+                    toValue: changedRightTeamLogoTranslateX,
+                    duration: animationDuration,
+                    useNativeDriver: nativeDriver
+                }),
+                Animated.timing(teamLogoScale, {
+                    toValue: changedReamLogoScale,
+                    duration: animationDuration,
+                    useNativeDriver: nativeDriver
+                }),
+                Animated.timing(opacity, {
+                    toValue: changedOpacity,
+                    duration: animationDuration,
+                    useNativeDriver: nativeDriver
+                }),
+                Animated.timing(resultTranslateY, {
+                    toValue: changedResultTranslateY,
+                    duration: animationDuration,
+                    useNativeDriver: nativeDriver
+                }),
+                Animated.timing(tabViewMarginTop, {
+                    toValue: changedTabViewMarginTop,
+                    duration: animationDuration,
+                    useNativeDriver: nativeDriver
+                }),
+            ]).start();
+        }
+        else {
+            Animated.parallel([
+                Animated.timing(teamLogoTranslateY, {
+                    toValue: defaultTeamLogoTranslateY,
+                    duration: animationDuration,
+                    useNativeDriver: nativeDriver
+                }),
+                Animated.timing(leftTeamLogoTranslateX, {
+                    toValue: defaultLeftTeamLogoTranslateX,
+                    duration: animationDuration,
+                    useNativeDriver: nativeDriver
+                }),
+                Animated.timing(rightTeamLogoTranslateX, {
+                    toValue: defaultRightTeamLogoTranslateX,
+                    duration: animationDuration,
+                    useNativeDriver: nativeDriver
+                }),
+                Animated.timing(teamLogoScale, {
+                    toValue: defaultReamLogoScale,
+                    duration: animationDuration,
+                    useNativeDriver: nativeDriver
+                }),
+                Animated.timing(opacity, {
+                    toValue: defaultOpacity,
+                    duration: animationDuration,
+                    useNativeDriver: nativeDriver
+                }),
+                Animated.timing(resultTranslateY, {
+                    toValue: defaultResultTranslateY,
+                    duration: animationDuration,
+                    useNativeDriver: nativeDriver
+                }),
+                Animated.timing(tabViewMarginTop, {
+                    toValue: defaultTabViewMarginTop,
+                    duration: animationDuration,
+                    useNativeDriver: nativeDriver
+                }),
+            ]).start();
+        }
+    }, [index]);
+
+    //search match
+    useEffect(() => {
+        getMatch();
+    }, []);
     
     //routes to render
     const [routes] = useState([
@@ -97,8 +186,40 @@ export default function Match() {
         { key: 'escalacoes', title: 'Escalações' },
     ]);
 
-    const renderScene = ({ route }: any) => {
+    const animatedStyles = StyleSheet.create({
+        rightTeamLogo: {
+            transform: [
+                {translateY: teamLogoTranslateY},
+                {translateX: leftTeamLogoTranslateX},
+                {scale: teamLogoScale},
+            ],
+        },
+        leftTeamLogo: {
+            transform: [
+                {translateY: teamLogoTranslateY},
+                {translateX: rightTeamLogoTranslateX},
+                {scale: teamLogoScale},
+            ],
+        },
+        text: {
+            opacity: opacity,
+            transform: [
+                {translateY: teamLogoTranslateY},
+            ],
+        },
+        result: {
+            transform: [
+                {translateY: resultTranslateY},
+            ],
+        },
+        tabView: {
+            transform: [
+                {translateY: tabViewMarginTop},
+            ],
+        },
+    })
 
+    const renderScene = ({ route }: any) => {
         if(!match) return;
 
         switch (route.key) {
@@ -114,11 +235,6 @@ export default function Match() {
                 return null;
         }
     };
-
-    //search match
-    useEffect(() => {
-        getMatch();
-    }, []);
 
     async function getMatch() {
         await api.get(`match/${matchId}`
@@ -141,58 +257,58 @@ export default function Match() {
 
         contentLoaded ? (
             <ThemedView style={styles.background}>
-                <View style={styles.header}>
+                <Animated.View style={styles.header}>
 
                     <Pressable onPress={() => accessTeam(match?.match.home_team.id)}>
                         <View style={[styles.teamView, result === 2 && styles.loser]}>
-                            <Image source={{uri: match?.match.home_team.logo}} style={styles.teamLogo} resizeMode='contain'/>
-                            <ThemedText style={styles.teamName} numberOfLines={1} ellipsizeMode='tail'>{match?.match.home_team.name}</ThemedText>
+                            <Animated.Image source={{uri: match?.match.home_team.logo}} style={[styles.teamLogo, animatedStyles.rightTeamLogo]} resizeMode='contain'/>
+                            <ThemedText style={[styles.teamName, animatedStyles.text]} numberOfLines={1} ellipsizeMode='tail'>{match?.match.home_team.name}</ThemedText>
                         </View>
                     </Pressable>
 
                     <View style={styles.timeAndResultView}>
-                        <ThemedText lightColor={Colors.light.Red} darkColor={Colors.dark.Red} midnightColor={Colors.midnight.Red} style={styles.timeText}>
+                        <ThemedText colorName='Red' style={[styles.timeText, animatedStyles.text]}>
                             {match?.match.date && formatTime(match.match.date)}
                         </ThemedText>
                         <View style={{flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
-                            <ThemedText style={[styles.result, result === 2 && styles.loser]}>{match?.match.home_team.score} </ThemedText>
-                            <ThemedText style={styles.result}>x</ThemedText>
-                            <ThemedText style={[styles.result, result === 0 && styles.loser]}> {match?.match.away_team.score}</ThemedText>
+                            <ThemedText style={[styles.result, result === 2 && styles.loser, animatedStyles.result]}>{match?.match.home_team.score} </ThemedText>
+                            <ThemedText style={[styles.result, animatedStyles.result]}>x</ThemedText>
+                            <ThemedText style={[styles.result, result === 0 && styles.loser, animatedStyles.result]}> {match?.match.away_team.score}</ThemedText>
                         </View>
-                        <ThemedText lightColor={Colors.light.Red} darkColor={Colors.dark.Red} midnightColor={Colors.midnight.Red} style={styles.timeText}>
+                        <ThemedText colorName='Red' style={[styles.timeText, animatedStyles.text]}>
                             {match?.match.date && formatDate(match.match.date)}
                         </ThemedText>
                     </View>
                     
                     <Pressable onPress={() => accessTeam(match?.match.away_team.id)}>
                         <View style={[styles.teamView, result === 0 && styles.loser]}>
-                            <Image source={{uri:  match?.match.away_team.logo}} style={styles.teamLogo} resizeMode='contain'/>
-                            <ThemedText style={styles.teamName} numberOfLines={1} ellipsizeMode='tail'>{match?.match.away_team.name}</ThemedText>
+                            <Animated.Image source={{uri:  match?.match.away_team.logo}} style={[styles.teamLogo, animatedStyles.leftTeamLogo]} resizeMode='contain'/>
+                            <ThemedText style={[styles.teamName, animatedStyles.text]} numberOfLines={1} ellipsizeMode='tail'>{match?.match.away_team.name}</ThemedText>
                         </View>
                     </Pressable>
 
-                </View>
+                </Animated.View>
                 
-                <TabView
-                    navigationState={{ index, routes }}
-                    renderScene={renderScene}
-                    onIndexChange={setIndex}
-                    initialLayout={{ width: Dimensions.get('window').width }}
-                    renderTabBar={props => (
-                        <CustomTabBar {...props} />
-                    )}
-                    style={{
-                        top: 25
-                    }}
-                    lazy
-                    lazyPreloadDistance={1}
-                    renderLazyPlaceholder={() => (
-                        <View style={{height: 500, width: "100%"}}>
-                            <LoadingIcon />
-                        </View>
-                        )
-                    }
-                />
+                <Animated.View style={[{flex: 1, marginBottom: 10}, animatedStyles.tabView]}>
+                    <TabView
+                        navigationState={{ index, routes }}
+                        renderScene={renderScene}
+                        onIndexChange={setIndex}
+                        initialLayout={{ width: Dimensions.get('window').width }}
+                        renderTabBar={props => (
+                            <CustomTabBar {...props} />
+                        )}
+                        style={{top: 25}}
+                        lazy
+                        lazyPreloadDistance={1}
+                        renderLazyPlaceholder={() => (
+                            <View style={{height: 500, width: "100%"}}>
+                                <LoadingIcon />
+                            </View>
+                            )
+                        }
+                    />
+                </Animated.View>
             </ThemedView>
         ) : (
             <LoadingIcon />
@@ -210,6 +326,8 @@ const styles = StyleSheet.create({
         width: "100%",
         flexDirection: "row",
         justifyContent: "center",
+        position: 'absolute',
+        paddingTop: 25,
         gap: 25,
     },
     teamView: {

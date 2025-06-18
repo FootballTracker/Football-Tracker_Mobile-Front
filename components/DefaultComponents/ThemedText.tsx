@@ -1,4 +1,4 @@
-import { Text, type TextProps, StyleSheet } from 'react-native';
+import { Text, type TextProps, StyleSheet, Animated } from 'react-native';
 
 import { useThemeColor } from '@/hooks/useThemeColor';
 import { Colors } from '@/constants/Colors';
@@ -23,7 +23,7 @@ export function ThemedText({
   const color = useThemeColor({ light: lightColor, dark: darkColor, midnight: midnightColor }, colorName);
 
   return (
-    <Text
+    <Animated.Text
       style={[
         { color },
         type === 'default' ? styles.default : undefined,

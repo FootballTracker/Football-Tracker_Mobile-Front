@@ -15,7 +15,7 @@ import Section from "@/components/Section";
 import Card from "@/components/Card";
 
 interface MatchLineupI {
-    match: MatchCardI
+    match: MatchCardI,
 }
 
 interface Lineup {
