@@ -17,7 +17,9 @@ export function EventLine({ time, home_team, away_team, scoreboard } : MinuteEve
         line: {
             alignItems: 'center',
             flexDirection: 'row',
-            marginTop: 15,
+            // marginTop: 15,
+            marginTop: 14,
+            marginBottom: 17,
         },
         midInformation: {
             alignItems: 'center',
