@@ -138,10 +138,8 @@ function LigaClassificacao({ season, leagueId, leagueName }: LigaClassificacaoPr
     );
 
     const handleValidScrollPoints = () => {
-        console.log(scrollValue.current);
         
         if (scrollValue.current <= 60) {
-            console.log('sobe');
             scrollRef.current?.scrollTo({
                 y: 0,
                 animated: true,
@@ -149,7 +147,6 @@ function LigaClassificacao({ season, leagueId, leagueName }: LigaClassificacaoPr
         }
 
         else if(scrollValue.current <= 110) {
-            console.log('desce');
             scrollRef.current?.scrollTo({
                 y: 110,
                 animated: true,
