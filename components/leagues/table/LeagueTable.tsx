@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet, View } from "react-native";
+import { Dimensions, StyleSheet, View, ViewProps } from "react-native";
 import LeagueTableItem, { LeagueTableItemProps } from "./LeagueTableItem";
 import { Colors } from "@/constants/Colors";
 
@@ -7,35 +7,20 @@ import { ThemedScrollView } from "@/components/DefaultComponents/ThemedScrollVie
 import { ThemedView } from "@/components/DefaultComponents/ThemedView";
 
 export interface LeagueTableProps {
-    teams: LeagueTableItemProps[]
+    teams: LeagueTableItemProps[],
 }
 
 const windowWidth = Dimensions.get('window').width;
 
-export default function LeagueTable({ teams }: LeagueTableProps) {
+export default function LeagueTable({ teams, ...rest }: LeagueTableProps & ViewProps) {
     return (
-        <>
-            <ThemedScrollView horizontal showsHorizontalScrollIndicator={false} style={{marginHorizontal: 'auto'}}>
-                <View style={styles.table}>
-                    {/* <View style={styles.header}>
-                        <ThemedText lightColor={Colors.light.Red} darkColor={Colors.dark.Red} style={styles.index}>#</ThemedText>
-                        <ThemedText style={styles.teamSection}>Equipe</ThemedText>
-                        <ThemedText style={styles.item}>PT</ThemedText>
-                        <ThemedText style={styles.item}>V</ThemedText>
-                    </View> */}
-
-                    <ThemedText style={styles.tableText}>Tabela de Classificação</ThemedText>
-
-                    <ThemedView darkColor={Colors.dark.Red} lightColor={Colors.light.Red} style={styles.divisor}/>
-                    <ThemedScrollView showsVerticalScrollIndicator={false} style={{width: '100%'}}>
-                        {teams.map((team, index) => (
-                            <LeagueTableItem {...team} key={index}/>
-                        ))}
-                        <ThemedView style={{paddingBottom: 390}}/>
-                    </ThemedScrollView>
-                </View>
+        <View style={[styles.table, rest.style]}>
+            <ThemedScrollView showsVerticalScrollIndicator={false} style={{ width: '100%' }}>
+                {teams.map((team, index) => (
+                    <LeagueTableItem {...team} key={index}/>
+                ))}
             </ThemedScrollView>
-        </>
+        </View>
     );
 }
 
@@ -43,11 +28,7 @@ const styles = StyleSheet.create({
     table: {
         flexDirection: "column",
         width: windowWidth*0.9,
-    },
-    tableText: {
-        textAlign: 'center',
-        marginBottom: 3,
-        fontSize: 17,
+        marginHorizontal: 'auto',
     },
     header: {
         flexDirection: "row",
@@ -70,12 +51,5 @@ const styles = StyleSheet.create({
         width: 25,
         textAlign: "center",
         fontFamily: "Karla"
-    },
-    divisor: {
-        marginTop: 3,
-        height: .6,
-        width: "102%",
-        marginLeft: "-1%"
-        // bottom: 3
     },
 });
