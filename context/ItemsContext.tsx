@@ -1,6 +1,7 @@
 //Default Importws
 import React, { createContext, useState, ReactNode, useContext, useEffect } from 'react';
 import { useUserContext } from './UserContext';
+import { Toast } from 'toastify-react-native';
 import { item } from '@/constants/Favorites'
 import api from '@/lib/Axios';
 
@@ -66,8 +67,22 @@ export const ItemsProvider: React.FC<ItemsProviderProps> = ({ children }) => {
                 show: true
             })));
         }).catch((e: any) => {
-            if(e.response.data.detail) alert(e.response.data.detail);
-            else alert('Erro ao buscar times.');
+            if(e.response.data.detail) {
+                Toast.show({
+                    props: {
+                        type: "error",
+                        text: e.response.data.detail
+                    }
+                });
+            }
+            else {
+                Toast.show({
+                    props: {
+                        type: "error",
+                        text: "Erro ao buscar times"
+                    }
+                });
+            }
         })
     }
 
@@ -84,8 +99,22 @@ export const ItemsProvider: React.FC<ItemsProviderProps> = ({ children }) => {
                 show: true
             })));
         }).catch((e: any) => {
-            if(e.response.data.detail) alert(e.response.data.detail);
-            else alert('Erro ao buscar ligas.');
+            if(e.response.data.detail) {
+                Toast.show({
+                    props: {
+                        type: "error",
+                        text: e.response.data.detail
+                    }
+                });
+            }
+            else {
+                Toast.show({
+                    props: {
+                        type: "error",
+                        text: "Erro ao buscar ligas"
+                    }
+                });
+            }
         })
     }
 
@@ -102,8 +131,22 @@ export const ItemsProvider: React.FC<ItemsProviderProps> = ({ children }) => {
                 show: true
             })));
         }).catch((e: any) => {
-            if(e.response.data.detail) alert(e.response.data.detail);
-            else alert('Erro ao buscar jogadores.');
+            if(e.response.data.detail) {
+                Toast.show({
+                    props: {
+                        type: "error",
+                        text: e.response.data.detail
+                    }
+                });
+            }
+            else {
+                Toast.show({
+                    props: {
+                        type: "error",
+                        text: "Erro ao buscar jogadores"
+                    }
+                });
+            }
         })
     }
 
@@ -117,7 +160,12 @@ export const ItemsProvider: React.FC<ItemsProviderProps> = ({ children }) => {
             ]);
         } catch (erro) {
             console.error('Erro ao carregar dados:', erro);
-            alert('Erro ao carregar dados');
+            Toast.show({
+                props: {
+                    type: "error",
+                    text: "Erro ao carregar dados"
+                }
+            });
         } finally {
             setLoading(false);
         }

@@ -31,10 +31,9 @@ export default function Toast({type = "info", title, text, icon, backgroundColor
     const timeout = useRef<NodeJS.Timeout | null>(null);
 
     const typeTitles = {
-        info: "Alerta",
         success: "Sucesso",
         error: "Erro",
-        warn: "Aviso"
+        warn: "Atenção"
     }
 
     useEffect(() => {
@@ -93,10 +92,10 @@ export default function Toast({type = "info", title, text, icon, backgroundColor
         title: {
             fontWeight: 'bold',
             fontSize: 16,
+            marginBottom: 2,
         },
         text: {
             fontSize: 14,
-            marginTop: 4,
         },
         progressBarView: {
             flexDirection: "row",
@@ -125,7 +124,7 @@ export default function Toast({type = "info", title, text, icon, backgroundColor
                     <ThemedIcon IconComponent={Ionicons} name='warning' size={24} colorName="Yellow" />
                 )}
                 <View style={styles.textView}>
-                    <ThemedText style={styles.title} colorName={textColor ? textColor : "Text"}>{title ? title : typeTitles[type]}</ThemedText>
+                    {type !== "info" && <ThemedText style={styles.title} colorName={textColor ? textColor : "Text"}>{title ? title : typeTitles[type]}</ThemedText>}
                     {text && <ThemedText style={styles.text} colorName={textColor ? textColor : "Text"}>{text}</ThemedText>}
                 </View>
                 {showCloseButton && (

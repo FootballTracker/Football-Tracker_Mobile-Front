@@ -8,6 +8,7 @@ import { Colors } from "@/constants/Colors";
 import * as ImagePicker from 'expo-image-picker';
 import api from '@/lib/Axios';
 import { useTheme } from "@/context/ThemeContext";
+import { Toast } from "toastify-react-native";
 
 
 //Components
@@ -29,7 +30,6 @@ import Boot from '@/assets/Icons/Boot.svg'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import FilledStar from '@/assets/Icons/FilledStar.svg';
-import { Toast } from "toastify-react-native";
 
 export default function Profile() {
     const { user, logout, setImage, imageVersion, updateImage } = useUserContext();
@@ -57,11 +57,10 @@ export default function Profile() {
                 Toast.show({
                     props: {
                         type: "warn",
-                        text: "Somente imagens menores que 2.5MB são permitidas"
+                        text: "A imagem de perfil deve ser menor que 2.5MB"
                     },
                     useModal: true
                 })
-                // alert("Somente imagens menores que 2.5MB são permitidas");
                 return;
             }
             sendImage(result);
@@ -89,9 +88,31 @@ export default function Profile() {
         }).then(() => {
             setImage(true);
             setModalOpened(false);
+            Toast.show({
+                props: {
+                    type: "success",
+                    text: "Imagem atualizada"
+                }
+            })
         }).catch((e: any) => {
-            if(e.response.data.detail) alert(e.response.data.detail);
-            else alert('Erro ao atualizar imagem.');
+            if(e.response.data.detail) {
+                Toast.show({
+                    props: {
+                        type: "error",
+                        text: e.response.data.detail
+                    },
+                    useModal: true
+                });
+            }
+            else {
+                Toast.show({
+                    props: {
+                        type: "error",
+                        text: "Erro ao atualizar imagem"
+                    },
+                    useModal: true
+                });
+            }
         });
 
     }
@@ -105,9 +126,29 @@ export default function Profile() {
         }).then(() => {
             setImage(false);
             setModalOpened(false);
+            Toast.show({
+                props: {
+                    type: "success",
+                    text: "Imagem removida"
+                }
+            })
         }).catch((e) => {
-            if(e.response.data.detail) alert(e.response.data.detail);
-            else alert('Erro ao remover imagem.');
+            if(e.response.data.detail) {
+                Toast.show({
+                    props: {
+                        type: "error",
+                        text: e.response.data.detail
+                    }
+                });
+            }
+            else {
+                Toast.show({
+                    props: {
+                        type: "error",
+                        text: "Erro ao remover imagem"
+                    }
+                });
+            }
         });
     }
 

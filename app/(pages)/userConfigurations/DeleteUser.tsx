@@ -3,11 +3,12 @@ import { ScrollView, StyleSheet, View } from "react-native";
 import { useUserContext } from "@/context/UserContext";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTheme } from "@/context/ThemeContext";
-import { Colors } from "@/constants/Colors";
 import { useForm } from "react-hook-form";
+import { Colors } from "@/constants/Colors";
 import { router } from "expo-router";
-import api from "@/lib/Axios";
+import { Toast } from "toastify-react-native";
 import { z } from "zod";
+import api from "@/lib/Axios";
 
 //Icons
 import { Feather, Ionicons } from "@expo/vector-icons";
@@ -45,8 +46,22 @@ export default function DeleteUser() {
                 router.back();
             }
         }).catch((e: any) => {
-            if(e.response.data.detail) alert(e.response.data.detail);
-            else alert('Ocorreu algum erro. Tente novamente');
+            if(e.response.data.detail) {
+                Toast.show({
+                    props: {
+                        type: "error",
+                        text: e.response.data.detail
+                    }
+                });
+            }
+            else {
+                Toast.show({
+                    props: {
+                        type: "error",
+                        text: "Ocorreu algum erro. Tente novamente"
+                    }
+                });
+            }
         })
     }
 

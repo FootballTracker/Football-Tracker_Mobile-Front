@@ -1,5 +1,6 @@
 import React, { createContext, useState, ReactNode, useContext, useEffect } from 'react';
 import { deleteItem, getItem, saveItem } from './StorageFunctions';
+import { Toast } from 'toastify-react-native';
 import api from '@/lib/Axios';
 
 // Tipo do usuário (pode ser expandido)
@@ -51,7 +52,12 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
                         setImage(response.data);
                     })
                     .catch(() => {
-                        alert("Erro ao buscar imagem do usuário");
+                        Toast.show({
+                            props: {
+                                type: "error",
+                                text: "Erro ao buscar imagem do usuário"
+                            }
+                        });
                     })
 
                 setImageVersion(Date.now());
@@ -79,7 +85,12 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
                 setImage(response.data);
             })
             .catch(() => {
-                alert("Erro ao buscar imagem do usuário");
+                Toast.show({
+                    props: {
+                        type: "error",
+                        text: "Erro ao buscar imagem do usuário"
+                    }
+                });
             })
     }
 

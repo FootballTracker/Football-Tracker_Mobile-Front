@@ -4,6 +4,7 @@ import { useEffect, useState, memo, useRef } from 'react';
 import { Animated, StyleSheet } from 'react-native';
 import { useTheme } from '@/context/ThemeContext';
 import { Colors } from '@/constants/Colors';
+import { Toast } from 'toastify-react-native';
 import api from "@/lib/Axios"
 
 //Components
@@ -40,8 +41,22 @@ function LigaClassificacao({ season, leagueId, leagueName }: LigaClassificacaoPr
             const response = await api.get(`league/${leagueId}/classification`);
             setClassi(response.data);
         } catch (e: any) {
-            if (e.response?.data?.detail) alert(e.response.data.detail);
-            else alert('Erro ao buscar classificação.');
+            if(e.response.data.detail) {
+                Toast.show({
+                    props: {
+                        type: "error",
+                        text: e.response.data.detail
+                    }
+                });
+            }
+            else {
+                Toast.show({
+                    props: {
+                        type: "error",
+                        text: "Erro ao buscar classificação"
+                    }
+                });
+            }
         }
     }
 

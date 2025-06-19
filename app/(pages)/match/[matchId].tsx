@@ -6,6 +6,8 @@ import { TabView } from 'react-native-tab-view';
 import api from '@/lib/Axios';
 import { formatDate, formatTime } from '@/lib/format';
 import { MatchCardI } from '@/components/matches/MatchCard';
+import { Toast } from 'toastify-react-native';
+import { AxiosResponse } from 'axios';
 
 import { ThemedText } from "@/components/DefaultComponents/ThemedText";
 import { CustomTabBar } from '@/components/CustomTabBar';
@@ -17,7 +19,6 @@ import MatchInfo from '@/components/matches/pageComponents/MatchInfo';
 import MatchStatistcs from '@/components/matches/pageComponents/MatchStatistcs';
 import MatchEvents from '@/components/matches/pageComponents/MatchEvents';
 import MatchLineup from '@/components/matches/pageComponents/MatchLineup';
-import { AxiosResponse } from 'axios';
 
 export interface TeamStatistics {
     shotsOnGoal: number;
@@ -242,8 +243,22 @@ export default function Match() {
             setMatch(response.data);
             setResult(response.data.match.home_team.score == response.data.match.away_team.score ? 1 : Number(response.data.match.home_team.score) > Number(response.data.match.away_team.score) ? 0 : 2);
         }).catch((e: any) => {
-            if(e.response.data.detail) alert(e.response.data.detail);
-            else alert('Erro ao buscar partida.');
+            if(e.response.data.detail) {
+                Toast.show({
+                    props: {
+                        type: "error",
+                        text: e.response.data.detail
+                    }
+                });
+            }
+            else {
+                Toast.show({
+                    props: {
+                        type: "error",
+                        text: "Erro ao buscar partida"
+                    }
+                });
+            }
         }).finally(() => {
             setContentLoaded(true);
         });

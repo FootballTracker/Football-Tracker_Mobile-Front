@@ -5,6 +5,7 @@ import Swap from "@/assets/Icons/Swap.svg";
 import Shield from "@/assets/Icons/Shield.svg";
 import { Colors } from "@/constants/Colors";
 import { MatchCardI } from "../MatchCard";
+import { Toast } from "toastify-react-native";
 import api from "@/lib/Axios";
 
 import { ThemedText } from "@/components/DefaultComponents/ThemedText";
@@ -61,8 +62,22 @@ function MatchLineup({ match }: MatchLineupI) {
             setData(response.data);
             setSelectedTeam(response.data.home);
         }).catch((e) => {
-            if(e.response.data.detail) alert(e.response.data.detail);
-            else alert('Erro ao buscar escalações.');
+            if(e.response.data.detail) {
+                Toast.show({
+                    props: {
+                        type: "error",
+                        text: e.response.data.detail
+                    }
+                });
+            }
+            else {
+                Toast.show({
+                    props: {
+                        type: "error",
+                        text: "Erro ao buscar escalações"
+                    }
+                });
+            }
         }).finally(() => {
             setLoading(false);
         });

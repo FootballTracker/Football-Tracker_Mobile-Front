@@ -9,6 +9,7 @@ import UnfilledStar from '@/assets/Icons/UnfilledStar.svg';
 import api from "@/lib/Axios";
 import { TeamInfoProps } from '@/components/teams/pagesComponents/TimeInfo';
 import { MatchCardI } from '@/components/matches/MatchCard';
+import { Toast } from 'toastify-react-native';
 
 import { ThemedText } from "@/components/DefaultComponents/ThemedText";
 import { ThemedIcon } from '@/components/DefaultComponents/ThemedIcon';
@@ -117,8 +118,22 @@ export default function Team() {
             setTeamData(response.data);
             setFavoriteState(response.data.team.is_favorite);
         }).catch((e: any) => {
-            if(e.response.data.detail) alert(e.response.data.detail);
-            else alert('Erro ao buscar dados do time.');
+            if(e.response.data.detail) {
+                Toast.show({
+                    props: {
+                        type: "error",
+                        text: e.response.data.detail
+                    }
+                });
+            }
+            else {
+                Toast.show({
+                    props: {
+                        type: "error",
+                        text: "Erro ao buscar dados do time"
+                    }
+                });
+            }
         }).finally(() => {
             setContentLoaded(true);
         });

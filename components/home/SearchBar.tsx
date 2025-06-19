@@ -17,7 +17,8 @@ export default function SearchBar({ handleSearch }: SearchBarProps) {
     const [text, setText] = useState("");
 
     function handleFinishEdit() {
-        if(text.length < 3) {
+        const value = text.trim();
+        if(value.length < 3) {
             Toast.show({
                 props: {
                     type: "info",

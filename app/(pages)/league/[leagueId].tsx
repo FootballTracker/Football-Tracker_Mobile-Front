@@ -11,6 +11,7 @@ import UnfilledStar from '@/assets/Icons/UnfilledStar.svg';
 import api from '@/lib/Axios';
 import { useUserContext } from '@/context/UserContext';
 import { LeagueCardI } from '@/components/leagues/LeagueCard';
+import { Toast } from 'toastify-react-native';
 
 import { ThemedText } from "@/components/DefaultComponents/ThemedText";
 import { ThemedIcon } from '@/components/DefaultComponents/ThemedIcon';
@@ -88,8 +89,22 @@ export default function League() {
         ).then((response: any) => {
             setLeague(response.data);
         }).catch((e: any) => {
-            if(e.response.data.detail) alert(e.response.data.detail);
-            else alert('Erro ao buscar liga.');
+            if(e.response.data.detail) {
+                Toast.show({
+                    props: {
+                        type: "error",
+                        text: e.response.data.detail
+                    }
+                });
+            }
+            else {
+                Toast.show({
+                    props: {
+                        type: "error",
+                        text: "Erro ao buscar liga"
+                    }
+                });
+            }
         }).finally(() => {
             setContentLoaded(true);
         });

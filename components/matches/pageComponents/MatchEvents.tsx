@@ -6,6 +6,7 @@ import { memo, useEffect, useState } from "react";
 import { Colors } from "@/constants/Colors";
 import { MatchCardI } from "../MatchCard";
 import { AxiosResponse } from "axios";
+import { Toast } from "toastify-react-native";
 import api from "@/lib/Axios";
 
 //Components
@@ -68,8 +69,22 @@ function MatchEvents({ match } : MatchEventsProps) {
         ).then((response: AxiosResponse<MinuteEvent[]>) => {
             setEvents(response.data);
         }).catch((e: any) => {
-            if(e.response.data.detail) alert(e.response.data.detail);
-            else alert('Erro ao buscar eventos.');
+            if(e.response.data.detail) {
+                Toast.show({
+                    props: {
+                        type: "error",
+                        text: e.response.data.detail
+                    }
+                });
+            }
+            else {
+                Toast.show({
+                    props: {
+                        type: "error",
+                        text: "Erro ao buscar eventos"
+                    }
+                });
+            }
         }).finally(() => {
             setContentLoaded(true);
         });
