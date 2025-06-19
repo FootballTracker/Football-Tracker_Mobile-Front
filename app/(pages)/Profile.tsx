@@ -29,6 +29,7 @@ import Boot from '@/assets/Icons/Boot.svg'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import FilledStar from '@/assets/Icons/FilledStar.svg';
+import { Toast } from "toastify-react-native";
 
 export default function Profile() {
     const { user, logout, setImage, imageVersion, updateImage } = useUserContext();
@@ -53,7 +54,14 @@ export default function Profile() {
 
         if (!result.canceled) {
             if(result.assets[0].fileSize && result.assets[0].fileSize > 25e+5) {
-                alert("Somente imagens menores que 2.5MB são permitidas");
+                Toast.show({
+                    props: {
+                        type: "warn",
+                        text: "Somente imagens menores que 2.5MB são permitidas"
+                    },
+                    useModal: true
+                })
+                // alert("Somente imagens menores que 2.5MB são permitidas");
                 return;
             }
             sendImage(result);

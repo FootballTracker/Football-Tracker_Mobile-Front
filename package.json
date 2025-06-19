@@ -54,8 +54,10 @@
     "react-native-svg": "^15.8.0",
     "react-native-svg-transformer": "^1.5.0",
     "react-native-tab-view": "^4.0.10",
+    "react-native-vector-icons": "^10.2.0",
     "react-native-web": "~0.19.13",
     "react-native-webview": "13.12.5",
+    "toastify-react-native": "^7.2.0",
     "zod": "^3.24.3"
   },
   "devDependencies": {
