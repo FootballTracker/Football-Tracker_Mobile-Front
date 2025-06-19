@@ -92,7 +92,7 @@ export default function Login() {
                             <ThemedText style={styles.infoText}><ThemedIcon IconComponent={Feather} name="info" size={15} /> Faça login para personalizar sua experiência com jogadores, ligas e times favoritos.</ThemedText>
             
                             <View style={{width: '80%'}}>
-                                <FormInput placeHolder="Usuário ou Email" name="user" control={control} errors={errors} />
+                                <FormInput placeHolder="Usuário ou Email" name="user" control={control} errors={errors} keyboardType="email-address"/>
                                 <FormInput placeHolder="Senha" name="password" isPassword control={control} errors={errors} />
                                 <ThemedButton style={{width: '100%'}} IconComponent={{Icon: Ionicons, name: 'enter-outline'}} textColor="LightBackground" title="Entrar" handleClick={handleSubmit(handleForm)} />
                             </View>

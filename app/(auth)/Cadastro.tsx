@@ -95,7 +95,7 @@ export default function Cadastro() {
 
                         <View style={{width: '80%'}}>
                             <FormInput placeHolder="Nome de usuário" name="user" control={control} errors={errors} />
-                            <FormInput placeHolder="Email" name="email" control={control} errors={errors} />
+                            <FormInput placeHolder="Email" name="email" control={control} errors={errors} keyboardType="email-address"/>
                             <FormInput placeHolder="Senha" name="password" control={control} errors={errors} isPassword={true} />
                             <FormInput placeHolder="Confirmar Senha" name="confirmPassword" control={control} errors={errors} isPassword={true} />
                             <ThemedButton style={{width: '100%'}} IconComponent={{Icon: Feather, name: 'plus', size: 25}} textColor="LightBackground" title="Cadastrar" handleClick={handleSubmit(handleForm)} />

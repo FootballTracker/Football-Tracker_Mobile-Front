@@ -16,13 +16,14 @@ type FormInputProps = {
     name: string;
     placeHolder: string;
     isPassword?: boolean;
+    keyboardType?: "default" | "number-pad" | "decimal-pad" | "numeric" | "email-address" | "phone-pad" | "url"
 }
 
-export function FormInput({ control, errors, name, placeHolder, isPassword = false } : FormInputProps ) {
+export function FormInput({ control, errors, name, placeHolder, isPassword = false, keyboardType = "default" } : FormInputProps ) {
     return (
         <>
             <Controller control={control} name={name} render={({ field: { onChange, onBlur, value } }) => (
-                <ThemedInput style={{width: '100%'}} placeholder={placeHolder} onChangeText={onChange} onBlur={onBlur} value={value} isPassword={isPassword} />
+                <ThemedInput style={{width: '100%'}} placeholder={placeHolder} onChangeText={onChange} onBlur={onBlur} value={value} isPassword={isPassword} keyboardType={keyboardType}/>
             )} />
 
             {errors[name] ? (
