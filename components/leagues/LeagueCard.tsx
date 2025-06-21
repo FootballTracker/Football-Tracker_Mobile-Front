@@ -12,6 +12,7 @@ export interface LeagueCardI {
     logo_url: string
     name: string
     is_favorite: boolean
+    api_id: string
 }
 
 export default function LeagueCard({ id, logo_url, name, is_favorite }: LeagueCardI) {

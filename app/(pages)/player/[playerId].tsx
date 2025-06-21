@@ -5,6 +5,7 @@ import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { TabView, SceneMap } from 'react-native-tab-view';
 import { SvgUri } from 'react-native-svg';
+import { useUserContext } from '@/context/UserContext';
 
 import { ThemedText } from "@/components/DefaultComponents/ThemedText";
 import { ThemedIcon } from '@/components/DefaultComponents/ThemedIcon';
@@ -21,6 +22,7 @@ export default function Player() {
     const { playerId } = useLocalSearchParams();
 
     const { setFavoritePlayers, setPlayers } = useItemsContext();
+    const { user } = useUserContext();
     
     const [contentLoaded, setContentLoaded] = useState(false);
     
@@ -52,7 +54,7 @@ export default function Player() {
 
     const changeFavoritie = () => {
         // alert("trocar favorito");
-        SwapFavorites(setFavoritePlayers, setPlayers, {id: player.player.id, name: player.player.name, photo: player.player.photo_url, is_favorite: player.player.is_favorite, show: true})
+        SwapFavorites(setFavoritePlayers, setPlayers, {id: player.player.id, name: player.player.name, photo: player.player.photo_url, is_favorite: player.player.is_favorite, show: true}, "player", user?.id)
     }
 
     return (

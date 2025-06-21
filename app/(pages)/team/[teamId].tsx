@@ -10,6 +10,7 @@ import api from "@/lib/Axios";
 import { TeamInfoProps } from '@/components/teams/pagesComponents/TimeInfo';
 import { MatchCardI } from '@/components/matches/MatchCard';
 import { Toast } from 'toastify-react-native';
+import { useUserContext } from '@/context/UserContext';
 
 import { ThemedText } from "@/components/DefaultComponents/ThemedText";
 import { ThemedIcon } from '@/components/DefaultComponents/ThemedIcon';
@@ -81,6 +82,7 @@ export default function Team() {
     const [favoriteState, setFavoriteState] = useState(false);
     
     const { setFavoriteTeams, setTeams } = useItemsContext();
+    const { user } = useUserContext();
     
     const [contentLoaded, setContentLoaded] = useState(false);
     
@@ -141,7 +143,7 @@ export default function Team() {
 
 
     const changeFavoritie = () => {
-        SwapFavorites(setFavoriteTeams, setTeams, {id: teamData?.team.id, name: teamData?.team.name, logo: teamData?.team.logo, is_favorite: favoriteState, show: true});
+        SwapFavorites(setFavoriteTeams, setTeams, {id: teamData?.team.id, name: teamData?.team.name, logo: teamData?.team.logo, is_favorite: favoriteState, show: true}, "team", user?.id);
         setFavoriteState(!favoriteState);
     }
 

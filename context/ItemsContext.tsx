@@ -93,7 +93,11 @@ export const ItemsProvider: React.FC<ItemsProviderProps> = ({ children }) => {
             }}
         ).then((response: any) => {
             const mainLeagues : league[] = response.data.all_leagues;
-            setFavoriteLeagues(response.data.favorite_leagues ? response.data.favorite_leagues : []);
+            const favoriteLeagues : league[] = response.data.favorite_leagues ? response.data.favorite_leagues : [];
+            setFavoriteLeagues(favoriteLeagues.map(league => ({
+                ...league,
+                show: true
+            })));
             setLeagues(mainLeagues.map(league => ({
                 ...league,
                 show: true

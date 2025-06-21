@@ -77,6 +77,7 @@ export default function League() {
         if(league) {
             setSelectedSeason(league.seasons[0]);
             setFavoriteState(league.league.is_favorite);
+            setContentLoaded(true);
         }
     }, [league]);
 
@@ -105,13 +106,11 @@ export default function League() {
                     }
                 });
             }
-        }).finally(() => {
-            setContentLoaded(true);
         });
     }
 
     const changeFavoritie = () => {
-        SwapFavorites(setFavoriteLeagues, setLeagues, {id: league?.league.id, name: league?.league.name, logo_url: league?.league.logo_url, is_favorite: favoriteState, show: true})
+        SwapFavorites(setFavoriteLeagues, setLeagues, {id: league?.league.id, name: league?.league.name, logo_url: league?.league.logo_url, is_favorite: favoriteState, show: true, api_id: league?.league.api_id}, "league", user?.id);
         setFavoriteState(!favoriteState);
     }
 

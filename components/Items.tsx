@@ -1,4 +1,5 @@
 //Default Imports
+import { useUserContext } from "@/context/UserContext";
 import { useItemsContext } from "@/context/ItemsContext";
 import { item, SwapFavorites } from "@/constants/Favorites";
 import { router } from "expo-router";
@@ -12,14 +13,15 @@ const accessPage = (page: string, id: string) => {
     router.push(`/(pages)/${page}/${id}` as any);;
 }
 
-const changeFavorite = <T extends item>(setFavorite: React.Dispatch<React.SetStateAction<T[]>>, setMain: React.Dispatch<React.SetStateAction<T[]>>, item: T) => {
-    SwapFavorites(setFavorite, setMain, item);
+const changeFavorite = <T extends item>(setFavorite: React.Dispatch<React.SetStateAction<T[]>>, setMain: React.Dispatch<React.SetStateAction<T[]>>, item: T, type: string, userId: string | undefined) => {
+    SwapFavorites(setFavorite, setMain, item, type, userId);
 }
 
 
 
 export function FavoriteTeams() {
     const { favoriteTeams, setFavoriteTeams, setTeams } = useItemsContext();
+    const { user } = useUserContext();
 
     return (
         <>
@@ -28,7 +30,7 @@ export function FavoriteTeams() {
                     <Card
                         favorite={team.is_favorite}
                         handleOpen={() => {accessPage('team', team.id)}}
-                        handleFavorite={() => {changeFavorite(setFavoriteTeams, setTeams, team)}}
+                        handleFavorite={() => {changeFavorite(setFavoriteTeams, setTeams, team, "team", user?.id)}}
                         info={team.name}
                         image={team.logo}
                         show={team.show}
@@ -44,6 +46,7 @@ export function FavoriteTeams() {
 
 export function MainTeams() {
     const { teams, setFavoriteTeams, setTeams } = useItemsContext();
+    const { user } = useUserContext();
 
     return (
         <>
@@ -53,7 +56,7 @@ export function MainTeams() {
                     <Card
                         favorite={team.is_favorite}
                         handleOpen={() => {accessPage('team', team.id)}}
-                        handleFavorite={() => {changeFavorite(setFavoriteTeams, setTeams, team)}}
+                        handleFavorite={() => {changeFavorite(setFavoriteTeams, setTeams, team, "team", user?.id)}}
                         info={team.name}
                         image={team.logo}
                         show={team.show}
@@ -69,6 +72,7 @@ export function MainTeams() {
 
 export function FavoriteLeagues() {
     const { favoriteLeagues, setFavoriteLeagues, setLeagues } = useItemsContext();
+    const { user } = useUserContext();
 
     return (
         <>
@@ -77,7 +81,7 @@ export function FavoriteLeagues() {
                     <Card
                         favorite={league.is_favorite}
                         handleOpen={() => {accessPage('league', league.id)}}
-                        handleFavorite={() => {changeFavorite(setFavoriteLeagues, setLeagues, league)}}
+                        handleFavorite={() => {changeFavorite(setFavoriteLeagues, setLeagues, league, "league", user?.id);}}
                         info={league.name}
                         image={league.logo_url}
                         show={league.show}
@@ -93,6 +97,7 @@ export function FavoriteLeagues() {
 
 export function MainLeagues() {
     const { leagues, setFavoriteLeagues, setLeagues } = useItemsContext();
+    const { user } = useUserContext();
 
     return (
         <>
@@ -102,7 +107,7 @@ export function MainLeagues() {
                     <Card
                         favorite={league.is_favorite}
                         handleOpen={() => {accessPage('league', league.id)}}
-                        handleFavorite={() => {changeFavorite(setFavoriteLeagues, setLeagues, league)}}
+                        handleFavorite={() => {changeFavorite(setFavoriteLeagues, setLeagues, league, "league", user?.id);}}
                         info={league.name}
                         image={league.logo_url}
                         show={league.show}
@@ -118,6 +123,7 @@ export function MainLeagues() {
 
 export function FavoritePlayers() {
     const { favoritePlayers, setFavoritePlayers, setPlayers } = useItemsContext();
+    const { user } = useUserContext();
 
     return (
         <>
@@ -126,7 +132,7 @@ export function FavoritePlayers() {
                     <Card
                         favorite={player.is_favorite}
                         handleOpen={() => {accessPage('player', player.id)}}
-                        handleFavorite={() => {changeFavorite(setFavoritePlayers, setPlayers, player)}}
+                        handleFavorite={() => {changeFavorite(setFavoritePlayers, setPlayers, player, "player", user?.id)}}
                         info={player.name}
                         image={player.photo}
                         show={player.show}
@@ -142,6 +148,7 @@ export function FavoritePlayers() {
 
 export function MainPlayers() {
     const { players, setFavoritePlayers, setPlayers } = useItemsContext();
+    const { user } = useUserContext();
 
     return (
         <>
@@ -151,7 +158,7 @@ export function MainPlayers() {
                     <Card
                         favorite={player.is_favorite}
                         handleOpen={() => {accessPage('player', player.id)}}
-                        handleFavorite={() => {changeFavorite(setFavoritePlayers, setPlayers, player)}}
+                        handleFavorite={() => {changeFavorite(setFavoritePlayers, setPlayers, player, "player", user?.id)}}
                         info={player.name}
                         image={player.photo}
                         show={player.show}
