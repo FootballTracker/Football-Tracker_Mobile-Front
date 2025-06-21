@@ -27,15 +27,21 @@ export type team = {
 
 export default function Times() {
     const { loading, getTeams } = useItemsContext();
+    const [clearInput, setClearInput] = useState(false);
 
-    async function searchTeams() {
-        
+    async function searchTeams(text: string) {
+        console.log(text);
+    }
+
+    async function refresh() {
+        setClearInput(prev => !prev);
+        await getTeams();
     }
 
     return (
         !loading ? (
-            <ThemedScrollView style={styles.background} getData={getTeams}>
-                <SearchBar handleSearch={searchTeams}/>
+            <ThemedScrollView style={styles.background} getData={refresh}>
+                <SearchBar handleSearch={searchTeams} clearInputState={clearInput}/>
 
                 <Section text='Favorito' icon={{IconComponent: FilledStar, width: 27, height: 27}} iconUp >
                     <FavoriteTeams />

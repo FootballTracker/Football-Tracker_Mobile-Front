@@ -26,7 +26,7 @@ export default function PlayerSection({ text, players, icon, ...rest }: PlayerSe
             <ThemedView darkColor={Colors.dark.Red} lightColor={Colors.light.Red} style={styles.divisor}/>
             {players?.length ? (
                 players.map((player, index) => (
-                    <PlayerCard id={player.id} image={player.image} name={player.name} favoritie={player.favoritie} key={index}/>
+                    <PlayerCard id={player.id} image={player.image} name={player.name} favorite={player.favorite} key={index}/>
                 ))
             ) : (
                 <ThemedText style={styles.favoritesInfoText} darkColor={Colors.dark.DarkerText} lightColor={Colors.light.DarkerText}>

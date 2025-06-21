@@ -1,5 +1,5 @@
 import { StyleSheet, Dimensions } from "react-native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Colors } from "@/constants/Colors";
 import { useTheme } from "@/context/ThemeContext";
 import { Toast } from 'toastify-react-native';
@@ -9,16 +9,17 @@ import { ThemedInput } from "../DefaultComponents/ThemedInput";
 const windowWidth = Dimensions.get('window').width;
 
 interface SearchBarProps {
-    handleSearch: () => void;
+    handleSearch: (text: string) => void;
+    clearInputState: boolean;
 }
 
-export default function SearchBar({ handleSearch }: SearchBarProps) {
+export default function SearchBar({ handleSearch, clearInputState }: SearchBarProps) {
     const { theme } = useTheme();
     const [text, setText] = useState("");
 
     function handleFinishEdit() {
         const value = text.trim();
-        if(value.length < 3) {
+        if(value && value.length < 1) {
             Toast.show({
                 props: {
                     type: "info",
@@ -28,8 +29,12 @@ export default function SearchBar({ handleSearch }: SearchBarProps) {
             });
             return;
         }
-        handleSearch();
+        handleSearch(value);
     }
+
+    useEffect(() => {
+        setText("");
+    }, [clearInputState])
 
     return (
         <ThemedInput
@@ -41,6 +46,7 @@ export default function SearchBar({ handleSearch }: SearchBarProps) {
             selectionColor={Colors[theme].Red}
             selectTextOnFocus
             onSubmitEditing={handleFinishEdit}
+            value={text}
         />
     )
 }

@@ -31,15 +31,21 @@ export type player = {
 
 export default function Jogadores() {
     const { loading, getPlayers } = useItemsContext();
+    const [clearInput, setClearInput] = useState(false);
 
-    async function searchPlayers() {
-        
+    async function searchPlayers(text: string) {
+        console.log(text);
+    }
+
+    async function refresh() {
+        setClearInput(prev => !prev);
+        // await getPlayers();
     }
 
     return (
         !loading ? (
-            <ThemedScrollView style={styles.background}>
-                <SearchBar handleSearch={searchPlayers}/>
+            <ThemedScrollView style={styles.background} getData={refresh}>
+                <SearchBar handleSearch={searchPlayers} clearInputState={clearInput}/>
 
                 <Section text='Favoritos' icon={{IconComponent: FilledStar, width: 27, height: 27}} iconUp >
                     <FavoritePlayers />
