@@ -3,10 +3,12 @@ import { Tabs } from 'expo-router';
 import { StyleSheet, Dimensions } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
 import 'react-native-reanimated';
+import ToastManager from 'toastify-react-native';
 
 //Components
 import { ThemedView } from '@/components/DefaultComponents/ThemedView';
 import LoginLogo from '@/components/LoginLogo';
+import Toast from '@/components/Toast';
 
 //Consts
 const windowHeight = Dimensions.get('window').height;
@@ -16,12 +18,20 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
 
+    const toastConfig = {
+        default: (props: any) => (<Toast {...props.props} visibilityTime={props.duration}/>),
+    }
+
     return (
-        <ThemedView style={{flex: 1}}>
-            <Tabs screenOptions={{ headerShown: false, tabBarStyle: { display: 'none' }}} >
-                <Tabs.Screen name="Login" />
-                <Tabs.Screen name="Cadastro" />
-            </Tabs>
-        </ThemedView>
+        <>
+            <ThemedView style={{flex: 1}}>
+                <Tabs screenOptions={{ headerShown: false, tabBarStyle: { display: 'none' }}} >
+                    <Tabs.Screen name="Login" />
+                    <Tabs.Screen name="Cadastro" />
+                </Tabs>
+            </ThemedView>
+            <ToastManager config={toastConfig} position="bottom" useModal={false} duration={4000}/>
+        </>
+        
     );
 }

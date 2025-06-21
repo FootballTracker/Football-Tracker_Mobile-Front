@@ -10,6 +10,7 @@ import { useEffect, useRef, useState } from "react";
 import { Colors } from "@/constants/Colors";
 import api from "@/lib/Axios";
 import { useUserContext } from "@/context/UserContext";
+import { Toast } from "toastify-react-native";
 
 
 //Components
@@ -71,8 +72,23 @@ export default function Login() {
                 router.back();
             }
         }).catch((e: any) => {
-            if(e.response.data.detail) alert(e.response.data.detail);
-            else alert('Ocorreu algum erro. Tente novamente');
+            if(e.response.data.detail) {
+                Toast.show({
+                    props: {
+                        type: "error",
+                        text: e.response.data.detail
+                    },
+                    useModal: true
+                })
+            }
+            else {
+                Toast.show({
+                    props: {
+                        type: "error",
+                        text: "Ocorreu algum erro. Tente novamente"
+                    },
+                })
+            }
         })
     }
 
