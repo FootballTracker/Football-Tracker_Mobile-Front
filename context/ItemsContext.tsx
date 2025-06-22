@@ -42,10 +42,10 @@ interface ItemsProviderProps {
 export const ItemsProvider: React.FC<ItemsProviderProps> = ({ children }) => {
     const [favoriteTeams, setFavoriteTeams] = useState<team[]>([]);
     const [favoriteLeagues, setFavoriteLeagues] = useState<league[]>([]);
-    const [favoritePlayers, setFavoritePlayers] = useState<player[]>(favoritePlayersMock);
+    const [favoritePlayers, setFavoritePlayers] = useState<player[]>([]);
     const [teams, setTeams] = useState<team[]>([]);
     const [leagues, setLeagues] = useState<league[]>([]);
-    const [players, setPlayers] = useState<player[]>(playersMock);
+    const [players, setPlayers] = useState<player[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     
     const { user, logged } = useUserContext();
@@ -61,7 +61,11 @@ export const ItemsProvider: React.FC<ItemsProviderProps> = ({ children }) => {
             }}
         ).then((response: any) => {
             const mainTeams : team[] = response.data.teams;
-            setFavoriteTeams(response.data.favorite_team ? response.data.favorite_team : []);
+            const favoriteTeams : team[] = response.data.favorite_team ? response.data.favorite_team : [];
+            setFavoriteTeams(favoriteTeams.map(team => ({
+                ...team,
+                show: true
+            })));
             setTeams(mainTeams.map(team => ({
                 ...team,
                 show: true
@@ -128,8 +132,12 @@ export const ItemsProvider: React.FC<ItemsProviderProps> = ({ children }) => {
                 user_id: user?.id
             }}
         ).then((response: any) => {
-            const mainPlayers : player[] = response.data.players;
-            setFavoritePlayers(response.data.favorite_players ? response.data.favorite_players : []);
+            const mainPlayers : player[] = response.data.all_players;
+            const favoritePlayers : player[] = response.data.favorite_players ? response.data.favorite_players : [];
+            setFavoritePlayers(favoritePlayers.map(player => ({
+                ...player,
+                show: true
+            })));
             setPlayers(mainPlayers.map(player => ({
                 ...player,
                 show: true
@@ -160,7 +168,7 @@ export const ItemsProvider: React.FC<ItemsProviderProps> = ({ children }) => {
             await Promise.all([
                 getTeams(),
                 getLeagues(),
-                // getPlayers()
+                getPlayers()
             ]);
         } catch (erro) {
             console.error('Erro ao carregar dados:', erro);

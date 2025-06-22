@@ -116,9 +116,7 @@ export default function Ligas() {
             </ThemedScrollView>
         ) : (
             <LoadingIcon />
-        )
-        
-        
+        ) 
     )
 }
 
