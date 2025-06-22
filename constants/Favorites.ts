@@ -91,7 +91,10 @@ export async function SwapFavorites<T extends item>(setFavorites: React.Dispatch
                 api_league_id: (item as any).api_id
             });
         } else {
-
+            await api.post("player/favorite", {
+                user_id: userId,
+                player_id: item.id
+            });
         }
     }
 }
