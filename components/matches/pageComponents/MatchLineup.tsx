@@ -1,13 +1,14 @@
-import { View, StyleSheet, Image, Pressable } from "react-native";
+//Default Imports
+import { StyleSheet } from "react-native";
 import { memo, useEffect, useState } from "react";
-import Field from "@/assets/Icons/Field.svg";
-import Swap from "@/assets/Icons/Swap.svg";
-import Shield from "@/assets/Icons/Shield.svg";
 import { Colors } from "@/constants/Colors";
 import { MatchCardI } from "../MatchCard";
+import { router } from "expo-router";
 import { Toast } from "toastify-react-native";
 import api from "@/lib/Axios";
 
+//Components
+import { View, Image, Pressable } from "react-native";
 import { ThemedText } from "@/components/DefaultComponents/ThemedText";
 import { ThemedScrollView } from "@/components/DefaultComponents/ThemedScrollView";
 import LoadingIcon from "@/components/LoadingIcon";
@@ -15,6 +16,12 @@ import InfoMessage from "@/components/InfoMessage";
 import Section from "@/components/Section";
 import Card from "@/components/Card";
 
+//Icons
+import Field from "@/assets/Icons/Field.svg";
+import Swap from "@/assets/Icons/Swap.svg";
+import Shield from "@/assets/Icons/Shield.svg";
+
+//Types
 interface MatchLineupI {
     match: MatchCardI,
 }
@@ -53,7 +60,7 @@ function MatchLineup({ match }: MatchLineupI) {
     }, []);
 
     function accessPlayer(id: string) {
-        console.log("acessar jogador");
+        router.push(`/(pages)/match/${match.id}/${id}`);
     }
 
     async function getData() {
@@ -87,7 +94,6 @@ function MatchLineup({ match }: MatchLineupI) {
         !loading ? (
             data && selectedTeam ? (
                 <ThemedScrollView style={{flex: 1}}>
-
                     <Section icon={{IconComponent: Shield, width: 26, height: 26, Stroke: true, strokeWidth: 5}} text="Selecione um time:">
                         <View style={styles.teamsSelectView}>
                             <Pressable style={[styles.teamSelectOption, selectedTeam === data.away && {opacity: 0.4}]} onPress={() => setSelectedTeam(data.home)}>
