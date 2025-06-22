@@ -18,12 +18,13 @@ import { Stack } from 'expo-router';
 export default function RootLayout() {
     const { matchId } = useLocalSearchParams();
     const [contentLoaded, setContentLoaded] = useState(false);
-    const { match, setMatch, animatedStyles } = useMatch();
+    const { match, setMatch, setIndex, animatedStyles } = useMatch();
     const [result, setResult] = useState<number>();
 
     //search match
     useEffect(() => {
         getMatch();
+        setIndex(0);
     }, []);
 
     async function getMatch() {
