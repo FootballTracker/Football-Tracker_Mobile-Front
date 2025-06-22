@@ -46,7 +46,7 @@ export default function Times() {
                     text: text
                 }
             }).then((response) => {
-                setSearchedTeams(response.data.teams);
+                setSearchedTeams(response.data.all_teams);
                 setShowSearched(true);
             }).catch((error) => {
                 const errorMessage = error.response.data.detail || "Erro ao buscar times"

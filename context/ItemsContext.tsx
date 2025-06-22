@@ -60,7 +60,7 @@ export const ItemsProvider: React.FC<ItemsProviderProps> = ({ children }) => {
                 user_id: user?.id
             }}
         ).then((response: any) => {
-            const mainTeams : team[] = response.data.teams;
+            const mainTeams : team[] = response.data.all_teams;
             const favoriteTeams : team[] = response.data.favorite_team ? response.data.favorite_team : [];
             setFavoriteTeams(favoriteTeams.map(team => ({
                 ...team,
@@ -164,23 +164,53 @@ export const ItemsProvider: React.FC<ItemsProviderProps> = ({ children }) => {
 
     const LoadData = async () => {
         setLoading(true);
-        try {
-            await Promise.all([
-                getTeams(),
-                getLeagues(),
-                getPlayers()
-            ]);
-        } catch (erro) {
-            console.error('Erro ao carregar dados:', erro);
+
+        await api.get("/items", {
+            params: {
+                user_id: user?.id
+            }
+        }).then((response) => {
+            const mainTeams : team[] = response.data.all_teams;
+            const favoriteTeams : team[] = response.data.favorite_team ? response.data.favorite_team : [];
+            const mainLeagues : league[] = response.data.all_leagues;
+            const favoriteLeagues : league[] = response.data.favorite_leagues ? response.data.favorite_leagues : [];
+            const mainPlayers : player[] = response.data.all_players;
+            const favoritePlayers : player[] = response.data.favorite_players ? response.data.favorite_players : [];
+            setFavoriteTeams(favoriteTeams.map(team => ({
+                ...team,
+                show: true
+            })));
+            setTeams(mainTeams.map(team => ({
+                ...team,
+                show: true
+            })));
+            setFavoriteLeagues(favoriteLeagues.map(league => ({
+                ...league,
+                show: true
+            })));
+            setLeagues(mainLeagues.map(league => ({
+                ...league,
+                show: true
+            })));
+            setFavoritePlayers(favoritePlayers.map(player => ({
+                ...player,
+                show: true
+            })));
+            setPlayers(mainPlayers.map(player => ({
+                ...player,
+                show: true
+            })));
+        }).catch((error) => {
+            console.error('Erro ao carregar dados:', error.response.data.detail);
             Toast.show({
                 props: {
                     type: "error",
                     text: "Erro ao carregar dados"
                 }
             });
-        } finally {
+        }).finally(() => {
             setLoading(false);
-        }
+        });
     };
 
     return (
