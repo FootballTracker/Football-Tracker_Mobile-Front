@@ -36,7 +36,7 @@ interface LeagueFull {
 }
 
 export default function League() {
-    const { setFavoriteLeagues, setLeagues } = useItemsContext();
+    const { setFavoriteLeagues, setLeagues, favoriteLeagues } = useItemsContext();
     const { leagueId } = useLocalSearchParams();
     const { user } = useUserContext();
     const [contentLoaded, setContentLoaded] = useState(false);
@@ -109,7 +109,17 @@ export default function League() {
         });
     }
 
-    const changeFavoritie = () => {
+    const changeFavoritie = async () => {
+        if(!favoriteState && favoriteLeagues.length === 3) {
+            Toast.show({
+                props: {
+                    type: "warn",
+                    text: "3 ligas já estão favoritadas. Desfavorite uma liga caso deseje favoritar alguma outra"
+                },
+                visibilityTime: 6000
+            });
+            return false;
+        }
         SwapFavorites(setFavoriteLeagues, setLeagues, {id: league?.league.id, name: league?.league.name, logo_url: league?.league.logo_url, is_favorite: favoriteState, show: true, api_id: league?.league.api_id}, "league", user?.id);
         setFavoriteState(!favoriteState);
     }

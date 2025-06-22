@@ -15,14 +15,19 @@ import FilledStar from '@/assets/Icons/FilledStar.svg'
 type FavoriteStarProps = {
     favorite: boolean;
     swapFavoriteOnClick?: boolean;
-    handleClick: () => void;
+    handleClick: (() => Promise<boolean>) | (() => void);
 }
 
 export default function FavoriteStar({ favorite, swapFavoriteOnClick = true, handleClick } : FavoriteStarProps) {
     const [favoritieState, setFavoritieState] = useState(favorite);
 
+    async function changeIcon() {
+        const value = await handleClick();
+        if(value === undefined && swapFavoriteOnClick) setFavoritieState(!favoritieState);
+    }
+
     return (
-        <TouchableOpacity activeOpacity={0.5} onPress={() => {if(swapFavoriteOnClick) setFavoritieState(!favoritieState); handleClick()}}>
+        <TouchableOpacity activeOpacity={0.5} onPress={() => {changeIcon()}}>
             <ThemedIcon
                 IconComponent={favoritieState ? FilledStar : UnfilledStar}
                 darkColor={Colors.dark.Red}

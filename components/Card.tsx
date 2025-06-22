@@ -19,7 +19,7 @@ type SingleInfoProps = {
     info: string;
     favorite?: boolean;
     handleOpen: () => void;
-    handleFavorite?: () => void;
+    handleFavorite?: (() => void) | (() => Promise<boolean>);
     show?: boolean;
 }
 
@@ -125,7 +125,7 @@ export default function Card({image, info, favorite, handleOpen, handleFavorite,
                 </View>
                 
                 <View style={styles.infoGroup}>
-                    { favorite !== undefined && handleFavorite && <FavoriteStar favorite={favorite} handleClick={() => {handleFavorite()}} /> }
+                    { favorite !== undefined && handleFavorite && <FavoriteStar favorite={favorite} handleClick={handleFavorite} /> }
                     <ThemedIcon onPress={handleOpen} IconComponent={MaterialIcons} name='keyboard-arrow-right' darkColor={Colors.dark.Red} lightColor={Colors.light.Red} size={25} />
                 </View>
             </TouchableOpacity>

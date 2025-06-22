@@ -81,7 +81,7 @@ export default function Team() {
 
     const [favoriteState, setFavoriteState] = useState(false);
     
-    const { setFavoriteTeams, setTeams } = useItemsContext();
+    const { setFavoriteTeams, setTeams, favoriteTeams } = useItemsContext();
     const { user } = useUserContext();
     
     const [contentLoaded, setContentLoaded] = useState(false);
@@ -145,7 +145,17 @@ export default function Team() {
     }
 
 
-    const changeFavoritie = () => {
+    const changeFavoritie = async () => {
+        if(!favoriteState && favoriteTeams.length === 1) {
+            Toast.show({
+                props: {
+                    type: "warn",
+                    text: "Você já tem um time favorito. Remova o atual para favoritar outro time"
+                },
+                visibilityTime: 6000
+            });
+            return false;
+        }
         SwapFavorites(setFavoriteTeams, setTeams, {id: teamData?.team.id, name: teamData?.team.name, logo: teamData?.team.logo, is_favorite: favoriteState, show: true}, "team", user?.id);
         setFavoriteState(!favoriteState);
     }

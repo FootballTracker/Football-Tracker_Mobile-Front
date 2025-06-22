@@ -2,7 +2,11 @@
 import { useUserContext } from "@/context/UserContext";
 import { useItemsContext } from "@/context/ItemsContext";
 import { item, SwapFavorites } from "@/constants/Favorites";
+import { Toast } from "toastify-react-native";
 import { router } from "expo-router";
+import { player } from "./home/Jogadores";
+import { league } from "./home/Ligas";
+import { team } from "./home/Times";
 
 //Components
 import Card from "./Card";
@@ -15,6 +19,19 @@ const accessPage = (page: string, id: string) => {
 
 const changeFavorite = <T extends item>(setFavorite: React.Dispatch<React.SetStateAction<T[]>>, setMain: React.Dispatch<React.SetStateAction<T[]>>, item: T, type: string, userId: string | undefined) => {
     SwapFavorites(setFavorite, setMain, item, type, userId);
+}
+
+const verifyFavoritesLenght =  async function (favoritesArray: item[], message: string, length: number = 3) {
+    if(favoritesArray.length === length) {
+        Toast.show({
+            props: {
+                type: "warn",
+                text: message
+            },
+            visibilityTime: 6000
+        });
+        return false;
+    }
 }
 
 
@@ -45,8 +62,17 @@ export function FavoriteTeams() {
 }
 
 export function MainTeams() {
-    const { teams, setFavoriteTeams, setTeams } = useItemsContext();
+    const { teams, favoriteTeams, setFavoriteTeams, setTeams } = useItemsContext();
     const { user } = useUserContext();
+
+    async function verifyFavorites(team: team) {
+        const change = await verifyFavoritesLenght(favoriteTeams, "Você já tem um time favorito. Remova o atual para favoritar outro time", 1);
+        if(change !== false) {
+            changeFavorite(setFavoriteTeams, setTeams, team, "team", user?.id);
+            return;
+        }
+        return change;
+    }
 
     return (
         <>
@@ -56,7 +82,7 @@ export function MainTeams() {
                     <Card
                         favorite={team.is_favorite}
                         handleOpen={() => {accessPage('team', team.id)}}
-                        handleFavorite={() => {changeFavorite(setFavoriteTeams, setTeams, team, "team", user?.id)}}
+                        handleFavorite={async () => {return await verifyFavorites(team)}}
                         info={team.name}
                         image={team.logo}
                         show={team.show}
@@ -96,8 +122,17 @@ export function FavoriteLeagues() {
 }
 
 export function MainLeagues() {
-    const { leagues, setFavoriteLeagues, setLeagues } = useItemsContext();
+    const { leagues, favoriteLeagues, setFavoriteLeagues, setLeagues } = useItemsContext();
     const { user } = useUserContext();
+
+    async function verifyFavorites(league: league) {
+        const change = await verifyFavoritesLenght(favoriteLeagues, "3 ligas já estão favoritadas. Desfavorite uma liga caso deseje favoritar alguma outra");
+        if(change !== false) {
+            changeFavorite(setFavoriteLeagues, setLeagues, league, "league", user?.id);
+            return;
+        }
+        return change;
+    }
 
     return (
         <>
@@ -107,7 +142,7 @@ export function MainLeagues() {
                     <Card
                         favorite={league.is_favorite}
                         handleOpen={() => {accessPage('league', league.id)}}
-                        handleFavorite={() => {changeFavorite(setFavoriteLeagues, setLeagues, league, "league", user?.id);}}
+                        handleFavorite={async () => {return await verifyFavorites(league)}}
                         info={league.name}
                         image={league.logo_url}
                         show={league.show}
@@ -147,8 +182,17 @@ export function FavoritePlayers() {
 }
 
 export function MainPlayers() {
-    const { players, setFavoritePlayers, setPlayers } = useItemsContext();
+    const { players, favoritePlayers, setFavoritePlayers, setPlayers } = useItemsContext();
     const { user } = useUserContext();
+
+    async function verifyFavorites(player: player) {
+        const change = await verifyFavoritesLenght(favoritePlayers, "3 jogadores já estão favoritados. Desfavorite um jogador caso deseje favoritar algum outro");
+        if(change !== false) {
+            changeFavorite(setFavoritePlayers, setPlayers, player, "player", user?.id);
+            return;
+        }
+        return change;
+    }
 
     return (
         <>
@@ -158,7 +202,7 @@ export function MainPlayers() {
                     <Card
                         favorite={player.is_favorite}
                         handleOpen={() => {accessPage('player', player.id)}}
-                        handleFavorite={() => {changeFavorite(setFavoritePlayers, setPlayers, player, "player", user?.id)}}
+                        handleFavorite={async () => {return await verifyFavorites(player)}}
                         info={player.name}
                         image={player.photo}
                         show={player.show}
