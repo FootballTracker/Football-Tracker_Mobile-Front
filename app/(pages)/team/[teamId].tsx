@@ -113,9 +113,12 @@ export default function Team() {
         getTeamData();
     }, []);
 
-
     async function getTeamData() {
-        await api.get(`teams/${teamId}`).
+        await api.get(`teams/${teamId}`, {
+            params: {
+                user_id: user?.id
+            }
+        }).
         then((response: any) => {
             setTeamData(response.data);
             setFavoriteState(response.data.team.is_favorite);

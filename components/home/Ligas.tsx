@@ -85,7 +85,7 @@ export default function Ligas() {
                 ) : (
                     showSearched ? (
                         searchedLeagues.length ? (
-                            <Section text={`${searchedLeagues.length} liga(s) encontradas`} >
+                            <Section text={`${searchedLeagues.length} liga(s) encontrada(s)`} >
                                 {searchedLeagues.map((league, index) => (
                                     <Card
                                         favorite={league.is_favorite}

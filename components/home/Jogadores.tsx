@@ -75,7 +75,7 @@ export default function Jogadores() {
     return (
         !loading ? (
             <ThemedScrollView style={styles.background} getData={refresh}>
-                <SearchBar handleSearch={searchPlayers} clearInputState={clearInput}/>
+                <SearchBar handleSearch={searchPlayers} clearInputState={clearInput} minLength={3}/>
 
                 {searching ? (
                     <View style={{marginTop: 30}}>
@@ -84,7 +84,7 @@ export default function Jogadores() {
                 ) : (
                     showSearched ? (
                         searchedPlayers.length ? (
-                            <Section text={`${searchedPlayers.length} jogador(es) encontradas`} >
+                            <Section text={`${searchedPlayers.length} jogador(es) encontrado(s)`} style={{marginBottom: 35}}>
                                 {searchedPlayers.map((player, index) => (
                                     <Card
                                         favorite={player.is_favorite}

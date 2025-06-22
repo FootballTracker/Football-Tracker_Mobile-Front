@@ -11,15 +11,16 @@ const windowWidth = Dimensions.get('window').width;
 interface SearchBarProps {
     handleSearch: (text: string) => void;
     clearInputState: boolean;
+    minLength?: number;
 }
 
-export default function SearchBar({ handleSearch, clearInputState }: SearchBarProps) {
+export default function SearchBar({ handleSearch, clearInputState, minLength = 1 }: SearchBarProps) {
     const { theme } = useTheme();
     const [text, setText] = useState("");
 
     function handleFinishEdit() {
         const value = text.trim();
-        if(value && value.length < 1) {
+        if(value && value.length < minLength) {
             Toast.show({
                 props: {
                     type: "info",

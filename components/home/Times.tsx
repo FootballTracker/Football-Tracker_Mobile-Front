@@ -84,7 +84,7 @@ export default function Times() {
                 ) : (
                     showSearched ? (
                         searchedTeams.length ? (
-                            <Section text={`${searchedTeams.length} time(s) encontrados`} >
+                            <Section text={`${searchedTeams.length} time(s) encontrado(s)`} >
                                 {searchedTeams.map((team, index) => (
                                     <Card
                                         favorite={team.is_favorite}
