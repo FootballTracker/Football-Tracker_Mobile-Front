@@ -16,8 +16,13 @@ import Weight from '@/assets/Icons/Weight.svg'
 import Position from '@/assets/Icons/Position.svg'
 import { formatDate } from '@/lib/format';
 
-//Type
-type JogadorPerfilProps = {
+//Types
+type CountryInfo = {
+    name: string,
+    flag_url: string,
+}
+
+export type JogadorPerfilProps = {
     player: {
         id: string,
         name: string,
@@ -26,25 +31,25 @@ type JogadorPerfilProps = {
         age: number,
         birth_date : string,
         birth_place: string,
-        birth_country: string,
-        nationality: string,
+        birth_country: CountryInfo,
+        nationality: CountryInfo,
         height: string,
         weight: string,
         number: number,
         position: string,
         photo_url: string,
-        flag_url: string,
         is_favorite: boolean,
     }
 }
+
 
 export default function JogadorPerfil({ player } : JogadorPerfilProps) {
     return (
         <ThemedScrollView style={{marginBottom: 50}}>
             <Section icon={{IconComponent: MaterialCommunityIcons, name: 'information'}} text='Informações' >
                 <SingleInfo icon={{IconComponent: Username}} infoName='Nome: ' info={player.firstname + ' ' + player.lastname} />
-                <SingleInfo icon={{IconComponent: Birthday}} infoName='Data de nascimento: ' info={formatDate(player.birth_date)} />
-                <SingleInfo icon={{IconComponent: Flag}} infoName='Pais: ' info={player.birth_country} />
+                <SingleInfo icon={{IconComponent: Birthday}} infoName='Data de nascimento: ' info={formatDate(player.birth_date, true, false)} />
+                <SingleInfo icon={{IconComponent: Flag}} infoName='Pais: ' info={player.birth_country.name} />
                 <SingleInfo icon={{IconComponent: City, Stroke: true}} infoName='Cidade de Origem: ' info={player.birth_place} />
                 <SingleInfo icon={{IconComponent: Height, Stroke: true}} infoName='Altura: ' info={player.height} />
                 <SingleInfo icon={{IconComponent: Weight, Stroke: true}} infoName='Peso: ' info={player.weight} />

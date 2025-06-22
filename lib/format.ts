@@ -1,25 +1,23 @@
-import { parseISO, format } from 'date-fns';
-import { toZonedTime } from 'date-fns-tz';
+import { parseISO } from 'date-fns';
+import { formatInTimeZone } from 'date-fns-tz';
 
-export function formatDate(dateISO: string, fourDigitYear: boolean = true): string {
+export function formatDate(dateISO: string, fourDigitYear: boolean = true, changeTimezone: boolean = true): string {
 
     if(!(dateISO.endsWith('Z'))) dateISO = dateISO.concat('Z');
 
-    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const timeZone = changeTimezone ? Intl.DateTimeFormat().resolvedOptions().timeZone : 'UTC';
     const parsedDate = parseISO(dateISO);
-    const date = toZonedTime(parsedDate, timeZone);
 
-    return fourDigitYear ? format(date, 'dd/MM/yyyy') : format(date, 'dd/MM/yy');
+    return fourDigitYear ? formatInTimeZone(parsedDate, timeZone, 'dd/MM/yyyy') : formatInTimeZone(parsedDate, timeZone, 'dd/MM/yy');
     
 }
 
-export function formatTime(dateISO: string): string {
+export function formatTime(dateISO: string, changeTimezone: boolean = true): string {
     
     if(!(dateISO.endsWith('Z'))) dateISO = dateISO.concat('Z');
 
-    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const timeZone = changeTimezone ? Intl.DateTimeFormat().resolvedOptions().timeZone : 'UTC';
     const parsedDate = parseISO(dateISO);
-    const date = toZonedTime(parsedDate, timeZone);
 
-    return format(date, 'HH:mm');
+    return formatInTimeZone(parsedDate, timeZone, 'HH:mm');
 }
