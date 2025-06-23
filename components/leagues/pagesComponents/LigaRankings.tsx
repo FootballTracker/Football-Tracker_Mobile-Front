@@ -49,28 +49,28 @@ function LigaRankings({leagueId, season} : LigaRankingsProps) {
 
     async function getData() {
         await api.get("players/rankings")
-        .then((response) => {
-            setData(response.data);
-        }).catch((error) => {
-            if(error.response.data.detail) {
-                Toast.show({
-                    props: {
-                        type: "error",
-                        text: error.response.data.detail
-                    }
-                });
-            }
-            else {
-                Toast.show({
-                    props: {
-                        type: "error",
-                        text: "Erro ao buscar rankings da liga"
-                    }
-                });
-            }
-        }).finally(() => {
-            setLoading(false);
-        })
+            .then((response) => {
+                setData(response.data);
+            }).catch((error) => {
+                if(error.response.data.detail) {
+                    Toast.show({
+                        props: {
+                            type: "error",
+                            text: error.response.data.detail
+                        }
+                    });
+                }
+                else {
+                    Toast.show({
+                        props: {
+                            type: "error",
+                            text: "Erro ao buscar rankings da liga"
+                        }
+                    });
+                }
+            }).finally(() => {
+                setLoading(false);
+            })
     }
 
 

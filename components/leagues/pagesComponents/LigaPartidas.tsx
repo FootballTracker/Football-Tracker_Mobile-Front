@@ -11,6 +11,7 @@ import { ThemedScrollView } from '@/components/DefaultComponents/ThemedScrollVie
 import { PickRound } from '@/components/leagues/PickRound';
 import LoadingIcon from '@/components/LoadingIcon';
 import Section from '@/components/Section';
+import { ThemedView } from '@/components/DefaultComponents/ThemedView';
 
 interface LigaPartidasProps {
     season: number;
@@ -104,7 +105,7 @@ function LigaPartidas({ season, leagueId } : LigaPartidasProps) {
     }
 
     return (
-        <ThemedScrollView style={{marginBottom: 50}}>
+        <ThemedScrollView>
             <PickRound
                 values={rounds}
                 selected={round}
@@ -112,24 +113,27 @@ function LigaPartidas({ season, leagueId } : LigaPartidasProps) {
             />
 
             { fullRound && fullRound.length ?
-                fullRound.map((values, index) => (
-                    <Section 
-                        icon={{
-                            IconComponent: MaterialCommunityIcons,
-                            name: "calendar-text",
-                            style: styles.calendarIcon,
-                            darkColor: Colors.dark.Red,
-                            lightColor: Colors.light.Red,
-                            size: 28
-                        }}
-                        text={formatDate(values.day)}
-                        key={index}
-                    >
-                        {values.matches.map((match, index) => (
-                            <MatchCard id={match.id} home_team={match.home_team} away_team={match.away_team} date={formatTime(match.date)} key={index}/>
-                        ))}
-                    </Section>
-                ))
+                <>
+                    {fullRound.map((values, index) => (
+                        <Section 
+                            icon={{
+                                IconComponent: MaterialCommunityIcons,
+                                name: "calendar-text",
+                                style: styles.calendarIcon,
+                                darkColor: Colors.dark.Red,
+                                lightColor: Colors.light.Red,
+                                size: 28
+                            }}
+                            text={formatDate(values.day)}
+                            key={index}
+                        >
+                            {values.matches.map((match, index) => (
+                                <MatchCard id={match.id} home_team={match.home_team} away_team={match.away_team} date={formatTime(match.date)} key={index}/>
+                            ))}
+                        </Section>
+                    ))}
+                    <ThemedView style={{height: 30}} />
+                </>
             :
                 <View style={{marginTop: 20}}>
                     <LoadingIcon />

@@ -208,7 +208,7 @@ function LigaClassificacao({ season, leagueId, leagueName }: LigaClassificacaoPr
                     </Animated.ScrollView>
                 </>
             ) : (
-                <View style={{ height: 50 }}>
+                <View style={{ height: 40, marginTop: 40 }}>
                     <LoadingIcon />
                 </View>
             )}
