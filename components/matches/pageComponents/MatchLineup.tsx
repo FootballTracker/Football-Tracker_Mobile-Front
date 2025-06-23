@@ -1,14 +1,9 @@
 import { View, StyleSheet, Image, Pressable } from "react-native";
 import { memo, useEffect, useState } from "react";
-import Field from "@/assets/Icons/Field.svg";
-import Swap from "@/assets/Icons/Swap.svg";
-import Shield from "@/assets/Icons/Shield.svg";
 import { Colors } from "@/constants/Colors";
 import { MatchCardI } from "../MatchCard";
 import { Toast } from "toastify-react-native";
 import api from "@/lib/Axios";
-import PlayerCheck from "@/assets/Icons/PlayerCheck.svg";
-import PlayerJersey from "@/assets/Icons/PlayerJersey.svg";
 
 import { ThemedText } from "@/components/DefaultComponents/ThemedText";
 import { ThemedScrollView } from "@/components/DefaultComponents/ThemedScrollView";
@@ -17,6 +12,13 @@ import InfoMessage from "@/components/InfoMessage";
 import Section from "@/components/Section";
 import Card from "@/components/Card";
 
+//Icons
+import Field from "@/assets/Icons/Field.svg";
+import Swap from "@/assets/Icons/Swap.svg";
+import Shield from "@/assets/Icons/Shield.svg";
+import Shirt from "@/assets/Icons/Shirt.svg";
+
+//Types
 interface MatchLineupI {
     match: MatchCardI,
 }
@@ -139,7 +141,7 @@ function MatchLineup({ match }: MatchLineupI) {
                         </View>
                     </View>
 
-                    <Section icon={{IconComponent: PlayerJersey, width: 28, height: 37, Stroke: true, strokeWidth: 3.5}} text="Titulares">
+                    <Section icon={{IconComponent: Shirt, width: 30, height: 37, Stroke: true, strokeWidth: 1.5}} text="Titulares">
 
                         {selectedTeam?.initial.map((line) => (
                             line.map((player) => (
