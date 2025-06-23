@@ -11,9 +11,18 @@ import { useItemsContext } from "@/context/ItemsContext";
 import api from "@/lib/Axios";
 import { AxiosResponse } from "axios";
 import { router, useLocalSearchParams } from "expo-router";
-import { useEffect, useState } from "react";
-import { Image, Pressable, StyleSheet, View } from "react-native";
+import { useEffect, useRef, useState } from "react";
+import { Animated, Dimensions, Image, Pressable, ScrollView, StyleSheet, View } from "react-native";
 import { Toast } from "toastify-react-native";
+
+//Icon
+import Statistics from "@/assets/Icons/Statistics.svg";
+import { AnimatedThemedScrollView } from "@/components/DefaultComponents/AnimatedThemedScrollView";
+import { useTheme } from "@/context/ThemeContext";
+import { Colors } from "@/constants/Colors";
+
+//Consts
+const windowWidth = Dimensions.get('window').width;
 
 //Type
 interface matchTeamI {
@@ -73,9 +82,124 @@ interface playerInMatchResponse {
 }
 
 export default function PlayerMatch() {
+    const { theme } = useTheme();
     const { matchId, playerId } = useLocalSearchParams();
     const [contentLoaded, setContentLoaded] = useState(false);
     const [player, setPlayer] = useState<playerInMatchI>();
+    const scrollY = useRef<any>(new Animated.Value(0)).current;
+    const scrollValue = useRef(0);
+    const scrollRef = useRef<ScrollView>(null);
+    const animationHeight = 165;
+
+    const animatedOpacity = scrollY.interpolate({
+        inputRange: [0, animationHeight * 0.8],
+        outputRange: [1, 0],
+        extrapolate: 'clamp',
+    });
+
+    const animatedPlayerTextTranslateY = scrollY.interpolate({
+        inputRange: [0, animationHeight],
+        outputRange: [0, -158],
+        extrapolate: 'clamp',
+    });
+
+    const animatedTeamImageTranslateY = scrollY.interpolate({
+        inputRange: [animationHeight * 0.6, animationHeight],
+        outputRange: [0, -10],
+        extrapolate: 'clamp',
+    });
+
+    const animatedTeamImageOpacity = scrollY.interpolate({
+        inputRange: [animationHeight * 0.6, animationHeight],
+        outputRange: [0, 1],
+        extrapolate: 'clamp',
+    });
+
+    const animatedPhotoTranslateX = scrollY.interpolate({
+        inputRange: [0, animationHeight],
+        outputRange: [0, -155],
+        extrapolate: 'clamp',
+    });
+
+    const animatedPhotoTranslateY = scrollY.interpolate({
+        inputRange: [0, animationHeight],
+        outputRange: [0, -79],
+        extrapolate: 'clamp',
+    });
+    
+    const animatedPhotoScale = scrollY.interpolate({
+        inputRange: [0, animationHeight],
+        outputRange: [1, .3],
+        extrapolate: 'clamp',
+    });
+    
+    const animatedStatisticsTransalteY = scrollY.interpolate({
+        inputRange: [0, animationHeight],
+        outputRange: [0, -165],
+        extrapolate: 'clamp',
+    });
+
+    const animatedStyles = StyleSheet.create({
+        photo: {
+            transform: [
+                {translateX: animatedPhotoTranslateX},
+                {translateY: animatedPhotoTranslateY},
+                {scale: animatedPhotoScale},
+            ],
+        },
+        teamImage: {
+            transform: [
+                {translateY: animatedTeamImageTranslateY},
+            ],
+            opacity: animatedTeamImageOpacity,
+        },
+        playerText: {
+            transform: [
+                {translateY: animatedPlayerTextTranslateY},
+            ],
+        },
+        opacity: {
+            opacity: animatedOpacity,
+        },
+        statistics: {
+            transform: [
+                {translateY: animatedStatisticsTransalteY},
+            ],
+        },
+    });
+
+    const onScrollHandler = Animated.event(
+        [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+        { useNativeDriver: true }
+    );
+
+    const handleValidScrollPoints = () => {
+        
+        if (scrollValue.current <= 84) {
+            scrollRef.current?.scrollTo({
+                y: 0,
+                animated: true,
+            });
+        }
+
+        else if(scrollValue.current <= 168) {
+            scrollRef.current?.scrollTo({
+                y: 168,
+                animated: true,
+            });
+        }
+    };
+
+    useEffect(() => {
+        const listenerId = scrollY.addListener((v: any) => {
+            scrollValue.current = v.value;
+        });
+        console.log(scrollY);
+
+        return () => {
+            scrollY.removeListener(listenerId);
+        };
+    }, [scrollY]);
 
     //search match
     useEffect(() => {
@@ -114,22 +238,32 @@ export default function PlayerMatch() {
 
     return (
         contentLoaded && player ? (
-            <ThemedScrollView style={styles.background}>
+            <AnimatedThemedScrollView scrollRef={scrollRef} stickyHeaderIndices={[0]} style={{flex: 1}} scrollEventThrottle={16} onScroll={onScrollHandler} onMomentumScrollEnd={handleValidScrollPoints}>
                 <View style={{display: 'flex', alignItems: 'center', gap: 5}}>
-                    <ThemedText style={styles.text} >Score: {player?.rating}</ThemedText>
+                    <ThemedView style={{width: windowWidth * 0.95, height: 80, position: 'absolute'}} />
+                    
+                    <Animated.Image resizeMode='contain' source={{uri: player?.team_logo}} style={[styles.teamLogo, animatedStyles.teamImage]} />
 
-                    <Pressable onPress={accessPlayer}>
-                        <Image source={{uri: player?.player_url}} style={styles.playerPhoto} />
-                    </Pressable>
+                    <ThemedText style={[styles.text, animatedStyles.opacity, {marginTop: 10}]} >Pontuação: {player?.rating}</ThemedText>
 
-                    <View style={[styles.centerView, {gap: 10}]}>
-                        <Image source={{uri: player?.team_logo}} style={styles.teamLogo} />
-                        <ThemedText style={styles.text} onPress={accessPlayer} >{player?.name} - {player?.jersey_number}</ThemedText>
-                    </View>
+                    <Animated.View style={[animatedStyles.photo, {alignItems: 'center'}]}>
+                            <Pressable onPress={accessPlayer}>
+                                <Image resizeMode='contain' source={{uri: player?.player_url}} style={styles.playerPhoto} />
+                            </Pressable>
+                    </Animated.View>
+
+                    <ThemedText style={[styles.text, animatedStyles.playerText]} onPress={accessPlayer} >{player?.name} - {player?.jersey_number}</ThemedText>
+
+                    <Animated.View style={[styles.statistics, animatedStyles.statistics]}>
+                        <ThemedView>
+                            <ThemedText style={[styles.text, styles.statisticsText]}>Estatísticas na partida</ThemedText>
+                            <ThemedView darkColor={Colors.dark.Red} lightColor={Colors.light.Red} style={styles.statisticsLine}/>
+                        </ThemedView>
+                    </Animated.View>
                 </View>
 
-                <Section style={{marginBottom: 80}}>
-                    <ThemedText style={[styles.text, {textAlign: 'center', fontFamily: 'Karla'}]}>Estatísticas</ThemedText>
+                {/* <Section style={{marginBottom: 70}} icon={{IconComponent: Statistics}} text="Estatísticas"> */}
+                <Section style={{marginBottom: 50, marginTop: 0}}>
                     <SingleInfo infoName='Minutos jogados: ' info={player.game_minute ?? '0'} />
                     <SingleInfo infoName='Impedimentos: ' info={player.offsides ?? '0'} />
                     <SingleInfo infoName='Total de chutes: ' info={player.shots_total ?? '0'} />
@@ -161,7 +295,7 @@ export default function PlayerMatch() {
                     <SingleInfo infoName='Pênaltis perdidos: ' info={player.penalty_missed ?? '0'} />
                     <SingleInfo infoName='Pênaltis salvos: ' info={player.penalty_saved ?? '0'} />
                 </Section>
-            </ThemedScrollView>
+            </AnimatedThemedScrollView>
         ) : (
             <LoadingIcon />
         )
@@ -169,27 +303,40 @@ export default function PlayerMatch() {
 }
 
 const styles = StyleSheet.create({
-    background: {
-        paddingTop: 25,
-        flex: 1
-    },
     playerPhoto: {
         width: 120,
         height: 120,
         borderRadius: 15,
     },
     teamLogo: {
-        width: 25,
-        height: 25,
+        position: 'absolute',
+        zIndex: 1,
+        top: 20,
+        right: 10,
+        width: 36,
+        height: 36,
     },
     text: {
         fontFamily: 'Kdam',
         fontSize: 20,
+        textAlign: 'center',
     },
     centerView: {
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
         gap: 10,
+    },
+    statistics: {
+        marginTop: 20,
+    },
+    statisticsText: {
+        textAlign: 'center',
+        fontFamily: 'Karla',
+    },
+    statisticsLine: {
+        height: .6,
+        width: windowWidth * 0.9,
+        marginTop: 5,
     },
 });
