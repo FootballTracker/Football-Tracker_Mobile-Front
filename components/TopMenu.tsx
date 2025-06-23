@@ -12,14 +12,54 @@ import { ThemedImage } from './DefaultComponents/ThemedImage';
 import { ThemedIcon } from './DefaultComponents/ThemedIcon';
 import { useEffect, useState } from 'react';
 import { ReturnArrow } from './ReturnArrow';
+import { useTheme } from '@/context/ThemeContext';
 
 const windowWidth = Dimensions.get('window').width;
 
 export default function TopMenu() {
     const pathname = usePathname();
+    const { theme } = useTheme();
     const [showBackButton, setShowBackButton] = useState(false);
     const { user, imageVersion } = useUserContext();
     const { page, setPage, isOnUserPages, userPages } = usePage();
+
+    const styles = StyleSheet.create({
+        menu: {
+            position: "relative",
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            width: windowWidth+2,
+            height: 65,
+            left: -1,
+            borderBottomLeftRadius: 12,
+            borderBottomRightRadius: 12,
+            borderWidth: 0.5,
+            borderColor: Colors[theme].Red,
+            borderTopWidth: 0,
+            zIndex: 10
+        },
+        leftInfo: {
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            marginLeft: 5
+        },
+        pageText: {
+            fontSize: 22,
+            // fontFamily: "Kdam",
+        },
+        logo: {
+            width: 57,
+            height: 37,
+        },
+        userImage: {
+            width: 60,
+            height: 35,
+            marginRight: 5
+        }
+    });
 
     const handleProfileClick = () => {
         if(user) {
@@ -57,7 +97,7 @@ export default function TopMenu() {
                             />
                         )
                     }
-                    <ThemedText style={styles.pageText} darkColor={Colors.dark.Text} lightColor={Colors.light.Text}>
+                    <ThemedText style={styles.pageText} colorName='Text'>
                         {page}
                     </ThemedText>
                 </View>
@@ -96,41 +136,3 @@ export default function TopMenu() {
             
     );
 }
-
-const styles = StyleSheet.create({
-    menu: {
-        position: "relative",
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-        width: windowWidth+2,
-        height: 65,
-        left: -1,
-        borderBottomLeftRadius: 12,
-        borderBottomRightRadius: 12,
-        borderWidth: 0.5,
-        borderColor: Colors.dark.Red,
-        borderTopWidth: 0,
-        zIndex: 10
-    },
-    leftInfo: {
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center",
-        marginLeft: 5
-    },
-    pageText: {
-        fontSize: 22,
-        // fontFamily: "Kdam",
-    },
-    logo: {
-        width: 57,
-        height: 37,
-    },
-    userImage: {
-        width: 60,
-        height: 35,
-        marginRight: 5
-    }
-});

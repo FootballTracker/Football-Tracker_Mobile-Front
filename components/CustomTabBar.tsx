@@ -69,7 +69,7 @@ export const CustomTabBar: React.FC<TabBarProps<any>> = ({ navigationState, jump
         },
         indicatorChildren: {
             height: 3,
-            backgroundColor: Colors.dark.Red,
+            backgroundColor: Colors[theme].Red,
             marginLeft: "auto",
             marginRight: "auto",
             borderRadius: 5,

@@ -123,8 +123,7 @@ export default function Cadastro() {
                             <ThemedText
                                 style={styles.loginText}
                                 onPress={() => router.replace('/(auth)/Login')}
-                                darkColor={Colors.dark.Green}
-                                lightColor={Colors.light.Green}
+                                colorName="Green"
                             >
                                 Faça login
                             </ThemedText>

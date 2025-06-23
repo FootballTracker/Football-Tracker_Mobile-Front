@@ -120,8 +120,7 @@ function LigaPartidas({ season, leagueId } : LigaPartidasProps) {
                                 IconComponent: MaterialCommunityIcons,
                                 name: "calendar-text",
                                 style: styles.calendarIcon,
-                                darkColor: Colors.dark.Red,
-                                lightColor: Colors.light.Red,
+                                colorName: "Red",
                                 size: 28
                             }}
                             text={formatDate(values.day)}

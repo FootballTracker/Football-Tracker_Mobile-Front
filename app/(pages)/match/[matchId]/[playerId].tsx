@@ -257,7 +257,7 @@ export default function PlayerMatch() {
                     <Animated.View style={[styles.statistics, animatedStyles.statistics]}>
                         <ThemedView>
                             <ThemedText style={[styles.text, styles.statisticsText]}>Estatísticas na partida</ThemedText>
-                            <ThemedView darkColor={Colors.dark.Red} lightColor={Colors.light.Red} style={styles.statisticsLine}/>
+                            <ThemedView colorName="Red" style={styles.statisticsLine}/>
                         </ThemedView>
                     </Animated.View>
                 </View>

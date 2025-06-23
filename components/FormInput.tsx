@@ -28,8 +28,8 @@ export function FormInput({ control, errors, name, placeHolder, isPassword = fal
 
             {errors[name] ? (
                 <View style={styles.view}>
-                    <ThemedIcon IconComponent={Ionicons} name="alert-circle-outline" lightColor={Colors.light.Red} darkColor={Colors.dark.Red} size={16} style={styles.icon} />
-                    <ThemedText lightColor={Colors.light.Red} darkColor={Colors.dark.Red} style={styles.errorText} >{errors[name].message}</ThemedText>
+                    <ThemedIcon IconComponent={Ionicons} name="alert-circle-outline" colorName="Red" size={16} style={styles.icon} />
+                    <ThemedText colorName="Red" style={styles.errorText} >{errors[name].message}</ThemedText>
                 </View>
             ) : (
                 // <ThemedText style={styles.errorText}> </ThemedText>

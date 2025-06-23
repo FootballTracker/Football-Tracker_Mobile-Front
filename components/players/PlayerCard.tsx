@@ -36,8 +36,7 @@ export default function PlayerCard({ id, image, name, favorite }: PlayerCardI) {
                     <ThemedIcon
                         IconComponent={MaterialIcons}
                         name='keyboard-arrow-right'
-                        darkColor={Colors.dark.Red}
-                        lightColor={Colors.light.Red}
+                        colorName="Red"
                         size={25}
                     />
                 </View>

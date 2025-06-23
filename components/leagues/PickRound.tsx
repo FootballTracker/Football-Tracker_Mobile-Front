@@ -36,8 +36,7 @@ export function PickRound({ values, selected, setSelected, iconSize, ...otherPro
                     <ThemedIcon
                         IconComponent={MaterialIcons}
                         name='keyboard-arrow-left'
-                        darkColor={Colors.dark.Text}
-                        lightColor={Colors.light.Text}
+                        colorName='Text'
                         size={21}
                         style={Number(selected) === 1 && {opacity: 0.3}}
                     />
@@ -48,8 +47,7 @@ export function PickRound({ values, selected, setSelected, iconSize, ...otherPro
                         <ThemedIcon
                             IconComponent={Ionicons}
                             name='ellipsis-horizontal-circle-outline'
-                            darkColor={Colors.dark.Text}
-                            lightColor={Colors.light.Text}
+                            colorName='Text'
                             size={21}
                             style={styles.pickRoundIcon}
                         />
@@ -61,8 +59,7 @@ export function PickRound({ values, selected, setSelected, iconSize, ...otherPro
                     <ThemedIcon
                         IconComponent={MaterialIcons}
                         name='keyboard-arrow-right'
-                        darkColor={Colors.dark.Text}
-                        lightColor={Colors.light.Text}
+                        colorName='Text'
                         size={21}
                         style={Number(selected) === 38 && {opacity: 0.3}}
                     />

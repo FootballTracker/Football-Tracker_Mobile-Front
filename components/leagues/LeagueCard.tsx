@@ -37,8 +37,7 @@ export default function LeagueCard({ id, logo_url, name, is_favorite }: LeagueCa
                         <ThemedIcon
                             IconComponent={MaterialIcons}
                             name='keyboard-arrow-right'
-                            darkColor={Colors.dark.Red}
-                            lightColor={Colors.light.Red}
+                            colorName="Red"
                             size={25}
                         />
                 </View>

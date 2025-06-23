@@ -44,10 +44,10 @@ export function ConfigsCard({ icon, text, ...rest } : ConfigCardProps) {
     return (
         <Pressable style={({ pressed }) => [styles.configurationItem, pressed && styles.configurationItemHover]} {...rest}>
             <View style={styles.configurationItemName}>
-                <ThemedIcon {...icon} darkColor={Colors.dark.Red} lightColor={Colors.light.Red} />
+                <ThemedIcon {...icon} colorName="Red" />
                 <ThemedText>{text}</ThemedText>
             </View>
-            <ThemedIcon IconComponent={MaterialIcons} name='keyboard-arrow-right' darkColor={Colors.dark.Red} lightColor={Colors.light.Red} />
+            <ThemedIcon IconComponent={MaterialIcons} name='keyboard-arrow-right' colorName="Red" />
         </Pressable>
     )
 }

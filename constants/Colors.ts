@@ -32,10 +32,10 @@ export const Colors = {
         DarkerText:'#31353F',
         Text: '#191A1C',
         Red: '#933038',
-        Green: '#5D9142',
+        Green:'rgb(78, 129, 51)',
         ButtonText: '#E2E5EB',
         BorderColor: '#000',
-        Yellow: 'rgb(182, 149, 31)',
+        Yellow: 'rgb(177, 146, 11)',
         Transparent: 'rgba(0, 0, 0, 0)'
     },
     dark: {
@@ -53,18 +53,19 @@ export const Colors = {
         Transparent: 'rgba(0, 0, 0, 0)'
     },
     midnight: {
-        DarkBackground: '#0a0a0a',
-        LightBackground: '#0a0a0a',
+        DarkBackground: '#000',
+        LightBackground: '#000',
         LighterBackground:'rgb(17, 18, 21)',
         DarkerText: '#B3B4B6',
         Text: '#F1F1F1',
-        Red:'#933038',
+        // Red:'#933038',
+        Red:'rgb(134, 36, 44)',
         // Red:'rgb(126, 37, 44)',
         // Green:'rgb(200, 200, 200)',
-        Green: '#6DA152',
+        Green:'rgb(89, 141, 61)',
         ButtonText: '#E2E5EB',
         BorderColor: '#000',
-        Yellow: 'rgb(182, 149, 31)',
+        Yellow: 'rgb(209, 168, 19)',
         Transparent: 'rgba(0, 0, 0, 0)'
     },
 };

@@ -15,8 +15,8 @@ export default function InfoMessage({ text, fontSize = 14, style, ...rest }: Inf
 
     return (
         <View style={[styles.view, style]} {...rest}>
-            <ThemedIcon IconComponent={Feather} name="info" size={15} darkColor={Colors.dark.DarkerText} lightColor={Colors.light.DarkerText} />
-            <ThemedText style={[styles.favoritesInfoText, {fontSize: fontSize}]} darkColor={Colors.dark.DarkerText} lightColor={Colors.light.DarkerText}>
+            <ThemedIcon IconComponent={Feather} name="info" size={15} colorName='DarkerText' />
+            <ThemedText style={[styles.favoritesInfoText, {fontSize: fontSize}]} colorName='DarkerText'>
                 {` ${text}`}
             </ThemedText>
         </View>

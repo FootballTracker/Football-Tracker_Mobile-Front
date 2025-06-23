@@ -20,18 +20,18 @@ export default function LeaguesSection({ text, leagues, icon, emptyMessage, ...r
         <View style={styles.section}>
             <View style={styles.titleSection}>
                 <ThemedIcon {...icon}/>
-                <ThemedText lightColor={Colors.light.Text} darkColor={Colors.dark.Text} style={styles.sectionTitle}>
+                <ThemedText colorName='Text' style={styles.sectionTitle}>
                     {text}
                 </ThemedText>
             </View>
-            <ThemedView darkColor={Colors.dark.Red} lightColor={Colors.light.Red} style={styles.divisor}/>
+            <ThemedView colorName="Red" style={styles.divisor}/>
             {leagues?.length ? (
                 leagues.map((league, index) => (
                     <LeagueCard {...league} key={index}/>
                 ))
             ) : (
-                <ThemedText style={styles.favoritesInfoText} darkColor={Colors.dark.DarkerText} lightColor={Colors.light.DarkerText}>
-                    <ThemedIcon IconComponent={Feather} name="info" size={15} darkColor={Colors.dark.DarkerText} lightColor={Colors.light.DarkerText} />
+                <ThemedText style={styles.favoritesInfoText} colorName='DarkerText'>
+                    <ThemedIcon IconComponent={Feather} name="info" size={15} colorName='DarkerText' />
                     {' '}
                     {emptyMessage ? emptyMessage : 'Favorite uma liga para que ela apareça aqui.'}
                 </ThemedText>

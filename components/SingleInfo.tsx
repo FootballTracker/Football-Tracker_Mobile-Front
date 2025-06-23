@@ -51,9 +51,9 @@ export default function SingleInfo({icon, infoName, info, imageUrl} : SingleInfo
         <View style={styles.container}>
             <View style={styles.infoGroup}>
                 {icon ? (
-                    <ThemedIcon width={18} height={18} {...icon} darkColor={Colors.dark.Red} lightColor={Colors.light.Red} />
+                    <ThemedIcon width={18} height={18} {...icon} colorName="Red" />
                 ) : (
-                    <ThemedText darkColor={Colors.dark.Red} lightColor={Colors.light.Red} style={styles.infoText}>•</ThemedText>
+                    <ThemedText colorName="Red" style={styles.infoText}>•</ThemedText>
                 )}
                 <ThemedText style={styles.infoText}>{infoName}</ThemedText>
             </View>

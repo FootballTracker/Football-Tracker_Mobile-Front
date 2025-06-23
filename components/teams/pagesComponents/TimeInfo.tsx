@@ -42,8 +42,7 @@ function TimeInfo({ team, team_venue, last_matches } : TeamInfoProps) {
                     IconComponent: Ionicons,
                     name: "football-outline",
                     style: styles.icons,
-                    darkColor: Colors.dark.Red,
-                    lightColor: Colors.light.Red,
+                    colorName: "Red",
                     size: 28
                 }}
                 text='Últimas Partidas'
@@ -59,8 +58,7 @@ function TimeInfo({ team, team_venue, last_matches } : TeamInfoProps) {
                     IconComponent: MaterialCommunityIcons,
                     name: "information",
                     size: 24,
-                    darkColor: Colors.dark.Red,
-                    lightColor: Colors.light.Red,
+                    colorName: "Red",
                     style: [{marginTop: 3}, styles.icons]
                 }}
             >
@@ -75,8 +73,7 @@ function TimeInfo({ team, team_venue, last_matches } : TeamInfoProps) {
                     IconComponent: MaterialCommunityIcons,
                     name: "information",
                     size: 24,
-                    darkColor: Colors.dark.Red,
-                    lightColor: Colors.light.Red,
+                    colorName: "Red",
                     style: [{marginTop: 3}, styles.icons]
                 }}
             >

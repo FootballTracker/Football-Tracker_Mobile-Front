@@ -17,10 +17,13 @@ import Section from "@/components/Section";
 import Card from "@/components/Card";
 
 //Icons
-import Field from "@/assets/Icons/Field.svg";
+import WhiteField from "@/assets/Icons/WhiteField.svg";
+import BlackField from "@/assets/Icons/BlackField.svg";
 import Swap from "@/assets/Icons/Swap.svg";
 import Shield from "@/assets/Icons/Shield.svg";
 import Shirt from "@/assets/Icons/Shirt.svg";
+import { ThemedIcon } from "@/components/DefaultComponents/ThemedIcon";
+import { useTheme } from "@/context/ThemeContext";
 
 //Types
 interface MatchLineupI {
@@ -51,7 +54,7 @@ interface FullLineup {
 }
 
 function MatchLineup({ match }: MatchLineupI) {
-
+    const { theme } = useTheme();
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState<FullLineup>();
     const [selectedTeam, setSelectedTeam] = useState<Lineup>();
@@ -99,14 +102,14 @@ function MatchLineup({ match }: MatchLineupI) {
                         <View style={styles.teamsSelectView}>
                             <Pressable style={[styles.teamSelectOption, selectedTeam === data.away && {opacity: 0.4}]} onPress={() => setSelectedTeam(data.home)}>
                                 <Image source={{uri: match.home_team.logo}} width={28} height={35} resizeMode="contain"/>
-                                <ThemedText lightColor={Colors.light.Text} darkColor={Colors.dark.Text} style={{width: "80%", textAlign: "center", fontSize: 13}} numberOfLines={1} ellipsizeMode="tail">
+                                <ThemedText colorName='Text' style={{width: "80%", textAlign: "center", fontSize: 13}} numberOfLines={1} ellipsizeMode="tail">
                                     {match.home_team.name}
                                 </ThemedText>
                             </Pressable>
 
                             <Pressable style={[styles.teamSelectOption, selectedTeam === data.home && {opacity: 0.4}]} onPress={() => setSelectedTeam(data.away)}>
                                 <Image source={{uri: match.away_team.logo}} width={28} height={35} resizeMode="contain"/>
-                                <ThemedText lightColor={Colors.light.Text} darkColor={Colors.dark.Text} style={{width: "80%", textAlign: "center", fontSize: 13}} numberOfLines={1} ellipsizeMode="tail">
+                                <ThemedText colorName='Text' style={{width: "80%", textAlign: "center", fontSize: 13}} numberOfLines={1} ellipsizeMode="tail">
                                     {match.away_team.name}
                                 </ThemedText>
                             </Pressable>
@@ -127,7 +130,7 @@ function MatchLineup({ match }: MatchLineupI) {
                                                 <Pressable key={player.id} onPress={() => accessPlayer(player.id)}>
                                                     <View style={styles.player}>
                                                         <Image source={{uri: `https://media.api-sports.io/football/players/${player.id}.png`}} width={34} height={34} style={{borderRadius: 100}}/>
-                                                        <ThemedText lightColor={Colors.light.DarkerText} darkColor={Colors.dark.DarkerText} midnightColor={Colors.midnight.DarkerText} style={styles.playerNumber}>{player.number}</ThemedText>
+                                                        <ThemedText colorName='DarkerText' style={styles.playerNumber}>{player.number}</ThemedText>
                                                     </View>
                                                 </Pressable>
                                             ))}
@@ -135,7 +138,11 @@ function MatchLineup({ match }: MatchLineupI) {
                                     ))}
                                 </View>
                             </View>
-                            <Field strokeWidth={5} width={"100%"} height={"100%"} style={{position: "absolute", top: 0, left: 0}}/>
+                            {theme === 'light' ? (
+                                <BlackField strokeWidth={5} width={"100%"} height={"100%"} style={{position: "absolute", top: 0, left: 0}}/>
+                            ) : (
+                                <WhiteField strokeWidth={5} width={"100%"} height={"100%"} style={{position: "absolute", top: 0, left: 0}}/>
+                            )}
                         </View>
 
                         <View style={styles.coachView}>

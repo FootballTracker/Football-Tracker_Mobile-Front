@@ -126,7 +126,7 @@ export default function Card({image, info, favorite, handleOpen, handleFavorite,
                 
                 <View style={styles.infoGroup}>
                     { favorite !== undefined && handleFavorite && <FavoriteStar favorite={favorite} handleClick={handleFavorite} /> }
-                    <ThemedIcon onPress={handleOpen} IconComponent={MaterialIcons} name='keyboard-arrow-right' darkColor={Colors.dark.Red} lightColor={Colors.light.Red} size={25} />
+                    <ThemedIcon onPress={handleOpen} IconComponent={MaterialIcons} name='keyboard-arrow-right' colorName="Red" size={25} />
                 </View>
             </TouchableOpacity>
         </Animated.View>
