@@ -6,8 +6,6 @@ import { MatchCardI } from "../MatchCard";
 import { router } from "expo-router";
 import { Toast } from "toastify-react-native";
 import api from "@/lib/Axios";
-import PlayerCheck from "@/assets/Icons/PlayerCheck.svg";
-import PlayerJersey from "@/assets/Icons/PlayerJersey.svg";
 
 //Components
 import { View, Image, Pressable } from "react-native";
@@ -22,6 +20,7 @@ import Card from "@/components/Card";
 import Field from "@/assets/Icons/Field.svg";
 import Swap from "@/assets/Icons/Swap.svg";
 import Shield from "@/assets/Icons/Shield.svg";
+import Shirt from "@/assets/Icons/Shirt.svg";
 
 //Types
 interface MatchLineupI {
@@ -145,7 +144,7 @@ function MatchLineup({ match }: MatchLineupI) {
                         </View>
                     </View>
 
-                    <Section icon={{IconComponent: PlayerJersey, width: 28, height: 37, Stroke: true, strokeWidth: 3.5}} text="Titulares">
+                    <Section icon={{IconComponent: Shirt, width: 30, height: 37, Stroke: true, strokeWidth: 1.5}} text="Titulares">
 
                         {selectedTeam?.initial.map((line) => (
                             line.map((player) => (

@@ -95,7 +95,7 @@ export default function Player() {
 
     const changeFavoritie = () => {
         if(!player) return;
-        if(!favoriteState && favoritePlayers.length === favoritesValues.players) {
+        if(!favoriteState && favoritePlayers.filter(player => player.show !== false).length === favoritesValues.players) {
             Toast.show({
                 props: {
                     type: "warn",

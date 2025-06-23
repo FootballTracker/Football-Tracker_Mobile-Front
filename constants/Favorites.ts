@@ -62,7 +62,7 @@ export async function SwapFavorites<T extends item>(setFavorites: React.Dispatch
     if (item.is_favorite) {
         // Atualizar em favorites: ocultar o item
         setFavorites(prev =>
-            prev.filter(i => i.id !== updatedItem.id)
+            prev.map(i => (i.id === item.id ? {...updatedItem, show: false} : i))
         );
 
         // Atualizar em normal: ativar o item
