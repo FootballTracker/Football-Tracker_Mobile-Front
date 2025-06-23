@@ -23,8 +23,7 @@ export function ReturnArrow({ double } : ReturnArrowProps) {
             <ThemedIcon
                 IconComponent={FontAwesome6}
                 name="arrow-left" size={22}
-                darkColor={Colors.dark.Text}
-                lightColor={Colors.light.Text}
+                colorName='Text'
                 style={styles.backIcon}
             />
         </TouchableOpacity>

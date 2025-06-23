@@ -30,8 +30,7 @@ export default function FavoriteStar({ favorite, swapFavoriteOnClick = true, han
         <TouchableOpacity activeOpacity={0.5} onPress={() => {changeIcon()}}>
             <ThemedIcon
                 IconComponent={favoritieState ? FilledStar : UnfilledStar}
-                darkColor={Colors.dark.Red}
-                lightColor={Colors.light.Red}
+                colorName="Red"
                 style={styles.star}
                 width={30}
                 height={22}

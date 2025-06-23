@@ -96,7 +96,7 @@ export default function MatchCard({ id, home_team, away_team, date }: MatchCardI
     return (
         <Pressable onPress={accessMatch}>
             <View style={styles.card}>
-                <ThemedText style={styles.timeText} darkColor={Colors.dark.Red} lightColor={Colors.light.Red}>{date}</ThemedText>
+                <ThemedText style={styles.timeText} colorName="Red">{date}</ThemedText>
                 <View style={styles.info}>
                     <View style={styles.teamView}>
                         <View style={[styles.teamInfo, result === 2 && styles.loser]}>
@@ -123,8 +123,7 @@ export default function MatchCard({ id, home_team, away_team, date }: MatchCardI
                         <ThemedIcon
                             IconComponent={MaterialIcons}
                             name='keyboard-arrow-right'
-                            darkColor={Colors.dark.Red}
-                            lightColor={Colors.light.Red}
+                            colorName="Red"
                             size={21}
                         />
                 </View>

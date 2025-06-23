@@ -10,6 +10,7 @@ export type ThemedIconProps = {
     size?: number;
     lightColor?: string;
     darkColor?: string;
+    midnightColor?: string;
     style?: StyleProp<any>;
     width?: number;
     height?: number;
@@ -17,8 +18,8 @@ export type ThemedIconProps = {
     colorName?: keyof typeof Colors.light & keyof typeof Colors.dark & keyof typeof Colors.midnight
 } & SvgProps;
 
-export function ThemedIcon({ IconComponent, name, size = 24, lightColor, darkColor, style, Stroke = false, colorName = 'Text', ...rest }: ThemedIconProps) {
-    const color = useThemeColor({ light: lightColor, dark: darkColor }, colorName);
+export function ThemedIcon({ IconComponent, name, size = 24, lightColor, darkColor, midnightColor, style, Stroke = false, colorName = 'Text', ...rest }: ThemedIconProps) {
+    const color = useThemeColor({ light: lightColor, dark: darkColor, midnight: midnightColor}, colorName);
 
     return (
         name ? 

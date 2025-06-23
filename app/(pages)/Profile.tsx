@@ -192,7 +192,7 @@ export default function Profile() {
                                     activeOpacity={0.5}
                                     style={[styles.modalButtons, {borderBottomLeftRadius: 8, backgroundColor: Colors[theme].LightBackground}]}
                                 >
-                                    <ThemedIcon IconComponent={FontAwesome6} name="edit" size={21} lightColor={Colors.light.Red} darkColor={Colors.dark.Red}/>
+                                    <ThemedIcon IconComponent={FontAwesome6} name="edit" size={21} colorName="Red"/>
                                 </TouchableOpacity>
 
                                 <TouchableOpacity
@@ -200,7 +200,7 @@ export default function Profile() {
                                     activeOpacity={0.5}
                                     style={[styles.modalButtons, {borderBottomRightRadius: 8, backgroundColor: Colors[theme].LightBackground}]}
                                 >
-                                    <ThemedIcon IconComponent={FontAwesome6} name="trash" size={21} lightColor={Colors.light.Red} darkColor={Colors.dark.Red}/>
+                                    <ThemedIcon IconComponent={FontAwesome6} name="trash" size={21} colorName="Red"/>
                                 </TouchableOpacity>
                             </ThemedView>
 

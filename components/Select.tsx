@@ -62,7 +62,7 @@ export function Select({ title, values, setSelected, modalOpened, setModalOpened
         <ModalComponent modalOpened={modalOpened} setModalOpened={setModalOpened}>
             <View style={styles.headerBox}>
                 <ThemedText style={styles.modalText}>{title}</ThemedText>
-                <ThemedIcon IconComponent={AntDesign} name="close" lightColor={Colors.light.Red} darkColor={Colors.dark.Red} onPress={() => {setModalOpened(false)}} />
+                <ThemedIcon IconComponent={AntDesign} name="close" colorName="Red" onPress={() => {setModalOpened(false)}} />
             </View>
             <View style={styles.values}>
                 <ScrollView>

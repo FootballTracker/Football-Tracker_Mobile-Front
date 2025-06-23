@@ -60,9 +60,9 @@ export default function LeagueTableItem({ teamId, teamName, teamLogo, rank, tota
             <View style={styles.row}>
                 <ThemedText style={styles.rank}
                     {...Number(rank) < 5 ?
-                        {lightColor: Colors.light.Green, darkColor: Colors.dark.Green}
+                        {colorName: 'Green'}
                         : Number(rank) > 16 && 
-                        {lightColor: Colors.light.Red, darkColor: Colors.dark.Red}
+                        {colorName: 'Red'}
                     }
                 >
                     {rank}
@@ -77,8 +77,7 @@ export default function LeagueTableItem({ teamId, teamName, teamLogo, rank, tota
                         onPress={handleOpen}
                         IconComponent={MaterialIcons}
                         name='expand-more'
-                        darkColor={Colors.dark.Red}
-                        lightColor={Colors.light.Red}
+                        colorName="Red"
                         size={25}
                     />
                 </Animated.View>

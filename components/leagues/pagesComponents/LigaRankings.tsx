@@ -69,12 +69,11 @@ function LigaRankings({leagueId, season} : LigaRankingsProps) {
                                 <>
                                     <ThemedIcon
                                         IconComponent={Boot}
-                                        darkColor={Colors.dark.Red}
-                                        lightColor={Colors.light.Red}
+                                        colorName="Red"
                                         size={26}
                                         style={{marginHorizontal: 10}}
                                     />
-                                    <ThemedText lightColor={Colors.light.Text} darkColor={Colors.dark.Text} style={{fontSize: 17}}>
+                                    <ThemedText colorName='Text' style={{fontSize: 17}}>
                                         Artilheiros
                                     </ThemedText>
                                 </>
@@ -83,12 +82,11 @@ function LigaRankings({leagueId, season} : LigaRankingsProps) {
                                     <ThemedIcon
                                         IconComponent={AntDesign}
                                         name={"team"}
-                                        darkColor={Colors.dark.Red}
-                                        lightColor={Colors.light.Red}
+                                        colorName="Red"
                                         size={26}
                                         style={{marginHorizontal: 7}}
                                     />
-                                    <ThemedText lightColor={Colors.light.Text} darkColor={Colors.dark.Text} style={{fontSize: 17}}>
+                                    <ThemedText colorName='Text' style={{fontSize: 17}}>
                                         Assistências
                                     </ThemedText>
                                 </>
@@ -97,12 +95,11 @@ function LigaRankings({leagueId, season} : LigaRankingsProps) {
                                     <ThemedIcon
                                         IconComponent={MaterialIcons}
                                         name={"grade"}
-                                        darkColor={Colors.dark.Red}
-                                        lightColor={Colors.light.Red}
+                                        colorName="Red"
                                         size={24}
                                         style={{marginHorizontal: 7, marginTop: -1, marginBottom: 2}}
                                     />
-                                    <ThemedText lightColor={Colors.light.Text} darkColor={Colors.dark.Text} style={{fontSize: 17}}>
+                                    <ThemedText colorName='Text' style={{fontSize: 17}}>
                                         Melhores notas
                                     </ThemedText>
                                 </>
@@ -110,8 +107,7 @@ function LigaRankings({leagueId, season} : LigaRankingsProps) {
                             <ThemedIcon
                                 IconComponent={MaterialIcons}
                                 name='keyboard-arrow-down'
-                                darkColor={Colors.dark.Text}
-                                lightColor={Colors.light.Text}
+                                colorName='Text'
                                 size={22}
                             />
                         </View>
@@ -119,13 +115,13 @@ function LigaRankings({leagueId, season} : LigaRankingsProps) {
 
                     <View style={styles.table}>
                         <View style={styles.header}>
-                            <ThemedText lightColor={Colors.light.Red} darkColor={Colors.dark.Red} midnightColor={Colors.midnight.Red} style={styles.index}>#</ThemedText>
+                            <ThemedText colorName="Red" style={styles.index}>#</ThemedText>
                             <ThemedText style={{flex: 1}}>Jogador</ThemedText>
                             <ThemedText numberOfLines={1} ellipsizeMode='tail' style={{width: 70, textAlign: "center"}}>{rank === 0 ? "Gols" : (rank === 1 ? "Assistências" : "Notas")}</ThemedText>
                             <ThemedText style={{width: 50, textAlign: "center"}}>Time</ThemedText>
                         </View>
 
-                        <ThemedView darkColor={Colors.dark.Red} lightColor={Colors.light.Red} style={styles.divisor}/>
+                        <ThemedView colorName="Red" style={styles.divisor}/>
                         
                         <ScrollView showsVerticalScrollIndicator={false}>
                             {data?.map((item, index) => (

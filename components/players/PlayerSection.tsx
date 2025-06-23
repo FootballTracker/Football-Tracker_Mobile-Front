@@ -19,18 +19,18 @@ export default function PlayerSection({ text, players, icon, ...rest }: PlayerSe
         <View style={styles.section}>
             <View style={styles.titleSection}>
                 <ThemedIcon {...icon}/>
-                <ThemedText lightColor={Colors.light.Text} darkColor={Colors.dark.Text} style={styles.sectionTitle}>
+                <ThemedText colorName='Text' style={styles.sectionTitle}>
                     {text}
                 </ThemedText>
             </View>
-            <ThemedView darkColor={Colors.dark.Red} lightColor={Colors.light.Red} style={styles.divisor}/>
+            <ThemedView colorName="Red" style={styles.divisor}/>
             {players?.length ? (
                 players.map((player, index) => (
                     <PlayerCard id={player.id} image={player.image} name={player.name} favorite={player.favorite} key={index}/>
                 ))
             ) : (
-                <ThemedText style={styles.favoritesInfoText} darkColor={Colors.dark.DarkerText} lightColor={Colors.light.DarkerText}>
-                    <ThemedIcon IconComponent={Feather} name="info" size={15} darkColor={Colors.dark.DarkerText} lightColor={Colors.light.DarkerText} />
+                <ThemedText style={styles.favoritesInfoText} colorName='DarkerText'>
+                    <ThemedIcon IconComponent={Feather} name="info" size={15} colorName='DarkerText' />
                     {' '}
                     Favorite um jogador para que ele apareça aqui.
                 </ThemedText>

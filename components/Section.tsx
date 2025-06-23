@@ -27,7 +27,7 @@ export default function Section({ image, icon, text, children, iconUp = false, .
             {(icon || text) && (
                 <>
                     <View style={styles.titleSection}>
-                        {icon ? <ThemedIcon {...icon} darkColor={Colors.dark.Red} lightColor={Colors.light.Red} style={iconUp && {marginTop: -3.5}} />
+                        {icon ? <ThemedIcon {...icon} colorName="Red" style={iconUp && {marginTop: -3.5}} />
                         : image && (
                             !svg ? (
                                 <Image source={{uri: image}} resizeMode="contain" style={styles.image} />
@@ -35,23 +35,17 @@ export default function Section({ image, icon, text, children, iconUp = false, .
                                 <SvgUri uri={image} width={35} height={35}/>
                             )
                         )}
-                        <ThemedText lightColor={Colors.light.Text} darkColor={Colors.dark.Text} style={styles.sectionTitle}>
+                        <ThemedText colorName='Text' style={styles.sectionTitle}>
                             {text}
                         </ThemedText>
                     </View>
-                    <ThemedView darkColor={Colors.dark.Red} lightColor={Colors.light.Red} style={styles.divisor}/>
+                    <ThemedView colorName="Red" style={styles.divisor}/>
                 </>
             )}
 
             
             <View style={styles.content}>
                 {children}
-
-                {/* <ThemedText style={styles.favoritesInfoText} darkColor={Colors.dark.DarkerText} lightColor={Colors.light.DarkerText}>
-                    <ThemedIcon IconComponent={Feather} name="info" size={15} darkColor={Colors.dark.DarkerText} lightColor={Colors.light.DarkerText} />
-                    {' '}
-                    Nenhum dado para exibir.
-                    </ThemedText> */}
             </View>
         </Animated.View>
     )

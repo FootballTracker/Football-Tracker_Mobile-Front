@@ -18,11 +18,11 @@ export default function MatchSection({ text, matches, icon, ...rest }: MatchSect
         <View style={styles.section}>
             <View style={styles.titleSection}>
                 <ThemedIcon {...icon}/>
-                <ThemedText lightColor={Colors.light.Text} darkColor={Colors.dark.Text} style={styles.sectionTitle}>
+                <ThemedText colorName='Text' style={styles.sectionTitle}>
                     {text}
                 </ThemedText>
             </View>
-            <ThemedView darkColor={Colors.dark.Red} lightColor={Colors.light.Red} style={styles.divisor}/>
+            <ThemedView colorName="Red" style={styles.divisor}/>
             {matches.map((matche, index) => (
                     <MatchCard {...matche} key={index}/>
             ))}

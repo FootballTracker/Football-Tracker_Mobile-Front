@@ -104,14 +104,13 @@ function TimeClassificacao({ id } : TeamClassI) {
                                 <TouchableOpacity onPress={() => setLeagueModalOpened(!leagueModalOpened)}>
                                     <View style={styles.select}>
                                         <Image source={{uri: `https://media.api-sports.io/football/leagues/${leagues[leagueIndex].id}.png`}} width={30} height={35} resizeMode='contain' style={{marginRight: 10}}/>
-                                        <ThemedText lightColor={Colors.light.Text} darkColor={Colors.dark.Text} style={{fontSize: 18}}>
+                                        <ThemedText colorName='Text' style={{fontSize: 18}}>
                                             {leagues[leagueIndex].name}
                                         </ThemedText>
                                         <ThemedIcon
                                             IconComponent={MaterialIcons}
                                             name='keyboard-arrow-down'
-                                            darkColor={Colors.dark.Text}
-                                            lightColor={Colors.light.Text}
+                                            colorName='Text'
                                             size={22}
                                         />
                                     </View>
@@ -129,14 +128,13 @@ function TimeClassificacao({ id } : TeamClassI) {
                                 />
                                 <TouchableOpacity onPress={() => setLeagueSeasonsModalOpened(!leagueSeasonsModalOpened)}>
                                     <View style={styles.select}>
-                                        <ThemedText lightColor={Colors.light.Text} darkColor={Colors.dark.Text} style={{fontSize: 13}}>
+                                        <ThemedText colorName='Text' style={{fontSize: 13}}>
                                             {leagues[leagueIndex].seasons[seasonIndex]}
                                         </ThemedText>
                                         <ThemedIcon
                                             IconComponent={MaterialIcons}
                                             name='keyboard-arrow-down'
-                                            darkColor={Colors.dark.Text}
-                                            lightColor={Colors.light.Text}
+                                            colorName='Text'
                                             size={18}
                                         />
                                     </View>
@@ -149,17 +147,17 @@ function TimeClassificacao({ id } : TeamClassI) {
                                 <View style={[styles.leftColumn, {height: "auto"}]}/>
                                 <View style={{flex: 1}}>
                                     <View style={styles.rightColumns}>
-                                        <ThemedText lightColor={Colors.light.Red} darkColor={Colors.dark.Red} midnightColor={Colors.midnight.Red} style={styles.tableText}>Casa</ThemedText>
-                                        <ThemedText lightColor={Colors.light.Red} darkColor={Colors.dark.Red} midnightColor={Colors.midnight.Red} style={styles.tableText}>Fora</ThemedText>
-                                        <ThemedText lightColor={Colors.light.Red} darkColor={Colors.dark.Red} midnightColor={Colors.midnight.Red} style={styles.tableText}>Total</ThemedText>
+                                        <ThemedText colorName="Red" style={styles.tableText}>Casa</ThemedText>
+                                        <ThemedText colorName="Red" style={styles.tableText}>Fora</ThemedText>
+                                        <ThemedText colorName="Red" style={styles.tableText}>Total</ThemedText>
                                     </View>
-                                    <ThemedView darkColor={Colors.dark.Red} lightColor={Colors.light.Red} style={styles.divisor}/>
+                                    <ThemedView colorName="Red" style={styles.divisor}/>
                                 </View>
                             </View>
                             {data?.infos.map((info, index) => (
                                 <View style={styles.line} key={index}>
                                     <View style={[styles.leftColumn, {borderRightColor: Colors[theme].Red}]}>
-                                        <ThemedText lightColor={Colors.light.Red} darkColor={Colors.dark.Red} midnightColor={Colors.midnight.Red} style={[styles.tableText, {fontSize: 15}]}>{info.name}</ThemedText>
+                                        <ThemedText colorName="Red" style={[styles.tableText, {fontSize: 15}]}>{info.name}</ThemedText>
                                     </View>
                                     <View style={styles.rightColumns}>
                                         <ThemedText style={[styles.tableText, {fontSize: 14}]}>{info.home}</ThemedText>

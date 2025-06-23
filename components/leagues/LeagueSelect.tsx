@@ -28,14 +28,13 @@ export function LeagueSelect({ values, selected, setSelected, selectFontSize, ic
 
             <TouchableOpacity onPress={() => setModalOpened(!modalOpened)} {...otherProps}>
                 <View style={styles.select}>
-                    <ThemedText lightColor={Colors.light.DarkerText} darkColor={Colors.dark.DarkerText} style={{fontSize: selectFontSize && selectFontSize, fontFamily: "Kdam"}}>
+                    <ThemedText colorName='DarkerText' style={{fontSize: selectFontSize && selectFontSize, fontFamily: "Kdam"}}>
                         {selected}
                     </ThemedText>
                     <ThemedIcon
                         IconComponent={MaterialIcons}
                         name='keyboard-arrow-down'
-                        darkColor={Colors.dark.DarkerText}
-                        lightColor={Colors.light.DarkerText}
+                        colorName='DarkerText'
                         size={iconSize ? iconSize : 22}
                     />
                 </View>

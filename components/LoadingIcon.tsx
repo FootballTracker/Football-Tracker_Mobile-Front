@@ -12,11 +12,13 @@ import { ThemedView } from './DefaultComponents/ThemedView';
 type LoadingIconProps = {
     darkColor?: keyof typeof Colors.dark,
     lightColor?: keyof typeof Colors.light,
+    midnightColor?: keyof typeof Colors.midnight,
+    colorName?: keyof typeof Colors.light & keyof typeof Colors.dark & keyof typeof Colors.midnight,
     themed?: boolean,
     size?: number;
 }
 
-export default function LoadingIcon({ darkColor = 'Red', lightColor = 'Red', themed = true, size = 35 } : LoadingIconProps) {
+export default function LoadingIcon({ darkColor = 'Red', lightColor = 'Red', midnightColor = 'Red', colorName = 'Red', themed = true, size = 35 } : LoadingIconProps) {
     const rotateValue = useRef(new Animated.Value(0)).current;
     const MyView : React.ComponentType<any> = themed ? ThemedView : View;
 
@@ -39,7 +41,7 @@ export default function LoadingIcon({ darkColor = 'Red', lightColor = 'Red', the
     return (
         <MyView style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
             <Animated.View style={{ transform: [{rotate}] }} >
-                <ThemedIcon IconComponent={AntDesign} name='loading1' darkColor={Colors.dark[darkColor]} lightColor={Colors.light[lightColor]} size={size}/>
+                <ThemedIcon IconComponent={AntDesign} name='loading1' midnightColor={Colors.midnight[midnightColor]} darkColor={Colors.dark[darkColor]} lightColor={Colors.light[lightColor]} colorName={colorName} size={size}/>
             </Animated.View>
         </MyView>
     );
