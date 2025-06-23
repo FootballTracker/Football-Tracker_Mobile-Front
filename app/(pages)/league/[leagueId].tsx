@@ -108,7 +108,7 @@ export default function League() {
     }
 
     const changeFavoritie = async () => {
-        if(!favoriteState && favoriteLeagues.length === favoritesValues.leagues) {
+        if(!favoriteState && favoriteLeagues.filter(league => league.show !== false).length === favoritesValues.leagues) {
             Toast.show({
                 props: {
                     type: "warn",

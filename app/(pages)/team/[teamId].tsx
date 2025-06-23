@@ -147,7 +147,7 @@ export default function Team() {
 
 
     const changeFavoritie = async () => {
-        if(!favoriteState && favoriteTeams.length === favoritesValues.teams) {
+        if(!favoriteState && favoriteTeams.filter(team => team.show !== false).length === favoritesValues.teams) {
             Toast.show({
                 props: {
                     type: "warn",

@@ -42,7 +42,7 @@ export function PickRound({ values, selected, setSelected, iconSize, ...otherPro
                         style={Number(selected) === 1 && {opacity: 0.3}}
                     />
                 </Pressable>
-                <TouchableOpacity onPress={() => setModalOpened(!modalOpened)} {...otherProps}>
+                <TouchableOpacity onPress={() => setModalOpened(!modalOpened)}>
                     <View style={styles.currentRound}>
                         <ThemedText>Rodada {selected}</ThemedText>
                         <ThemedIcon
@@ -129,7 +129,8 @@ const styles = StyleSheet.create({
         width: windowWidth*0.8,
         maxWidth: 300,
         marginLeft: "auto",
-        marginRight: "auto"
+        marginRight: "auto",
+        marginTop: 25
     },
     currentRound: {
         flexDirection: "row",

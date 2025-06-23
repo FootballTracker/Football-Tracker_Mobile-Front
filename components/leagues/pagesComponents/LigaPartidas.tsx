@@ -104,7 +104,7 @@ function LigaPartidas({ season, leagueId } : LigaPartidasProps) {
     }
 
     return (
-        <ThemedScrollView style={{top: 25, marginBottom: 50}}>
+        <ThemedScrollView style={{marginBottom: 50}}>
             <PickRound
                 values={rounds}
                 selected={round}

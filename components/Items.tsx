@@ -23,7 +23,7 @@ const changeFavorite = <T extends item>(setFavorite: React.Dispatch<React.SetSta
 }
 
 const verifyFavoritesLenght =  async function (favoritesArray: item[], message: string, length: number = 3) {
-    if(favoritesArray.length === length) {
+    if(favoritesArray.filter(i => i.show !== false).length === length) {
         Toast.show({
             props: {
                 type: "warn",
