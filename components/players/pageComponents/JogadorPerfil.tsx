@@ -48,11 +48,11 @@ export default function JogadorPerfil({ player } : JogadorPerfilProps) {
         <ThemedScrollView style={{marginBottom: 50}}>
             <Section icon={{IconComponent: MaterialCommunityIcons, name: 'information'}} text='Informações' >
                 <SingleInfo icon={{IconComponent: Username}} infoName='Nome: ' info={player.firstname + ' ' + player.lastname} />
-                <SingleInfo icon={{IconComponent: Birthday}} infoName='Data de nascimento: ' info={formatDate(player.birth_date, true, false)} />
-                <SingleInfo icon={{IconComponent: Flag}} infoName='Pais: ' info={player.birth_country.name} />
-                <SingleInfo icon={{IconComponent: City, Stroke: true}} infoName='Cidade de Origem: ' info={player.birth_place} />
-                <SingleInfo icon={{IconComponent: Height, Stroke: true}} infoName='Altura: ' info={player.height} />
-                <SingleInfo icon={{IconComponent: Weight, Stroke: true}} infoName='Peso: ' info={player.weight} />
+                <SingleInfo icon={{IconComponent: Birthday}} infoName='Data de nascimento: ' info={player.birth_date ? formatDate(player.birth_date, true, false) : "Desconhecida"} />
+                <SingleInfo icon={{IconComponent: Flag}} infoName='Pais: ' info={player.birth_country.name || "Desconhecido"} />
+                <SingleInfo icon={{IconComponent: City, Stroke: true}} infoName='Cidade de Origem: ' info={player.birth_place || "Desconhecida"} />
+                <SingleInfo icon={{IconComponent: Height, Stroke: true}} infoName='Altura: ' info={player.height || "Desconhecida"} />
+                <SingleInfo icon={{IconComponent: Weight, Stroke: true}} infoName='Peso: ' info={player.weight || "Desconhecido"} />
                 <SingleInfo icon={{IconComponent: Position}} infoName='Posição: ' info={player.position} />
             </Section>
         </ThemedScrollView>
