@@ -34,6 +34,10 @@ export default function SearchBar({ handleSearch, clearInputState, minLength = 1
     }
 
     useEffect(() => {
+        if(!text.length) handleSearch("");
+    }, [text]);
+
+    useEffect(() => {
         setText("");
     }, [clearInputState])
 

@@ -7,6 +7,7 @@ import { router } from "expo-router";
 import { player } from "./home/Jogadores";
 import { league } from "./home/Ligas";
 import { team } from "./home/Times";
+import { favoritesValues } from "@/constants/MaxFavorites";
 
 //Components
 import Card from "./Card";
@@ -66,7 +67,7 @@ export function MainTeams() {
     const { user } = useUserContext();
 
     async function verifyFavorites(team: team) {
-        const change = await verifyFavoritesLenght(favoriteTeams, "Você já tem um time favorito. Remova o atual para favoritar outro time", 1);
+        const change = await verifyFavoritesLenght(favoriteTeams, "Você já tem um time favorito. Remova o atual para favoritar outro time", favoritesValues.teams);
         if(change !== false) {
             changeFavorite(setFavoriteTeams, setTeams, team, "team", user?.id);
             return;
@@ -126,7 +127,7 @@ export function MainLeagues() {
     const { user } = useUserContext();
 
     async function verifyFavorites(league: league) {
-        const change = await verifyFavoritesLenght(favoriteLeagues, "3 ligas já estão favoritadas. Desfavorite uma liga caso deseje favoritar alguma outra");
+        const change = await verifyFavoritesLenght(favoriteLeagues, `${favoritesValues.leagues} ligas já estão favoritadas. Desfavorite uma liga caso deseje favoritar alguma outra`, favoritesValues.leagues);
         if(change !== false) {
             changeFavorite(setFavoriteLeagues, setLeagues, league, "league", user?.id);
             return;
@@ -186,7 +187,7 @@ export function MainPlayers() {
     const { user } = useUserContext();
 
     async function verifyFavorites(player: player) {
-        const change = await verifyFavoritesLenght(favoritePlayers, "3 jogadores já estão favoritados. Desfavorite um jogador caso deseje favoritar algum outro");
+        const change = await verifyFavoritesLenght(favoritePlayers, `${favoritesValues.players} jogadores já estão favoritados. Desfavorite um jogador caso deseje favoritar algum outro`, favoritesValues.players);
         if(change !== false) {
             changeFavorite(setFavoritePlayers, setPlayers, player, "player", user?.id);
             return;

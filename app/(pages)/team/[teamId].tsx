@@ -11,6 +11,7 @@ import { TeamInfoProps } from '@/components/teams/pagesComponents/TimeInfo';
 import { MatchCardI } from '@/components/matches/MatchCard';
 import { Toast } from 'toastify-react-native';
 import { useUserContext } from '@/context/UserContext';
+import { favoritesValues } from '@/constants/MaxFavorites';
 
 import { ThemedText } from "@/components/DefaultComponents/ThemedText";
 import { ThemedIcon } from '@/components/DefaultComponents/ThemedIcon';
@@ -146,7 +147,7 @@ export default function Team() {
 
 
     const changeFavoritie = async () => {
-        if(!favoriteState && favoriteTeams.length === 1) {
+        if(!favoriteState && favoriteTeams.length === favoritesValues.teams) {
             Toast.show({
                 props: {
                     type: "warn",

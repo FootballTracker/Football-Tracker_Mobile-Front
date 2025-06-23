@@ -1,12 +1,13 @@
-import { Image, StyleSheet, View, TouchableOpacity, Dimensions } from 'react-native';
+import { Image, StyleSheet, View, Dimensions } from 'react-native';
 import { useItemsContext } from '@/context/ItemsContext';
 import { SwapFavorites } from '@/constants/Favorites';
 import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { TabView, SceneMap } from 'react-native-tab-view';
+import { TabView } from 'react-native-tab-view';
 import { SvgUri } from 'react-native-svg';
 import { Toast } from 'toastify-react-native';
 import { useUserContext } from '@/context/UserContext';
+import { favoritesValues } from '@/constants/MaxFavorites';
 import api from '@/lib/Axios';
 
 import { ThemedText } from "@/components/DefaultComponents/ThemedText";
@@ -17,13 +18,12 @@ import LoadingIcon from '@/components/LoadingIcon';
 
 //scenes to render
 import JogadorPerfil, { JogadorPerfilProps } from '@/components/players/pageComponents/JogadorPerfil';
-import JogadorEstatisticas from '@/components/players/pageComponents/JogadorEstatisticas';
+import JogadorEstatisticas, { EstatisticasProps } from '@/components/players/pageComponents/JogadorEstatisticas';
 import FavoriteStar from '@/components/FavoriteStar';
-import { addDays, differenceInYears } from 'date-fns';
-import { formatDate } from '@/lib/format';
+import { differenceInYears } from 'date-fns';
 
 //Type
-type PlayerData = JogadorPerfilProps;
+type PlayerData = JogadorPerfilProps & EstatisticasProps;
 
 export default function Player() {
     const { playerId } = useLocalSearchParams();
@@ -38,16 +38,16 @@ export default function Player() {
     //routes to render
     const [routes] = useState([
         { key: 'perfil', title: 'Perfil' },
-        { key: 'estatisticas', title: 'Estatísticas' },
+        { key: 'estatisticas', title: 'Competições' },
     ]);
 
     const renderScene = ({ route }: any) => {
         if(player) {
             switch (route.key) {
             case 'perfil':
-                return <JogadorPerfil player={player.player}/>;
+                return <JogadorPerfil player={player.player} teams={player.teams}/>;
             case 'estatisticas':
-                return <JogadorEstatisticas />;
+                return <JogadorEstatisticas playerCompetitions={player.playerCompetitions}/>;
             default:
                 return null;
             }
@@ -66,7 +66,9 @@ export default function Player() {
         }).
         then((response: any) => {
             const age = response.data.birth_date ? differenceInYears(new Date(), new Date(response.data.birth_date)) : -1;
-            setPlayerData({player: {age: age, ...response.data}});
+            const teams = [];
+            for(const team of response.data.teams) teams.push(team.team);
+            setPlayerData({player: {age: age, ...response.data}, teams: teams, playerCompetitions: response.data.teams});
             setFavoriteState(response.data.is_favorite);
         }).catch((e: any) => {
             if(e.response.data.detail) {
@@ -93,11 +95,11 @@ export default function Player() {
 
     const changeFavoritie = () => {
         if(!player) return;
-        if(!favoriteState && favoritePlayers.length === 3) {
+        if(!favoriteState && favoritePlayers.length === favoritesValues.players) {
             Toast.show({
                 props: {
                     type: "warn",
-                    text: "3 jogadores já estão favoritados. Desfavorite um jogador caso deseje favoritar algum outro"
+                    text: `${favoritesValues.players} jogadores já estão favoritados. Desfavorite um jogador caso deseje favoritar algum outro`
                 },
                 visibilityTime: 6000
             });

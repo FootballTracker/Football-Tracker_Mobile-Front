@@ -1,17 +1,15 @@
-import { Image, StyleSheet, View, TouchableOpacity, Dimensions } from 'react-native';
+import { Image, StyleSheet, View, Dimensions } from 'react-native';
 import { useItemsContext } from '@/context/ItemsContext';
 import { SwapFavorites } from '@/constants/Favorites';
 import FavoriteStar from '@/components/FavoriteStar';
 import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Colors } from '@/constants/Colors';
 import { TabView } from 'react-native-tab-view';
-import FilledStar from '@/assets/Icons/FilledStar.svg';
-import UnfilledStar from '@/assets/Icons/UnfilledStar.svg';
 import api from '@/lib/Axios';
 import { useUserContext } from '@/context/UserContext';
 import { LeagueCardI } from '@/components/leagues/LeagueCard';
 import { Toast } from 'toastify-react-native';
+import { favoritesValues } from '@/constants/MaxFavorites';
 
 import { ThemedText } from "@/components/DefaultComponents/ThemedText";
 import { ThemedIcon } from '@/components/DefaultComponents/ThemedIcon';
@@ -110,11 +108,11 @@ export default function League() {
     }
 
     const changeFavoritie = async () => {
-        if(!favoriteState && favoriteLeagues.length === 3) {
+        if(!favoriteState && favoriteLeagues.length === favoritesValues.leagues) {
             Toast.show({
                 props: {
                     type: "warn",
-                    text: "3 ligas já estão favoritadas. Desfavorite uma liga caso deseje favoritar alguma outra"
+                    text: `${favoritesValues.leagues} ligas já estão favoritadas. Desfavorite uma liga caso deseje favoritar alguma outra`
                 },
                 visibilityTime: 6000
             });
