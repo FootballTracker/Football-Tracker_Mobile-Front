@@ -7,6 +7,8 @@ import { Colors } from "@/constants/Colors";
 import { MatchCardI } from "../MatchCard";
 import { Toast } from "toastify-react-native";
 import api from "@/lib/Axios";
+import PlayerCheck from "@/assets/Icons/PlayerCheck.svg";
+import PlayerJersey from "@/assets/Icons/PlayerJersey.svg";
 
 import { ThemedText } from "@/components/DefaultComponents/ThemedText";
 import { ThemedScrollView } from "@/components/DefaultComponents/ThemedScrollView";
@@ -137,6 +139,21 @@ function MatchLineup({ match }: MatchLineupI) {
                         </View>
                     </View>
 
+                    <Section icon={{IconComponent: PlayerJersey, width: 28, height: 37, Stroke: true, strokeWidth: 3.5}} text="Titulares">
+
+                        {selectedTeam?.initial.map((line) => (
+                            line.map((player) => (
+                                <Card
+                                    handleOpen={() => accessPlayer(player.id)}
+                                    info={`${player.name} - ${player.number}`}
+                                    image={`https://media.api-sports.io/football/players/${player.id}.png`}
+                                    key={player.id}
+                                />
+                            ))
+                            
+                        ))}
+
+                    </Section>
 
                     <Section icon={{IconComponent: Swap, width: 25, height: 25, Stroke: true, strokeWidth: 5.5}} text="Substitutos" style={{marginBottom: 50, minHeight: 270}}>
 
