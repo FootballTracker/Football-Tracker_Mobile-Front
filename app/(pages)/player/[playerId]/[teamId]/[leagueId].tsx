@@ -7,7 +7,7 @@ import api from '@/lib/Axios';
 import { ThemedScrollView } from '@/components/DefaultComponents/ThemedScrollView';
 import { ThemedView } from '@/components/DefaultComponents/ThemedView';
 import { ThemedText } from '@/components/DefaultComponents/ThemedText';
-import { Image, Pressable } from 'react-native';
+import { Image, Pressable, StyleSheet, View } from 'react-native';
 import Section from '@/components/Section';
 import InfoMessage from '@/components/InfoMessage';
 import LoadingIcon from '@/components/LoadingIcon';
@@ -114,19 +114,24 @@ export default function PlayerTeamLeagueStats() {
     return (
         !loading ? (
             playerStats ? (
-                    <ThemedScrollView>
-                        
-                        <Pressable style={{flexDirection: "row", alignItems: "center", justifyContent: "center", marginTop: 20, gap: 10}} onPress={accessTeam}>
-                            <Image source={{uri: playerStats.team.logo_url}} resizeMode='contain' width={40} height={40}/>
-                            <ThemedText style={{fontSize: 18}}>{playerStats.team.name}</ThemedText>
-                        </Pressable>
+                    <ThemedScrollView stickyHeaderIndices={[0]}>
+                        <ThemedView style={styles.TeamLeagueContainer}>
+                            <View style={styles.TeamLeague}>
+                                <Pressable style={[styles.TeamLeaguePressable, {justifyContent: 'flex-start'}]} onPress={accessTeam}>
+                                    <Image source={{uri: playerStats.team.logo_url}} resizeMode='contain' width={30} height={30}/>
+                                    <ThemedText style={styles.TeamLeagueText} numberOfLines={1} ellipsizeMode='tail'>{playerStats.team.name}</ThemedText>
+                                </Pressable>
 
-                        <Pressable style={{flexDirection: "row", alignItems: "center", justifyContent: "center", marginTop: 20, gap: 10}} onPress={accessLeague}>
-                            <Image source={{uri: playerStats.league.logo_url}} resizeMode='contain' width={30} height={30}/>
-                            <ThemedText style={{fontSize: 14}}>{playerStats.league.name} - {playerStats.league.season}</ThemedText>
-                        </Pressable>
+                                <Pressable style={[styles.TeamLeaguePressable, {justifyContent: 'flex-end'}]} onPress={accessLeague}>
+                                    <ThemedText style={[styles.TeamLeagueText, {textAlign: 'right'}]} numberOfLines={1} ellipsizeMode='tail'>{playerStats.league.name} - {playerStats.league.season}</ThemedText>
+                                    <Image source={{uri: playerStats.league.logo_url}} resizeMode='contain' width={30} height={30}/>
+                                </Pressable>
+                            </View>
 
-                        <Section style={{marginBottom: 50, marginTop: 5}}>
+                            <ThemedView colorName="Red" style={styles.statisticsLine}/>
+                        </ThemedView>
+
+                        <Section style={{marginBottom: 30, marginTop: 0}}>
                             <SingleInfo infoName='Nota: ' info={playerStats.player_stats.rating ?? 'Desconhecida'} />
                             <SingleInfo infoName='Partidas: ' info={playerStats.player_stats.appearances ?? '0'} />
                             <SingleInfo infoName='Minutos jogados: ' info={playerStats.player_stats.minutes ?? '0'} />
@@ -172,3 +177,31 @@ export default function PlayerTeamLeagueStats() {
         )
     )
 }
+
+const styles = StyleSheet.create({
+    TeamLeaguePressable: {
+        flexDirection: "row",
+        alignItems: "center",
+        marginTop: 20,
+        gap: 5,
+        flex: 1,
+    },
+    TeamLeagueText: {
+        fontSize: 14,
+        flex: 1,
+    },
+    TeamLeagueContainer: {
+        width: '90%',
+        marginHorizontal: 'auto',
+    },
+    statisticsLine: {
+        height: .6,
+        width: '100%',
+        marginTop: 7,
+    },
+    TeamLeague: {
+        gap: 20,
+        flexDirection: 'row',
+        flex: 1,
+    },
+})

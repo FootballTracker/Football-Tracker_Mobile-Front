@@ -91,13 +91,13 @@ export default function PlayerMatch() {
     const scrollRef = useRef<ScrollView>(null);
     const animationHeight = 165;
 
-    const animatedOpacity = scrollY.interpolate({
-        inputRange: [0, animationHeight * 0.8],
+    const animatedScoreOpacity = scrollY.interpolate({
+        inputRange: [0, animationHeight * 0.7],
         outputRange: [1, 0],
         extrapolate: 'clamp',
     });
 
-    const animatedPlayerTextTranslateY = scrollY.interpolate({
+    const animatedPlayerScoreTranslateY = scrollY.interpolate({
         inputRange: [0, animationHeight],
         outputRange: [0, -158],
         extrapolate: 'clamp',
@@ -153,13 +153,11 @@ export default function PlayerMatch() {
             ],
             opacity: animatedTeamImageOpacity,
         },
-        playerText: {
+        playerScore: {
             transform: [
-                {translateY: animatedPlayerTextTranslateY},
+                {translateY: animatedPlayerScoreTranslateY},
             ],
-        },
-        opacity: {
-            opacity: animatedOpacity,
+            opacity: animatedScoreOpacity,
         },
         statistics: {
             transform: [
@@ -243,7 +241,7 @@ export default function PlayerMatch() {
                     
                     <Animated.Image resizeMode='contain' source={{uri: player?.team_logo}} style={[styles.teamLogo, animatedStyles.teamImage]} />
 
-                    <ThemedText style={[styles.text, animatedStyles.opacity, {marginTop: 10}]} >Pontuação: {player?.rating}</ThemedText>
+                    <ThemedText style={[styles.text, {marginTop: 10}]} onPress={accessPlayer} >{player?.name} - {player?.jersey_number}</ThemedText>
 
                     <Animated.View style={[animatedStyles.photo, {alignItems: 'center'}]}>
                             <Pressable onPress={accessPlayer}>
@@ -251,7 +249,7 @@ export default function PlayerMatch() {
                             </Pressable>
                     </Animated.View>
 
-                    <ThemedText style={[styles.text, animatedStyles.playerText]} onPress={accessPlayer} >{player?.name} - {player?.jersey_number}</ThemedText>
+                    <ThemedText style={[styles.text, animatedStyles.playerScore]} >Pontuação: {player?.rating}</ThemedText>
 
                     <Animated.View style={[styles.statistics, animatedStyles.statistics]}>
                         <ThemedView>

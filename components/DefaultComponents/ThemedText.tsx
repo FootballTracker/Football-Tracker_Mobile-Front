@@ -8,6 +8,7 @@ export type ThemedTextProps = TextProps & {
     darkColor?: string;
     midnightColor?: string;
     colorName?: keyof typeof Colors.light & keyof typeof Colors.dark & keyof typeof Colors.midnight
+    color?: string;
     type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link';
 };
 
@@ -16,16 +17,17 @@ export function ThemedText({
   lightColor,
   darkColor,
   colorName = 'Text',
+  color,
   midnightColor,
   type = 'default',
   ...rest
 }: ThemedTextProps) {
-  const color = useThemeColor({ light: lightColor, dark: darkColor, midnight: midnightColor }, colorName);
+  const TextColor = color ?? useThemeColor({ light: lightColor, dark: darkColor, midnight: midnightColor }, colorName);
 
   return (
     <Animated.Text
       style={[
-        { color },
+        { color: TextColor },
         type === 'default' ? styles.default : undefined,
         type === 'title' ? styles.title : undefined,
         type === 'defaultSemiBold' ? styles.defaultSemiBold : undefined,

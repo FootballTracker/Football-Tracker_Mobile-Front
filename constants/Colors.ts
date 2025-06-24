@@ -60,6 +60,7 @@ export const Colors = {
         Text: '#F1F1F1',
         // Red:'#933038',
         Red:'rgb(134, 36, 44)',
+        // Red:'rgb(134, 134, 134)',
         // Red:'rgb(126, 37, 44)',
         // Green:'rgb(200, 200, 200)',
         Green:'rgb(89, 141, 61)',

@@ -93,14 +93,14 @@ export default function Player() {
                 <>
                     <ThemedView style={styles.background}>
                         <View style={{display: 'flex', alignItems: 'center'}}>
-                            <Image source={{uri: player.player.photo_url}} style={styles.playerPhoto} />
-
                             <View style={[styles.centerView, {gap: 0}]}>
                                 <ThemedText style={styles.playerName} >{player.player.name}</ThemedText>
                                 <FavoriteStar favorite={favoriteState} handleClick={changeFavoritie} />
                             </View>
 
-                            <View style={styles.centerView}>
+                            <Image source={{uri: player.player.photo_url}} style={styles.playerPhoto} />
+
+                            <View style={[styles.centerView, {marginTop: 7}]}>
                                 {player.player.age === -1 ? <ThemedText>Idade desconhecida</ThemedText>
                                 : <ThemedText>{player.player.age} anos</ThemedText>}
                                 

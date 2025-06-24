@@ -274,9 +274,10 @@ function TimeClassificacao({ teamId, teamName } : TeamClassI) {
                                             style={[styles.letterView, letter === "D" ?
                                                 {backgroundColor: Colors[theme].Red}
                                                 : letter === "V" ? {backgroundColor: Colors[theme].Green}
-                                                : {backgroundColor: Colors[theme].DarkerText}]}
+                                                : {backgroundColor: theme === 'light' ? '#999' : Colors[theme].DarkerText}]}
                                             >
-                                            <ThemedText style={{textAlign: "center", marginTop: -1, fontFamily: "Kdam", marginLeft: -0.5, fontSize: 14}}>{letter}</ThemedText>
+                                            {/* <ThemedText color={theme === 'light' && letter !== 'E' ? Colors.dark.Text : Colors.light.Text} style={{textAlign: "center", marginTop: -1, marginLeft: -0.5, fontSize: 14}}>{letter}</ThemedText> */}
+                                            <ThemedText color={theme === 'light' ? Colors.dark.Text : Colors.light.Text} style={{textAlign: "center", marginTop: -1, marginLeft: -0.5, fontSize: 14}}>{letter}</ThemedText>
                                         </View>
                                     </View>
                                 ))}
@@ -375,6 +376,8 @@ const styles = StyleSheet.create({
         marginBottom: 3,
     },
     letterView: {
+        justifyContent: 'center',
+        alignItems: 'center',
         width: 23,
         height: 23,
         borderRadius: 100,
