@@ -1,5 +1,5 @@
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { memo, useEffect, useState } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useTheme } from '@/context/ThemeContext';
 import { Colors } from '@/constants/Colors';
@@ -16,13 +16,17 @@ import LoadingIcon from '@/components/LoadingIcon';
 import InfoMessage from '@/components/InfoMessage';
 import Section from '@/components/Section';
 import SingleInfo from '@/components/SingleInfo';
+import api from '@/lib/Axios';
+import { AxiosResponse } from 'axios';
+import { Toast } from 'toastify-react-native';
 
 interface TeamClassI {
-    id: string
+    teamId: string;
+    teamName: string;
 }
 
 interface Leagues {
-    id: string;
+    api_id: string;
     name: string;
     seasons: number[];
 }
@@ -58,33 +62,125 @@ interface TeamLeague {
     }[]
 }
 
-function TimeClassificacao({ id } : TeamClassI) {
+function TimeClassificacao({ teamId, teamName } : TeamClassI) {
     const { theme } = useTheme();
-    const [data, setData] = useState<TeamLeague | undefined>(TeamData);
-    const [leagues, setLeagues] = useState<Leagues[] | undefined>(LeaguesData);
+    const [data, setData] = useState<TeamLeague | undefined>();
+    const [leagues, setLeagues] = useState<Leagues[]>([]);
+    const leaguesRef = useRef<Record<string, TeamLeague>>({}); //key string example>: api_id/season
     const [loading, setLoading] = useState(true);
     const [leagueModalOpened, setLeagueModalOpened] = useState(false);
     const [leagueSeasonsModalOpened, setLeagueSeasonsModalOpened] = useState(false);
-    const [leagueIndex, setLeagueIndex] = useState(0);
-    const [seasonIndex, setSeasonIndex] = useState(0);
+    const [selectedIndexes, setSelectedIndexes] = useState<{league: number, season: number}>({league: -1, season: -1});
 
     function selectLeagueIndex(value: string) {
-        setLeagueIndex(Number(value));
-        setSeasonIndex(leagues ? leagues[Number(value)].seasons.length-1 : 0);
+        const previousSelectedLeague = leagues[selectedIndexes.league];
+        const newSelectedLeague = leagues[Number(value)];
+        const selectedSeason = previousSelectedLeague.seasons[selectedIndexes.season];
+
+        const indexFound = newSelectedLeague.seasons.findIndex(element => element === selectedSeason)
+
+        setSelectedIndexes({
+            league: Number(value),
+            season: indexFound !== -1 ? indexFound : newSelectedLeague.seasons.length - 1,
+        })
     }
 
     function selectSeasonIndex(value: string) {
-        setSeasonIndex(Number(value));
+        setSelectedIndexes({
+            ...selectedIndexes,
+            season: Number(value),
+        });
     }
 
     useEffect(() => {
         getLeagues();
-        setLoading(false);
     }, []);
 
     async function getLeagues() {
-        
+        await api.get(`team/${teamId}/leagues`).then((response: AxiosResponse<Leagues[]>) => {
+            if(!response.data.length)
+            Toast.show({
+                props: {
+                    type: "warn",
+                    text: `${teamName} não participou de nenhuma liga`
+                }
+            });
+            else {
+                setLeagues(response.data);
+                setSelectedIndexes({
+                    league: 0,
+                    season: response.data[0].seasons.length - 1,
+                });
+            }
+        }).catch((e: any) => {
+            if(e.response.data.detail) {
+                Toast.show({
+                    props: {
+                        type: "error",
+                        text: e.response.data.detail
+                    }
+                });
+            }
+            else {
+                Toast.show({
+                    props: {
+                        type: "error",
+                        text: `Não foi possível buscas as ligas que ${teamName} participou`
+                    }
+                });
+            }
+        });
     }
+
+    async function getLeagueData() {
+        if (leaguesRef.current[`${selectedIndexes.league}/${selectedIndexes.season}`]) {
+            setData(leaguesRef.current[`${selectedIndexes.league}/${selectedIndexes.season}`]);
+            return;
+        }
+
+        setLoading(true);
+        const selectedLeague = leagues[selectedIndexes.league];
+
+        await api.get(`team/${teamId}/league/${selectedLeague.api_id}`, {
+            params: {
+                season: selectedLeague.seasons[selectedIndexes.season]
+            }}
+        ).then((response: AxiosResponse<TeamLeague>) => {
+            setData(response.data);
+            leaguesRef.current[`${selectedIndexes.league}/${selectedIndexes.season}`] = response.data;
+        }).catch((e: any) => {
+            if(e.response.data.detail.ok) {
+                Toast.show({
+                    props: {
+                        type: "warn",
+                        text: e.response.data.detail.message
+                    }
+                });
+            }
+            else if(e.response.data.detail) {
+                Toast.show({
+                    props: {
+                        type: "error",
+                        text: e.response.data.detail
+                    }
+                });
+            }
+            else {
+                Toast.show({
+                    props: {
+                        type: "error",
+                        text: `Não foi possível buscar os dados do time`
+                    }
+                });
+            }
+        }).finally(() => {
+            setLoading(false);
+        })
+    }
+
+    useEffect(() => {
+        getLeagueData();
+    }, [selectedIndexes]);
 
     return (
         !loading ? (
@@ -103,9 +199,9 @@ function TimeClassificacao({ id } : TeamClassI) {
                                 />
                                 <TouchableOpacity onPress={() => setLeagueModalOpened(!leagueModalOpened)}>
                                     <View style={styles.select}>
-                                        <Image source={{uri: `https://media.api-sports.io/football/leagues/${leagues[leagueIndex].id}.png`}} width={30} height={35} resizeMode='contain' style={{marginRight: 10}}/>
+                                        <Image source={{uri: `https://media.api-sports.io/football/leagues/${leagues[selectedIndexes.league].api_id}.png`}} width={30} height={35} resizeMode='contain' style={{marginRight: 10}}/>
                                         <ThemedText colorName='Text' style={{fontSize: 18}}>
-                                            {leagues[leagueIndex].name}
+                                            {leagues[selectedIndexes.league].name}
                                         </ThemedText>
                                         <ThemedIcon
                                             IconComponent={MaterialIcons}
@@ -118,8 +214,8 @@ function TimeClassificacao({ id } : TeamClassI) {
                             </View>
                             
                             <View>
-                                <Select modalOpened={leagueSeasonsModalOpened} setModalOpened={setLeagueSeasonsModalOpened} setSelected={selectSeasonIndex} title={`Selecione uma temporada de ${leagues[leagueIndex].name}:`}
-                                    values={leagues[leagueIndex].seasons.map((season, index) => {
+                                <Select modalOpened={leagueSeasonsModalOpened} setModalOpened={setLeagueSeasonsModalOpened} setSelected={selectSeasonIndex} title={`Selecione uma temporada de ${leagues[selectedIndexes.league].name}:`}
+                                    values={leagues[selectedIndexes.league].seasons.map((season, index) => {
                                         return {
                                             name: `${season}`,
                                             value: `${index}`
@@ -129,7 +225,7 @@ function TimeClassificacao({ id } : TeamClassI) {
                                 <TouchableOpacity onPress={() => setLeagueSeasonsModalOpened(!leagueSeasonsModalOpened)}>
                                     <View style={styles.select}>
                                         <ThemedText colorName='Text' style={{fontSize: 13}}>
-                                            {leagues[leagueIndex].seasons[seasonIndex]}
+                                            {leagues[selectedIndexes.league].seasons[selectedIndexes.season]}
                                         </ThemedText>
                                         <ThemedIcon
                                             IconComponent={MaterialIcons}
@@ -284,133 +380,3 @@ const styles = StyleSheet.create({
         marginTop: -4,
     }
 });
-
-const TeamData: TeamLeague = {
-    infos: [
-        {
-            name: "Partidas",
-            home: 19,
-            away: 19,
-            total: 38
-        },
-        {
-            name: "Vitórias",
-            home: 13,
-            away: 7,
-            total: 20,
-        },
-        {
-            name: "Empates",
-            home: 5,
-            away: 8,
-            total: 13,
-        },
-        {
-            name: "Derrotas",
-            home: 1,
-            away: 4,
-            total: 5,
-        },
-        {
-            name: "GP",
-            home: 40,
-            away: 18,
-            total: 58,
-        },
-        {
-            name: "Média GP",
-            home: 2.1,
-            away: 0.9,
-            total: 1.5,
-        },
-        {
-            name: "GC",
-            home: 14,
-            away: 17,
-            total: 31,
-        },
-        {
-            name: "Média GC",
-            home: 0.7,
-            away: 0.9,
-            total: 0.8,
-        },
-    ],
-    form: "DVVEEEEEVEVVDVEVEEDVDVVVEVVEVEVVEVDVVV",
-    statistics: {
-        mostWinsSeq: 3,
-        mostDrawsSeq: 5,
-        mostLosesSeq: 1,
-        biggestWinHome: "4 x 0",
-        biggestWinAway: "0 x 2",
-        biggestLoseHome: "2 x 3",
-        biggestLoseAway: "3 x 0",
-        mostGoalsForHome: 4,
-        mostGoalsForAway: 2,
-        mostGoalsAgainstHome: 3,
-        mostGoalsAgainstAway: 3,
-        penaltyGoals: 8,
-        penaltyMisses: 0
-    },
-    formations: [
-        {
-            formation: "4-2-3-1",
-            times: 18
-        },
-        {
-            formation: "4-4-1-1",
-            times: 9
-        },
-        {
-            formation: "4-3-3",
-            times: 8
-        },
-        {
-            formation: "4-3-2-1",
-            times: 6
-        },
-        {
-            formation: "4-4-2",
-            times: 1
-        },
-        {
-            formation: "4-1-4-1",
-            times: 1
-        },
-    ]
-}
-
-
-const LeaguesData: Leagues[] = [
-    {
-        id: "71",
-        name: "Serie A",
-        seasons: [
-            2022,
-            2023,
-            2024
-        ]
-    },
-    {
-        id: "72",
-        name: "Serie B",
-        seasons: [
-            2022,
-            2023,
-        ]
-    },
-    {
-        id: "73",
-        name: "Serie C",
-        seasons: [
-            2021,
-        ]
-    },
-    {
-        id: "110",
-        name: "Serie H",
-        seasons: [
-            2025,
-        ]
-    },
-]
