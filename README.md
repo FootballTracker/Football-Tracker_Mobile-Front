@@ -1,50 +1,37 @@
-# Welcome to your Expo app 👋
+# ⚽ Football Tracker Frontend
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Este é um projeto de um aplicativo de futebol mobile que ofereçe informações detalhadas sobre partidas, classificações, estatísticas de jogadores e times, rankings e muito mais.
 
-## Get started
+## Funcionalidades principais
+- Exibição de partidas com datas dinâmicas
+- Organização de times, ligas e jogadores por favoritos do usuário e principais
+- Páginas específicas para partidas, ligas, times e jogadores para mais detalhes
+- Classificação para cada uma das ligas
+- Estatísticas individuais de jogadores
+- Rankings de melhores jogadores e times
+- Seção de usuário para gestão de favoritos
+- Página de partidas com informações gerais, estatísticas, eventos e escalações dos times
 
-1. Install dependencies
+## Instalação
+
+1. Baixe os arquivos do projeto ou clone o repositório
+
+2. Instale as dependências
 
    ```bash
    npm install
    ```
 
-2. Start the app
+3. Crie um arquivo chamado .env na raiz do projeto e coloque o seguinte conteúdo no arquivo
+
+    ```bash
+     EXPO_PUBLIC_BACKEND_URL="https://football-tracker-api-0jsu.onrender.com/"
+    ```
+
+4. Inicie o aplicativo
 
    ```bash
-    npx expo start
+    npm start
    ```
 
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+5. Escaneie o QR Code em seu terminal utilizando o aplicativo Expo Go em um dispositivo móvel
