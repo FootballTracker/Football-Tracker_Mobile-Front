@@ -194,7 +194,6 @@ export default function PlayerMatch() {
         const listenerId = scrollY.addListener((v: any) => {
             scrollValue.current = v.value;
         });
-        console.log(scrollY);
 
         return () => {
             scrollY.removeListener(listenerId);

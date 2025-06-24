@@ -18,6 +18,7 @@ type Pages = {
     player: string;
     match: string;
     playerInMatch: string;
+    playerStats: string;
 }
 
 type pageContextProps = {
@@ -60,6 +61,7 @@ export const PageProvider = ({ children }: { children: React.ReactNode }) => {
         player: 'Jogadores',
         match: 'Partida',
         playerInMatch: 'Jogador',
+        playerStats: 'Jogador Estatísticas',
     }
 
     useEffect(() => {
@@ -75,7 +77,10 @@ export const PageProvider = ({ children }: { children: React.ReactNode }) => {
         setIsOnUserPages(false);
 
         if(pathname === '/') setPage(rootPage);
-        else if(!(currentPage[length-2] in pages)) setPage(pages.playerInMatch)
+        else if(!(currentPage[length-2] in pages)) {
+            if(currentPage[1] === "match") setPage(pages.playerInMatch)
+            else setPage(pages.playerStats)
+        }
         else setPage(pages[currentPage[length-2] as keyof typeof pages]);
 
     }, [pathname])

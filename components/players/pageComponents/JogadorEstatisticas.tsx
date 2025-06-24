@@ -9,6 +9,7 @@ import { View } from 'react-native';
 
 //Type
 export type EstatisticasProps = {
+    playerId: string;
     playerCompetitions: {
         team: {
             id: string,
@@ -19,14 +20,15 @@ export type EstatisticasProps = {
             id: string,
             name: string,
             logo: string,
+            season: string,
         }[]
     }[]
 }
 
-export default function JogadorEstatisticas({playerCompetitions}: EstatisticasProps) {
+export default function JogadorEstatisticas({playerId, playerCompetitions}: EstatisticasProps) {
 
-    function accessLeague(id: string) {
-        router.push(`/(pages)/league/${id}`);
+    function accessLeague(teamId: string, leagueId: string) {
+        router.push(`/(pages)/player/${playerId}/${teamId}/${leagueId}`);
     }
 
     return (
@@ -36,15 +38,15 @@ export default function JogadorEstatisticas({playerCompetitions}: EstatisticasPr
                     <Section text={sec.team.name} key={index} image={sec.team.logo}>
                         {sec.competitions && sec.competitions.length && sec.competitions.map((league, index) => (
                             <Card 
-                                info={league.name}
+                                info={`${league.name} - ${league.season}`}
                                 image={league.logo}
-                                handleOpen={() => accessLeague(league.id)}
+                                handleOpen={() => accessLeague(sec.team.id, league.id)}
                                 key={index}
                             />
                         ))}
                     </Section>
                 )) : (
-                    <InfoMessage text="Nenhuma competição encontrada"/>
+                    <InfoMessage text="Nenhuma liga que o jogador participou encontrada"/>
                 )}
             </View>
         </ThemedScrollView>
