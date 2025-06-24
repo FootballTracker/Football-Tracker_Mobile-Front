@@ -89,7 +89,6 @@ export default function RootLayout() {
                             <ThemedText style={[styles.teamName, animatedStyles.text]} numberOfLines={1} ellipsizeMode='tail'>{match?.match.away_team.name}</ThemedText>
                         </View>
                     </Pressable>
-
                 </Animated.View>
 
                 <Animated.View style={[{zIndex: 1}, animatedStyles.tabView]}>

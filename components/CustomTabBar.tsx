@@ -1,7 +1,7 @@
-import { StyleSheet, View, Animated, useWindowDimensions, Pressable, ScrollView } from 'react-native';
+import { StyleSheet, View, Animated, useWindowDimensions, Pressable, ScrollView, LayoutChangeEvent } from 'react-native';
 import type { TabBarProps } from 'react-native-tab-view';
 import { Colors } from '@/constants/Colors';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { ThemedText } from "@/components/DefaultComponents/ThemedText";
 import { useTheme } from '@/context/ThemeContext';
@@ -9,21 +9,41 @@ import { useTheme } from '@/context/ThemeContext';
 export const CustomTabBar: React.FC<TabBarProps<any>> = ({ navigationState, jumpTo, position }) => {
     const layout = useWindowDimensions();
     const totalTabs = navigationState.routes.length;
+    const [textSizes, setTextSizes] = useState<{ [key: number]: number }>({});
     const tabWidth = totalTabs > 3 ? layout.width * 0.31 : layout.width /navigationState.routes.length;
     const scrollRef = useRef<ScrollView>(null);
     const { theme } = useTheme();
+
+    const indicatorTranslateX = useRef(new Animated.Value(0)).current;
+    const indicatorScale = useRef(new Animated.Value(1)).current;
 
     // Faz scroll para deixar a aba selecionada visível
     useEffect(() => {
         const offsetX = Math.max(0, tabWidth * navigationState.index - layout.width / 2 + tabWidth / 2);
         scrollRef.current?.scrollTo({ x: offsetX, animated: true });
-    }, [navigationState.index]);
+
+        const currentIndex = navigationState.index;
+        
+        if (textSizes[currentIndex] != null) {
+            const newScale = textSizes[currentIndex]/tabWidth;
+
+            Animated.timing(indicatorScale, {
+                toValue: newScale,
+                duration: 100,
+                useNativeDriver: true,
+            }).start();
+        }
+    }, [navigationState.index, layout.width, textSizes]);
 
     const translateX = position.interpolate({
         inputRange: navigationState.routes.map((_, i) => i),
         outputRange: navigationState.routes.map((_, i) => i * tabWidth),
     });
-    
+
+    const handleLayout = (event: LayoutChangeEvent, index: number) => {
+        const { width } = event.nativeEvent.layout;
+        setTextSizes(prev => ({ ...prev, [index]: width }));
+    };
     
     const styles = StyleSheet.create({
         wrapper: {
@@ -73,8 +93,7 @@ export const CustomTabBar: React.FC<TabBarProps<any>> = ({ navigationState, jump
             marginLeft: "auto",
             marginRight: "auto",
             borderRadius: 5,
-            width: '75%',
-            maxWidth: 103
+            width: '95%',
         }
     });
 
@@ -97,7 +116,7 @@ export const CustomTabBar: React.FC<TabBarProps<any>> = ({ navigationState, jump
                                     style={[styles.tabItem, isFocused && styles.activeTab, isLast && styles.lastTabItem, { width: tabWidth } ]}
                                     onPress={() => jumpTo(route.key)}
                                 >
-                                    <ThemedText style={[styles.tabText, isFocused && styles.activeText]} >
+                                    <ThemedText style={[styles.tabText, isFocused && styles.activeText]} onLayout={(e) => handleLayout(e, index)}>
                                         {route.title}
                                     </ThemedText>
                                 </Pressable>
@@ -106,10 +125,10 @@ export const CustomTabBar: React.FC<TabBarProps<any>> = ({ navigationState, jump
                     </View>
 
                     <Animated.View
-                        style={[styles.indicator, { width: tabWidth, transform: [{ translateX }] }]}
+                        style={[styles.indicator, { width: tabWidth, transform: [{translateX: translateX }] }]}
                     >
                         <Animated.View 
-                            style={styles.indicatorChildren}
+                            style={[styles.indicatorChildren, {transform: [{scaleX: indicatorScale}]}]}
                         />
                     </Animated.View>
 

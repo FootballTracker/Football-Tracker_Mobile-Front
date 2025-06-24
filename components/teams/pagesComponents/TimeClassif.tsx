@@ -184,7 +184,7 @@ function TimeClassificacao({ teamId, teamName } : TeamClassI) {
 
     return (
         !loading ? (
-            <ThemedScrollView style={{top: 30}}>
+            <ThemedScrollView>
                 {leagues ? (
                     <>
                         <View style={styles.selectsView}>
@@ -299,7 +299,7 @@ function TimeClassificacao({ teamId, teamName } : TeamClassI) {
                             <SingleInfo infoName='Pênaltis perdidos:' info={data?.statistics.penaltyMisses.toString() || "Indísponível"}/>
                         </Section>
 
-                        <Section icon={{IconComponent: Formation, width: 25, height: 25}} text='Formações' style={{marginBottom: 90}}>
+                        <Section icon={{IconComponent: Formation, width: 25, height: 25}} text='Formações' style={{marginBottom: 50}}>
                             {data?.formations.length ? data.formations.map((formation, index) => (
                                 <SingleInfo infoName={formation.formation} info={`${formation.times.toString()} vez(es) usada`} key={index}/>
                             )) : (
@@ -326,6 +326,7 @@ const styles = StyleSheet.create({
     selectsView: {
         alignItems: "center",
         justifyContent: "center",
+        marginTop: 30,
         gap: 5,
     },
     select: {
