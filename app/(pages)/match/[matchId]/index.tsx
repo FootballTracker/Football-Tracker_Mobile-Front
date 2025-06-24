@@ -42,7 +42,7 @@ export default function Match() {
     };
 
     return (
-        <ThemedView style={{flex: 1}}>
+        <ThemedView style={{flex: 1, marginTop: -1}}>
             <TabView
                 navigationState={{ index, routes }}
                 renderScene={renderScene}
