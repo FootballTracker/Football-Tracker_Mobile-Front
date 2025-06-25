@@ -2,16 +2,15 @@
 import { TouchableOpacity, StyleSheet } from "react-native"
 import { ThemedIcon } from "./DefaultComponents/ThemedIcon"
 import { FontAwesome6 } from "@expo/vector-icons"
-import { Colors } from "@/constants/Colors"
 import { router } from "expo-router"
-import { usePage } from "@/context/PageContext"
+import { TouchableOpacityProps } from "react-native-gesture-handler"
 
 type ReturnArrowProps = {
     double?: boolean;
     returnPage?: boolean;
-}
+} & TouchableOpacityProps
 
-export function ReturnArrow({ double } : ReturnArrowProps) {
+export function ReturnArrow({ double, ...rest } : ReturnArrowProps) {
 
     const returnRoute = () => {
         router.back();
@@ -19,7 +18,7 @@ export function ReturnArrow({ double } : ReturnArrowProps) {
     }
 
     return (
-        <TouchableOpacity onPress={returnRoute}>
+        <TouchableOpacity onPress={returnRoute} style={rest.style}>
             <ThemedIcon
                 IconComponent={FontAwesome6}
                 name="arrow-left" size={22}

@@ -1,5 +1,5 @@
 //Default Imports
-import { StyleSheet, Dimensions, View, Animated, Keyboard, KeyboardEvent } from "react-native";
+import { StyleSheet, Dimensions, Animated, Keyboard } from "react-native";
 import { useEffect, useRef, useState } from "react";
 
 //Components
@@ -45,7 +45,8 @@ export default function LoginLogo() {
     }).start();
 
     return (
-        <Animated.View style={{alignItems: 'center', top: -9, transform: [{scale: scaleAnim}], opacity: opacityAnim}}>
+        // <Animated.View style={{alignItems: 'center', top: -9, transform: [{scale: scaleAnim}], opacity: opacityAnim}}>
+        <Animated.View style={{alignItems: 'center', top: -9}}>
             <ThemedText style={[{fontSize: 45, top: 9}, styles.text]}>FOOTBALL</ThemedText>
             <ThemedImage
                 source={{

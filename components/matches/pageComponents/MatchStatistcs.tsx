@@ -1,5 +1,5 @@
 //Default Imports
-import { TeamStatistics } from "@/app/(pages)/match/[matchId]";
+import { TeamStatistics } from "@/context/MatchContext";
 import { MatchCardI } from "../MatchCard";
 import { memo } from "react";
 

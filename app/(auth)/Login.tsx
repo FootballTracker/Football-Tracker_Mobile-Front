@@ -34,33 +34,10 @@ type userData = z.infer<typeof userData>
 
 export default function Login() {
     const { login } = useUserContext();
-    const [keyboardHeight, setKeyboardHeight] = useState(0);
-    const translateAnim = useRef(new Animated.Value(0)).current;
     
     const { control, handleSubmit, formState: {errors} } = useForm<userData>({
         resolver: zodResolver(userData)
     });
-
-    useEffect(() => {
-        const showSubscription = Keyboard.addListener('keyboardDidShow', (event: KeyboardEvent) => {
-            setKeyboardHeight(event.endCoordinates.height);
-        });
-
-        const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
-            setKeyboardHeight(0);
-        });
-
-        return () => {
-            showSubscription.remove();
-            hideSubscription.remove();
-        };
-    }, []);
-
-    Animated.timing(translateAnim, {
-        toValue: -keyboardHeight,
-        duration: 150,
-        useNativeDriver: true,
-    }).start();
 
     const handleForm = async ({user, password}:userData) => {
         await api.post('auth/signin', {
@@ -93,52 +70,32 @@ export default function Login() {
     }
 
     return (
-        <ScrollView keyboardShouldPersistTaps="handled">
-            <ThemedView style={{position: 'absolute', width: '100%', height: '100%'}} />
+        <View style={styles.form}>
+            <ThemedText style={styles.titleText}>Login</ThemedText>
+            <ThemedText style={styles.infoText}><ThemedIcon IconComponent={Feather} name="info" size={15} /> Faça login para personalizar sua experiência com jogadores, ligas e times favoritos.</ThemedText>
 
-            <Animated.View style={{transform: [{translateY: translateAnim}]}}>
-                <ThemedView style={styles.background}>
-                    <View style={{display: 'flex', flexDirection: "row", marginLeft: 5, position: 'absolute', top: 20}}>
-                        <ReturnArrow />
-                    </View>
-                        <LoginLogo />
-
-                        <View style={styles.form}>
-                            <ThemedText style={styles.titleText}>Login</ThemedText>
-                            <ThemedText style={styles.infoText}><ThemedIcon IconComponent={Feather} name="info" size={15} /> Faça login para personalizar sua experiência com jogadores, ligas e times favoritos.</ThemedText>
+            <View style={{width: '80%'}}>
+                <FormInput placeHolder="Usuário ou Email" name="user" control={control} errors={errors} keyboardType="email-address"/>
+                <FormInput placeHolder="Senha" name="password" isPassword control={control} errors={errors} />
+                <ThemedButton style={{width: '100%'}} IconComponent={{Icon: Ionicons, name: 'enter-outline'}} textColor="LightBackground" title="Entrar" handleClick={handleSubmit(handleForm)} />
+            </View>
             
-                            <View style={{width: '80%'}}>
-                                <FormInput placeHolder="Usuário ou Email" name="user" control={control} errors={errors} keyboardType="email-address"/>
-                                <FormInput placeHolder="Senha" name="password" isPassword control={control} errors={errors} />
-                                <ThemedButton style={{width: '100%'}} IconComponent={{Icon: Ionicons, name: 'enter-outline'}} textColor="LightBackground" title="Entrar" handleClick={handleSubmit(handleForm)} />
-                            </View>
-                            
-                            <ThemedText style={[styles.registerText]}>
-                                Ainda não tem uma conta?
-                                {'  '}
-                                <ThemedText
-                                    style={styles.registerText}
-                                    onPress={() => router.replace('/(auth)/Cadastro')}
-                                    colorName="Green"
-                                >
-                                    Cadastre-se
-                                </ThemedText>
-                            </ThemedText>
-                        </View>
-                </ThemedView>
-            </Animated.View>
-        </ScrollView>
+            <ThemedText style={[styles.registerText]}>
+                Ainda não tem uma conta?
+                {'  '}
+                <ThemedText
+                    style={styles.registerText}
+                    onPress={() => router.replace('/(auth)/Cadastro')}
+                    colorName="Green"
+                >
+                    Cadastre-se
+                </ThemedText>
+            </ThemedText>
+        </View>
     )
 }
 
 const styles = StyleSheet.create({
-    background: {
-        display: 'flex',
-        justifyContent: 'space-evenly',
-        minHeight: windowHeight,
-        paddingTop: 25,
-        paddingBottom: 20,
-    },
     titleText: {
         fontFamily: 'Koulen',
         fontSize: 23,

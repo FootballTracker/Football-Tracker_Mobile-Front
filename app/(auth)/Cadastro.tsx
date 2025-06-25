@@ -34,30 +34,6 @@ type userData = z.infer<typeof userData>
 
 export default function Cadastro() {
     const { login } = useUserContext();
-    const keyboard = useAnimatedKeyboard({isStatusBarTranslucentAndroid: true});
-    const [keyboardHeight, setKeyboardHeight] = useState(0);
-    const translateAnim = useRef(new Animated.Value(0)).current;
-
-    useEffect(() => {
-        const showSubscription = Keyboard.addListener('keyboardDidShow', (event: KeyboardEvent) => {
-            setKeyboardHeight(event.endCoordinates.height);
-        });
-
-        const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
-            setKeyboardHeight(0);
-        });
-
-        return () => {
-            showSubscription.remove();
-            hideSubscription.remove();
-        };
-    }, []);
-
-    Animated.timing(translateAnim, {
-        toValue: -keyboardHeight,
-        duration: 150,
-        useNativeDriver: true,
-    }).start();
     
     const { control, handleSubmit, formState: {errors} } = useForm<userData>({
         resolver: zodResolver(userData)
@@ -95,54 +71,33 @@ export default function Cadastro() {
     }
 
     return (
-        <ScrollView keyboardShouldPersistTaps="handled">
-            <ThemedView style={{position: 'absolute', width: '100%', height: '100%'}} />
-            
-            <Animated.View style={{transform: [{translateY: translateAnim}]}}>
-                <ThemedView style={[styles.background]}>
-                    <View style={{display: 'flex', flexDirection: "row", marginLeft: 5, position: 'absolute', top: 20}}>
-                        <ReturnArrow double={true} />
-                    </View>
+        <View style={styles.form}>
+            <ThemedText style={styles.titleText}>Cadastrar</ThemedText>
 
-                    <LoginLogo />
+            <View style={{width: '80%'}}>
+                <FormInput placeHolder="Nome de usuário" name="user" control={control} errors={errors} />
+                <FormInput placeHolder="Email" name="email" control={control} errors={errors} keyboardType="email-address"/>
+                <FormInput placeHolder="Senha" name="password" control={control} errors={errors} isPassword={true} />
+                <FormInput placeHolder="Confirmar Senha" name="confirmPassword" control={control} errors={errors} isPassword={true} />
+                <ThemedButton style={{width: '100%'}} IconComponent={{Icon: Feather, name: 'plus', size: 25}} textColor="LightBackground" title="Cadastrar" handleClick={handleSubmit(handleForm)} />
+            </View>
 
-                    <View style={styles.form}>
-                        <ThemedText style={styles.titleText}>Cadastrar</ThemedText>
-
-                        <View style={{width: '80%'}}>
-                            <FormInput placeHolder="Nome de usuário" name="user" control={control} errors={errors} />
-                            <FormInput placeHolder="Email" name="email" control={control} errors={errors} keyboardType="email-address"/>
-                            <FormInput placeHolder="Senha" name="password" control={control} errors={errors} isPassword={true} />
-                            <FormInput placeHolder="Confirmar Senha" name="confirmPassword" control={control} errors={errors} isPassword={true} />
-                            <ThemedButton style={{width: '100%'}} IconComponent={{Icon: Feather, name: 'plus', size: 25}} textColor="LightBackground" title="Cadastrar" handleClick={handleSubmit(handleForm)} />
-                        </View>
-
-                        <ThemedText style={[styles.loginText]}>
-                            Já tem uma conta?
-                            {'  '}
-                            <ThemedText
-                                style={styles.loginText}
-                                onPress={() => router.replace('/(auth)/Login')}
-                                colorName="Green"
-                            >
-                                Faça login
-                            </ThemedText>
-                        </ThemedText>
-                    </View>
-                </ThemedView>
-            </Animated.View>
-        </ScrollView>
+            <ThemedText style={[styles.loginText]}>
+                Já tem uma conta?
+                {'  '}
+                <ThemedText
+                    style={styles.loginText}
+                    onPress={() => router.replace('/(auth)/Login')}
+                    colorName="Green"
+                >
+                    Faça login
+                </ThemedText>
+            </ThemedText>
+        </View>
     )
 }
 
 const styles = StyleSheet.create({
-    background: {
-        display: 'flex',
-        justifyContent: 'space-evenly',
-        minHeight: windowHeight,
-        paddingBottom: 20,
-        paddingTop: 25,
-    },
     titleText: {
         fontFamily: 'Koulen',
         fontSize: 23,
