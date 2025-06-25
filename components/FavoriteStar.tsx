@@ -1,6 +1,6 @@
 //Default Imports
-import { StyleSheet } from "react-native";
-import { useState } from "react";
+import { Animated, StyleSheet } from "react-native";
+import { useRef, useState } from "react";
 import { Toast } from "toastify-react-native";
 
 //Components
@@ -21,31 +21,58 @@ type FavoriteStarProps = {
 export default function FavoriteStar({ favorite, handleClick } : FavoriteStarProps) {
     const { logged } = useUserContext();
     const [favoritieState, setFavoritieState] = useState(favorite);
+    const translateAnim = useRef(new Animated.Value(0)).current;
+
+    const starAnimation = () => {
+        Animated.sequence([
+            Animated.timing(translateAnim, {
+                toValue: -2,
+                duration: 33,
+                useNativeDriver: true
+            }),
+            Animated.timing(translateAnim, {
+                toValue: 2,
+                duration: 33,
+                useNativeDriver: true
+            }),
+            Animated.timing(translateAnim, {
+                toValue: 0,
+                duration: 33,
+                useNativeDriver: true
+            })
+        ]).start();
+    }
 
     async function changeIcon() {
         if(logged) {
             const value = await handleClick();
             if(value === undefined) setFavoritieState(!favoritieState);
+            else starAnimation();
         }
-        else Toast.show({
-            props: {
-                type: 'warn',
-                text: 'Faça login para poder favoritar'
-            },
-            visibilityTime: 6000
-        });
+        else {
+            Toast.show({
+                props: {
+                    type: 'warn',
+                    text: 'Faça login para poder favoritar'
+                },
+                visibilityTime: 6000
+            });
+            starAnimation();
+        }
     }
 
     return (
-        <TouchableOpacity activeOpacity={0.5} onPress={() => {changeIcon()}}>
-            <ThemedIcon
-                IconComponent={favoritieState ? FilledStar : UnfilledStar}
-                colorName="Red"
-                style={styles.star}
-                width={30}
-                height={22}
-            />
-        </TouchableOpacity>
+        <Animated.View style={{transform: [{translateX: translateAnim}]}}>
+            <TouchableOpacity activeOpacity={0.5} onPress={() => {changeIcon()}}>
+                <ThemedIcon
+                    IconComponent={favoritieState ? FilledStar : UnfilledStar}
+                    colorName="Red"
+                    style={styles.star}
+                    width={30}
+                    height={22}
+                />
+            </TouchableOpacity>
+        </Animated.View>
     )
 }
 
