@@ -31,7 +31,7 @@ export type team = {
 
 export default function Times() {
     const { loading, getTeams } = useItemsContext();
-    const { user } = useUserContext();
+    const { user, logged } = useUserContext();
     const [clearInput, setClearInput] = useState(false);
     const [searchedTeams, setSearchedTeams] = useState<team[]>([]);
     const [showSearched, setShowSearched] = useState(false);
@@ -101,11 +101,13 @@ export default function Times() {
                         )
                     ) : (
                         <>
-                            <Section text='Favorito' icon={{IconComponent: FilledStar, width: 27, height: 27}} iconUp >
-                                <FavoriteTeams />
-                            </Section>
+                            {logged &&
+                                <Section text='Favorito' icon={{IconComponent: FilledStar, width: 27, height: 27}} iconUp >
+                                    <FavoriteTeams />
+                                </Section>
+                            }
 
-                            <Section text='Principais' icon={{IconComponent: FontAwesome5, name: 'crown', size: 20}} style={{marginBottom: 50}} iconUp >
+                            <Section text={logged ? 'Principais' : 'Times Principais'} icon={{IconComponent: FontAwesome5, name: 'crown', size: 20}} style={{marginBottom: 50}} iconUp >
                                 <MainTeams />
                             </Section>
                         </>

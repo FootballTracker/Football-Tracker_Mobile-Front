@@ -31,7 +31,7 @@ export type player = {
 
 export default function Jogadores() {
     const { loading, getPlayers } = useItemsContext();
-    const { user } = useUserContext();
+    const { user, logged } = useUserContext();
     const [clearInput, setClearInput] = useState(false);
     const [searchedPlayers, setSearchedPlayers] = useState<player[]>([]);
     const [showSearched, setShowSearched] = useState(false);
@@ -101,11 +101,13 @@ export default function Jogadores() {
                         )
                     ) : (
                         <>
-                            <Section text='Favoritos' icon={{IconComponent: FilledStar, width: 27, height: 27}} iconUp >
-                                <FavoritePlayers />
-                            </Section>
+                            {logged &&
+                                <Section text='Favoritos' icon={{IconComponent: FilledStar, width: 27, height: 27}} iconUp >
+                                    <FavoritePlayers />
+                                </Section>
+                            }
 
-                            <Section text='Principais' icon={{IconComponent: FontAwesome5, name: 'crown', size: 20}} style={{marginBottom: 50}} iconUp >
+                            <Section text={logged ? 'Principais' : 'Jogadores Principais'} icon={{IconComponent: FontAwesome5, name: 'crown', size: 20}} style={{marginBottom: 50}} iconUp >
                                 <MainPlayers />
                             </Section>
                         </>

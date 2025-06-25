@@ -32,7 +32,7 @@ export type league = {
 
 export default function Ligas() {
     const { loading, getLeagues } = useItemsContext();
-    const { user } = useUserContext();
+    const { user, logged } = useUserContext();
     const [clearInput, setClearInput] = useState(false);
     const [searchedLeagues, setSearchedLeagues] = useState<league[]>([]);
     const [showSearched, setShowSearched] = useState(false);
@@ -102,11 +102,13 @@ export default function Ligas() {
                         )
                     ) : (
                         <>
-                            <Section text='Favoritas' icon={{IconComponent: FilledStar, width: 27, height: 27}} iconUp >
-                                <FavoriteLeagues />
-                            </Section>
+                            {logged &&
+                                <Section text='Favoritas' icon={{IconComponent: FilledStar, width: 27, height: 27}} iconUp >
+                                    <FavoriteLeagues />
+                                </Section>
+                            }
 
-                            <Section text='Principais' icon={{IconComponent: FontAwesome5, name: 'crown', size: 20}} style={{marginBottom: 50}} iconUp >
+                            <Section text={logged ? 'Principais' : 'Ligas Principais'} icon={{IconComponent: FontAwesome5, name: 'crown', size: 20}} style={{marginBottom: 50}} iconUp >
                                 <MainLeagues />
                             </Section>
                         </>

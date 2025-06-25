@@ -1,7 +1,7 @@
 //Default Imports
-import { Colors } from "@/constants/Colors";
 import { StyleSheet } from "react-native";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { Toast } from "toastify-react-native";
 
 //Components
 import { ThemedIcon } from "./DefaultComponents/ThemedIcon";
@@ -10,20 +10,30 @@ import { TouchableOpacity } from "react-native";
 //Icons
 import UnfilledStar from '@/assets/Icons/UnfilledStar.svg'
 import FilledStar from '@/assets/Icons/FilledStar.svg'
+import { useUserContext } from "@/context/UserContext";
 
 //Type
 type FavoriteStarProps = {
     favorite: boolean;
-    swapFavoriteOnClick?: boolean;
     handleClick: (() => Promise<boolean>) | (() => void);
 }
 
-export default function FavoriteStar({ favorite, swapFavoriteOnClick = true, handleClick } : FavoriteStarProps) {
+export default function FavoriteStar({ favorite, handleClick } : FavoriteStarProps) {
+    const { logged } = useUserContext();
     const [favoritieState, setFavoritieState] = useState(favorite);
 
     async function changeIcon() {
-        const value = await handleClick();
-        if(value === undefined && swapFavoriteOnClick) setFavoritieState(!favoritieState);
+        if(logged) {
+            const value = await handleClick();
+            if(value === undefined) setFavoritieState(!favoritieState);
+        }
+        else Toast.show({
+            props: {
+                type: 'warn',
+                text: 'Faça login para poder favoritar'
+            },
+            visibilityTime: 6000
+        });
     }
 
     return (
