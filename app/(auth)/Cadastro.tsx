@@ -1,27 +1,19 @@
-//Default Imports
-import { StyleSheet, View, Dimensions, ScrollView, Animated, Keyboard, KeyboardEvent } from "react-native";
+//Default Importss
+import { StyleSheet, View } from "react-native";
 import Feather from '@expo/vector-icons/Feather';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { router } from "expo-router";
-import { Colors } from "@/constants/Colors";
 import api from "@/lib/Axios"
-import { useEffect, useRef, useState } from "react";
 import { z } from 'zod';
 import { useUserContext } from "@/context/UserContext";
-import { useAnimatedKeyboard } from 'react-native-reanimated';
 import { Toast } from "toastify-react-native";
 
 //Components
-import LoginLogo from "@/components/LoginLogo"
 import { ThemedText } from "@/components/DefaultComponents/ThemedText";
-import { ThemedView } from "@/components/DefaultComponents/ThemedView"
 import { ThemedButton } from "@/components/DefaultComponents/ThemedButton";
-import { ReturnArrow } from "@/components/ReturnArrow";
 import { FormInput } from "@/components/FormInput";
 
-//Consts
-const windowHeight = Dimensions.get('window').height;
 const userData = z.object({
     user: z.string({message: 'Obrigatório'}).min(1, 'Obrigatório'),
     email: z.string({message: 'Obrigatório'}).email('Insira um email válido'),

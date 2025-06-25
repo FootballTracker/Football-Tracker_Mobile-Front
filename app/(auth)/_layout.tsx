@@ -1,18 +1,22 @@
 //Default Imports
+import { Animated, Dimensions, Keyboard, StyleSheet } from 'react-native';
+import { useEffect, useRef, useState } from 'react';
 import * as SplashScreen from 'expo-splash-screen';
-import 'react-native-reanimated';
 import ToastManager from 'toastify-react-native';
+import { Stack, usePathname } from 'expo-router';
+import { KeyboardEvent } from 'react-native';
+import Toast from '@/components/Toast';
 
 //Components
-import { ThemedView } from '@/components/DefaultComponents/ThemedView';
-import Toast from '@/components/Toast';
 import { ThemedScrollView } from '@/components/DefaultComponents/ThemedScrollView';
-import { Animated, Dimensions, Keyboard, StyleSheet, View } from 'react-native';
-import { useEffect, useRef, useState } from 'react';
-import { KeyboardEvent } from 'react-native';
+import { ThemedView } from '@/components/DefaultComponents/ThemedView';
 import { ReturnArrow } from '@/components/ReturnArrow';
 import LoginLogo from '@/components/LoginLogo';
-import { Stack, usePathname } from 'expo-router';
+import { View } from 'react-native';
+import { Select } from '@/components/Select';
+import { useTheme } from '@/context/ThemeContext';
+import { ThemedIcon } from '@/components/DefaultComponents/ThemedIcon';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 //Consts
 const windowHeight = Dimensions.get('window').height;
@@ -23,6 +27,8 @@ SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
     const translateAnim = useRef(new Animated.Value(0)).current;
     const [keyboardHeight, setKeyboardHeight] = useState(0);
+    const { themesNames, selectedTheme, setTheme, themes } = useTheme();
+    const [ modalOpened, setModalOpened ] = useState(false);
     const pathname = usePathname();
 
     useEffect(() => {
@@ -56,7 +62,10 @@ export default function RootLayout() {
 
             <Animated.View style={{transform: [{translateY: translateAnim}]}}>
                 <ThemedScrollView keyboardShouldPersistTaps="handled" style={styles.container} contentContainerStyle={styles.content}>
-                    <ReturnArrow style={{position: 'absolute', top: -5, zIndex: 1}} />
+                    <ReturnArrow style={{position: 'absolute', top: -5}} />
+
+                    <ThemedIcon onPress={() => {setModalOpened(true)}} IconComponent={MaterialCommunityIcons} name='theme-light-dark' style={styles.themeIcon} />
+                    <Select modalOpened={modalOpened} setModalOpened={setModalOpened} setSelected={setTheme} title={`Selecione o tema desejado:\nTema atual: ${themesNames[selectedTheme]}`} values={themes} />
 
                     <LoginLogo />
 
@@ -81,5 +90,12 @@ const styles = StyleSheet.create({
         height: windowHeight - 40,
         display: 'flex',
         justifyContent: 'space-evenly',
+    },
+    themeIcon: {
+        position: 'absolute',
+        top: -5,
+        right: 0,
+        paddingVertical: 5,
+        paddingHorizontal: 15,
     }
 });

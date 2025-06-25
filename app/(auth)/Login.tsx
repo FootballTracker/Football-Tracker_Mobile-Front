@@ -1,29 +1,22 @@
 //Default Imports
-import { StyleSheet, View, Dimensions, ScrollView, Animated, Keyboard, KeyboardEvent } from "react-native";
+import { StyleSheet, View } from "react-native";
 import Feather from '@expo/vector-icons/Feather';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { router } from 'expo-router';
 import { Ionicons } from "@expo/vector-icons";
-import { useEffect, useRef, useState } from "react";
-import { Colors } from "@/constants/Colors";
 import api from "@/lib/Axios";
 import { useUserContext } from "@/context/UserContext";
 import { Toast } from "toastify-react-native";
 
 
 //Components
-import LoginLogo from "@/components/LoginLogo"
 import { ThemedText } from "@/components/DefaultComponents/ThemedText"
-import { ThemedView } from "@/components/DefaultComponents/ThemedView"
 import { ThemedIcon } from "@/components/DefaultComponents/ThemedIcon";
 import { ThemedButton } from "@/components/DefaultComponents/ThemedButton";
-import { ReturnArrow } from "@/components/ReturnArrow";
 import { FormInput } from "@/components/FormInput";
 
-//Consts
-const windowHeight = Dimensions.get('window').height;
 const userData = z.object({
     user: z.string({message: 'Obrigatório'}).min(1, 'Obrigatório'),
     password: z.string({message: 'Obrigatório'}).min(8, 'Mínimo 8 caracteres').regex(new RegExp('(?=.*[a-z])'), 'Deve conter uma letra minúscula').regex(new RegExp('(?=.*[A-Z])'), 'Deve conter uma letra maiúscula').regex(new RegExp('(?=.*[0-9])'), 'Deve conter um número').regex(new RegExp('(?=.*[!@#$%^&*()~`´])'), 'Deve conter um caractere especial'),
