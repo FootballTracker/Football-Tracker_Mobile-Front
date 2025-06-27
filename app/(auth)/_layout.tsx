@@ -2,10 +2,8 @@
 import { Animated, Dimensions, Keyboard, StyleSheet } from 'react-native';
 import { useEffect, useRef, useState } from 'react';
 import * as SplashScreen from 'expo-splash-screen';
-import ToastManager from 'toastify-react-native';
 import { Stack, usePathname } from 'expo-router';
 import { KeyboardEvent } from 'react-native';
-import Toast from '@/components/Toast';
 
 //Components
 import { ThemedScrollView } from '@/components/DefaultComponents/ThemedScrollView';
@@ -52,10 +50,6 @@ export default function RootLayout() {
         useNativeDriver: true,
     }).start();
 
-    const toastConfig = {
-        default: (props: any) => (<Toast {...props.props} visibilityTime={props.duration}/>),
-    }
-
     return (
         <>
             <ThemedView style={{position: 'absolute', width: '100%', height: '100%'}} />
@@ -74,8 +68,6 @@ export default function RootLayout() {
                     </View>
                 </ThemedScrollView>
             </Animated.View>
-
-            <ToastManager config={toastConfig} position="bottom" useModal={false} duration={4000}/>
         </>
         
     );

@@ -13,6 +13,9 @@ import { ThemeProvider } from '@/context/ThemeContext';
 import { StatusBar } from '@/components/home/StatusBar';
 import { ItemsProvider } from '@/context/ItemsContext';
 
+import Toast from '@/components/Toast';
+import ToastManager from 'toastify-react-native';
+
 const windowHeight = Dimensions.get('window').height;
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -47,6 +50,10 @@ export default function RootLayout() {
         return null;
     }
 
+    const toastConfig = {
+        default: (props: any) => (<Toast {...props.props} visibilityTime={props.duration}/>),
+    }
+
     return (
         <ThemeProvider>
             <UserProvider>
@@ -60,6 +67,7 @@ export default function RootLayout() {
 
                             <StatusBar />
                             
+                            <ToastManager config={toastConfig} position="bottom" useModal={false} duration={4000}/>
                         </ThemedView>
                     </Host>
                 </ItemsProvider>
