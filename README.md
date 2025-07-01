@@ -25,7 +25,7 @@ Este é um projeto de um aplicativo de futebol mobile que ofereçe informações
 3. Crie um arquivo chamado .env na raiz do projeto e coloque o seguinte conteúdo no arquivo
 
     ```bash
-     EXPO_PUBLIC_BACKEND_URL="https://football-tracker-api-0jsu.onrender.com/"
+     EXPO_PUBLIC_BACKEND_URL="https://footballtracker-backend.onrender.com/"
     ```
 
 4. Inicie o aplicativo
